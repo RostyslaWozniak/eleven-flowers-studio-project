@@ -1,0 +1,100 @@
+/* eslint-disable @next/next/no-img-element */
+import { MaxWidthWrapper } from "@/components/max-width-wrapper";
+import { MobileCarousel } from "@/components/mobile-carousel";
+import { CarouselItem } from "@/components/ui/carousel";
+import { H2, H3, Text } from "@/components/ui/typography";
+import Link from "next/link";
+
+const collections = [
+  {
+    img: "/images/bouquets.jpg",
+    title: "Bukiety",
+    href: "/collections/bouquets",
+  },
+  {
+    img: "/images/flower-box.jpg",
+    title: "Flower Box",
+    href: "/collections/flower-box",
+  },
+  {
+    img: "/images/balloons.jpg",
+    title: "Balony",
+    href: "/collections/balloons",
+  },
+  {
+    img: "/images/gifts.jpg",
+    title: "Prezenty",
+    href: "/collections/gifts",
+  },
+];
+
+export function CollectionsPreviewSection() {
+  return (
+    <section>
+      <MaxWidthWrapper
+        border
+        className="space-y-8 overflow-x-hidden md:space-y-16 md:py-16"
+      >
+        <div className="space-y-4 px-2.5 py-4">
+          <H2>Odkryj nasze wyjątkowe usługi florystyczne</H2>
+          <Text
+            size="subtitle"
+            className="mx-auto hidden max-w-6xl text-center md:block"
+          >
+            W naszym studiu florystycznym spełniamy Twoje marzenia związane z
+            kwiatami. Odkryj nasze wykwintne aranżacje, spersonalizowane pudełka
+            prezentowe i profesjonalne usługi fotograficzne.
+          </Text>
+        </div>
+        {/* DESKTOP */}
+        <div className="hidden items-center justify-start gap-4 md:flex md:justify-center">
+          {collections.map(({ img, title, href }, i) => (
+            <Link
+              href={href}
+              key={i}
+              className="group relative grid aspect-square min-w-[300px] place-items-center overflow-hidden"
+            >
+              <img
+                src={img}
+                alt={title}
+                width={300}
+                height={300}
+                className="absolute transition-transform duration-300 ease-in-out group-hover:scale-110"
+              />
+              <H3 className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background md:text-5xl">
+                {title}
+              </H3>
+              <div className="absolute inset-0 z-10 bg-primary/20 duration-300 ease-in-out group-hover:backdrop-brightness-75"></div>
+            </Link>
+          ))}
+        </div>
+        {/* MOBILE */}
+        <div className="flex items-center justify-start gap-4 xl:hidden">
+          <MobileCarousel>
+            {collections.map(({ img, title, href }, i) => (
+              <CarouselItem key={i}>
+                <Link
+                  href={href}
+                  key={i}
+                  className="group relative grid h-[300px] place-items-center overflow-hidden"
+                >
+                  <img
+                    src={img}
+                    alt={title}
+                    width={300}
+                    height={300}
+                    className="absolute w-full transition-transform duration-300 ease-in-out group-hover:scale-110"
+                  />
+                  <H3 className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background">
+                    {title}
+                  </H3>
+                  <div className="absolute inset-0 z-10 bg-primary/20 duration-300 ease-in-out group-hover:backdrop-brightness-90"></div>
+                </Link>
+              </CarouselItem>
+            ))}
+          </MobileCarousel>
+        </div>
+      </MaxWidthWrapper>
+    </section>
+  );
+}
