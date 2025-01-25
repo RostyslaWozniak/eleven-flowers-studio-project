@@ -8,7 +8,13 @@ import {
 import { cn } from "@/lib/utils";
 import { type ReactNode, useEffect, useState } from "react";
 
-export function MobileCarousel({ children }: { children: ReactNode }) {
+export function MobileCarousel({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -27,7 +33,7 @@ export function MobileCarousel({ children }: { children: ReactNode }) {
   }, [api]);
 
   return (
-    <div className="">
+    <div className={cn("", className)}>
       <Carousel setApi={setApi}>
         <CarouselContent className="w-screen">{children}</CarouselContent>
       </Carousel>

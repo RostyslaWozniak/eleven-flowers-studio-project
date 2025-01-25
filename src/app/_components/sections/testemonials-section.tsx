@@ -46,14 +46,14 @@ export function TestemonialsSection() {
       <MaxWidthWrapper border className="py-20">
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-3">
-            <GoogleStars className="hidden md:flex" />
+            <GoogleStars className="hidden lg:flex" />
             <Text size="lg">5 Stars on</Text>
             <GoogleLogo />
           </div>
           <H2>Opinie naszych klientów</H2>
           <Text
             size="subtitle"
-            className="mt-4 hidden max-w-3xl text-center md:block"
+            className="mt-4 hidden max-w-3xl text-center lg:block"
           >
             Odkryj szczere historie i entuzjastyczne recenzje tych, którzy
             doświadczyli piękna{" "}
@@ -63,7 +63,7 @@ export function TestemonialsSection() {
           </Text>
         </div>
         {/* DESKTOP */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Carousel
             opts={{
               align: "center",
@@ -74,9 +74,9 @@ export function TestemonialsSection() {
               {testemonials.map(({ review, name }, i) => (
                 <CarouselItem
                   key={i}
-                  className="basis-[80%] cursor-grab active:cursor-grabbing md:basis-1/2 lg:basis-1/3"
+                  className="cursor-grab active:cursor-grabbing lg:basis-1/3"
                 >
-                  <div className="space-y-2 rounded-sm border px-8 py-6 shadow-lg">
+                  <div className="space-y-2 rounded-sm border shadow-lg lg:px-8 lg:py-6">
                     <GoogleStars />
                     <Text>{review}</Text>
                     <div className="mt-6 flex items-center gap-x-4">
@@ -97,11 +97,14 @@ export function TestemonialsSection() {
           </Carousel>
         </div>
         {/* MOBILE */}
-        <div className="py-8 md:hidden">
-          <MobileCarousel>
+        <div className="py-8 lg:hidden">
+          <MobileCarousel className="select-none">
             {testemonials.map(({ review, name }, i) => (
-              <CarouselItem key={i} className="">
-                <div className="space-y-2 rounded-sm border px-8 py-6 shadow-lg">
+              <CarouselItem
+                key={i}
+                className="basis-[88%] cursor-grab active:cursor-grabbing sm:basis-1/2 md:basis-1/3"
+              >
+                <div className="space-y-2 rounded-sm border px-4 py-3 shadow-lg">
                   <GoogleStars />
                   <Text>{review}</Text>
                   <div className="mt-6 flex items-center gap-x-4">

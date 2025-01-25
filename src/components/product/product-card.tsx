@@ -16,19 +16,18 @@ export function ProductCard({ product }: { product: Product }) {
     console.log("dodano do koszyka");
   }
   return (
-    <div className="space-y-3 text-center">
+    <div className="max-w-[340px] space-y-3 text-center">
       <div className="group relative space-y-4">
         <Link href={`/collections/${product.tag}`}>
           <Badge className="absolute left-2 top-3 z-20">{product.tag}</Badge>
         </Link>
         <Link href={product.href}>
-          <div className="overflow-hidden">
+          <div className="relative aspect-[3/4] overflow-hidden">
             <Image
-              className="aspect-[3/4] object-cover duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-90"
+              className="object-cover duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-90"
+              fill
               src={product.image}
               alt={product.name}
-              width={350}
-              height={400}
             />
           </div>
           <div className="mt-2 space-y-2">

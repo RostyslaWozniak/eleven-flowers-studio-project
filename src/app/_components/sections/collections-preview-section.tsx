@@ -33,13 +33,13 @@ export function CollectionsPreviewSection() {
     <section>
       <MaxWidthWrapper
         border
-        className="space-y-8 overflow-x-hidden md:space-y-16 md:py-16"
+        className="space-y-8 overflow-x-hidden lg:space-y-16 lg:overflow-x-visible lg:py-16"
       >
         <div className="space-y-4 px-2.5 py-4">
           <H2>Odkryj nasze wyjątkowe usługi florystyczne</H2>
           <Text
             size="subtitle"
-            className="mx-auto hidden max-w-6xl text-center md:block"
+            className="mx-auto hidden max-w-6xl text-center lg:block"
           >
             W naszym studiu florystycznym spełniamy Twoje marzenia związane z
             kwiatami. Odkryj nasze wykwintne aranżacje, spersonalizowane pudełka
@@ -47,21 +47,21 @@ export function CollectionsPreviewSection() {
           </Text>
         </div>
         {/* DESKTOP */}
-        <div className="hidden items-center justify-start gap-4 md:flex md:justify-center">
+        <div className="hidden grid-cols-4 gap-4 lg:grid">
           {collections.map(({ img, title, href }, i) => (
             <Link
               href={href}
               key={i}
-              className="group relative grid aspect-square min-w-[300px] place-items-center overflow-hidden"
+              className="group relative grid aspect-square place-items-center overflow-hidden"
             >
               <img
                 src={img}
                 alt={title}
-                width={300}
-                height={300}
+                width={350}
+                height={350}
                 className="absolute transition-transform duration-300 ease-in-out group-hover:scale-110"
               />
-              <H3 className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background md:text-5xl">
+              <H3 className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background lg:text-5xl">
                 {title}
               </H3>
               <div className="absolute inset-0 z-10 bg-primary/20 duration-300 ease-in-out group-hover:backdrop-brightness-75"></div>
@@ -72,7 +72,7 @@ export function CollectionsPreviewSection() {
         <div className="flex items-center justify-start gap-4 xl:hidden">
           <MobileCarousel>
             {collections.map(({ img, title, href }, i) => (
-              <CarouselItem key={i}>
+              <CarouselItem key={i} className="basis-[88%]">
                 <Link
                   href={href}
                   key={i}
@@ -88,7 +88,7 @@ export function CollectionsPreviewSection() {
                   <H3 className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background">
                     {title}
                   </H3>
-                  <div className="absolute inset-0 z-10 bg-primary/20 duration-300 ease-in-out group-hover:backdrop-brightness-90"></div>
+                  <div className="absolute inset-0 z-10 backdrop-brightness-[0.8] duration-300 ease-in-out group-hover:backdrop-brightness-50"></div>
                 </Link>
               </CarouselItem>
             ))}

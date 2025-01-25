@@ -48,18 +48,21 @@ export function MostPopularProductsSection() {
     <section>
       <MaxWidthWrapper
         border
-        className="flex flex-col items-center gap-y-8 overflow-x-hidden pt-12 md:gap-y-16"
+        className="flex flex-col items-center gap-y-8 overflow-x-hidden pt-12 lg:gap-y-16"
       >
         <H2>Najbardziej popularne</H2>
-        <div className="hidden w-full items-center justify-between gap-4 md:flex">
+        <div className="hidden w-full items-center justify-between gap-4 lg:flex">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        <div className="flex w-full items-center justify-between gap-4 md:hidden">
+        <div className="flex w-full items-center justify-between gap-4 lg:hidden">
           <MobileCarousel>
             {products.map((product) => (
-              <CarouselItem key={product.id}>
+              <CarouselItem
+                key={product.id}
+                className="basis-[88%] sm:basis-1/2 md:basis-1/3"
+              >
                 <ProductCard product={product} />
               </CarouselItem>
             ))}
