@@ -7,17 +7,17 @@ import Link from "next/link";
 
 const collections = [
   {
-    img: "/images/bouquets.jpg",
+    img: "/images/bouquets.png",
     title: "Bukiety",
     href: "/collections/bouquets",
   },
   {
-    img: "/images/flower-box.jpg",
+    img: "/images/flower-box.png",
     title: "Flower Box",
     href: "/collections/flower-box",
   },
   {
-    img: "/images/balloons.jpg",
+    img: "/images/balloons.png",
     title: "Balony",
     href: "/collections/balloons",
   },
