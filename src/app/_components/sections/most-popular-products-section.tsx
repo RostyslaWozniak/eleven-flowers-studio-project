@@ -19,7 +19,7 @@ const products = [
     id: 2,
     name: "Flower Box",
     price: 179,
-    image: "/products/flower-box.jpg",
+    image: "/products/flower-box.png",
     tag: "flower-box",
     href: "/collections/flower-box/2",
   },
