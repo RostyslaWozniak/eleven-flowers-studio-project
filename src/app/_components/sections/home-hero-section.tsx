@@ -26,7 +26,7 @@ export function HomeHeroSection() {
         <Image
           priority
           className="rounded-sm"
-          src="/images/hero.jpg"
+          src="/images/hero.png"
           alt="Eleven Flowers Studio"
           width={500}
           height={500}

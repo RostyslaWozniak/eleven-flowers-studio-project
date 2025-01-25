@@ -22,7 +22,7 @@ const collections = [
     href: "/collections/balloons",
   },
   {
-    img: "/images/gifts.jpg",
+    img: "/images/gift.png",
     title: "Prezenty",
     href: "/collections/gifts",
   },
