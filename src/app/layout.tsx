@@ -7,6 +7,9 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { NavBar } from "@/components/nav-bar";
 import { Footer } from "@/components/footer";
 
+import "swiper/css";
+import "swiper/css/pagination";
+
 const philosopher = Philosopher({
   subsets: ["latin"],
   weight: ["400", "700"],

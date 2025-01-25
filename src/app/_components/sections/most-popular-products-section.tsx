@@ -1,5 +1,6 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { MobileCarousel } from "@/components/mobile-carousel";
+import { MobileSwiper } from "@/components/mobile-swiper";
 import { ProductCard } from "@/components/product";
 import { Button } from "@/components/ui/button";
 import { CarouselItem } from "@/components/ui/carousel";
@@ -68,7 +69,7 @@ export function MostPopularProductsSection() {
             ))}
           </MobileCarousel>
         </div>
-        {/* <div className="scrollbar-hide flex w-full snap-x snap-mandatory items-center gap-5 overflow-x-scroll px-2.5 py-12">
+        <div className="scrollbar-hide flex w-full snap-x snap-mandatory items-center gap-5 overflow-x-scroll px-2.5 py-12">
           {products.map((product) => (
             <ProductCard
               key={product.id}
@@ -76,7 +77,9 @@ export function MostPopularProductsSection() {
               className="min-w-[300px] snap-center"
             />
           ))}
-        </div> */}
+        </div>
+
+        <MobileSwiper products={products} />
 
         <Button variant="outline">
           Zobacz więcej <ArrowRight className="min-h-6 min-w-6" />
