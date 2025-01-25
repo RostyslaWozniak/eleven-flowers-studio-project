@@ -1,7 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { MobileCarousel } from "@/components/mobile-carousel";
-import { CarouselItem } from "@/components/ui/carousel";
 import { H2, H3, Text } from "@/components/ui/typography";
 import Link from "next/link";
 
@@ -33,9 +31,9 @@ export function CollectionsPreviewSection() {
     <section>
       <MaxWidthWrapper
         border
-        className="space-y-8 overflow-x-hidden lg:space-y-16 lg:overflow-x-visible lg:py-16"
+        className="space-y-8 overflow-x-hidden px-0 lg:space-y-16 lg:overflow-x-visible lg:py-16"
       >
-        <div className="space-y-4 px-2.5 py-4">
+        <div className="px-2.5 lg:space-y-1 lg:py-2">
           <H2>Odkryj nasze wyjątkowe usługi florystyczne</H2>
           <Text
             size="subtitle"
@@ -69,30 +67,24 @@ export function CollectionsPreviewSection() {
           ))}
         </div>
         {/* MOBILE */}
-        <div className="flex items-center justify-start gap-4 xl:hidden">
-          <MobileCarousel>
-            {collections.map(({ img, title, href }, i) => (
-              <CarouselItem key={i} className="basis-[88%]">
-                <Link
-                  href={href}
-                  key={i}
-                  className="group relative grid h-[300px] place-items-center overflow-hidden"
-                >
-                  <img
-                    src={img}
-                    alt={title}
-                    width={300}
-                    height={300}
-                    className="absolute w-full transition-transform duration-300 ease-in-out group-hover:scale-110"
-                  />
-                  <H3 className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background">
-                    {title}
-                  </H3>
-                  <div className="absolute inset-0 z-10 backdrop-brightness-[0.8] duration-300 ease-in-out group-hover:backdrop-brightness-50"></div>
-                </Link>
-              </CarouselItem>
-            ))}
-          </MobileCarousel>
+        <div className="scrollbar-hide flex w-full gap-4 overflow-x-scroll px-2.5 pb-8 lg:hidden">
+          {collections.map(({ img, title, href }, i) => (
+            <Link href={href} key={i}>
+              <div className="group relative grid aspect-square w-[300px] place-items-center overflow-hidden xl:hidden">
+                <img
+                  src={img}
+                  alt={title}
+                  width={300}
+                  height={300}
+                  className="absolute w-full transition-transform duration-300 ease-in-out group-hover:scale-110"
+                />
+                <H3 className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background">
+                  {title}
+                </H3>
+                <div className="absolute inset-0 z-10 backdrop-brightness-[0.8] duration-300 ease-in-out group-hover:backdrop-brightness-50"></div>
+              </div>
+            </Link>
+          ))}
         </div>
       </MaxWidthWrapper>
     </section>

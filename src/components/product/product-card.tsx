@@ -29,7 +29,7 @@ export function ProductCard({
           <Badge className="absolute left-2 top-3 z-20">{product.tag}</Badge>
         </Link>
         <Link href={product.href}>
-          <div className="relative aspect-[3/4] overflow-hidden">
+          <div className="relative aspect-[5/6] overflow-hidden lg:aspect-[3/4]">
             <Image
               className="object-cover duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-90"
               fill
