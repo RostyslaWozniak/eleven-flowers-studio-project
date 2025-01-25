@@ -15,29 +15,29 @@ export function MobileCarousel({
   children: ReactNode;
   className?: string;
 }) {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
+  // const [api, setApi] = useState<CarouselApi>();
+  // const [current, setCurrent] = useState(0);
+  // const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!api) {
+  //     return;
+  //   }
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+  //   setCount(api.scrollSnapList().length);
+  //   setCurrent(api.selectedScrollSnap() + 1);
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
+  //   api.on("select", () => {
+  //     setCurrent(api.selectedScrollSnap() + 1);
+  //   });
+  // }, [api]);
 
   return (
     <div className={cn("", className)}>
-      <Carousel setApi={setApi}>
+      <Carousel>
         <CarouselContent className="w-screen">{children}</CarouselContent>
       </Carousel>
-      <div className="flex items-center justify-center gap-2 pt-8">
+      {/* <div className="flex items-center justify-center gap-2 pt-8">
         {Array.from({ length: count }).map((_, i) => (
           <div
             onClick={() => api?.scrollTo(i)}
@@ -47,7 +47,7 @@ export function MobileCarousel({
             })}
           ></div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

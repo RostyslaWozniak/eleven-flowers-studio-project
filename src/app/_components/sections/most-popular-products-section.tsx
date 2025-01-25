@@ -56,7 +56,7 @@ export function MostPopularProductsSection() {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        <div className="flex w-full items-center justify-between gap-4 lg:hidden">
+        <div className="flex w-full items-center justify-between gap-4 scroll-smooth lg:hidden">
           <MobileCarousel>
             {products.map((product) => (
               <CarouselItem
@@ -68,6 +68,15 @@ export function MostPopularProductsSection() {
             ))}
           </MobileCarousel>
         </div>
+        {/* <div className="scrollbar-hide flex w-full snap-x snap-mandatory items-center gap-5 overflow-x-scroll px-2.5 py-12">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              className="min-w-[300px] snap-center"
+            />
+          ))}
+        </div> */}
 
         <Button variant="outline">
           Zobacz więcej <ArrowRight className="min-h-6 min-w-6" />

@@ -7,8 +7,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { type MouseEvent } from "react";
 import { Badge } from "../ui/badge";
+import { cn } from "@/lib/utils";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  className,
+}: {
+  product: Product;
+  className?: string;
+}) {
   function handleClick(
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) {
@@ -16,7 +23,7 @@ export function ProductCard({ product }: { product: Product }) {
     console.log("dodano do koszyka");
   }
   return (
-    <div className="max-w-[340px] space-y-3 text-center">
+    <div className={cn("max-w-[340px] space-y-3 text-center", className)}>
       <div className="group relative space-y-4">
         <Link href={`/collections/${product.tag}`}>
           <Badge className="absolute left-2 top-3 z-20">{product.tag}</Badge>
