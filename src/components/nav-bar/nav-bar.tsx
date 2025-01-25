@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export function NavBar() {
   return (
-    <header className="sticky inset-x-0 top-0 z-50 w-screen bg-background/70 shadow-md shadow-foreground/20 backdrop-blur-sm">
+    <header className="inset-x-0 top-0 z-50 w-screen bg-background/70 shadow-md shadow-foreground/20 backdrop-blur-sm md:sticky">
       <div className="mx-auto max-w-[1400px]">
         <div className="flex h-16 items-center justify-between px-2">
           <Link href="/">
