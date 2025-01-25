@@ -10,7 +10,7 @@ export function NavBar() {
       <div className="mx-auto max-w-[1400px]">
         <div className="flex h-16 items-center justify-between px-2">
           <Link href="/">
-            <Logo1 className="z-50 h-10 w-32 border md:h-12" />
+            <Logo1 className="z-50 h-10 w-32 md:h-12" />
           </Link>
 
           <nav className="itens-center hidden w-full md:flex">
