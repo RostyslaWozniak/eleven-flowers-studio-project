@@ -2,6 +2,8 @@ import GoogleMap from "@/components/google-map";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { H2, Text } from "@/components/ui/typography";
 import { Clock, MailOpen, MapPin, PhoneCall } from "lucide-react";
+import Link from "next/link";
+import { Fragment } from "react";
 
 const contactData = [
   {
@@ -10,6 +12,7 @@ const contactData = [
     value: "elevenflowerstudio@gmail.com",
     icon: MailOpen,
     href: "mailto:elevenflowerstudio@gmail.com",
+    target: "_self",
   },
   {
     id: 2,
@@ -17,6 +20,7 @@ const contactData = [
     value: "+48 571 944 969 ",
     icon: PhoneCall,
     href: "tel:+48571944969",
+    target: "_self",
   },
   {
     id: 3,
@@ -24,6 +28,7 @@ const contactData = [
     value: "ul. Nocznickiego 25 lokal u12, 01-948 Warszawa",
     icon: MapPin,
     href: "https://www.google.com/maps/place/11+Flower+Studio/@52.2444049,20.9796979,17z/data=!4m5!3m4!1s0x471ecb0c5c9b3e6d:0x2a2d2c4e5b7c4e8!8m2!3d52.2444049!4d20.9825866",
+    target: "_blank",
   },
   {
     id: 4,
@@ -31,6 +36,7 @@ const contactData = [
     value: "Pn-Sb: 10:00-19:00 Nd: 12:00-18:00",
     icon: Clock,
     href: null,
+    target: null,
   },
 ];
 
@@ -51,19 +57,41 @@ export function ContactSection() {
               <GoogleMap />
             </div>
             <div className="space-y-10 px-2.5 md:self-center md:px-0 md:pl-20">
-              {contactData.map(({ id, label, value, icon: Icon }) => (
-                <div key={id} className="flex items-center gap-5">
-                  <div className="h-14 w-14 rounded-full bg-primary p-3 md:h-16 md:w-16">
-                    <Icon className="h-full w-full stroke-[1.5] text-background" />
-                  </div>
-                  <div className="">
-                    <Text size="lg" className="font-bold text-primary">
-                      {label}
-                    </Text>
-                    <Text>{value}</Text>
-                  </div>
-                </div>
-              ))}
+              {contactData.map(
+                ({ id, label, value, icon: Icon, href, target }) => (
+                  <Fragment key={id}>
+                    {href ? (
+                      <Link
+                        target={target}
+                        href={href}
+                        className="flex items-center gap-5"
+                      >
+                        <div className="h-14 w-14 rounded-full bg-primary p-3 md:h-16 md:w-16">
+                          <Icon className="h-full w-full stroke-[1.5] text-background" />
+                        </div>
+                        <div>
+                          <Text size="lg" className="font-bold text-primary">
+                            {label}
+                          </Text>
+                          <Text>{value}</Text>
+                        </div>
+                      </Link>
+                    ) : (
+                      <div className="flex items-center gap-5">
+                        <div className="h-14 w-14 rounded-full bg-primary p-3 md:h-16 md:w-16">
+                          <Icon className="h-full w-full stroke-[1.5] text-background" />
+                        </div>
+                        <div className="">
+                          <Text size="lg" className="font-bold text-primary">
+                            {label}
+                          </Text>
+                          <Text>{value}</Text>
+                        </div>
+                      </div>
+                    )}
+                  </Fragment>
+                ),
+              )}
             </div>
           </div>
         </div>
@@ -71,31 +99,3 @@ export function ContactSection() {
     </section>
   );
 }
-
-// <Fragment key={id}>
-//   {href ? (
-//     <Link target="_blank" href={href} className="flex items-center gap-5">
-//       <div className="h-14 w-14 rounded-full bg-primary p-3 md:h-16 md:w-16">
-//         <Icon className="h-full w-full stroke-[1.5] text-background" />
-//       </div>
-//       <div>
-//         <Text size="lg" className="font-bold text-primary">
-//           {label}
-//         </Text>
-//         <Text>{value}</Text>
-//       </div>
-//     </Link>
-//   ) : (
-//     <div className="flex items-center gap-5">
-//       <div className="h-14 w-14 rounded-full bg-primary p-3 md:h-16 md:w-16">
-//         <Icon className="h-full w-full stroke-[1.5] text-background" />
-//       </div>
-//       <div className="">
-//         <Text size="lg" className="font-bold text-primary">
-//           {label}
-//         </Text>
-//         <Text>{value}</Text>
-//       </div>
-//     </div>
-//   )}
-// </Fragment>;
