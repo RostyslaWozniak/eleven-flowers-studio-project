@@ -5,7 +5,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { H2 } from "@/components/ui/typography";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 const products = [
   {
@@ -45,10 +46,11 @@ const products = [
 export type Product = (typeof products)[number];
 
 export function MostPopularProductsSection() {
+  const t = useTranslations("HomePage.MostPopularProductsSection");
   return (
     <section className="pace-y-8 w-full pt-12 lg:space-y-8 lg:pt-20">
       <MaxWidthWrapper className="flex flex-col items-center gap-6 px-0 lg:gap-y-12">
-        <H2>Najbardziej popularne</H2>
+        <H2>{t("title")}</H2>
         <div className="hidden w-full items-center justify-between gap-4 xl:flex">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -62,7 +64,7 @@ export function MostPopularProductsSection() {
           href={"/collections"}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
-          Zobacz więcej <ArrowRight className="min-h-6 min-w-6" />
+          {t("seeMoreButton")} <ArrowRight className="min-h-6 min-w-6" />
         </Link>
       </MaxWidthWrapper>
       {/* SEPARATOR */}

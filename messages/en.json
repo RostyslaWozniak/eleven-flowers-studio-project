@@ -1,4 +1,11 @@
 {
+  "navigation": {
+    "home": "Home",
+    "bouquets": "Bouquets",
+    "gifts": "Gifts",
+    "contact": "Contact",
+    "cart": "Cart"
+  },
   "HomePage": {
     "title": "Eleven Flowers Studio - Perfect gifts for you",
     "description": "In our floral studio, we believe in creating stunning floral compositions that tell a story.",
@@ -37,10 +44,85 @@
         "title": "Project Photos",
         "description": "Professional photographs of flowers, gift arrangements, and photography services."
       }
+    },
+    "CollectionsSection": {
+      "title": "Discover Our Unique Floral Services",
+      "subtitle": "At our floral studio, we fulfill your flower dreams. Discover our exquisite arrangements, personalized gift boxes, and professional photography services.",
+      "collections": {
+        "bouquets": "Bouquets",
+        "flowerBox": "Flower Box",
+        "balloons": "Balloons",
+        "gifts": "Gifts"
+      }
+    },
+    "MostPopularProductsSection": {
+      "title": "Most Popular",
+      "addToCartButton": "Add to Cart",
+      "seeMoreButton": "See More"
+    },
+    "TestemonialsSection": {
+      "title": "Our Customers' Opinions",
+      "subtitle": "Discover genuine stories and enthusiastic reviews from those who have experienced the beauty",
+      "testemonials": [
+        {
+          "name": "John Smith",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "John Smith",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "John Smith",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "John Smith",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "John Smith",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        }
+      ]
+    },
+    "FAQSection": {
+      "title": "Frequently Asked Questions",
+      "questions": [
+        {
+          "question": "Do you deliver flowers?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "How long does delivery take?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Do you offer flower subscriptions?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Do you offer photography services?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        }
+      ]
+    },
+    "ContactSection": {
+      "title": "Contact Us",
+      "subtitle": "Have questions? Want to place an order? We're here to help! Get in touch with us via:",
+      "contactData": {
+        "emailLabel": "Email",
+        "phoneLabel": "Phone",
+        "addressLabel": "Address",
+        "openingHours": {
+          "label": "Opening Hours",
+          "value": "Mon-Sat: 10:00 AM - 7:00 PM Sun: 12:00 PM - 6:00 PM"
+        }
+      }
     }
-  },
-
-  "AboutPage": {
-    "title": "About Eleven Flowers Studio"
   }
 }

@@ -8,6 +8,7 @@ import Link from "next/link";
 import { type MouseEvent } from "react";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export function ProductCard({
   product,
@@ -16,6 +17,7 @@ export function ProductCard({
   product: Product;
   className?: string;
 }) {
+  const t = useTranslations("HomePage.MostPopularProductsSection");
   function handleClick(
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) {
@@ -49,7 +51,7 @@ export function ProductCard({
       </div>
       <div>
         <div className="px-4">
-          <Button onClick={handleClick}>Dodaj do koszyka</Button>
+          <Button onClick={handleClick}>{t("addToCartButton")}</Button>
         </div>
       </div>
     </div>

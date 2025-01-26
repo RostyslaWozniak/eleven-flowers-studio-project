@@ -1,9 +1,8 @@
 export const navigation = {
   home: "/",
-  bukiety: "/bukiety",
-  "flower-box": "/uslugi",
-  balony: "/balony",
-  kontakt: "/kontakt",
+  bouquets: "/bouquets",
+  gifts: "/gifts",
+  contact: "/contact",
 } as const;
 
 export type Navigation = (typeof navigation)[keyof typeof navigation];

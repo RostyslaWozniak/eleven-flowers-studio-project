@@ -8,36 +8,33 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-
-const questions = [
-  {
-    question: "Czy mogę spersonalizować swój bukiet?",
-    answer:
-      "Oczywiście! Dostosowujemy każdą kompozycję do indywidualnych potrzeb i preferencji klienta. Wystarczy, że podasz nam szczegóły.",
-  },
-  {
-    question: "Jak długo trwa dostawa?",
-    answer:
-      "Oczywiście! Dostosowujemy każdą kompozycję do indywidualnych potrzeb i preferencji klienta. Wystarczy, że podasz nam szczegóły.",
-  },
-  {
-    question: "Czy oferujecie abonament kwiatowy?",
-    answer:
-      "Oczywiście! Dostosowujemy każdą kompozycję do indywidualnych potrzeb i preferencji klienta. Wystarczy, że podasz nam szczegóły.",
-  },
-  {
-    question: "Jakie metody płatności akceptujecie?",
-    answer:
-      "Oczywiście! Dostosowujemy każdą kompozycję do indywidualnych potrzeb i preferencji klienta. Wystarczy, że podasz nam szczegóły.",
-  },
-  {
-    question: "Czy mogę zamówić kwiaty na konkretną godzinę?",
-    answer:
-      "Oczywiście! Dostosowujemy każdą kompozycję do indywidualnych potrzeb i preferencji klienta. Wystarczy, że podasz nam szczegóły.",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function FaqSection() {
+  const t = useTranslations("HomePage.FAQSection");
+
+  const questions = [
+    {
+      question: t("questions.0.question"),
+      answer: t("questions.0.answer"),
+    },
+    {
+      question: t("questions.1.question"),
+      answer: t("questions.1.answer"),
+    },
+    {
+      question: t("questions.2.question"),
+      answer: t("questions.2.answer"),
+    },
+    {
+      question: t("questions.3.question"),
+      answer: t("questions.3.answer"),
+    },
+    {
+      question: t("questions.4.question"),
+      answer: t("questions.4.answer"),
+    },
+  ];
   return (
     <section className="w-full pt-12 lg:pt-20">
       <MaxWidthWrapper className="space-y-6 md:space-y-14">

@@ -6,7 +6,7 @@ import { H1, Text } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export function HomeHeroSection() {
   const t = useTranslations("HomePage.HeroSection");

@@ -1,4 +1,11 @@
 {
+  "navigation": {
+    "home": "Home",
+    "bouquets": "Bukiety",
+    "gifts": "Prezenty",
+    "contact": "Kontakt",
+    "cart": "Koszyk"
+  },
   "HomePage": {
     "title": "Eleven Flowers Studio - Idealne prezenty dla Ciebie",
     "description": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",
@@ -37,9 +44,85 @@
         "title": "Zdjęcia realizacji",
         "description": "Profesjonalne fotografie kwiatów, aranżacje prezentowe i usługi fotograficzne."
       }
+    },
+    "CollectionsSection": {
+      "title": "Odkryj nasze wyjątkowe usługi florystyczne",
+      "subtitle": "W naszym studiu florystycznym spełniamy Twoje marzenia związane z kwiatami. Odkryj nasze wykwintne aranżacje, spersonalizowane pudełka prezentowe i profesjonalne usługi fotograficzne.",
+      "collections": {
+        "bouquets": "Bukiety",
+        "flowerBox": "Flower Box",
+        "balloons": "Balony",
+        "gifts": "Prezenty"
+      }
+    },
+    "MostPopularProductsSection": {
+      "title": "Najbardziej popularne",
+      "addToCartButton": "Dodaj do koszyka",
+      "seeMoreButton": "Zobacz więcej"
+    },
+    "TestemonialsSection": {
+      "title": "Opinie naszych klientów",
+      "subtitle": "Odkryj szczere historie i entuzjastyczne recenzje tych, którzy doświadczyli piękna",
+      "testemonials": [
+        {
+          "name": "Jan Kowalski",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "Jan Kowalski",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "Jan Kowalski",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "Jan Kowalski",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "Jan Kowalski",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        }
+      ]
+    },
+    "FAQSection": {
+      "title": "Najczęściej zadawane pytania",
+      "questions": [
+        {
+          "question": "Czy dostarczam kwiaty?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Jak długo trwa dostawa?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Czy oferujesz abonament kwiatowy?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Jakie metody płatności akceptujesz?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Czy oferujesz usługi fotograficzne?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        }
+      ]
+    },
+    "ContactSection": {
+      "title": "Skontaktuj sie z nami",
+      "subtitle": "Masz pytania? Chcesz złożyć zamówienie? Jesteśmy tutaj, aby Ci pomóc! Skontaktuj się z nami przez:",
+      "contactData": {
+        "emailLabel": "Email",
+        "phoneLabel": "Telefon",
+        "addressLabel": "Adres",
+        "openingHours": {
+          "label": "Godziny otwarcia",
+          "value": "Pn-Sb: 10:00-19:00 Nd: 12:00-18:00"
+        }
+      }
     }
-  },
-  "AboutPage": {
-    "title": "O nas Eleven Flowers Studio"
   }
 }

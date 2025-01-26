@@ -1,4 +1,11 @@
 {
+  "navigation": {
+    "home": "Главная",
+    "bouquets": "Букеты",
+    "gifts": "Подарки",
+    "contact": "Контакт",
+    "cart": "Корзина"
+  },
   "HomePage": {
     "title": "Eleven Flowers Studio - Идеальные подарки",
     "description": "В нашей цветочной студии мы верим в создание потрясающих цветочных композиций, которые рассказывают историю.",
@@ -37,9 +44,85 @@
         "title": "Фотографии проектов",
         "description": "Профессиональные фотографии цветов, подарочные композиции и фотосервисы."
       }
+    },
+    "CollectionsSection": {
+      "title": "Откройте наши уникальные флористические услуги",
+      "subtitle": "В нашей цветочной студии мы воплощаем в жизнь ваши цветочные мечты. Откройте для себя наши изысканные композиции, персонализированные подарочные коробки и профессиональные фотоуслуги.",
+      "collections": {
+        "bouquets": "Букеты",
+        "flowerBox": "Цветочные коробки",
+        "balloons": "Шары",
+        "gifts": "Подарки"
+      }
+    },
+    "MostPopularProductsSection": {
+      "title": "Самые популярные",
+      "addToCartButton": "Добавить в корзину",
+      "seeMoreButton": "Посмотреть больше"
+    },
+    "TestemonialsSection": {
+      "title": "Отзывы наших клиентов",
+      "subtitle": "Откройте для себя искренние истории и восторженные отзывы тех, кто испытал эту красоту",
+      "testemonials": [
+        {
+          "name": "Иван Иванов",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "Иван Иванов",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "Иван Иванов",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "Иван Иванов",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "name": "Иван Иванов",
+          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        }
+      ]
+    },
+    "FAQSection": {
+      "title": "Часто задаваемые вопросы",
+      "questions": [
+        {
+          "question": "Вы доставляете цветы?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Сколько времени занимает доставка?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Вы предлагаете подписку на цветы?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Какие способы оплаты вы принимаете?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        },
+        {
+          "question": "Вы предлагаете фотоуслуги?",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
+        }
+      ]
+    },
+    "ContactSection": {
+      "title": "Свяжитесь с нами",
+      "subtitle": "Есть вопросы? Хотите сделать заказ? Мы здесь, чтобы помочь! Свяжитесь с нами через:",
+      "contactData": {
+        "emailLabel": "Электронная почта",
+        "phoneLabel": "Телефон",
+        "addressLabel": "Адрес",
+        "openingHours": {
+          "label": "Часы работы",
+          "value": "Пн-Сб: 10:00-19:00 Вс: 12:00-18:00"
+        }
+      }
     }
-  },
-  "AboutPage": {
-    "title": "О Eleven Flowers Studio"
   }
 }

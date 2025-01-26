@@ -1,11 +1,9 @@
 "use client";
 
+import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { type Navigation } from "@/lib/navigation";
 
-export function NavItem({ name, href }: { name: string; href: Navigation }) {
+export function NavItem({ name, href }: { name: string; href: string }) {
   const pathname = usePathname();
   return (
     <Link

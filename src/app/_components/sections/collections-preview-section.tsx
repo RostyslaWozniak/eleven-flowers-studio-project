@@ -1,45 +1,46 @@
 /* eslint-disable @next/next/no-img-element */
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { H2, H3, Text } from "@/components/ui/typography";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Separator } from "@/components/ui/separator";
-const collections = [
-  {
-    img: "/images/bouquets.png",
-    title: "Bukiety",
-    href: "/collections/bouquets",
-  },
-  {
-    img: "/images/flower-box.png",
-    title: "Flower Box",
-    href: "/collections/flower-box",
-  },
-  {
-    img: "/images/balloons.png",
-    title: "Balony",
-    href: "/collections/balloons",
-  },
-  {
-    img: "/images/gift.png",
-    title: "Prezenty",
-    href: "/collections/gifts",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function CollectionsPreviewSection() {
+  const t = useTranslations("HomePage.CollectionsSection");
+
+  const collections = [
+    {
+      img: "/images/bouquets.png",
+      title: t("collections.bouquets"),
+      href: "/collections/bouquets",
+    },
+    {
+      img: "/images/flower-box.png",
+      title: t("collections.flowerBox"),
+      href: "/collections/flower-box",
+    },
+    {
+      img: "/images/balloons.png",
+      title: t("collections.balloons"),
+      href: "/collections/balloons",
+    },
+    {
+      img: "/images/gift.png",
+      title: t("collections.gifts"),
+      href: "/collections/gifts",
+    },
+  ];
   return (
     <section className="w-full pt-12 lg:pt-20">
       <MaxWidthWrapper className="space-y-8 lg:space-y-12">
         <div className="lg:space-y-2">
-          <H2>Odkryj nasze wyjątkowe usługi florystyczne</H2>
+          <H2>{t("title")}</H2>
           <Text
             size="subtitle"
             variant="muted"
             className="mx-auto hidden max-w-5xl text-center lg:block"
           >
-            W naszym studiu florystycznym spełniamy Twoje marzenia związane z
-            kwiatami. Odkryj nasze wykwintne aranżacje, spersonalizowane pudełka
-            prezentowe i profesjonalne usługi fotograficzne.
+            {t("subtitle")}
           </Text>
         </div>
         {/* DESKTOP */}

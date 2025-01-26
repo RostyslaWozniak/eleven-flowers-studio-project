@@ -12,36 +12,33 @@ import { GoogleLogo } from "@/components/ui/icons/google-logo";
 import { Separator } from "@/components/ui/separator";
 import { H2, Text } from "@/components/ui/typography";
 import { User } from "lucide-react";
-
-const testemonials = [
-  {
-    review:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus.",
-    name: "Jan Kowalski",
-  },
-  {
-    review:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus.",
-    name: "Jan Kowalski",
-  },
-  {
-    review:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus.",
-    name: "Jan Kowalski",
-  },
-  {
-    review:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus.",
-    name: "Jan Kowalski",
-  },
-  {
-    review:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus.",
-    name: "Jan Kowalski",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function TestemonialsSection() {
+  const t = useTranslations("HomePage.TestemonialsSection");
+  const testemonials = [
+    {
+      review: t("testemonials.0.review"),
+      name: t("testemonials.0.name"),
+    },
+    {
+      review: t("testemonials.1.review"),
+      name: t("testemonials.1.name"),
+    },
+    {
+      review: t("testemonials.2.review"),
+      name: t("testemonials.2.name"),
+    },
+    {
+      review: t("testemonials.3.review"),
+      name: t("testemonials.3.name"),
+    },
+    {
+      review: t("testemonials.4.review"),
+      name: t("testemonials.4.name"),
+    },
+  ];
+
   return (
     <section className="relative w-full overflow-hidden pt-12 lg:pt-20">
       <MaxWidthWrapper>
@@ -51,13 +48,12 @@ export function TestemonialsSection() {
             <Text size="lg">5 Stars on</Text>
             <GoogleLogo />
           </div>
-          <H2>Opinie naszych klientów</H2>
+          <H2>{t("title")}</H2>
           <Text
             size="subtitle"
             className="mt-4 hidden max-w-3xl text-center lg:block"
           >
-            Odkryj szczere historie i entuzjastyczne recenzje tych, którzy
-            doświadczyli piękna{" "}
+            {t("subtitle")}{" "}
             <span className="font-philosopher text-3xl font-semibold text-primary">
               Eleven Flowers Studio
             </span>

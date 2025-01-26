@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
 
 import { Philosopher, Manrope } from "next/font/google";
-import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { NavBar } from "@/components/nav-bar";
@@ -13,7 +12,6 @@ import {
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
-import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 
 import "swiper/css";
@@ -58,11 +56,6 @@ export default async function RootLayout({
   params,
 }: RootLayoutProps) {
   const { locale } = await params;
-
-  // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale as "en" | "pl" | "ru")) {
-    notFound();
-  }
 
   setRequestLocale(locale);
 
