@@ -51,7 +51,7 @@ export function ContactSection() {
               <GoogleMap />
             </div>
             <div className="space-y-10 px-2.5 md:self-center md:px-0 md:pl-20">
-              {contactData.map(({ id, label, value, icon: Icon, href }) => (
+              {contactData.map(({ id, label, value, icon: Icon }) => (
                 <div key={id} className="flex items-center gap-5">
                   <div className="h-14 w-14 rounded-full bg-primary p-3 md:h-16 md:w-16">
                     <Icon className="h-full w-full stroke-[1.5] text-background" />
