@@ -23,13 +23,13 @@ export function ProductCard({
     console.log("dodano do koszyka");
   }
   return (
-    <div className={cn("max-w-[340px] space-y-3 text-center", className)}>
+    <div className={cn("w-full space-y-3 text-center", className)}>
       <div className="group relative space-y-4">
         <Link href={`/collections/${product.tag}`}>
           <Badge className="absolute left-2 top-3 z-20">{product.tag}</Badge>
         </Link>
         <Link href={product.href}>
-          <div className="relative aspect-[5/6] overflow-hidden lg:aspect-[3/4]">
+          <div className="relative aspect-[5/6] overflow-hidden">
             <Image
               className="object-cover duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-90"
               fill

@@ -1,6 +1,6 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { MobileSwiper } from "@/components/mobile-swiper";
 import { ProductCard } from "@/components/product";
+import { ProductPreviewSwiper } from "@/components/product/product-preview-swiper";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { H2 } from "@/components/ui/typography";
@@ -48,13 +48,15 @@ export function MostPopularProductsSection() {
   return (
     <section className="pace-y-8 w-full pt-12 lg:space-y-8 lg:pt-20">
       <MaxWidthWrapper className="flex flex-col items-center gap-6 px-0 lg:gap-y-12">
-        <H2 className="">Najbardziej popularne</H2>
-        <div className="hidden w-full items-center justify-between gap-4 lg:flex">
+        <H2>Najbardziej popularne</H2>
+        <div className="hidden w-full items-center justify-between gap-4 xl:flex">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        <MobileSwiper products={products} />
+        <div className="max-w-full xl:hidden">
+          <ProductPreviewSwiper products={products} />
+        </div>
 
         <Link
           href={"/collections"}

@@ -37,7 +37,7 @@ export function Footer() {
                 <Button
                   size="sm"
                   variant="outline"
-                  className="h-10 w-full border bg-transparent text-base font-bold tracking-normal sm:w-24"
+                  className="h-10 w-full border bg-transparent text-base tracking-normal sm:w-24"
                 >
                   Wyślij
                 </Button>
