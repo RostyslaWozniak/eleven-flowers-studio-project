@@ -8,50 +8,49 @@ import {
   ShoppingBag,
   Sprout,
 } from "lucide-react";
-
-const benefitsData = [
-  {
-    title: "Darmowa wysyłka",
-    description:
-      "Skorzystaj z darmowej dostawy przy zamówieniach powyżej 350 zł.",
-    icon: ShoppingBag,
-  },
-  {
-    title: "Zniżki do 30%",
-    description: "Zniżki dla stałych klientów oraz na zakupy powyżej 350 zł.",
-    icon: BadgePercent,
-  },
-  {
-    title: "Prezenty",
-    description: "Eleganckie wazony i inne prezenty pasujące do kwiatów",
-    icon: Gift,
-  },
-  {
-    title: "Indywidualne podejście",
-    description:
-      "Tworzymy kompozycje spełniające Państwa życzenia i oczekiwania.",
-    icon: Handshake,
-  },
-  {
-    title: "Gwarancja świeżości",
-    description: "Tylko najświeższe kwiaty od sprawdzonych dostawców.",
-    icon: Sprout,
-  },
-  {
-    title: "Szybka dostawa",
-    description:
-      "Kwiaty dostarczamy terminowo, aby radość przyszła w odpowiednim momencie.",
-    icon: Plane,
-  },
-  {
-    title: "Szybka dostawa",
-    description:
-      "Kwiaty dostarczamy terminowo, aby radość przyszła w odpowiednim momencie.",
-    icon: Instagram,
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function BenefitsSection() {
+  const t = useTranslations("HomePage.BenefitsSection");
+
+  const benefitsData = [
+    {
+      title: t("freeShipping.title"),
+      description: t("freeShipping.description"),
+      icon: ShoppingBag,
+    },
+    {
+      title: t("discounts.title"),
+      description: t("discounts.description"),
+      icon: BadgePercent,
+    },
+    {
+      title: t("gifts.title"),
+      description: t("gifts.description"),
+      icon: Gift,
+    },
+    {
+      title: t("personalizedService.title"),
+      description: t("personalizedService.description"),
+      icon: Handshake,
+    },
+    {
+      title: t("freshnessGuarantee.title"),
+      description: t("freshnessGuarantee.description"),
+      icon: Sprout,
+    },
+    {
+      title: t("fastDelivery.title"),
+      description: t("fastDelivery.description"),
+      icon: Plane,
+    },
+    {
+      title: t("projectPhotos.title"),
+      description: t("projectPhotos.description"),
+      icon: Instagram,
+    },
+  ];
+
   return (
     <section className="">
       <div className="flex flex-wrap items-start justify-center gap-3 py-4 md:gap-16">

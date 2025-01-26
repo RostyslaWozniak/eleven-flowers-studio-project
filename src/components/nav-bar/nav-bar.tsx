@@ -3,6 +3,7 @@ import { NavItem } from "./nav-item";
 import { navigation } from "@/lib/navigation";
 import { Logo1 } from "../ui/logo";
 import Link from "next/link";
+import { LandSelect } from "./lang-select";
 
 export function NavBar() {
   return (
@@ -26,7 +27,7 @@ export function NavBar() {
           </nav>
           <div className="flex items-center gap-3">
             <ShoppingBag className="h-7 w-7 text-primary" />
-            <p className="font-philosopher text-xl text-primary">PL</p>
+            <LandSelect />
           </div>
         </div>
       </div>

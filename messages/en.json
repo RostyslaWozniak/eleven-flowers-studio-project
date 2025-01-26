@@ -1,0 +1,46 @@
+{
+  "HomePage": {
+    "title": "Eleven Flowers Studio - Perfect gifts for you",
+    "description": "In our floral studio, we believe in creating stunning floral compositions that tell a story.",
+    "HeroSection": {
+      "heroTitle": "Perfect gifts for you",
+      "heroSubtitle": "In our floral studio, we believe in creating stunning floral compositions that tell a story.",
+      "primaryActionButton": "Order Flowers",
+      "secondaryActionButton": "View Collections"
+    },
+    "BenefitsSection": {
+      "freeShipping": {
+        "title": "Free Shipping",
+        "description": "Enjoy free delivery for orders over 350 PLN."
+      },
+      "discounts": {
+        "title": "Discounts up to 30%",
+        "description": "Discounts for loyal customers and on purchases over 350 PLN."
+      },
+      "gifts": {
+        "title": "Gifts",
+        "description": "Elegant vases and other gifts to match the flowers."
+      },
+      "personalizedService": {
+        "title": "Personalized Approach",
+        "description": "We create compositions tailored to your wishes and expectations."
+      },
+      "freshnessGuarantee": {
+        "title": "Freshness Guarantee",
+        "description": "Only the freshest flowers from trusted suppliers."
+      },
+      "fastDelivery": {
+        "title": "Fast Delivery",
+        "description": "We deliver flowers on time so the joy arrives at the perfect moment."
+      },
+      "projectPhotos": {
+        "title": "Project Photos",
+        "description": "Professional photographs of flowers, gift arrangements, and photography services."
+      }
+    }
+  },
+
+  "AboutPage": {
+    "title": "About Eleven Flowers Studio"
+  }
+}

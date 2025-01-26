@@ -4,10 +4,12 @@ import { GoogleStars } from "@/components/ui/icons";
 import { GoogleLogo } from "@/components/ui/icons/google-logo";
 import { H1, Text } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
 export function HomeHeroSection() {
+  const t = useTranslations("HomePage.HeroSection");
   return (
     <section className="bg-gradient-to-b from-card to-transparent pb-4">
       <MaxWidthWrapper className="hidden items-center justify-between gap-8 md:flex lg:pt-12">
@@ -15,13 +17,10 @@ export function HomeHeroSection() {
           <div className="space-y-4">
             <H1 className="text-nowrap">
               Eleven Flowers Studio <br></br>{" "}
-              <span className="text-foreground/70">
-                Idealne prezenty dla Ciebie
-              </span>
+              <span className="text-foreground/70">{t("heroTitle")}</span>
             </H1>
             <Text size="subtitle" variant="muted" className="md:text-2xl">
-              W naszym studiu florystycznym wierzymy w tworzenie zachwycających
-              kompozycji kwiatowych, które opowiadają historię.
+              {t("heroSubtitle")}
             </Text>
           </div>
           <div className="flex items-center gap-3">
@@ -36,9 +35,9 @@ export function HomeHeroSection() {
               href="/collections/bouquets"
               className={cn(buttonVariants({ variant: "default" }))}
             >
-              Zamów kwiaty
+              {t("primaryActionButton")}
             </Link>
-            <Button variant="outline">Zobacz kolekcje</Button>
+            <Button variant="outline">{t("secondaryActionButton")}</Button>
           </div>
         </div>
 
@@ -59,7 +58,7 @@ export function HomeHeroSection() {
           height={650}
         />
         <div className="absolute -bottom-0 flex h-60 w-full items-end justify-center bg-gradient-to-b from-transparent via-background/30 to-background px-2.5">
-          <Button variant="outline">Zamów kwiaty</Button>
+          <Button variant="outline"> {t("primaryActionButton")}</Button>
         </div>
       </div>
     </section>

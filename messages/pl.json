@@ -1,0 +1,45 @@
+{
+  "HomePage": {
+    "title": "Eleven Flowers Studio - Idealne prezenty dla Ciebie",
+    "description": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",
+    "HeroSection": {
+      "heroTitle": "Idealne prezenty dla Ciebie",
+      "heroSubtitle": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",
+      "primaryActionButton": "Zamów kwiaty",
+      "secondaryActionButton": "Zobacz kolekcje"
+    },
+    "BenefitsSection": {
+      "freeShipping": {
+        "title": "Darmowa wysyłka",
+        "description": "Skorzystaj z darmowej dostawy przy zamówieniach powyżej 350 zł."
+      },
+      "discounts": {
+        "title": "Zniżki do 30%",
+        "description": "Zniżki dla stałych klientów oraz na zakupy powyżej 350 zł."
+      },
+      "gifts": {
+        "title": "Prezenty",
+        "description": "Eleganckie wazony i inne prezenty pasujące do kwiatów."
+      },
+      "personalizedService": {
+        "title": "Indywidualne podejście",
+        "description": "Tworzymy kompozycje spełniające Państwa życzenia i oczekiwania."
+      },
+      "freshnessGuarantee": {
+        "title": "Gwarancja świeżości",
+        "description": "Tylko najświeższe kwiaty od sprawdzonych dostawców."
+      },
+      "fastDelivery": {
+        "title": "Szybka dostawa",
+        "description": "Kwiaty dostarczamy terminowo, aby radość przyszła w odpowiednim momencie."
+      },
+      "projectPhotos": {
+        "title": "Zdjęcia realizacji",
+        "description": "Profesjonalne fotografie kwiatów, aranżacje prezentowe i usługi fotograficzne."
+      }
+    }
+  },
+  "AboutPage": {
+    "title": "O nas Eleven Flowers Studio"
+  }
+}
