@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { GoogleStars } from "@/components/ui/icons";
 import { GoogleLogo } from "@/components/ui/icons/google-logo";
+import { Separator } from "@/components/ui/separator";
 import { H2, Text } from "@/components/ui/typography";
 import { User } from "lucide-react";
 
@@ -42,8 +43,8 @@ const testemonials = [
 
 export function TestemonialsSection() {
   return (
-    <section className="relative overflow-hidden">
-      <MaxWidthWrapper border className="py-20">
+    <section className="relative w-full overflow-hidden pt-12 lg:pt-20">
+      <MaxWidthWrapper>
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-3">
             <GoogleStars className="hidden lg:flex" />
@@ -120,6 +121,10 @@ export function TestemonialsSection() {
           </MobileCarousel>
         </div>
       </MaxWidthWrapper>
+      {/* SEPARATOR */}
+      <div className="mx-auto max-w-[1400px] px-2.5 lg:px-0">
+        <Separator />
+      </div>
     </section>
   );
 }

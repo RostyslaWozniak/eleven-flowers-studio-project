@@ -2,6 +2,7 @@ import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { MobileSwiper } from "@/components/mobile-swiper";
 import { ProductCard } from "@/components/product";
 import { buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { H2 } from "@/components/ui/typography";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -45,12 +46,9 @@ export type Product = (typeof products)[number];
 
 export function MostPopularProductsSection() {
   return (
-    <section>
-      <MaxWidthWrapper
-        border
-        className="flex flex-col items-center gap-y-8 overflow-x-hidden px-0 pt-12 lg:gap-y-16"
-      >
-        <H2>Najbardziej popularne</H2>
+    <section className="pace-y-8 w-full pt-12 lg:space-y-8 lg:pt-20">
+      <MaxWidthWrapper className="flex flex-col items-center gap-6 px-0 lg:gap-y-12">
+        <H2 className="">Najbardziej popularne</H2>
         <div className="hidden w-full items-center justify-between gap-4 lg:flex">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -65,6 +63,10 @@ export function MostPopularProductsSection() {
           Zobacz więcej <ArrowRight className="min-h-6 min-w-6" />
         </Link>
       </MaxWidthWrapper>
+      {/* SEPARATOR */}
+      <div className="mx-auto max-w-[1400px] px-2.5 pt-4 lg:px-0 lg:pt-0">
+        <Separator />
+      </div>
     </section>
   );
 }

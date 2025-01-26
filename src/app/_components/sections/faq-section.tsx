@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Separator } from "@/components/ui/separator";
 
 const questions = [
   {
@@ -38,32 +39,39 @@ const questions = [
 
 export function FaqSection() {
   return (
-    <section>
-      <MaxWidthWrapper border>
-        <div className="space-y-6 pb-20 md:space-y-14">
-          <H2>FAQ – Najczęściej zadawane pytania</H2>
-          <Accordion
-            type="single"
-            collapsible
-            className="mx-auto w-full max-w-5xl"
-          >
-            {questions.map(({ question, answer }, i) => (
-              <AccordionItem
-                value={`item-${i}`}
-                key={i}
-                className="border-primary/20"
-              >
-                <AccordionTrigger>
-                  <Text size="subtitle" className="text-primary">
-                    {question}
-                  </Text>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <Text size="lg">{answer}</Text>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+    <section className="w-full pt-12 lg:pt-20">
+      <MaxWidthWrapper className="space-y-6 md:space-y-14">
+        <H2>
+          FAQ – <br /> Najczęściej zadawane pytania
+        </H2>
+        <Accordion
+          type="single"
+          collapsible
+          className="mx-auto w-full max-w-5xl"
+        >
+          {questions.map(({ question, answer }, i) => (
+            <AccordionItem
+              value={`item-${i}`}
+              key={i}
+              className="border-primary/20"
+            >
+              <AccordionTrigger>
+                <Text size="subtitle" className="text-primary">
+                  {question}
+                </Text>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Text size="lg" variant="muted">
+                  {answer}
+                </Text>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+
+        {/* SEPARATOR */}
+        <div className="mx-auto max-w-[1400px] pt-6 lg:pt-0">
+          <Separator />
         </div>
       </MaxWidthWrapper>
     </section>

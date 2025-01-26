@@ -32,11 +32,11 @@ export function MobileSwiper({ products }: { products: Product[] }) {
     };
   }, [handleScroll]);
   return (
-    <div className="relative w-full">
+    <div className="relative w-full lg:hidden">
       {/* Swiper Section */}
       <div
         ref={ref}
-        className="scrollbar-hide flex w-full snap-x snap-mandatory items-center gap-5 overflow-x-scroll px-2.5 py-12"
+        className="scrollbar-hide flex w-full snap-x snap-mandatory items-center gap-5 overflow-x-scroll px-2.5 py-4"
       >
         {products.map((product) => (
           <ProductCard
@@ -48,7 +48,7 @@ export function MobileSwiper({ products }: { products: Product[] }) {
       </div>
 
       {/* Dots Section */}
-      <div className="mt-4 flex justify-center gap-2">
+      <div className="mt-2 flex justify-center gap-2">
         {products.map((_, index) => (
           <div
             onClick={() => {

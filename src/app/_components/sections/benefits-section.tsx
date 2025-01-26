@@ -53,7 +53,7 @@ const benefitsData = [
 
 export function BenefitsSection() {
   return (
-    <section className="my-12">
+    <section className="">
       <div className="flex flex-wrap items-start justify-center gap-3 py-4 md:gap-16">
         {benefitsData
           .slice(0, 3)
@@ -66,13 +66,10 @@ export function BenefitsSection() {
                 <Icon className="h-full w-full stroke-[1.5] text-background" />
               </div>
               <div>
-                <Text
-                  size="subtitle"
-                  className="pb-1 font-bold text-primary md:pb-2"
-                >
+                <Text size="subtitle" className="font-bold text-primary">
                   {title}
                 </Text>
-                <Text>{description}</Text>
+                <Text variant="muted">{description}</Text>
               </div>
             </div>
           ))}
@@ -84,16 +81,16 @@ export function BenefitsSection() {
           .map(({ title, description, icon: Icon }, i) => (
             <div
               key={i}
-              className="flex max-w-sm flex-col items-center gap-4 text-center"
+              className="flex max-w-sm flex-col items-center gap-2 text-center md:gap-4"
             >
-              <div className="h-16 w-16 rounded-full bg-primary p-2.5">
+              <div className="h-14 w-14 rounded-full bg-primary p-2.5 md:h-16 md:w-16">
                 <Icon className="h-full w-full stroke-[1.5] text-background" />
               </div>
               <div>
-                <Text size="subtitle" className="pb-2 font-bold text-primary">
+                <Text size="subtitle" className="font-bold text-primary">
                   {title}
                 </Text>
-                <Text>{description}</Text>
+                <Text variant="muted">{description}</Text>
               </div>
             </div>
           ))}

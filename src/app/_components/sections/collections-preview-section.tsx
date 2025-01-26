@@ -2,7 +2,7 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { H2, H3, Text } from "@/components/ui/typography";
 import Link from "next/link";
-
+import { Separator } from "@/components/ui/separator";
 const collections = [
   {
     img: "/images/bouquets.png",
@@ -28,16 +28,14 @@ const collections = [
 
 export function CollectionsPreviewSection() {
   return (
-    <section>
-      <MaxWidthWrapper
-        border
-        className="space-y-8 overflow-x-hidden px-0 lg:space-y-16 lg:overflow-x-visible lg:py-16"
-      >
-        <div className="px-2.5 lg:space-y-1 lg:py-2">
+    <section className="w-full pt-12 lg:pt-20">
+      <MaxWidthWrapper className="space-y-8 lg:space-y-12">
+        <div className="lg:space-y-2">
           <H2>Odkryj nasze wyjątkowe usługi florystyczne</H2>
           <Text
             size="subtitle"
-            className="mx-auto hidden max-w-6xl text-center lg:block"
+            variant="muted"
+            className="mx-auto hidden max-w-5xl text-center lg:block"
           >
             W naszym studiu florystycznym spełniamy Twoje marzenia związane z
             kwiatami. Odkryj nasze wykwintne aranżacje, spersonalizowane pudełka
@@ -85,6 +83,10 @@ export function CollectionsPreviewSection() {
               </div>
             </Link>
           ))}
+        </div>
+        {/* SEPARATOR */}
+        <div className="mx-auto max-w-[1400px]">
+          <Separator />
         </div>
       </MaxWidthWrapper>
     </section>
