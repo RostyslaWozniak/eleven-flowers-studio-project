@@ -124,5 +124,21 @@
         }
       }
     }
+  },
+  "Footer": {
+    "form": {
+      "label": "Dołącz do naszego newslettera i otrzymuj specjalne oferty!",
+      "placeholder": "Twój email",
+      "button": "Wyślij",
+      "description": "Zapisując się, zgadzasz się na otrzymywanie aktualizacji i akceptujesz naszą Politykę prywatności."
+    },
+    "links": {
+      "title": "Przydatne linki"
+    },
+    "socials": {
+      "title": "Pozostań w kontakcie"
+    },
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "policy": "Polityka prywatności"
   }
 }

@@ -94,7 +94,7 @@ export function TestemonialsSection() {
           </Carousel>
         </div>
         {/* MOBILE */}
-        <div className="py-8 lg:hidden">
+        <div className="py-14 lg:hidden">
           <MobileCarousel className="select-none">
             {testemonials.map(({ review, name }, i) => (
               <CarouselItem

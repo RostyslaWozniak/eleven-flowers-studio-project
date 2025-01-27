@@ -124,5 +124,21 @@
         }
       }
     }
+  },
+  "Footer": {
+    "form": {
+      "label": "Join our newsletter and receive special offers!",
+      "placeholder": "Your email",
+      "button": "Submit",
+      "description": "By signing up, you agree to receive updates and accept our Privacy Policy."
+    },
+    "links": {
+      "title": "Useful Links"
+    },
+    "socials": {
+      "title": "Stay Connected"
+    },
+    "rights": "All rights reserved.",
+    "policy": "Privacy Policy"
   }
 }

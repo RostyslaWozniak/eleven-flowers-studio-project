@@ -42,8 +42,8 @@ export function MobileCarousel({
           <div
             onClick={() => api?.scrollTo(i)}
             key={i}
-            className={cn("aspect-square w-3 rounded-full border", {
-              "bg-primary": i + 1 === current,
+            className={cn("aspect-square w-2 rounded-full bg-[#CCCCCC]", {
+              "bg-[#007AFF]": i + 1 === current,
             })}
           ></div>
         ))}

@@ -58,9 +58,11 @@ export function CollectionsPreviewSection() {
                 height={350}
                 className="absolute transition-transform duration-300 ease-in-out group-hover:scale-110"
               />
+
               <H3 className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background lg:text-4xl">
                 {title}
               </H3>
+
               <div className="absolute inset-0 z-10 backdrop-brightness-90 duration-300 ease-in-out group-hover:backdrop-brightness-75"></div>
             </Link>
           ))}

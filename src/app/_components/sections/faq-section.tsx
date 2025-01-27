@@ -7,7 +7,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
 
 export function FaqSection() {
@@ -36,10 +35,10 @@ export function FaqSection() {
     },
   ];
   return (
-    <section className="w-full pt-12 lg:pt-20">
+    <section className="w-full py-12 lg:pt-20">
       <MaxWidthWrapper className="space-y-6 md:space-y-14">
         <H2>
-          FAQ – <br /> Najczęściej zadawane pytania
+          FAQ – <br /> {t("title")}
         </H2>
         <Accordion
           type="single"
@@ -65,11 +64,6 @@ export function FaqSection() {
             </AccordionItem>
           ))}
         </Accordion>
-
-        {/* SEPARATOR */}
-        <div className="mx-auto max-w-[1400px] pt-6 lg:pt-0">
-          <Separator />
-        </div>
       </MaxWidthWrapper>
     </section>
   );
