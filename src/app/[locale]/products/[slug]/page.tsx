@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { getLocale } from "next-intl/server";
-import { type Product } from "@/app/types";
+import { type Product } from "@/types";
 import { notFound } from "next/navigation";
 import { ProductSection } from "@/app/_components/sections/product-section";
 import { CollectionsSection } from "@/app/_components/sections/collections-section";

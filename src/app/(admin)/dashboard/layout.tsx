@@ -5,8 +5,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    template: "Admin | %s | Season Chai",
-    default: "Season Chai",
+    template: "Admin | %s | Eleven Flowers Studio",
+    default: "Admin | Eleven Flowers Studio",
   },
   description: "The e-commerce platform for tea products",
   icons: [{ rel: "icon", url: "/favicon.svg" }],

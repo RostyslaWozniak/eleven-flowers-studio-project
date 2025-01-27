@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { type Product } from "@/app/types";
+import { type Product } from "@/types";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";

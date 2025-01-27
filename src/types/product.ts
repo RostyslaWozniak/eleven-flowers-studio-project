@@ -28,12 +28,3 @@ export type Product = {
   prices: Price[];
   images: Image[];
 };
-
-// export type Product = {
-//   id: string;
-//   slug: string;
-//   collection: { translations: { name: string }[]; slug: string } | null;
-//   images: { url: string }[];
-//   prices: { price: number; size: string }[];
-//   translations: { name: string; description: string }[];
-// };

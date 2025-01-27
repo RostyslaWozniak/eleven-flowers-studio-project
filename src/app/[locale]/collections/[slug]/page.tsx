@@ -1,4 +1,4 @@
-import { type Product } from "@/app/types";
+import { type Product } from "@/types";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -126,11 +126,11 @@ export default async function Page({
           ? collection?.translations[0]?.name
           : slug.replace("-", " ")}
       </H1>
-      <div className="grid grid-cols-3">
-        {[...products, ...products, ...products].map((product, i) => (
+      <div className="grid grid-cols-4 gap-4">
+        {products.map((product) => (
           <div
-            key={i}
-            className={cn("w-full max-w-[350px] space-y-3 text-center")}
+            key={product.id}
+            className={cn("w-full max-w-[400px] space-y-3 text-center")}
           >
             <div className="group relative space-y-4">
               {product.collection && (
