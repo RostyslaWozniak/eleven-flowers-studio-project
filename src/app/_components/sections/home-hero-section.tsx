@@ -12,7 +12,7 @@ export function HomeHeroSection() {
   const t = useTranslations("HomePage.HeroSection");
   return (
     <section className="bg-gradient-to-b from-card to-transparent pb-4">
-      <MaxWidthWrapper className="hidden items-center justify-between gap-8 md:flex lg:pt-12">
+      <MaxWidthWrapper className="hidden items-center justify-between gap-16 md:flex lg:pt-12">
         <div className="flex flex-col items-start gap-8">
           <div className="space-y-4">
             <H1 className="text-nowrap">
@@ -37,13 +37,18 @@ export function HomeHeroSection() {
             >
               {t("primaryActionButton")}
             </Link>
-            <Button variant="outline">{t("secondaryActionButton")}</Button>
+            <Link
+              href="/collections"
+              className={cn(buttonVariants({ variant: "outline" }))}
+            >
+              {t("secondaryActionButton")}
+            </Link>
           </div>
         </div>
 
         <Image
           priority
-          className="rounded-sm opacity-90"
+          className="w-auto min-w-[500px] rounded-sm opacity-90"
           src="/images/hero.png"
           alt="Eleven Flowers Studio"
           width={500}
