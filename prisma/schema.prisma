@@ -6,15 +6,65 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Product {
+    id           String               @id @default(uuid())
+    slug         String               @unique()
+    createdAt    DateTime             @default(now())
+    updatedAt    DateTime             @updatedAt
+    translations ProductTranslation[]
+    prices       ProductPrice[]
+    images       ProductImage[]
+    collectionId String?
+    collection   Collection?          @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+}
 
-    @@index([name])
+model ProductTranslation {
+    id          String  @id @default(uuid())
+    productId   String
+    language    String
+    name        String
+    description String
+    product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    @@unique([productId, language]) // Ensures a product has only one translation per language
+}
+
+model ProductPrice {
+    id        String  @id @default(uuid())
+    productId String
+    size      String // e.g., 's', 'm', 'l'
+    price     Int // Price in cents
+    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    @@unique([productId, size]) // Ensures a product has unique price per size
+}
+
+model ProductImage {
+    id        String  @id @default(uuid())
+    productId String
+    url       String // URL to the image
+    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Collection {
+    id           String                  @id @default(uuid())
+    slug         String                  @unique()
+    createdAt    DateTime                @default(now())
+    updatedAt    DateTime                @updatedAt
+    translations CollectionTranslation[] // Relation to CollectionTranslation
+    products     Product[] // Relation to Products
+}
+
+model CollectionTranslation {
+    id           String     @id @default(uuid())
+    collectionId String
+    language     String // e.g., 'en', 'pl', 'ru'
+    name         String
+    collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+    @@unique([collectionId, language]) // Ensures a collection has only one translation per language
 }

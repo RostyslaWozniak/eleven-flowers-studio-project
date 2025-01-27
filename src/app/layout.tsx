@@ -8,6 +8,7 @@ import { Footer } from "@/components/footer";
 
 import { NextIntlClientProvider } from "next-intl";
 import {
+  getLocale,
   getMessages,
   getTranslations,
   setRequestLocale,
@@ -48,21 +49,17 @@ export async function generateMetadata({
 
 type RootLayoutProps = {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
 };
 
-export default async function RootLayout({
-  children,
-  params,
-}: RootLayoutProps) {
-  const { locale } = await params;
-
-  setRequestLocale(locale);
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const localeFromNext = await getLocale();
+  setRequestLocale(localeFromNext);
 
   const messages = await getMessages();
+
   return (
     <html
-      lang={locale}
+      lang={localeFromNext}
       className={`${manrope.variable} ${philosopher.variable}`}
     >
       <body className="flex min-h-screen flex-col overflow-x-hidden font-manrope">
