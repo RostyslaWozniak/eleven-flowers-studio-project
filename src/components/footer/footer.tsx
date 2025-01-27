@@ -1,4 +1,3 @@
-import { navigation } from "@/lib/navigation";
 import { MaxWidthWrapper } from "../max-width-wrapper";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
