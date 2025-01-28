@@ -65,9 +65,6 @@ export default async function Page({
         },
       },
     },
-    orderBy: {
-      updatedAt: "desc",
-    },
   });
 
   const collection = collections.find((collection) => collection.slug === slug);
