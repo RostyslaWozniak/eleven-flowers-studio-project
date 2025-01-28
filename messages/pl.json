@@ -146,5 +146,10 @@
     },
     "rights": "Wszelkie prawa zastrzeżone.",
     "policy": "Polityka prywatności"
+  },
+  "NotFound": {
+    "title": "Strona nie została znaleziona",
+    "description": "Strona, która szukasz nie została znaleziona.",
+    "button": "Przejdz do strony głównej"
   }
 }

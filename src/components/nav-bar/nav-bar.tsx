@@ -30,7 +30,7 @@ export function NavBar() {
                   <NavItem name={t("gifts")} href="/collections/gifts" />
                 </li>
                 <li>
-                  <NavItem name={t("contact")} href="/collections/contact" />
+                  <NavItem name={t("contact")} href="/contact" />
                 </li>
               </ul>
             </div>

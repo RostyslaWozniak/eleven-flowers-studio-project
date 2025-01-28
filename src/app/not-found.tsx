@@ -1,9 +1,11 @@
-import { H1 } from "@/components/ui/typography";
+import { type Metadata } from "next";
+import { NotFoundSection } from "./_components/sections/not-found-section";
+
+export const metadata: Metadata = {
+  title: "404 | Eleven Flowers Studio",
+  description: "The e-commerce platform for flower products",
+};
 
 export default function NotFound() {
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <H1>not implemented yet {":("}</H1>
-    </div>
-  );
+  return <NotFoundSection />;
 }

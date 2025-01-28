@@ -146,5 +146,10 @@
     },
     "rights": "All rights reserved.",
     "policy": "Privacy Policy"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "The page you are looking for could not be found.",
+    "button": "Go Home"
   }
 }

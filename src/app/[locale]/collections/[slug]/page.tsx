@@ -3,6 +3,7 @@ import { db } from "@/server/db";
 import { getLocale } from "next-intl/server";
 import { ProductsSection } from "@/app/_components/sections/products-section";
 import { CollectionsSection, ContactSection } from "@/app/_components/sections";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const collections = await db.collection.findMany({
@@ -36,7 +37,9 @@ export async function generateMetadata({
       },
     },
   });
-  const collectionTitle = `${collectionData?.translations[0]?.name.slice(0, 1).toUpperCase()}${collectionData?.translations[0]?.name.slice(1)} | Eleven Flowers Studio`;
+  const collectionTitle = collectionData
+    ? `${collectionData?.translations[0]?.name.slice(0, 1).toUpperCase()}${collectionData?.translations[0]?.name.slice(1)} | Eleven Flowers Studio`
+    : "404 | Eleven Flowers Studio";
   return {
     title: collectionTitle,
     description: `This is collection - ${collectionTitle}`,
@@ -69,7 +72,7 @@ export default async function Page({
 
   const collection = collections.find((collection) => collection.slug === slug);
 
-  console.log({ collection });
+  if (!collection) return notFound();
 
   const products: Product[] = await db.product.findMany({
     where: {
