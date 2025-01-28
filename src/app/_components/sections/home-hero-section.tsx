@@ -45,15 +45,16 @@ export function HomeHeroSection() {
             </Link>
           </div>
         </div>
-
-        <Image
-          priority
-          className="w-auto min-w-[500px] rounded-sm opacity-90"
-          src="/images/hero.png"
-          alt="Eleven Flowers Studio"
-          width={500}
-          height={500}
-        />
+        <div className="relative h-[600px] min-w-[500px]">
+          <Image
+            fill
+            priority
+            sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 500px"}
+            className="w-auto min-w-[500px] rounded-sm object-cover opacity-90"
+            src="/images/hero.png"
+            alt="Eleven Flowers Studio"
+          />
+        </div>
       </MaxWidthWrapper>
       <div className="relative md:hidden">
         <Image

@@ -5,8 +5,9 @@ import { Clock, MailOpen, MapPin, PhoneCall } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Fragment } from "react";
+import { cn } from "@/lib/utils";
 
-export function ContactSection() {
+export function ContactSection({ className }: { className?: string }) {
   const t = useTranslations("HomePage.ContactSection");
 
   const contactData = [
@@ -44,7 +45,7 @@ export function ContactSection() {
     },
   ];
   return (
-    <section className="w-full pt-12 lg:py-20">
+    <section className={cn("w-full pt-12 lg:py-20", className)}>
       <MaxWidthWrapper className="px-0">
         <div className="flex flex-col items-center gap-y-8 md:gap-y-12">
           <div className="max-w-4xl space-y-4 px-2.5 md:space-y-6 md:px-0">

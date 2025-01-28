@@ -4,6 +4,7 @@ import { H2, H3, Text } from "@/components/ui/typography";
 import { Link } from "@/i18n/routing";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export function CollectionsPreviewSection() {
   const t = useTranslations("HomePage.CollectionsSection");
@@ -32,8 +33,8 @@ export function CollectionsPreviewSection() {
   ];
   return (
     <section className="w-full pt-12 lg:pt-20">
-      <MaxWidthWrapper className="space-y-8 lg:space-y-12">
-        <div className="lg:space-y-2">
+      <MaxWidthWrapper className="space-y-8 px-0 lg:space-y-12">
+        <div className="px-2.5 lg:space-y-2">
           <H2>{t("title")}</H2>
           <Text
             size="subtitle"
@@ -51,12 +52,13 @@ export function CollectionsPreviewSection() {
               key={i}
               className="group relative grid aspect-square place-items-center overflow-hidden"
             >
-              <img
+              <Image
+                fill
+                priority
+                sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 300px "}
                 src={img}
                 alt={title}
-                width={350}
-                height={350}
-                className="absolute transition-transform duration-300 ease-in-out group-hover:scale-110"
+                className="absolute object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
               />
 
               <H3 className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-nowrap text-background lg:text-4xl">
@@ -88,7 +90,7 @@ export function CollectionsPreviewSection() {
           ))}
         </div>
         {/* SEPARATOR */}
-        <div className="mx-auto max-w-[1400px]">
+        <div className="mx-auto max-w-[1400px] px-2.5">
           <Separator />
         </div>
       </MaxWidthWrapper>

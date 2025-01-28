@@ -3,24 +3,35 @@ import { buttonVariants } from "@/components/ui/button";
 import { H2 } from "@/components/ui/typography";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export function CollectionsSection({
   collections,
+  currCollectionSlug,
 }: {
   collections: { name: string; slug: string }[];
+  currCollectionSlug?: string;
 }) {
+  const t = useTranslations("ProductPage");
   return (
-    <section className="mb-12">
-      <MaxWidthWrapper className="space-y-4">
-        <H2 className="border-b pb-2 md:text-start">Categories</H2>
-        <div className="flex space-x-4">
+    <section className="">
+      <MaxWidthWrapper className="space-y-4 px-0">
+        <div className="px-2.5">
+          <H2 className="border-b pb-2 text-start md:text-start">
+            {t("collections")}
+          </H2>
+        </div>
+        <div className="scrollbar-hide flex w-full space-x-4 overflow-x-scroll px-2.5">
           {collections.map(({ name, slug }) => (
             <Link
               href={`/collections/${slug}`}
               key={name}
               className={cn(
-                buttonVariants({ variant: "outline" }),
-                "w-min text-sm",
+                buttonVariants({
+                  variant:
+                    currCollectionSlug === slug ? "outline" : "secondary",
+                }),
+                "px-4 text-sm lg:w-min",
               )}
             >
               {name}

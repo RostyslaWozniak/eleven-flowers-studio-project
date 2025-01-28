@@ -1,13 +1,8 @@
 import { type Product } from "@/types";
-import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { H1, H3, Text } from "@/components/ui/typography";
-import { Link } from "@/i18n/routing";
-import { cn, formatPrice } from "@/lib/utils";
 import { db } from "@/server/db";
 import { getLocale } from "next-intl/server";
-import Image from "next/image";
+import { ProductsSection } from "@/app/_components/sections/products-section";
+import { CollectionsSection, ContactSection } from "@/app/_components/sections";
 
 export async function generateStaticParams() {
   const collections = await db.collection.findMany({
@@ -51,15 +46,13 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
 
-  const locale = await getLocale();
-
-  const collection = await db.collection.findUnique({
-    where: { slug },
+  const collections = await db.collection.findMany({
     select: {
+      slug: true,
       translations: {
         where: {
           language: locale,
@@ -69,7 +62,14 @@ export default async function Page({
         },
       },
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
+
+  const collection = collections.find((collection) => collection.slug === slug);
+
+  console.log({ collection });
 
   const products: Product[] = await db.product.findMany({
     where: {
@@ -120,68 +120,23 @@ export default async function Page({
   });
 
   return (
-    <MaxWidthWrapper className="my-24 space-y-14">
-      <H1 className="capitalize">
-        {collection?.translations[0]
-          ? collection?.translations[0]?.name
-          : slug.replace("-", " ")}
-      </H1>
-      <div className="grid grid-cols-4 gap-4">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className={cn("w-full max-w-[400px] space-y-3 text-center")}
-          >
-            <div className="group relative space-y-4">
-              {product.collection && (
-                <Link href={`/collections/${product.collection.slug}`}>
-                  <Badge className="absolute left-2 top-3 z-20">
-                    {product.collection.translations[0]?.name}
-                  </Badge>
-                </Link>
-              )}
-              <Link href={`/products/${product.slug}`}>
-                <div className="relative aspect-[5/6] overflow-hidden bg-primary">
-                  <Image
-                    className="object-cover duration-500 ease-in-out group-hover:scale-105 group-hover:opacity-0 group-hover:brightness-90"
-                    src={
-                      product.images[0]?.url ??
-                      "/images/bouquet-placeholder.jpg"
-                    }
-                    alt={product.translations[0]?.name ?? "image"}
-                    fill
-                  />
-                  <Image
-                    className="object-cover opacity-0 duration-500 ease-in-out group-hover:scale-105 group-hover:opacity-100 group-hover:brightness-90"
-                    src={
-                      product.images[1]?.url ??
-                      "/images/bouquet-placeholder.jpg"
-                    }
-                    alt={product.translations[0]?.name ?? "image"}
-                    fill
-                  />
-                </div>
-                <div className="mt-2 space-y-2">
-                  <H3 className="font-normal capitalize group-hover:underline">
-                    {product.translations[0]?.name}
-                  </H3>
-                  <Text
-                    size="subtitle"
-                    className="text-2xl font-bold text-primary"
-                  >
-                    {product.prices[0] && formatPrice(product.prices[0].price)}
-                  </Text>
-                </div>
-              </Link>
-            </div>
-            <div>
-              <div className="px-4">
-                <Button>Add to cart</Button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </MaxWidthWrapper>
+    <>
+      <ProductsSection
+        products={products}
+        title={
+          collection?.translations[0]
+            ? collection?.translations[0]?.name
+            : slug.replace("-", " ")
+        }
+      />
+      <CollectionsSection
+        currCollectionSlug={slug}
+        collections={collections.map(({ slug, translations }) => ({
+          name: translations[0]?.name ?? "",
+          slug,
+        }))}
+      />
+      <ContactSection />
+    </>
   );
 }

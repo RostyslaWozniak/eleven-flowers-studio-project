@@ -57,7 +57,6 @@
     },
     "MostPopularProductsSection": {
       "title": "Самые популярные",
-      "addToCartButton": "Добавить в корзину",
       "seeMoreButton": "Посмотреть больше"
     },
     "TestemonialsSection": {
@@ -124,6 +123,13 @@
         }
       }
     }
+  },
+  "ProductPage": {
+    "size": "Размер",
+    "addToCart": "Добавить в корзину",
+    "collections": "Коллекции",
+    "relatedProducts": "Похожие продукты",
+    "noProductsFound": "Продукты не найдены."
   },
   "Footer": {
     "form": {

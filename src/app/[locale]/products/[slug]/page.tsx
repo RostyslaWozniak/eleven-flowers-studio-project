@@ -1,9 +1,9 @@
 import { db } from "@/server/db";
-import { getLocale } from "next-intl/server";
 import { type Product } from "@/types";
 import { notFound } from "next/navigation";
 import { ProductSection } from "@/app/_components/sections/product-section";
 import { CollectionsSection } from "@/app/_components/sections/collections-section";
+import { ContactSection } from "@/app/_components/sections";
 
 export async function generateStaticParams() {
   const products = await db.product.findMany({
@@ -20,10 +20,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const locale = await getLocale();
-  const { slug } = await params;
+  const { slug, locale } = await params;
 
   const productData = await db.product.findUnique({
     where: {
@@ -60,11 +59,9 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
-
-  const locale = await getLocale();
+  const { slug, locale } = await params;
 
   const product: Product | null = await db.product.findUnique({
     where: {
@@ -139,7 +136,10 @@ export default async function Page({
   return (
     <div>
       <ProductSection product={product} />
-      <CollectionsSection collections={collections} />
+      <div className="mt-8">
+        <CollectionsSection collections={collections} />
+      </div>
+      <ContactSection />
     </div>
   );
 }

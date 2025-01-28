@@ -2,8 +2,8 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
-import { type Product } from "@/app/_components/sections";
 import { ProductCard } from "./product-card";
+import { type Product } from "@/types";
 
 export function ProductPreviewSwiper({ products }: { products: Product[] }) {
   return (
@@ -15,7 +15,7 @@ export function ProductPreviewSwiper({ products }: { products: Product[] }) {
         clickable: true,
       }}
       modules={[FreeMode, Pagination]}
-      className="mySwiper"
+      className="overflow-visible"
     >
       {products.map((product) => (
         <SwiperSlide key={product.id} className="pb-12">

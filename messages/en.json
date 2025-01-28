@@ -57,7 +57,6 @@
     },
     "MostPopularProductsSection": {
       "title": "Most Popular",
-      "addToCartButton": "Add to Cart",
       "seeMoreButton": "See More"
     },
     "TestemonialsSection": {
@@ -124,6 +123,13 @@
         }
       }
     }
+  },
+  "ProductPage": {
+    "size": "Size",
+    "addToCart": "Add to Cart",
+    "collections": "Collections",
+    "relatedProducts": "Related Products",
+    "noProductsFound": "No products found."
   },
   "Footer": {
     "form": {

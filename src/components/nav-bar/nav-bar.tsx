@@ -36,7 +36,7 @@ export function NavBar() {
             </div>
           </nav>
           <div className="flex items-center gap-3">
-            <ShoppingBag className="h-7 w-7 text-primary" />
+            <ShoppingBag className="hidden h-7 w-7 text-primary lg:block" />
             <LandSelect />
           </div>
         </div>
