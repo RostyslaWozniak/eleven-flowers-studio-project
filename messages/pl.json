@@ -62,28 +62,7 @@
     "TestemonialsSection": {
       "title": "Opinie naszych klientów",
       "subtitle": "Odkryj szczere historie i entuzjastyczne recenzje tych, którzy doświadczyli piękna",
-      "testemonials": [
-        {
-          "name": "Jan Kowalski",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "Jan Kowalski",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "Jan Kowalski",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "Jan Kowalski",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "Jan Kowalski",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        }
-      ]
+      "testemonials": []
     },
     "FAQSection": {
       "title": "Najczęściej zadawane pytania",
@@ -129,7 +108,8 @@
     "addToCart": "Dodaj do koszyka",
     "collections": "Kolekcje",
     "relatedProducts": "Powiązane produkty",
-    "noProductsFound": "Nie znaleziono produktów."
+    "noProductsFound": "Nie znaleziono produktów.",
+    "priceFrom": "Od"
   },
   "Footer": {
     "form": {

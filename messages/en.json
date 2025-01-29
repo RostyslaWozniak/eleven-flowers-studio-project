@@ -129,7 +129,8 @@
     "addToCart": "Add to Cart",
     "collections": "Collections",
     "relatedProducts": "Related Products",
-    "noProductsFound": "No products found."
+    "noProductsFound": "No products found.",
+    "priceFrom": "From"
   },
   "Footer": {
     "form": {

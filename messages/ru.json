@@ -129,7 +129,8 @@
     "addToCart": "Добавить в корзину",
     "collections": "Коллекции",
     "relatedProducts": "Похожие продукты",
-    "noProductsFound": "Продукты не найдены."
+    "noProductsFound": "Продукты не найдены.",
+    "priceFrom": "Oт"
   },
   "Footer": {
     "form": {

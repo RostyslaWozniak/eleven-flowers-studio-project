@@ -11,33 +11,11 @@ import { GoogleStars } from "@/components/ui/icons";
 import { GoogleLogo } from "@/components/ui/icons/google-logo";
 import { Separator } from "@/components/ui/separator";
 import { H2, Text } from "@/components/ui/typography";
-import { User } from "lucide-react";
+import { testemonials } from "@/data/testemonials";
 import { useTranslations } from "next-intl";
 
 export function TestemonialsSection() {
   const t = useTranslations("HomePage.TestemonialsSection");
-  const testemonials = [
-    {
-      review: t("testemonials.0.review"),
-      name: t("testemonials.0.name"),
-    },
-    {
-      review: t("testemonials.1.review"),
-      name: t("testemonials.1.name"),
-    },
-    {
-      review: t("testemonials.2.review"),
-      name: t("testemonials.2.name"),
-    },
-    {
-      review: t("testemonials.3.review"),
-      name: t("testemonials.3.name"),
-    },
-    {
-      review: t("testemonials.4.review"),
-      name: t("testemonials.4.name"),
-    },
-  ];
 
   return (
     <section className="relative w-full overflow-hidden pt-12 lg:pt-20">
@@ -68,19 +46,18 @@ export function TestemonialsSection() {
             className="relative flex select-none items-start gap-10 py-16 pb-32"
           >
             <CarouselContent>
-              {testemonials.map(({ review, name }, i) => (
+              {testemonials.slice(0, 5).map(({ review, name }, i) => (
                 <CarouselItem
                   key={i}
-                  className="cursor-grab active:cursor-grabbing lg:basis-1/3"
+                  className="max-w-[450px] cursor-grab active:cursor-grabbing lg:basis-1/3"
                 >
                   <div className="space-y-2 rounded-sm border shadow-lg lg:px-8 lg:py-6">
                     <GoogleStars />
                     <Text>{review}</Text>
                     <div className="mt-6 flex items-center gap-x-4">
-                      <User
-                        size={52}
-                        className="rounded-full bg-primary stroke-primary-foreground p-2"
-                      />
+                      <div className="rounded-full border-2 border-primary/70 p-2">
+                        <GoogleLogo />
+                      </div>
                       <Text size="lg">{name}</Text>
                     </div>
                   </div>
@@ -96,7 +73,7 @@ export function TestemonialsSection() {
         {/* MOBILE */}
         <div className="py-14 lg:hidden">
           <MobileCarousel className="select-none">
-            {testemonials.map(({ review, name }, i) => (
+            {testemonials.slice(0, 5).map(({ review, name }, i) => (
               <CarouselItem
                 key={i}
                 className="basis-[88%] cursor-grab active:cursor-grabbing sm:basis-1/2 md:basis-1/3"
@@ -105,10 +82,7 @@ export function TestemonialsSection() {
                   <GoogleStars />
                   <Text>{review}</Text>
                   <div className="mt-6 flex items-center gap-x-4">
-                    <User
-                      size={52}
-                      className="rounded-full bg-primary stroke-primary-foreground p-2"
-                    />
+                    <GoogleLogo />
                     <Text size="lg">{name}</Text>
                   </div>
                 </div>
