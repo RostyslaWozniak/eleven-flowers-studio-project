@@ -1,7 +1,5 @@
 import Image from "next/image";
 import { H3, Text } from "@/components/ui/typography";
-import { Button } from "@/components/ui/button";
-
 import { Badge } from "../ui/badge";
 import { cn, formatPrice } from "@/lib/utils";
 import { useTranslations } from "next-intl";
@@ -72,15 +70,16 @@ export function ProductCard({
                 {product.translations[0]?.name}
               </H3>
               <Text size="subtitle" className="text-2xl font-bold text-primary">
+                {t("priceFrom")}{" "}
                 {product.prices[0] && formatPrice(product.prices[0].price)}
               </Text>
             </div>
           </div>
         </Link>
       </div>
-      <div className="px-2 lg:px-3">
+      {/* <div className="px-2 lg:px-3">
         <Button>{t("addToCart")}</Button>
-      </div>
+      </div> */}
     </div>
   );
 }

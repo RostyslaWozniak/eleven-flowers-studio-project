@@ -15,8 +15,7 @@ import {
 } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 
-import "swiper/css";
-import "swiper/css/pagination";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const philosopher = Philosopher({
   subsets: ["latin"],
@@ -65,9 +64,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       <body className="flex min-h-screen flex-col overflow-x-hidden font-manrope">
         <NextIntlClientProvider messages={messages}>
           <TRPCReactProvider>
-            <NavBar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
+            <NuqsAdapter>
+              <NavBar />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+            </NuqsAdapter>
           </TRPCReactProvider>
         </NextIntlClientProvider>
       </body>
