@@ -71,7 +71,7 @@ export function ProductSection({ product }: { product: Product }) {
           <div className="text-3xl font-bold">
             {product.prices[0] && formatPrice(product.prices[0]?.price)}
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center sm:justify-start">
             <Button className="">{t("addToCart")}</Button>
           </div>
         </div>
