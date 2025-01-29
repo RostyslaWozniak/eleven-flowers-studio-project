@@ -33,23 +33,39 @@ export function ProductCard({
         )}
         <Link href={`/products/${product.slug}`}>
           <div className="relative flex h-full flex-col">
-            <div className="relative aspect-[5/6] overflow-hidden bg-primary">
-              <Image
-                className="object-cover duration-500 ease-in-out group-hover:scale-105 group-hover:opacity-0 group-hover:brightness-90"
-                src={
-                  product.images[0]?.url ?? "/images/bouquet-placeholder.jpg"
-                }
-                alt={product.translations[0]?.name ?? "image"}
-                fill
-              />
-              <Image
-                className="object-cover opacity-0 duration-500 ease-in-out group-hover:scale-105 group-hover:opacity-100 group-hover:brightness-90"
-                src={
-                  product.images[1]?.url ?? "/images/bouquet-placeholder.jpg"
-                }
-                alt={product.translations[0]?.name ?? "image"}
-                fill
-              />
+            <div className="relative aspect-[5/6] overflow-hidden">
+              {product.images[1] ? (
+                <>
+                  <Image
+                    className="object-cover duration-500 ease-in-out lg:group-hover:scale-105 lg:group-hover:opacity-0 lg:group-hover:brightness-90"
+                    src={
+                      product.images[0]?.url ??
+                      "/images/bouquet-placeholder.jpg"
+                    }
+                    alt={product.translations[0]?.name ?? "image"}
+                    fill
+                  />
+                  <Image
+                    className="object-cover opacity-0 duration-500 ease-in-out group-hover:scale-105 group-hover:opacity-100 group-hover:brightness-90"
+                    src={
+                      product.images[1]?.url ??
+                      "/images/bouquet-placeholder.jpg"
+                    }
+                    alt={product.translations[0]?.name ?? "image"}
+                    fill
+                  />
+                </>
+              ) : (
+                <Image
+                  className="object-cover"
+                  src={
+                    product.images[0]?.url ?? "/images/bouquet-placeholder.jpg"
+                  }
+                  alt={product.translations[0]?.name ?? "image"}
+                  fill
+                />
+              )}
+              <div className="absolute inset-0 -z-10 animate-pulse bg-secondary"></div>
             </div>
             <div className="flex flex-grow flex-col items-center justify-center space-y-2 px-2">
               <H3 className="mt-2 font-normal capitalize group-hover:underline">

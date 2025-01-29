@@ -62,6 +62,7 @@ export default async function Page({
   params: Promise<{ slug: string; locale: string }>;
 }) {
   const { slug, locale } = await params;
+  console.log({ slug, locale });
 
   const product: Product | null = await db.product.findUnique({
     where: {
@@ -128,6 +129,7 @@ export default async function Page({
       slug,
     })),
   );
+  console.log({ product });
 
   if (!product) {
     return notFound();
