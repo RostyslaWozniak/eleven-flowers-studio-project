@@ -55,7 +55,7 @@ export function ContactSection({ className }: { className?: string }) {
             </Text>
           </div>
           <div className="flex w-full flex-col-reverse gap-y-8 md:grid md:grid-cols-2">
-            <div className="w-full overflow-hidden md:rounded-sm">
+            <div className="-z-10 w-full overflow-hidden md:rounded-sm">
               <GoogleMap />
             </div>
             <div className="space-y-10 px-2.5 md:self-center md:px-0 md:pl-20">

@@ -1,7 +1,16 @@
 "use client";
 
+import { api } from "@/trpc/react";
 import type { CartItem } from "@/types";
-import { createContext, useContext, useState } from "react";
+import { useLocale } from "next-intl";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 type AddProductType = {
   id: string;
@@ -13,24 +22,60 @@ type AddProductType = {
 
 type CartContextTypes = {
   cartItems: CartItem[];
+  storedCartId: string | null;
   addProductToCart: (product: AddProductType) => void;
-  addOneToCart: (cartItemId: string) => void;
-  removeOneFromCart: (cartItemId: string) => void;
-  removeProductFromCart: (cartItemId: string) => void;
+  removeOneFromCart: (productId: string, size: string) => void;
+  // addOneToCart: (cartItemId: string) => void;
+  // removeProductFromCart: (cartItemId: string) => void;
 };
 
 const CartContext = createContext<CartContextTypes | null>(null);
 
 export default function CartProvider({ children }: React.PropsWithChildren) {
+  const locale = useLocale();
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const addProductToCart = (product: AddProductType) => {
-    const existsProductInCart = cartItems.find(
-      (cartItem) =>
-        cartItem.productId === product.id && cartItem.size === product.size,
-    );
+  const storedCartId =
+    typeof window !== "undefined" ? localStorage.getItem("cartId") : null;
 
-    if (existsProductInCart) {
+  // Fetch cart items from API
+  const { data: serverCartItems } = api.public.cart.getCartItems.useQuery(
+    { cartId: storedCartId },
+    { enabled: Boolean(storedCartId) },
+  );
+
+  const { mutate: removeCartItem } =
+    api.public.cart.removeCartItem.useMutation();
+
+  useEffect(() => {
+    setCartItems(serverCartItems ?? []);
+  }, [serverCartItems]);
+
+  const addProductToCart = useCallback(
+    (product: AddProductType) => {
+      const productExistsInCart = cartItems.find(
+        (item) => item.productId === product.id && item.size === product.size,
+      );
+
+      if (!productExistsInCart) {
+        setCartItems((prev) => {
+          return [
+            {
+              id: crypto.randomUUID(),
+              productId: product.id,
+              productName: product.name,
+              price: product.price,
+              size: product.size,
+              imageUrl: product.imageUrl,
+              quantity: 1,
+            },
+            ...prev,
+          ];
+        });
+        return;
+      }
+
       setCartItems((prev) =>
         prev.map((item) =>
           item.productId === product.id && item.size === product.size
@@ -38,74 +83,47 @@ export default function CartProvider({ children }: React.PropsWithChildren) {
             : item,
         ),
       );
-      return;
-    }
+    },
+    [cartItems],
+  );
 
-    setCartItems((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        productId: product.id,
-        productName: product.name,
-        price: product.price,
-        size: product.size,
-        imageUrl: product.imageUrl,
-        quantity: 1,
-      },
-    ]);
-  };
+  const removeOneFromCart = useCallback(
+    (productId: string, size: string) => {
+      const item = cartItems.find(
+        (item) => item.productId === productId && item.size === size,
+      );
 
-  const addOneToCart = (cartItemId: string) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === cartItemId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      ),
-    );
-  };
+      if (item && (item?.quantity ?? 0) - 1 < 1) {
+        removeCartItem({ cartItemId: item?.id });
+      }
 
-  const removeOneFromCart = (cartItemId: string) => {
-    const product = cartItems.find((item) => item.id === cartItemId);
+      setCartItems((prev) => {
+        const newCartItems = prev.map((item) =>
+          item.id === productId && item.size === size
+            ? { ...item, quantity: item.quantity - 1 }
+            : item,
+        );
+        return newCartItems.filter((item) => item.quantity);
+      });
+      console.log("HERE");
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cartItems],
+  );
 
-    if (!product) return;
-
-    if (product.quantity === 1) {
-      return removeProductFromCart(cartItemId);
-    }
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.productId === product.productId && item.size === product.size
-          ? { ...item, quantity: item.quantity - 1 }
-          : item,
-      ),
-    );
-  };
-
-  const removeProductFromCart = (cartItemId: string) => {
-    const product = cartItems.find((item) => item.id === cartItemId);
-
-    if (!product) return;
-
-    setCartItems((prev) =>
-      prev.filter(
-        (item) =>
-          item.productId !== product.productId ||
-          item.size !== product.size ||
-          item.quantity !== product.quantity,
-      ),
-    );
-  };
+  // Memoize context value to avoid unnecessary re-renders
+  const contextValue = useMemo(
+    () => ({
+      cartItems,
+      locale,
+      storedCartId,
+    }),
+    [cartItems, locale, storedCartId],
+  );
 
   return (
     <CartContext.Provider
-      value={{
-        cartItems,
-        addProductToCart,
-        addOneToCart,
-        removeOneFromCart,
-        removeProductFromCart,
-      }}
+      value={{ addProductToCart, removeOneFromCart, ...contextValue }}
     >
       {children}
     </CartContext.Provider>

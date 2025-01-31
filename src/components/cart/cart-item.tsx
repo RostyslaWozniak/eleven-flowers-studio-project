@@ -3,24 +3,23 @@ import { Minus, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { CartItem } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { useCart } from "@/context/cart-context";
 
 interface CartItemProps {
   cartItem: CartItem;
 }
 
 export function CartItem({ cartItem }: CartItemProps) {
-  const { addProductToCart, removeOneFromCart, removeProductFromCart } =
-    useCart();
+  // const { addProductToCart, removeOneFromCart, removeProductFromCart } =
+  //   useCart();
 
   function onIncrease() {
-    addProductToCart({
-      id: cartItem.productId,
-      name: cartItem.productName,
-      price: cartItem.price,
-      imageUrl: cartItem.imageUrl,
-      size: cartItem.size,
-    });
+    //   addProductToCart({
+    //     id: cartItem.productId,
+    //     name: cartItem.productName,
+    //     price: cartItem.price,
+    //     imageUrl: cartItem.imageUrl,
+    //     size: cartItem.size,
+    //   });
   }
 
   return (
@@ -52,7 +51,7 @@ export function CartItem({ cartItem }: CartItemProps) {
           variant="outline"
           size="icon"
           className="h-8 w-8 rounded-full"
-          onClick={() => removeOneFromCart(cartItem.id)}
+          // onClick={() => removeOneFromCart(cartItem.id)}
           disabled={cartItem.quantity === 1}
         >
           <Minus className="h-4 w-4" />
@@ -73,7 +72,7 @@ export function CartItem({ cartItem }: CartItemProps) {
         variant="ghost"
         size="icon"
         className="h-8 w-8 rounded-full text-gray-400 hover:text-gray-500"
-        onClick={() => removeProductFromCart(cartItem.id)}
+        // onClick={() => removeProductFromCart(cartItem.id)}
       >
         <X className="h-4 w-4" />
       </Button>

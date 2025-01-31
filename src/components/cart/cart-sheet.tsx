@@ -6,19 +6,20 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { useCart } from "@/context/cart-context";
-import { ShoppingBag } from "lucide-react";
+
 import { CartItem } from "./cart-item";
+import { CartSheetTrigger } from "./cart-sheet-triger";
+import { useState } from "react";
 
 export function CartSheet() {
   const { cartItems } = useCart();
+
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Sheet>
-      <SheetTrigger>
-        <ShoppingBag className="hidden h-7 w-7 text-primary lg:block" />
-      </SheetTrigger>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <CartSheetTrigger isOpen={isOpen} setIsOpen={setIsOpen} />
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Your Cart</SheetTitle>

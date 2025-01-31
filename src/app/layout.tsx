@@ -17,6 +17,7 @@ import { routing } from "@/i18n/routing";
 
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import CartProvider from "@/context/cart-context";
+import { MobileNavbar } from "@/components/nav-bar/mobile-nav-bar";
 
 const philosopher = Philosopher({
   subsets: ["latin"],
@@ -73,6 +74,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 <NavBar />
                 <main className="flex-grow">{children}</main>
                 <Footer />
+                <MobileNavbar />
               </CartProvider>
             </NuqsAdapter>
           </TRPCReactProvider>

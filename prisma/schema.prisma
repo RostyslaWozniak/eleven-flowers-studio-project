@@ -79,15 +79,18 @@ model Cart {
 }
 
 model CartItem {
-    id          String  @id @default(uuid())
+    id          String   @id @default(uuid())
     cartId      String
     productId   String
     productName String
     size        String // To match ProductPrice
-    quantity    Int     @default(1)
+    quantity    Int      @default(1)
+    imageUrl    String
     price       Int // Store price at the time of adding to the cart
-    cart        Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
-    product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    cart        Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+    product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@unique([cartId, productId, size]) // Prevents duplicate entries for the same product and size in a cart
 }
