@@ -4,6 +4,7 @@ import { formatPrice } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { H3 } from "../ui/typography";
 import { useQueryState } from "nuqs";
+import { useEffect } from "react";
 
 export function ProductSizesAndPrice({
   title,
@@ -17,6 +18,12 @@ export function ProductSizesAndPrice({
   const [sizeQuery, setSizeQuery] = useQueryState("size", {
     defaultValue: prices[0]?.size ?? "",
   });
+
+  useEffect(() => {
+    if (!prices.map(({ size }) => size).includes(sizeQuery)) {
+      void setSizeQuery(prices[0]?.size ?? "");
+    }
+  }, [prices, setSizeQuery, sizeQuery]);
 
   return (
     <div>

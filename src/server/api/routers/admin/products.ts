@@ -1,8 +1,8 @@
 import { addProductSchema } from "@/lib/validation/product";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../../trpc";
 import { TRPCError } from "@trpc/server";
 
-export const productRouter = createTRPCRouter({
+export const productsRouter = createTRPCRouter({
   createProduct: publicProcedure
     .input(addProductSchema)
     .mutation(async ({ ctx, input }) => {

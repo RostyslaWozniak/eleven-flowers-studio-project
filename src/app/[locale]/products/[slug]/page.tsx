@@ -1,9 +1,10 @@
 import { db } from "@/server/db";
-import { type Product } from "@/types";
-import { notFound } from "next/navigation";
 import { ProductSection } from "@/app/_components/sections/product-section";
 import { CollectionsSection } from "@/app/_components/sections/collections-section";
 import { ContactSection } from "@/app/_components/sections";
+import type { CollectionDTO, ProductDTO } from "@/types";
+import { api } from "@/trpc/server";
+import { redirect } from "@/i18n/routing";
 
 export async function generateStaticParams() {
   const products = await db.product.findMany({
@@ -48,7 +49,7 @@ export async function generateMetadata({
   const productTitle = `${productData?.translations[0]?.name.slice(0, 1).toUpperCase()}${productData?.translations[0]?.name.slice(1)} | Eleven Flowers Studio`;
   const imagesUrl = productData?.images.map(({ url }) => url);
   return {
-    title: productTitle,
+    title: productTitle ?? "Eleven Flowers Studio",
     description: productData?.translations[0]?.description,
     openGraph: {
       images: imagesUrl,
@@ -62,78 +63,19 @@ export default async function Page({
   params: Promise<{ slug: string; locale: string }>;
 }) {
   const { slug, locale } = await params;
-  console.log({ slug, locale });
 
-  const product: Product | null = await db.product.findUnique({
-    where: {
+  const product: ProductDTO | null = await api.public.products.getProductBySlug(
+    {
+      locale,
       slug,
     },
-    select: {
-      id: true,
-      slug: true,
-      collection: {
-        select: {
-          slug: true,
-          translations: {
-            where: {
-              language: locale,
-            },
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-      images: {
-        select: {
-          url: true,
-        },
-      },
-      prices: {
-        select: {
-          price: true,
-          size: true,
-        },
-        orderBy: {
-          price: "asc",
-        },
-      },
-      translations: {
-        where: {
-          language: locale,
-        },
-        select: {
-          name: true,
-          description: true,
-        },
-      },
-    },
-  });
-
-  const collectionsData = await db.collection.findMany({
-    select: {
-      translations: {
-        where: {
-          language: locale,
-        },
-        select: {
-          name: true,
-        },
-      },
-      slug: true,
-    },
-  });
-  const collections = collectionsData.flatMap(({ translations, slug }) =>
-    translations.map(({ name }) => ({
-      name,
-      slug,
-    })),
   );
-  console.log({ product });
-
   if (!product) {
-    return notFound();
+    return redirect({ locale, href: "/404" });
   }
+
+  const collections: CollectionDTO[] =
+    await api.public.collections.getAllCollections({ locale });
 
   return (
     <div>

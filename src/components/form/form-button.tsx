@@ -18,13 +18,10 @@ export const FormButton = ({
   return (
     <Button
       disabled={isLoading || isDisabled}
-      className={cn(
-        "flex w-36 items-center justify-center self-end justify-self-end",
-        className,
-      )}
+      className={cn("h-14 w-36 self-end justify-self-end", className)}
       type="submit"
     >
-      {isLoading ? <Loader className="aminate-spin" size={15} /> : label}
+      {isLoading ? <Loader className="animate-spin" /> : label}
     </Button>
   );
 };

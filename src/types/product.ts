@@ -1,30 +1,103 @@
-type CollectionTranslation = {
-  name: string;
-};
-type ProductTranslation = {
-  name: string;
-  description: string;
-};
+import type { Prisma } from "@prisma/client";
 
-type Price = {
-  size: string;
-  price: number;
-};
+export type ProductFromPrisma = Prisma.ProductGetPayload<{
+  select: {
+    id: true;
+    slug: true;
+    collection: {
+      select: {
+        slug: true;
+        translations: {
+          where: {
+            language: string;
+          };
+          select: {
+            name: true;
+          };
+        };
+      };
+    };
+    images: {
+      select: {
+        url: true;
+      };
+    };
+    prices: {
+      select: {
+        price: true;
+        size: true;
+      };
+      orderBy: {
+        price: "asc";
+      };
+    };
+    translations: {
+      where: {
+        language: string;
+      };
+      select: {
+        name: true;
+        description: true;
+      };
+    };
+  };
+}>;
 
-type Image = {
-  url: string;
-};
+export type ProductByIdFromPrisma = Prisma.ProductGetPayload<{
+  where: {
+    id: string;
+  };
+  select: {
+    id: true;
+    slug: true;
+    collection: {
+      select: {
+        slug: true;
+        translations: {
+          where: {
+            language: string;
+          };
+          select: {
+            name: true;
+          };
+        };
+      };
+    };
+    images: {
+      select: {
+        url: true;
+      };
+    };
+    prices: {
+      select: {
+        price: true;
+        size: true;
+      };
+      orderBy: {
+        price: "asc";
+      };
+    };
+    translations: {
+      where: {
+        language: string;
+      };
+      select: {
+        name: true;
+        description: true;
+      };
+    };
+  };
+}>;
 
-type Collection = {
-  slug: string;
-  translations: CollectionTranslation[];
-};
-
-export type Product = {
+export type ProductDTO = {
   id: string;
   slug: string;
-  collection: Collection | null;
-  translations: ProductTranslation[];
-  prices: Price[];
-  images: Image[];
+  name: string;
+  description: string;
+  collection?: {
+    slug: string;
+    name: string;
+  };
+  images: string[];
+  prices: { size: string; price: number }[];
 };

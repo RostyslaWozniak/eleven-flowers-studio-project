@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
@@ -20,6 +17,7 @@ model Product {
     images       ProductImage[]
     collectionId String?
     collection   Collection?          @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+    cartItem     CartItem[]
 }
 
 model ProductTranslation {
@@ -64,7 +62,32 @@ model CollectionTranslation {
     collectionId String
     language     String // e.g., 'en', 'pl', 'ru'
     name         String
+    description  String?
     collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
     @@unique([collectionId, language]) // Ensures a collection has only one translation per language
+}
+
+model Cart {
+    id        String     @id @default(uuid())
+    userId    String? // Nullable for guest carts
+    items     CartItem[] // Relation to CartItem
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+
+    @@unique([userId]) // Ensures a user has only one cart
+}
+
+model CartItem {
+    id          String  @id @default(uuid())
+    cartId      String
+    productId   String
+    productName String
+    size        String // To match ProductPrice
+    quantity    Int     @default(1)
+    price       Int // Store price at the time of adding to the cart
+    cart        Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+    product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    @@unique([cartId, productId, size]) // Prevents duplicate entries for the same product and size in a cart
 }

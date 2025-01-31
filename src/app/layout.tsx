@@ -16,6 +16,7 @@ import {
 import { routing } from "@/i18n/routing";
 
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import CartProvider from "@/context/cart-context";
 
 const philosopher = Philosopher({
   subsets: ["latin"],
@@ -41,7 +42,10 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "HomePage" });
 
   return {
-    title: t("title"),
+    title: {
+      default: t("title"),
+      template: "%s | Eleven Flowers Studio",
+    },
     description: t("description"),
   };
 }
@@ -65,9 +69,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <NextIntlClientProvider messages={messages}>
           <TRPCReactProvider>
             <NuqsAdapter>
-              <NavBar />
-              <main className="flex-grow">{children}</main>
-              <Footer />
+              <CartProvider>
+                <NavBar />
+                <main className="flex-grow">{children}</main>
+                <Footer />
+              </CartProvider>
             </NuqsAdapter>
           </TRPCReactProvider>
         </NextIntlClientProvider>

@@ -6,12 +6,12 @@ import { H2 } from "@/components/ui/typography";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { type Product } from "@/types";
+import { type ProductDTO } from "@/types";
 
 export function MostPopularProductsSection({
   products,
 }: {
-  products: Product[];
+  products: ProductDTO[];
 }) {
   const t = useTranslations("HomePage.MostPopularProductsSection");
   return (

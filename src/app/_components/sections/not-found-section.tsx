@@ -11,12 +11,9 @@ export function NotFoundSection() {
   return (
     <section>
       <MaxWidthWrapper className="flex min-h-[600px] flex-col items-center justify-center">
-        <H1>
-          {t("title")}
-          {" :("}
-        </H1>
+        <H1 className="text-9xl lg:text-9xl">404</H1>
         <Text size="subtitle" variant="muted" className="mb-8 mt-4">
-          {t("description")}
+          {t("title")}
         </Text>
         <Link href="/" className={cn(buttonVariants({ variant: "outline" }))}>
           {t("button")}

@@ -3,13 +3,14 @@ import { buttonVariants } from "@/components/ui/button";
 import { H2 } from "@/components/ui/typography";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import type { CollectionDTO } from "@/types";
 import { useTranslations } from "next-intl";
 
 export function CollectionsSection({
   collections,
   currCollectionSlug,
 }: {
-  collections: { name: string; slug: string }[];
+  collections: CollectionDTO[];
   currCollectionSlug?: string;
 }) {
   const t = useTranslations("ProductPage");

@@ -1,9 +1,10 @@
-import { type Product } from "@/types";
 import { db } from "@/server/db";
 import { getLocale } from "next-intl/server";
 import { ProductsSection } from "@/app/_components/sections/products-section";
 import { CollectionsSection, ContactSection } from "@/app/_components/sections";
-import { notFound } from "next/navigation";
+import { api } from "@/trpc/server";
+import type { ProductDTO } from "@/types";
+import { redirect } from "@/i18n/routing";
 
 export async function generateStaticParams() {
   const collections = await db.collection.findMany({
@@ -25,24 +26,16 @@ export async function generateMetadata({
   const locale = await getLocale();
   const { slug } = await params;
 
-  const collectionData = await db.collection.findUnique({
-    where: {
-      slug,
-    },
-    select: {
-      translations: {
-        where: {
-          language: locale,
-        },
-      },
-    },
+  const collection = await api.public.collections.getUniqCollectionBySlug({
+    slug,
+    locale,
   });
-  const collectionTitle = collectionData
-    ? `${collectionData?.translations[0]?.name.slice(0, 1).toUpperCase()}${collectionData?.translations[0]?.name.slice(1)} | Eleven Flowers Studio`
-    : "404 | Eleven Flowers Studio";
   return {
-    title: collectionTitle,
-    description: `This is collection - ${collectionTitle}`,
+    title:
+      collection.name.slice(0, 1).toLocaleUpperCase() +
+      collection.name.slice(1).toLocaleLowerCase(),
+    description:
+      collection.description ?? `This is collection - ${collection.name}`,
   };
 }
 
@@ -53,89 +46,26 @@ export default async function Page({
 }) {
   const { slug, locale } = await params;
 
-  const collections = await db.collection.findMany({
-    select: {
-      slug: true,
-      translations: {
-        where: {
-          language: locale,
-        },
-        select: {
-          name: true,
-        },
-      },
-    },
+  const collections = await api.public.collections.getAllCollections({
+    locale,
   });
 
   const collection = collections.find((collection) => collection.slug === slug);
 
-  if (!collection) return notFound();
+  if (!collection) {
+    return redirect({ locale, href: "/404" });
+  }
 
-  const products: Product[] = await db.product.findMany({
-    where: {
-      collection: {
-        slug: slug,
-      },
-    },
-    select: {
-      id: true,
-      slug: true,
-      collection: {
-        select: {
-          slug: true,
-          translations: {
-            where: {
-              language: locale,
-            },
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-      images: {
-        select: {
-          url: true,
-        },
-      },
-      prices: {
-        select: {
-          price: true,
-          size: true,
-        },
-        orderBy: {
-          price: "asc",
-        },
-      },
-      translations: {
-        where: {
-          language: locale,
-        },
-        select: {
-          name: true,
-          description: true,
-        },
-      },
-    },
-  });
+  const products: ProductDTO[] =
+    await api.public.products.getProductsByCollectionSlug({
+      collectionSlug: slug,
+      locale,
+    });
 
   return (
     <>
-      <ProductsSection
-        products={products}
-        title={
-          collection?.translations[0]
-            ? collection?.translations[0]?.name
-            : slug.replace("-", " ")
-        }
-      />
-      <CollectionsSection
-        currCollectionSlug={slug}
-        collections={collections.map(({ slug, translations }) => ({
-          name: translations[0]?.name ?? "",
-          slug,
-        }))}
-      />
+      <ProductsSection products={products} title={collection.name} />
+      <CollectionsSection currCollectionSlug={slug} collections={collections} />
       <ContactSection />
     </>
   );

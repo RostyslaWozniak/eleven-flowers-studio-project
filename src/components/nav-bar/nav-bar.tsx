@@ -1,10 +1,10 @@
-import { ShoppingBag } from "lucide-react";
 import { NavItem } from "./nav-item";
 import { Logo1 } from "../ui/logo";
 
 import { LandSelect } from "./lang-select";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { CartSheet } from "../cart/cart-sheet";
 
 export function NavBar() {
   const t = useTranslations("navigation");
@@ -36,7 +36,10 @@ export function NavBar() {
             </div>
           </nav>
           <div className="flex items-center gap-3">
-            <ShoppingBag className="hidden h-7 w-7 text-primary lg:block" />
+            <div className="hidden lg:block">
+              <CartSheet />
+            </div>
+
             <LandSelect />
           </div>
         </div>

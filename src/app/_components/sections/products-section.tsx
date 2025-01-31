@@ -1,7 +1,7 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { ProductCard } from "@/components/product";
 import { H1, H2 } from "@/components/ui/typography";
-import { type Product } from "@/types";
+import { type ProductDTO } from "@/types";
 import { useTranslations } from "next-intl";
 
 export function ProductsSection({
@@ -9,7 +9,7 @@ export function ProductsSection({
   products,
 }: {
   title: string;
-  products: Product[];
+  products: ProductDTO[];
 }) {
   const t = useTranslations("ProductPage");
   return (

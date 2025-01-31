@@ -61,7 +61,7 @@ export const ProductForm = () => {
   });
 
   const { mutate: createProduct, isPending: isCreating } =
-    api.product.createProduct.useMutation({
+    api.admin.products.createProduct.useMutation({
       onSuccess: () => {
         console.log("Product created");
         form.reset();
