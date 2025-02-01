@@ -6,6 +6,17 @@
     "contact": "Contact",
     "cart": "Cart"
   },
+  "Cart": {
+    "title": "Your Cart",
+    "totalPrice": "Price",
+    "totalItems": "Items",
+    "button": "Proceed to cart",
+    "emptyCart": {
+      "title": "Your cart is empty",
+      "subtitle": "Looks like you haven't added anything to your cart yet.",
+      "button": "Start Shopping"
+    }
+  },
   "HomePage": {
     "title": "Eleven Flowers Studio - Perfect gifts for you",
     "description": "In our floral studio, we believe in creating stunning floral compositions that tell a story.",

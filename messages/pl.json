@@ -6,6 +6,17 @@
     "contact": "Kontakt",
     "cart": "Koszyk"
   },
+  "Cart": {
+    "title": "Twój koszyk",
+    "totalPrice": "Suma",
+    "totalItems": "Produkty",
+    "button": "Przejdź do koszyka",
+    "emptyCart": {
+      "title": "Twój koszyk jest pusty",
+      "subtitle": "Wygląda na to, że nie dodałeś jeszcze niczego do koszyka.",
+      "button": "Rozpocznij zakupy"
+    }
+  },
   "HomePage": {
     "title": "Eleven Flowers Studio - Idealne prezenty dla Ciebie",
     "description": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",

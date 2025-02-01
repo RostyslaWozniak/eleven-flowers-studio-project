@@ -4,6 +4,7 @@ import { useCart } from "@/context/cart-context";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type CartSheetTriggerProps = {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export const CartSheetTrigger = ({
   setIsOpen,
 }: CartSheetTriggerProps) => {
   const { cartItems } = useCart();
+  const t = useTranslations("navigation");
 
   return (
     <motion.div
@@ -52,7 +54,7 @@ export const CartSheetTrigger = ({
         )}
       </button>
       <span className="mt-1 text-center text-xs font-medium md:hidden">
-        Cart
+        {t("cart")}
       </span>
     </motion.div>
   );

@@ -1,14 +1,16 @@
+"use client";
+
 import { NavItem } from "./nav-item";
 import { Logo1 } from "../ui/logo";
-
-import { LandSelect } from "./lang-select";
+import { LangSelect } from "./lang-select";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { CartSheet } from "../cart/cart-sheet";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function NavBar() {
   const t = useTranslations("navigation");
-
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   return (
     <header className="inset-x-0 top-0 z-50 w-screen bg-background/70 shadow-md shadow-foreground/20 backdrop-blur-sm md:sticky">
       <div className="mx-auto max-w-[1400px]">
@@ -36,11 +38,8 @@ export function NavBar() {
             </div>
           </nav>
           <div className="flex items-center gap-3">
-            <div className="hidden lg:block">
-              <CartSheet />
-            </div>
-
-            <LandSelect />
+            {isDesktop && <CartSheet />}
+            <LangSelect />
           </div>
         </div>
       </div>

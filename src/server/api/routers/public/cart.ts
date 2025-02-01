@@ -4,10 +4,11 @@ import { mapProductToDTO } from "@/lib/utils/dto";
 import type { CartItem } from "@/types";
 
 const mutateCartSchema = z.object({
+  cartItemId: z.string(),
   cartId: z.string().uuid().nullable(),
   productId: z.string(),
   size: z.string(),
-  quantity: z.number(),
+  quantity: z.number().min(1),
   locale: z.string(),
 });
 
@@ -42,6 +43,9 @@ export const cartRouter = createTRPCRouter({
             },
           },
           prices: {
+            where: {
+              size: input.size,
+            },
             select: {
               price: true,
               size: true,
@@ -69,109 +73,74 @@ export const cartRouter = createTRPCRouter({
       // MAP TO DTO
       const product = mapProductToDTO(productFromPrisma);
 
-      // CREATE NEW CART IF CART ID = NULL
-      if (!input.cartId) {
-        const newCart = await ctx.db.cart.create({
-          data: {},
+      // Step 1: Check if cart ID is provided
+      let cart;
+      if (input.cartId) {
+        cart = await ctx.db.cart.findUnique({
+          where: { id: input.cartId },
+          include: { items: true },
         });
-        // CREATE CART ITEM
-        await ctx.db.cartItem.create({
-          data: {
-            cartId: newCart.id,
-            productId: input.productId,
-            size: input.size,
-            quantity: input.quantity,
-            imageUrl: product.images[0]!,
-            price:
-              product.prices.find(({ size }) => size === input.size)?.price ??
-              0,
-            productName: product.name,
-          },
-        });
-
-        return {
-          cartId: newCart.id,
-          message: "Cart created. Cart id was null. Cart items created",
-        };
       }
-
-      // CHECK IF CART EXISTS
-      const cart = await ctx.db.cart.findUnique({
-        where: {
-          id: input.cartId,
-        },
-        select: {
-          items: true,
-          id: true,
-        },
-      });
-      // CHECK IF CART EXISTS BY INPUT ID
+      // Step 2: If cart doesn't exist, create a new one
       if (!cart) {
-        const newCart = await ctx.db.cart.create({
-          data: {},
-        });
-
-        await ctx.db.cartItem.create({
+        cart = await ctx.db.cart.create({
           data: {
-            cartId: newCart.id,
-            productId: input.productId,
-            size: input.size,
-            quantity: input.quantity,
-            imageUrl: product.images[0]!,
-            price:
-              product.prices.find(({ size }) => size === input.size)?.price ??
-              0,
-            productName: product.name,
+            items: {
+              create: {
+                id: input.cartItemId,
+                productId: product.id,
+                productName: product.name,
+                price: product.prices[0]?.price ?? 0,
+                size: input.size,
+                quantity: input.quantity,
+                imageUrl:
+                  product.images[0] ?? "/images/bouquet-placeholder.jpg",
+              },
+            },
           },
+          include: { items: true },
         });
-
-        return {
-          cartId: newCart.id,
-          message: "Cart created. Product added to cart",
-        };
+        return { cartId: cart.id, message: "New cart created with item." };
       }
 
-      const cartItem = cart.items.find(
-        (item) =>
-          item.productId === input.productId && item.size === input.size,
-      );
+      // Step 3: Check if cart item exists
+      const existingCartItem = cart.items.find((item) => {
+        return item.id === input.cartItemId;
+      });
 
-      if (!cartItem) {
+      if (existingCartItem) {
+        // Step 4: Update quantity if item already exists
+        await ctx.db.cartItem.update({
+          where: { id: existingCartItem.id },
+          data: { quantity: input.quantity },
+        });
+
+        return { cartId: cart.id, message: "Cart item updated." };
+      } else {
+        // Step 5: Create a new cart item if not exists
         await ctx.db.cartItem.create({
           data: {
+            id: input.cartItemId,
             cartId: cart.id,
             productId: input.productId,
+            productName: product.name,
             size: input.size,
             quantity: input.quantity,
-            imageUrl: product.images[0]!,
-            price:
-              product.prices.find(({ size }) => size === input.size)?.price ??
-              0,
-            productName: product.name,
+            price: product.prices[0]?.price ?? 0,
+            imageUrl: product.images[0] ?? "/images/bouquet-placeholder.jpg",
           },
         });
 
-        return { cartId: cart.id, message: "CREATED CART ITEM" };
+        return { cartId: cart.id, message: "New cart item added." };
       }
-
-      // If cart item exists update quantity
-      await ctx.db.cartItem.update({
-        where: {
-          id: cartItem.id,
-        },
-        data: {
-          quantity: input.quantity,
-        },
-      });
-      return { cartId: cart.id, message: "UPDATED CART ITEM" };
     }),
 
   removeCartItem: publicProcedure
-    .input(z.object({ cartItemId: z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       await ctx.db.cartItem.delete({
         where: {
-          id: input.cartItemId,
+          id: input.id,
         },
       });
     }),
