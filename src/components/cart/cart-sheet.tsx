@@ -3,6 +3,7 @@
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
@@ -26,9 +27,10 @@ export function CartSheet() {
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
       <CartSheetTrigger isOpen={isCartOpen} setIsOpen={setIsCartOpen} />
 
-      <SheetContent className="flex flex-col p-2 pb-24 lg:pb-4">
+      <SheetContent className="flex flex-col p-2 pb-24 lg:p-4 lg:pb-4">
         <SheetHeader>
           <SheetTitle>{t("title")}</SheetTitle>
+          <SheetDescription></SheetDescription>
         </SheetHeader>
         <div className="flex-grow">
           {cartItems.length === 0 && <EmptyCart />}
@@ -53,7 +55,7 @@ export function CartSheet() {
           </div>
           <Link
             className={cn(buttonVariants({ variant: "default" }), "w-min px-4")}
-            href="/cart"
+            href="/checkout"
           >
             {t("button")}
           </Link>

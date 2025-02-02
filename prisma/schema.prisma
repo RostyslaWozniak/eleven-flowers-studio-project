@@ -86,7 +86,8 @@ model CartItem {
     size        String // To match ProductPrice
     quantity    Int      @default(1)
     imageUrl    String
-    price       Int // Store price at the time of adding to the cart
+    slug        String
+    price       Int? // Store price at the time of adding to the cart
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     cart        Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)

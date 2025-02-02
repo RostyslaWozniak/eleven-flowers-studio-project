@@ -46,6 +46,7 @@ export const cartRouter = createTRPCRouter({
             where: {
               size: input.size,
             },
+
             select: {
               price: true,
               size: true,
@@ -90,7 +91,8 @@ export const cartRouter = createTRPCRouter({
                 id: input.cartItemId,
                 productId: product.id,
                 productName: product.name,
-                price: product.prices[0]?.price ?? 0,
+                slug: product.slug,
+                price: product.prices[0]?.price ?? null,
                 size: input.size,
                 quantity: input.quantity,
                 imageUrl:
@@ -126,7 +128,8 @@ export const cartRouter = createTRPCRouter({
             productName: product.name,
             size: input.size,
             quantity: input.quantity,
-            price: product.prices[0]?.price ?? 0,
+            slug: product.slug,
+            price: product.prices[0]?.price ?? null,
             imageUrl: product.images[0] ?? "/images/bouquet-placeholder.jpg",
           },
         });
@@ -166,6 +169,7 @@ export const cartRouter = createTRPCRouter({
         id: item.id,
         productId: item.productId,
         productName: item.productName,
+        slug: item.slug,
         price: item.price,
         imageUrl: item.imageUrl,
         size: item.size,

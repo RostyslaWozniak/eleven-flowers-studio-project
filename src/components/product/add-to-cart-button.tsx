@@ -5,22 +5,19 @@ import { Button } from "../ui/button";
 import { useCart } from "@/context/cart-context";
 import { useQueryState } from "nuqs";
 import { useDebounce } from "@/hooks/use-debounce";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { api } from "@/trpc/react";
 import { useLocale } from "next-intl";
 
 export function AddToCartButton({
-  label,
   product,
+  label,
 }: {
-  label: string;
   product: ProductDTO;
+  label?: string;
 }) {
   const locale = useLocale();
-  const { addProductToCart, cartItems, storedCartId, setIsCartOpen } =
-    useCart();
-
-  const [cartItemId, setCartItemId] = useState<string | null>(null);
+  const { cartItems, storedCartId, addOneToCart, setIsCartOpen } = useCart();
 
   const [sizeQuery] = useQueryState("size", {
     defaultValue: product.prices[0]?.size ?? "",
@@ -30,16 +27,19 @@ export function AddToCartButton({
       onSuccess: (result) => localStorage.setItem("cartId", result.cartId),
     });
 
-  const handleClick = () => {
-    const { cartItemId: newCartItemId } = addProductToCart({
+  // ADD PRODUCT TO CART FOR FIRST TIME
+  const addProductToCart = () => {
+    addOneToCart({
       id: product.id,
       name: product.name,
-      price: product.prices.find(({ size }) => size === sizeQuery)?.price ?? 0,
-      imageUrl: product.images[0]!,
+      price:
+        product.prices.find(({ size }) => size === sizeQuery)?.price ?? null,
+      slug: product.slug,
       size: sizeQuery,
+      imageUrl: product.images[0] ?? "",
     });
-    setCartItemId(newCartItemId);
-    setIsCartOpen(true);
+
+    setTimeout(() => setIsCartOpen(true), 300);
   };
 
   const clientQuantity = cartItems?.find(
@@ -50,10 +50,8 @@ export function AddToCartButton({
 
   useEffect(() => {
     if (debouncedQuantity === undefined) return;
-    if (cartItemId === null) return;
-
     setCartItemQuantity({
-      cartItemId: cartItemId,
+      cartItemId: product.id + sizeQuery,
       cartId: storedCartId,
       productId: product.id,
       size: sizeQuery,
@@ -61,10 +59,10 @@ export function AddToCartButton({
       locale,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedQuantity, cartItemId, setCartItemQuantity]);
+  }, [debouncedQuantity, setCartItemQuantity]);
 
   return (
-    <Button disabled={Boolean(clientQuantity)} onClick={handleClick}>
+    <Button disabled={Boolean(clientQuantity)} onClick={addProductToCart}>
       {Boolean(clientQuantity) ? "Jest w koszyku" : label}
     </Button>
   );

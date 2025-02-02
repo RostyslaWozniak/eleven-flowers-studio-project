@@ -5,6 +5,8 @@ import type { CartItem } from "@/types";
 import { useLocale } from "next-intl";
 import {
   createContext,
+  type Dispatch,
+  type SetStateAction,
   useCallback,
   useContext,
   useEffect,
@@ -12,28 +14,29 @@ import {
   useState,
 } from "react";
 
-type AddProductType = {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  size: string;
-};
-
 type CartContextTypes = {
   cartItems: CartItem[];
   storedCartId: string | null;
   isCartOpen: boolean;
   totalItems: number;
   totalPrice: number;
-  addProductToCart: (product: AddProductType) => {
-    cartItemId: string;
-  };
+  setCartItems: Dispatch<SetStateAction<CartItem[]>>;
+  addOneToCart: (product: AddProductType) => void;
+  removeCartItem: (id: string) => void;
   removeOneFromCart: (productId: string, size: string) => void;
   setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CartContext = createContext<CartContextTypes | null>(null);
+
+type AddProductType = {
+  id: string;
+  name: string;
+  price: number | null;
+  imageUrl: string;
+  size: string;
+  slug: string;
+};
 
 export default function CartProvider({ children }: React.PropsWithChildren) {
   const locale = useLocale();
@@ -50,21 +53,21 @@ export default function CartProvider({ children }: React.PropsWithChildren) {
     { enabled: Boolean(storedCartId) },
   );
 
-  const { mutate: removeCartItem } =
+  const { mutate: removeCartItemOnServer } =
     api.public.cart.removeCartItem.useMutation();
 
-  const addProductToCart = (product: AddProductType) => {
-    const productExistsInCart = cartItems.find(
+  const addOneToCart = (product: AddProductType) => {
+    const cartItemExists = cartItems.find(
       (item) => item.productId === product.id && item.size === product.size,
     );
-    const newCartItemId = crypto.randomUUID();
-    if (!productExistsInCart) {
+    if (!cartItemExists) {
       setCartItems((prev) => {
         return [
           {
-            id: newCartItemId,
+            id: product.id + product.size,
             productId: product.id,
             productName: product.name,
+            slug: product.slug,
             price: product.price,
             size: product.size,
             imageUrl: product.imageUrl,
@@ -73,17 +76,15 @@ export default function CartProvider({ children }: React.PropsWithChildren) {
           ...prev,
         ];
       });
-      return { cartItemId: newCartItemId };
+    } else {
+      setCartItems((prev) =>
+        prev.map((item) =>
+          item.productId === product.id && item.size === product.size
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        ),
+      );
     }
-
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.productId === product.id && item.size === product.size
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      ),
-    );
-    return { cartItemId: productExistsInCart.id };
   };
 
   const removeOneFromCart = useCallback(
@@ -91,10 +92,10 @@ export default function CartProvider({ children }: React.PropsWithChildren) {
       const item = cartItems.find(
         (item) => item.productId === productId && item.size === size,
       );
-      console.log(item);
+      if (!item) return console.log("No Item");
 
       if (item && (item?.quantity ?? 0) - 1 < 1) {
-        removeCartItem({ id: item.id });
+        removeCartItemOnServer({ id: item.id });
       }
 
       setCartItems((prev) => {
@@ -111,10 +112,18 @@ export default function CartProvider({ children }: React.PropsWithChildren) {
     [cartItems],
   );
 
+  const removeCartItem = (id: string) => {
+    setCartItems((prev) => {
+      return prev?.filter((item) => item.id !== id);
+    });
+    removeCartItemOnServer({ id });
+  };
+
   const totalItems =
     cartItems?.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
   const totalPrice =
-    cartItems?.reduce((sum, item) => sum + item.price * item.quantity, 0) ?? 0;
+    cartItems?.reduce((sum, item) => sum + item.price! * item.quantity, 0) ??
+    "N/A";
 
   useEffect(() => {
     setCartItems(serverCartItems ?? []);
@@ -136,9 +145,11 @@ export default function CartProvider({ children }: React.PropsWithChildren) {
   return (
     <CartContext.Provider
       value={{
-        addProductToCart,
         removeOneFromCart,
         setIsCartOpen,
+        removeCartItem,
+        setCartItems,
+        addOneToCart,
         ...contextValue,
       }}
     >
