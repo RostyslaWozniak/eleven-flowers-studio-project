@@ -40,6 +40,7 @@ export const productsRouter = createTRPCRouter({
           where: {
             id: input.id,
           },
+
           select: {
             id: true,
             slug: true,
@@ -61,6 +62,7 @@ export const productsRouter = createTRPCRouter({
                 url: true,
               },
             },
+
             prices: {
               select: {
                 price: true,
@@ -74,6 +76,7 @@ export const productsRouter = createTRPCRouter({
               where: {
                 language: input.locale,
               },
+
               select: {
                 name: true,
                 description: true,
@@ -137,60 +140,142 @@ export const productsRouter = createTRPCRouter({
 
       return product ? mapProductToDTO(product) : null;
     }),
+
   // GET ALL PRODUCTS
   getAllProducts: publicProcedure
     .input(getAllProductsSchema)
-    .query(async ({ ctx, input }): Promise<ProductDTO[]> => {
-      const products: ProductFromPrisma[] = await ctx.db.product.findMany({
-        select: {
-          id: true,
-          slug: true,
-          collection: {
+    .query(
+      async ({
+        ctx,
+        input,
+      }): Promise<{ products: ProductDTO[]; productsCount: number }> => {
+        let products: ProductFromPrisma[];
+
+        const productsCount = await ctx.db.product.count();
+
+        if (input.orderBy === "price") {
+          const orderedProductIds = await ctx.db.productPrice.groupBy({
+            by: ["productId"],
+            _min: {
+              price: true,
+            },
+            orderBy: {
+              _min: {
+                price: input.order,
+              },
+            },
+
+            take: input.take,
+            skip: input.skip,
+          });
+
+          // Extract ordered product IDs
+          const productIdsInOrder = orderedProductIds.map((p) => p.productId);
+          // QUERY PRODUCTS
+          products = await ctx.db.product.findMany({
+            where: {
+              id: { in: productIdsInOrder },
+            },
             select: {
+              id: true,
               slug: true,
+              collection: {
+                select: {
+                  slug: true,
+                  translations: {
+                    where: {
+                      language: input.locale,
+                    },
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+              images: {
+                select: {
+                  url: true,
+                },
+              },
+              prices: {
+                select: {
+                  price: true,
+                  size: true,
+                },
+                orderBy: {
+                  price: "asc",
+                },
+              },
               translations: {
                 where: {
                   language: input.locale,
                 },
                 select: {
                   name: true,
+                  description: true,
                 },
               },
             },
-          },
-          images: {
-            select: {
-              url: true,
+          });
+          const orderedProducts = productIdsInOrder.map((id) =>
+            products.find((product) => product.id === id),
+          );
+          return {
+            products: mapProductsToDTO(
+              orderedProducts.filter((product) => product !== undefined),
+            ),
+            productsCount,
+          };
+        }
+        products = await ctx.db.product.findMany({
+          select: {
+            id: true,
+            slug: true,
+            collection: {
+              select: {
+                slug: true,
+                translations: {
+                  where: {
+                    language: input.locale,
+                  },
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+            images: {
+              select: {
+                url: true,
+              },
+            },
+            prices: {
+              select: {
+                price: true,
+                size: true,
+              },
+              orderBy: {
+                price: "asc",
+              },
+            },
+            translations: {
+              where: {
+                language: input.locale,
+              },
+              select: {
+                name: true,
+                description: true,
+              },
             },
           },
-          prices: {
-            select: {
-              price: true,
-              size: true,
-            },
-            orderBy: {
-              price: "asc",
-            },
-          },
-          translations: {
-            where: {
-              language: input.locale,
-            },
-            select: {
-              name: true,
-              description: true,
-            },
-          },
-        },
-        take: input.take,
-        skip: input.skip,
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
+          take: input.take,
+          skip: input.skip,
+          orderBy: {},
+        });
 
-      return mapProductsToDTO(products);
-    }),
+        return { productsCount, products: mapProductsToDTO(products) };
+      },
+    ),
   // GET PRODUCTS BY COLLECTION SLUG
   getProductsByCollectionSlug: publicProcedure
     .input(getProductsByCollectionSlugSchema)

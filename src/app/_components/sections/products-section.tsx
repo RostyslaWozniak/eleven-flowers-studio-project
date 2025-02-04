@@ -17,7 +17,7 @@ export function ProductsSection({
       <MaxWidthWrapper className="my-12 space-y-8 lg:my-24 lg:space-y-14">
         <H1 className="capitalize md:text-center">{title}</H1>
         {products.length > 0 ? (
-          <div className="grid grid-cols-1 gap-x-4 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

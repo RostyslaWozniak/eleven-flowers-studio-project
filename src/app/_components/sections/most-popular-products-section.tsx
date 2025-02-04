@@ -21,13 +21,17 @@ export function MostPopularProductsSection({
         <div className="scrollbar-hide flex w-full gap-4 overflow-x-scroll px-2.5 lg:grid lg:grid-cols-4 lg:gap-8">
           {products.map((product) => (
             <div key={product.id} className="min-h-full">
-              <ProductCard product={product} className="min-w-[300px]" />
+              <ProductCard
+                product={product}
+                className="min-w-[300px]"
+                textMobileLarge
+              />
             </div>
           ))}
         </div>
 
         <Link
-          href={"/collections"}
+          href={"/products"}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           {t("seeMoreButton")} <ArrowRight className="min-h-6 min-w-6" />

@@ -9,9 +9,11 @@ import { Link } from "@/i18n/routing";
 export function ProductCard({
   product,
   className,
+  textMobileLarge,
 }: {
   product: ProductDTO;
   className?: string;
+  textMobileLarge?: boolean;
 }) {
   const t = useTranslations("ProductPage");
   return (
@@ -41,10 +43,25 @@ export function ProductCard({
               <div className="absolute inset-0 -z-10 animate-pulse bg-secondary"></div>
             </div>
             <div className="flex flex-grow flex-col items-center justify-center space-y-2 px-2">
-              <H3 className="mt-2 font-normal capitalize group-hover:underline">
+              <H3
+                className={cn(
+                  "mt-2 text-base font-normal capitalize group-hover:underline sm:text-lg md:text-2xl",
+                  {
+                    "text-2xl sm:text-2xl md:text-3xl": textMobileLarge,
+                  },
+                )}
+              >
                 {product.name}
               </H3>
-              <Text size="subtitle" className="text-2xl font-bold text-primary">
+              <Text
+                size="subtitle"
+                className={cn(
+                  "text-base font-bold text-primary sm:text-lg md:text-2xl",
+                  {
+                    "text-2xl": textMobileLarge,
+                  },
+                )}
+              >
                 {t("priceFrom")}{" "}
                 {product.prices[0] && formatPrice(product.prices[0].price)}
               </Text>

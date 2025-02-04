@@ -9,7 +9,6 @@ import {
   ContactSection,
 } from "../_components/sections";
 import { setRequestLocale } from "next-intl/server";
-import { type ProductDTO } from "@/types";
 import { api } from "@/trpc/server";
 
 export function generateStaticParams() {
@@ -24,7 +23,7 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const products: ProductDTO[] = await api.public.products.getAllProducts({
+  const { products } = await api.public.products.getAllProducts({
     locale,
     take: 4,
   });
