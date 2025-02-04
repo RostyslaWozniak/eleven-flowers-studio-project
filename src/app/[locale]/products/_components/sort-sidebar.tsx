@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Coins, Gem, Gift, Star } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useRouter } from "@/i18n/routing";
+import { H2 } from "@/components/ui/typography";
 
 const sidebarItems = [
   {
@@ -30,7 +31,9 @@ const sidebarItems = [
 ];
 
 export const SortSidebar = () => {
-  const [sort] = useQueryState("sort");
+  const [sort] = useQueryState("sort", {
+    defaultValue: "new",
+  });
 
   const router = useRouter();
 
@@ -38,8 +41,10 @@ export const SortSidebar = () => {
     <aside className="min-w-min py-4 md:py-20">
       <nav className="sticky top-0 space-y-8 md:top-20 md:pr-4">
         <div>
-          <h2 className="mb-2 px-2.5 text-xs uppercase">sortowanie</h2>
-          <ul className="scrollbar-hide flex w-screen items-start gap-x-2 gap-y-1 overflow-x-scroll px-2.5 sm:w-min sm:overflow-x-visible md:flex-col">
+          <H2 className="mb-2 px-2.5 text-start text-base uppercase md:text-start md:text-base lg:text-base">
+            sortowanie
+          </H2>
+          <ul className="scrollbar-hide flex w-screen items-start gap-x-2 gap-y-1 overflow-x-scroll px-2.5 py-1 sm:w-min sm:overflow-visible md:flex-col">
             {sidebarItems.map(({ query, label, icon: Icon }) => (
               <li key={query}>
                 <Button

@@ -1,5 +1,8 @@
+import Pagination from "@/components/pagination";
 import { ProductCard } from "@/components/product";
 import { api } from "@/trpc/server";
+
+const PRODUCTS_PER_PAGE = 6;
 
 const mapSortQueryToPrisma = (
   sortQuery: "new" | "popular" | "price-desc" | "price-asc",
@@ -23,19 +26,19 @@ export default async function Page({
 }) {
   const { locale } = await params;
 
-  const { sort } = await searchParams;
+  const { sort, page } = await searchParams;
 
-  const { products } = await api.public.products.getAllProducts({
+  const { products, productsCount } = await api.public.products.getAllProducts({
     locale: locale,
-    take: 9,
-    skip: 0,
+    take: PRODUCTS_PER_PAGE,
+    skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     orderBy: sort
       ? Object.keys(
           mapSortQueryToPrisma(
             sort as "new" | "popular" | "price-desc" | "price-asc",
           ),
         )[0]
-      : undefined,
+      : "createdAt",
     order: sort
       ? (Object.values(
           mapSortQueryToPrisma(
@@ -46,11 +49,14 @@ export default async function Page({
   });
 
   return (
-    <div>
-      <div className="grid w-full grid-cols-2 gap-x-4 gap-y-12 px-2.5 py-4 sm:grid-cols-2 md:py-20 lg:grid-cols-2 xl:grid-cols-3">
+    <div className="w-full space-y-10 py-4 md:py-20">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-12 px-2.5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
+      </div>
+      <div className="flex justify-center md:justify-end">
+        <Pagination totalPages={Math.ceil(productsCount / PRODUCTS_PER_PAGE)} />
       </div>
     </div>
   );
