@@ -4,28 +4,16 @@ import type { ProductDTO } from "@/types";
 import { Button } from "../ui/button";
 import { useCart } from "@/context/cart-context";
 import { useQueryState } from "nuqs";
-import { useDebounce } from "@/hooks/use-debounce";
-import { useEffect } from "react";
-import { api } from "@/trpc/react";
-import { useLocale } from "next-intl";
+import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 
-export function AddToCartButton({
-  product,
-  label,
-}: {
-  product: ProductDTO;
-  label?: string;
-}) {
-  const locale = useLocale();
-  const { cartItems, storedCartId, addOneToCart, setIsCartOpen } = useCart();
+export function AddToCartButton({ product }: { product: ProductDTO }) {
+  const { cartItems, addOneToCart, setIsCartOpen } = useCart();
+  const t = useTranslations("ProductPage");
 
   const [sizeQuery] = useQueryState("size", {
     defaultValue: product.prices[0]?.size ?? "",
   });
-  const { mutate: setCartItemQuantity } =
-    api.public.cart.mutateCart.useMutation({
-      onSuccess: (result) => localStorage.setItem("cartId", result.cartId),
-    });
 
   // ADD PRODUCT TO CART FOR FIRST TIME
   const addProductToCart = () => {
@@ -38,32 +26,22 @@ export function AddToCartButton({
       size: sizeQuery,
       imageUrl: product.images[0] ?? "",
     });
-
-    setTimeout(() => setIsCartOpen(true), 300);
+    if (cartItems.length === 0) {
+      setTimeout(() => setIsCartOpen(true), 300);
+    }
   };
 
-  const clientQuantity = cartItems?.find(
-    (item) => item.productId === product.id && item.size === sizeQuery,
-  )?.quantity;
-
-  const debouncedQuantity = useDebounce(clientQuantity, 1000);
-
-  useEffect(() => {
-    if (debouncedQuantity === undefined) return;
-    setCartItemQuantity({
-      cartItemId: product.id + sizeQuery,
-      cartId: storedCartId,
-      productId: product.id,
-      size: sizeQuery,
-      quantity: debouncedQuantity,
-      locale,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedQuantity, setCartItemQuantity]);
+  const existingCartItem = useMemo(
+    () =>
+      cartItems?.find(
+        (item) => item.productId === product.id && item.size === sizeQuery,
+      ),
+    [cartItems, product.id, sizeQuery],
+  );
 
   return (
-    <Button disabled={Boolean(clientQuantity)} onClick={addProductToCart}>
-      {Boolean(clientQuantity) ? "Jest w koszyku" : label}
+    <Button disabled={Boolean(existingCartItem)} onClick={addProductToCart}>
+      {Boolean(existingCartItem) ? t("inCart") : t("addToCart")}
     </Button>
   );
 }

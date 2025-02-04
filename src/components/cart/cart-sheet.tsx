@@ -54,6 +54,7 @@ export function CartSheet() {
             </p>
           </div>
           <Link
+            onClick={() => setIsCartOpen(false)}
             className={cn(buttonVariants({ variant: "default" }), "w-min px-4")}
             href="/checkout"
           >

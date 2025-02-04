@@ -4,10 +4,6 @@ import { Button } from "@/components/ui/button";
 import type { CartItem } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/context/cart-context";
-import { useLocale } from "next-intl";
-import { useDebounce } from "@/hooks/use-debounce";
-import { useEffect } from "react";
-import { api } from "@/trpc/react";
 import { Link } from "@/i18n/routing";
 import { motion } from "framer-motion";
 
@@ -16,35 +12,8 @@ interface CartItemProps {
 }
 
 export function CartItem({ cartItem }: CartItemProps) {
-  const {
-    removeOneFromCart,
-    removeCartItem,
-    addOneToCart,
-    storedCartId,
-    setIsCartOpen,
-  } = useCart();
-
-  const locale = useLocale();
-
-  const { mutate: setCartItemQuantity } =
-    api.public.cart.mutateCart.useMutation({
-      onSuccess: (result) => localStorage.setItem("cartId", result.cartId),
-    });
-
-  const debouncedQuantity = useDebounce(cartItem.quantity, 1000);
-
-  useEffect(() => {
-    if (debouncedQuantity === undefined) return;
-    setCartItemQuantity({
-      cartItemId: cartItem.id,
-      cartId: storedCartId,
-      productId: cartItem.productId,
-      size: cartItem.size,
-      quantity: debouncedQuantity,
-      locale,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedQuantity, setCartItemQuantity]);
+  const { removeOneFromCart, removeCartItem, addOneToCart, setIsCartOpen } =
+    useCart();
 
   return (
     <motion.div
@@ -60,7 +29,10 @@ export function CartItem({ cartItem }: CartItemProps) {
         />
       </div>
       <div className="flex-grow">
-        <Link href={`/products/${cartItem.slug}`} className="hover:underline">
+        <Link
+          href={`/products/${cartItem.slug}?size=${cartItem.size}`}
+          className="hover:underline"
+        >
           <h3
             className="text-lg font-semibold text-gray-900"
             onClick={() => setIsCartOpen(false)}

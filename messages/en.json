@@ -6,11 +6,17 @@
     "contact": "Contact",
     "cart": "Cart"
   },
+  "Form": {
+    "field-required": "Field is required",
+    "field-min": "Field is required",
+    "field-max": "Field is required",
+    "postal-code-not-deliverable": "Delivery not available in this area."
+  },
   "Cart": {
     "title": "Your Cart",
     "totalPrice": "Price",
     "totalItems": "Items",
-    "button": "Proceed to cart",
+    "button": "Proceed to checkout",
     "emptyCart": {
       "title": "Your cart is empty",
       "subtitle": "Looks like you haven't added anything to your cart yet.",
@@ -138,6 +144,7 @@
   "ProductPage": {
     "size": "Size",
     "addToCart": "Add to Cart",
+    "inCart": "In cart",
     "collections": "Collections",
     "relatedProducts": "Related Products",
     "noProductsFound": "No products found.",
@@ -163,5 +170,24 @@
     "title": "Page Not Found",
     "description": "The page you are looking for could not be found.",
     "button": "Go Home"
+  },
+  "Checkout": {
+    "summary": {
+      "title": "Order Summary",
+      "total": "Total",
+      "size": "Size"
+    },
+    "details": {
+      "title": "Your Details",
+      "form": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "address": "Address",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "button": "Go to Payment"
+      }
+    }
   }
 }

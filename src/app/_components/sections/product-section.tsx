@@ -47,7 +47,7 @@ export function ProductSection({ product }: { product: ProductDTO }) {
           />
 
           <div className="flex justify-center sm:justify-start">
-            <AddToCartButton label={t("addToCart")} product={product} />
+            <AddToCartButton product={product} />
           </div>
         </div>
       </MaxWidthWrapper>

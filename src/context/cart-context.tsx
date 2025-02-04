@@ -1,5 +1,6 @@
 "use client";
 
+import { useDebounceCallback } from "@/hooks/use-debounce-callback";
 import { api } from "@/trpc/react";
 import type { CartItem } from "@/types";
 import { useLocale } from "next-intl";
@@ -29,7 +30,7 @@ type CartContextTypes = {
 
 const CartContext = createContext<CartContextTypes | null>(null);
 
-type AddProductType = {
+export type AddProductType = {
   id: string;
   name: string;
   price: number | null;
@@ -38,7 +39,11 @@ type AddProductType = {
   slug: string;
 };
 
-export default function CartProvider({ children }: React.PropsWithChildren) {
+export default function CartProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const locale = useLocale();
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -56,13 +61,23 @@ export default function CartProvider({ children }: React.PropsWithChildren) {
   const { mutate: removeCartItemOnServer } =
     api.public.cart.removeCartItem.useMutation();
 
+  const { mutate: setServerCartItem } = api.public.cart.mutateCart.useMutation({
+    onSuccess: (data) => {
+      localStorage.setItem("cartId", data.cartId);
+    },
+  });
+
+  const debouncedUpdateCart = useDebounceCallback(setServerCartItem, 500);
+
   const addOneToCart = (product: AddProductType) => {
-    const cartItemExists = cartItems.find(
-      (item) => item.productId === product.id && item.size === product.size,
-    );
-    if (!cartItemExists) {
-      setCartItems((prev) => {
-        return [
+    setCartItems((prev) => {
+      const cartItemExists = prev.find(
+        (item) => item.productId === product.id && item.size === product.size,
+      );
+
+      let updatedCart;
+      if (!cartItemExists) {
+        updatedCart = [
           {
             id: product.id + product.size,
             productId: product.id,
@@ -75,39 +90,70 @@ export default function CartProvider({ children }: React.PropsWithChildren) {
           },
           ...prev,
         ];
-      });
-    } else {
-      setCartItems((prev) =>
-        prev.map((item) =>
+      } else {
+        updatedCart = prev.map((item) =>
           item.productId === product.id && item.size === product.size
             ? { ...item, quantity: item.quantity + 1 }
             : item,
-        ),
+        );
+      }
+
+      // Find the updated item and debounce its API update
+      const updatedItem = updatedCart.find(
+        (item) => item.productId === product.id && item.size === product.size,
       );
-    }
+      if (updatedItem) {
+        debouncedUpdateCart({
+          cartItemId: updatedItem.id,
+          cartId: storedCartId,
+          productId: updatedItem.productId,
+          size: updatedItem.size,
+          locale,
+          quantity: updatedItem.quantity,
+        });
+      }
+
+      return updatedCart;
+    });
   };
 
   const removeOneFromCart = useCallback(
     (productId: string, size: string) => {
+      let updatedCart;
       const item = cartItems.find(
         (item) => item.productId === productId && item.size === size,
       );
-      if (!item) return console.log("No Item");
 
       if (item && (item?.quantity ?? 0) - 1 < 1) {
         removeCartItemOnServer({ id: item.id });
       }
 
       setCartItems((prev) => {
-        const newCartItems = prev.map((item) =>
+        updatedCart = prev.map((item) =>
           item.productId === productId && item.size === size
             ? { ...item, quantity: item.quantity - 1 }
             : item,
         );
-        return newCartItems.filter((item) => item.quantity);
+
+        // Find the updated item and debounce its API update
+        const updatedItem = updatedCart.find(
+          (item) => item.productId === productId && item.size === size,
+        );
+        if (updatedItem) {
+          debouncedUpdateCart({
+            cartItemId: updatedItem.id,
+            cartId: storedCartId,
+            productId: updatedItem.productId,
+            size: updatedItem.size,
+            locale,
+            quantity: updatedItem.quantity,
+          });
+        }
+
+        return updatedCart;
       });
-      console.log("HERE");
     },
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [cartItems],
   );

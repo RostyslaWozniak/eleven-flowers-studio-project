@@ -6,11 +6,17 @@
     "contact": "Kontakt",
     "cart": "Koszyk"
   },
+  "Form": {
+    "field-required": "Pole jest wymagane",
+    "field-min": "Pole jest wymagane",
+    "field-max": "Pole jest wymagane",
+    "postal-code-not-deliverable": "Dostawa w danym regionie niedostępna"
+  },
   "Cart": {
     "title": "Twój koszyk",
     "totalPrice": "Suma",
     "totalItems": "Produkty",
-    "button": "Przejdź do koszyka",
+    "button": "Przejdź do kasy",
     "emptyCart": {
       "title": "Twój koszyk jest pusty",
       "subtitle": "Wygląda na to, że nie dodałeś jeszcze niczego do koszyka.",
@@ -117,6 +123,7 @@
   "ProductPage": {
     "size": "Rozmiar",
     "addToCart": "Dodaj do koszyka",
+    "inCart": "W koszyku",
     "collections": "Kolekcje",
     "relatedProducts": "Powiązane produkty",
     "noProductsFound": "Nie znaleziono produktów.",
@@ -142,5 +149,24 @@
     "title": "Strona nie została znaleziona",
     "description": "Strona, która szukasz nie została znaleziona.",
     "button": "Przejdz do strony głównej"
+  },
+  "Checkout": {
+    "summary": {
+      "title": "Podsumowanie zamówienia",
+      "total": "Suma",
+      "size": "Rozmiar"
+    },
+    "details": {
+      "title": "Twoje dane",
+      "form": {
+        "firstName": "Imię",
+        "lastName": "Nazwisko",
+        "email": "Email",
+        "address": "Adres",
+        "city": "Miasto",
+        "postalCode": "Kod Pocztowy",
+        "button": "Przejdz do płatnosci"
+      }
+    }
   }
 }
