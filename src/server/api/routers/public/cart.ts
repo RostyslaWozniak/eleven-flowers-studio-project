@@ -119,6 +119,7 @@ export const cartRouter = createTRPCRouter({
 
         return { cartId: cart.id, message: "Cart item updated." };
       } else {
+        console.log({ cartItemId: input.cartItemId });
         // Step 5: Create a new cart item if not exists
         await ctx.db.cartItem.create({
           data: {

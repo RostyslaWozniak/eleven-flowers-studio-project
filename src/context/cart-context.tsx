@@ -67,54 +67,62 @@ export default function CartProvider({
     },
   });
 
-  const debouncedUpdateCart = useDebounceCallback(setServerCartItem, 500);
+  const debouncedUpdateCart = useDebounceCallback(setServerCartItem, 300);
 
   const addOneToCart = (product: AddProductType) => {
-    setCartItems((prev) => {
-      const cartItemExists = prev.find(
-        (item) => item.productId === product.id && item.size === product.size,
+    const cartItemId = crypto.randomUUID();
+    let cartItemQuantity = 1;
+
+    // Potential for Bug: If cartItems changes between the find and setCartItems calls, it could lead to inconsistencies.
+    const cartItemExists = cartItems.find(
+      (item) => item.productId === product.id && item.size === product.size,
+    );
+
+    if (!cartItemExists) {
+      setCartItems((prev) => [
+        {
+          id: cartItemId,
+          productId: product.id,
+          productName: product.name,
+          slug: product.slug,
+          price: product.price,
+          size: product.size,
+          imageUrl: product.imageUrl,
+          quantity: cartItemQuantity,
+        },
+        ...prev,
+      ]);
+    } else {
+      setCartItems((prev) =>
+        prev.map((item) => {
+          if (item.productId === product.id)
+            cartItemQuantity = item.quantity + 1;
+          return item.productId === product.id && item.size === product.size
+            ? { ...item, quantity: cartItemQuantity }
+            : item;
+        }),
       );
+    }
 
-      let updatedCart;
-      if (!cartItemExists) {
-        updatedCart = [
-          {
-            id: product.id + product.size,
-            productId: product.id,
-            productName: product.name,
-            slug: product.slug,
-            price: product.price,
-            size: product.size,
-            imageUrl: product.imageUrl,
-            quantity: 1,
-          },
-          ...prev,
-        ];
-      } else {
-        updatedCart = prev.map((item) =>
-          item.productId === product.id && item.size === product.size
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
-
-      // Find the updated item and debounce its API update
-      const updatedItem = updatedCart.find(
-        (item) => item.productId === product.id && item.size === product.size,
-      );
-      if (updatedItem) {
-        debouncedUpdateCart({
-          cartItemId: updatedItem.id,
-          cartId: storedCartId,
-          productId: updatedItem.productId,
-          size: updatedItem.size,
-          locale,
-          quantity: updatedItem.quantity,
-        });
-      }
-
-      return updatedCart;
-    });
+    if (cartItemExists) {
+      debouncedUpdateCart({
+        cartItemId: cartItemExists.id,
+        cartId: storedCartId,
+        productId: cartItemExists.productId,
+        size: cartItemExists.size,
+        locale,
+        quantity: cartItemQuantity,
+      });
+    } else {
+      setServerCartItem({
+        cartItemId: cartItemId,
+        cartId: storedCartId,
+        productId: product.id,
+        size: product.size,
+        locale,
+        quantity: cartItemQuantity,
+      });
+    }
   };
 
   const removeOneFromCart = useCallback(
