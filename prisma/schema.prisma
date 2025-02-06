@@ -19,6 +19,9 @@ model Product {
     collection   Collection?          @relation(fields: [collectionId], references: [id], onDelete: SetNull)
     cartItem     CartItem[]
     orderItem    OrderItem[]
+    status       ProductStatus        @default(AVAILABLE)
+
+    @@index([slug])
 }
 
 model ProductTranslation {
@@ -29,14 +32,14 @@ model ProductTranslation {
     description String
     product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-    @@unique([productId, language]) // Ensures a product has only one translation per language
+    @@unique([productId, language])
 }
 
 model ProductPrice {
     id        String  @id @default(uuid())
     productId String
-    size      String // e.g., 's', 'm', 'l'
-    price     Int // Price in cents
+    size      String
+    price     Int
     product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@unique([productId, size]) // Ensures a product has unique price per size
@@ -71,73 +74,55 @@ model CollectionTranslation {
 
 model Cart {
     id        String     @id @default(uuid())
-    userId    String? // Nullable for guest carts
     items     CartItem[] // Relation to CartItem
     createdAt DateTime   @default(now())
     updatedAt DateTime   @updatedAt
-    user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-    @@unique([userId]) // Ensures a user has only one cart
 }
 
 model CartItem {
-    id          String   @id @default(uuid())
-    cartId      String
-    productId   String
-    productName String
-    size        String // To match ProductPrice
-    quantity    Int      @default(1)
-    imageUrl    String
-    slug        String
-    price       Int? // Store price at the time of adding to the cart
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    cart        Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
-    product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    id        String   @id @default(uuid())
+    cartId    String
+    productId String
+    size      String // To match ProductPrice
+    quantity  Int      @default(1)
+    price     Int? // Store price at the time of adding to the cart
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@unique([cartId, productId, size]) // Prevents duplicate entries for the same product and size in a cart
 }
 
 model Order {
-    id         String      @id @default(uuid())
-    userId     String?
-    createdAt  DateTime    @default(now())
-    updatedAt  DateTime    @updatedAt
-    orderItems OrderItem[]
-    user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+    id              String           @id @default(uuid())
+    contactInfoId   String?
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    orderItems      OrderItem[]
+    address         Address?
+    deliveryDetails DeliveryDetails?
+    paymentIntentId String?
+    paymentStatus   PaymentStatus    @default(PENDING)
+    contactInfo     ContactInfo?     @relation(fields: [contactInfoId], references: [id], onDelete: Cascade)
 }
 
 model OrderItem {
     id          String   @id @default(uuid())
     orderId     String
-    productId   String?
+    productId   String
     productName String
-    size        String // To match ProductPrice
+    size        String
     quantity    Int      @default(1)
     imageUrl    String
     slug        String
-    price       Int? // Store price at the time of adding to the cart
+    price       Int?
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-    product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+    product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@unique([orderId, productId, size])
-}
-
-model User {
-    id           String    @id @default(uuid())
-    firstName    String?
-    lastName     String?
-    email        String    @unique
-    passwordHash String?
-    phone        String?
-    createdAt    DateTime  @default(now())
-    updatedAt    DateTime  @updatedAt
-    address      Address[]
-    cartId       String?
-    cart         Cart?
-    order        Order[]
 }
 
 model Address {
@@ -145,8 +130,41 @@ model Address {
     city      String?
     street    String?
     postCode  String?
-    userId    String?
-    user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    orderId   String   @unique
+    order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model DeliveryDetails {
+    id           String   @id @default(uuid())
+    deliveryDate DateTime
+    deliveryTime String
+    method       String
+    description  String?
+    orderId      String?  @unique
+    order        Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+}
+
+model ContactInfo {
+    id                   String  @id @default(uuid())
+    firsName             String?
+    lastName             String?
+    email                String  @unique
+    phone                String? // Optional phone number
+    wantsMarketingEmails Boolean @default(false) // Opt-in for marketing
+    orders               Order[]
+}
+
+enum ProductStatus {
+    AVAILABLE // Product can be purchased
+    OUT_OF_STOCK // Temporarily unavailable
+    DISCONTINUED // No longer sold
+}
+
+enum PaymentStatus {
+    PENDING // Payment initiated but not completed
+    SUCCESS // Payment confirmed by Stripe
+    FAILED // Payment failed or was rejected
+    REFUNDED // Payment refunded
 }

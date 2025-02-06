@@ -13,7 +13,7 @@ export default function CartSummary() {
 
   return (
     <div className="lg:py-6">
-      <H2 className="mb-6 border-b text-start text-2xl font-light md:text-start lg:border-0">
+      <H2 className="text-start text-2xl font-light md:text-start">
         {t("title")}
       </H2>
       {cartItems.map((item) => (
@@ -33,22 +33,21 @@ export default function CartSummary() {
           <div className="flex-grow">
             <Link
               href={`/products/${item.slug}?size=${item.size}`}
-              className="hover:underline"
+              className="text-primary hover:underline"
             >
               <H3 className="font-semibold">{item.productName}</H3>
             </Link>
-
-            <Text variant="muted">
-              {t("size")}:{" "}
-              <span className="text-base font-bold capitalize">
-                {item.size}
-              </span>
-            </Text>
-          </div>
-          <div className="px-2">
-            <Text size="subtitle" variant="muted">
-              {formatPrice(item.price)} x {item.quantity}
-            </Text>
+            <div className="mt-3 flex justify-between">
+              <Text variant="muted">
+                {t("size")}:{" "}
+                <span className="text-base font-bold capitalize">
+                  {item.size}
+                </span>
+              </Text>
+              <Text size="subtitle" variant="muted">
+                {formatPrice(item.price)} x {item.quantity}
+              </Text>
+            </div>
           </div>
         </div>
       ))}

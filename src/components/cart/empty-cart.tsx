@@ -41,7 +41,7 @@ export const EmptyCart = () => {
       >
         <SheetClose asChild>
           <Link
-            href="/collections/bouquets"
+            href="/products"
             className={buttonVariants({ size: "lg", variant: "outline" })}
           >
             {t("button")}

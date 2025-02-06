@@ -90,13 +90,9 @@ export const cartRouter = createTRPCRouter({
               create: {
                 id: input.cartItemId,
                 productId: product.id,
-                productName: product.name,
-                slug: product.slug,
                 price: product.prices[0]?.price ?? null,
                 size: input.size,
                 quantity: input.quantity,
-                imageUrl:
-                  product.images[0] ?? "/images/bouquet-placeholder.jpg",
               },
             },
           },
@@ -119,19 +115,15 @@ export const cartRouter = createTRPCRouter({
 
         return { cartId: cart.id, message: "Cart item updated." };
       } else {
-        console.log({ cartItemId: input.cartItemId });
         // Step 5: Create a new cart item if not exists
         await ctx.db.cartItem.create({
           data: {
             id: input.cartItemId,
             cartId: cart.id,
             productId: input.productId,
-            productName: product.name,
             size: input.size,
             quantity: input.quantity,
-            slug: product.slug,
             price: product.prices[0]?.price ?? null,
-            imageUrl: product.images[0] ?? "/images/bouquet-placeholder.jpg",
           },
         });
 
@@ -150,7 +142,7 @@ export const cartRouter = createTRPCRouter({
     }),
 
   getCartItems: publicProcedure
-    .input(z.object({ cartId: z.string().nullable() }))
+    .input(z.object({ cartId: z.string().nullable(), locale: z.string() }))
     .query(async ({ ctx, input }): Promise<CartItem[]> => {
       // Check if cart id exists
       if (!input.cartId) return [];
@@ -158,6 +150,32 @@ export const cartRouter = createTRPCRouter({
       const data = await ctx.db.cartItem.findMany({
         where: {
           cartId: input.cartId,
+        },
+        select: {
+          id: true,
+          price: true,
+          size: true,
+          quantity: true,
+          product: {
+            select: {
+              id: true,
+              slug: true,
+              images: {
+                select: {
+                  url: true,
+                },
+              },
+              translations: {
+                where: {
+                  language: input.locale,
+                },
+                select: {
+                  name: true,
+                  description: true,
+                },
+              },
+            },
+          },
         },
         orderBy: {
           createdAt: "desc",
@@ -168,11 +186,12 @@ export const cartRouter = createTRPCRouter({
 
       return data.map((item) => ({
         id: item.id,
-        productId: item.productId,
-        productName: item.productName,
-        slug: item.slug,
+        productId: item.product.id,
+        productName: item.product.translations[0]?.name ?? "No name",
+        slug: item.product.slug,
         price: item.price,
-        imageUrl: item.imageUrl,
+        imageUrl:
+          item.product.images[0]?.url ?? "/images/bouquet-placeholder.jpg",
         size: item.size,
         quantity: item.quantity,
       }));

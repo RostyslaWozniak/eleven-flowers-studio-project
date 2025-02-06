@@ -54,7 +54,7 @@ export default function CartProvider({
 
   // Fetch cart items from API
   const { data: serverCartItems } = api.public.cart.getCartItems.useQuery(
-    { cartId: storedCartId },
+    { cartId: storedCartId, locale: locale },
     { enabled: Boolean(storedCartId) },
   );
 

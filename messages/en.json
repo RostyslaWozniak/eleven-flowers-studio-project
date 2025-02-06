@@ -188,6 +188,13 @@
         "postalCode": "Postal Code",
         "button": "Go to Payment"
       }
+    },
+    "delivery": {
+      "title": "Method",
+      "methods": {
+        "delivery": "Delivery",
+        "pickup": "Pickup"
+      }
     }
   }
 }

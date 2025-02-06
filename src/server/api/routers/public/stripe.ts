@@ -18,15 +18,7 @@ export const stripeRouter = createTRPCRouter({
       if (!input.cartId) {
         throw new Error("Cart not found");
       }
-      const user = await ctx.db.user.findUnique({
-        where: {
-          id: input.userId,
-        },
-      });
 
-      if (!user) {
-        throw new Error("User not found");
-      }
       const cart = await ctx.db.cart.findUnique({
         where: {
           id: input.cartId,
@@ -36,8 +28,20 @@ export const stripeRouter = createTRPCRouter({
           items: {
             select: {
               price: true,
-              productName: true,
               quantity: true,
+              product: {
+                select: {
+                  translations: {
+                    select: {
+                      name: true,
+                    },
+                    where: {
+                      language: "pl",
+                    },
+                    take: 1,
+                  },
+                },
+              },
             },
           },
         },
@@ -48,14 +52,16 @@ export const stripeRouter = createTRPCRouter({
 
       const lineItems = cart.items.map((item) => {
         if (item.price == null || item.price <= 0) {
-          throw new Error(`Invalid price for item: ${item.productName}`);
+          throw new Error(
+            `Invalid price for item: ${item.product.translations[0]?.name}`,
+          );
         }
         return {
           quantity: item.quantity,
           price_data: {
             currency: "pln",
             product_data: {
-              name: item.productName,
+              name: item.product.translations[0]?.name ?? "",
             },
             unit_amount: item.price,
           },
@@ -67,13 +73,13 @@ export const stripeRouter = createTRPCRouter({
         ui_mode: "embedded",
         mode: "payment",
         return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
-        customer_email: user.email,
+        customer_email: "user.email",
         payment_intent_data: {
-          receipt_email: user.email,
+          receipt_email: "user.email",
         },
         metadata: {
           cartId: cart.id,
-          userId: user.id,
+          // userId: user.id,
         },
       });
 

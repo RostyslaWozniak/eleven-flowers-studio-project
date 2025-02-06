@@ -40,26 +40,34 @@ export function CartSheet() {
             ))}
           </div>
         </div>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xl">
-              {t("totalPrice")}:{" "}
-              <span className="font-bold text-primary">
-                {formatPrice(totalPrice)}
-              </span>
-            </p>
-            <p className="text-lg">
-              {t("totalItems")}:{" "}
-              <span className="font-semibold">{totalItems}</span>
-            </p>
-          </div>
-          <Link
-            onClick={() => setIsCartOpen(false)}
-            className={cn(buttonVariants({ variant: "default" }), "w-min px-4")}
-            href="/checkout"
-          >
-            {t("button")}
-          </Link>
+        <div className="flex min-h-16 items-center justify-between">
+          {totalItems > 0 && (
+            <>
+              <div>
+                <p className="text-xl">
+                  {t("totalPrice")}:{" "}
+                  <span className="font-bold text-primary">
+                    {formatPrice(totalPrice)}
+                  </span>
+                </p>
+                <p className="text-lg">
+                  {t("totalItems")}:{" "}
+                  <span className="font-semibold">{totalItems}</span>
+                </p>
+              </div>
+
+              <Link
+                onClick={() => setIsCartOpen(false)}
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "w-min px-4",
+                )}
+                href="/cart-summary"
+              >
+                {t("button")}
+              </Link>
+            </>
+          )}
         </div>
       </SheetContent>
     </Sheet>

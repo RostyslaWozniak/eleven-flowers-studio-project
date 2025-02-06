@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/context/cart-context";
 import { Link } from "@/i18n/routing";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 interface CartItemProps {
   cartItem: CartItem;
@@ -14,13 +15,14 @@ interface CartItemProps {
 export function CartItem({ cartItem }: CartItemProps) {
   const { removeOneFromCart, removeCartItem, addOneToCart, setIsCartOpen } =
     useCart();
+  const t = useTranslations("Checkout.summary");
 
   return (
     <motion.div
       layout
-      className="flex items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0"
+      className="flex items-center space-x-2 border-b border-gray-200 py-4 last:border-b-0"
     >
-      <div className="relative h-20 w-20 overflow-hidden bg-gray-100">
+      <div className="relative aspect-square h-20 min-w-20 overflow-hidden bg-gray-100">
         <Image
           src={cartItem.imageUrl}
           alt={cartItem.productName}
@@ -34,7 +36,7 @@ export function CartItem({ cartItem }: CartItemProps) {
           className="hover:underline"
         >
           <h3
-            className="text-lg font-semibold text-gray-900"
+            className="text-lg font-semibold leading-6 tracking-tight text-gray-900"
             onClick={() => setIsCartOpen(false)}
           >
             {cartItem.productName}
@@ -44,7 +46,7 @@ export function CartItem({ cartItem }: CartItemProps) {
           {formatPrice(cartItem.price)} x {cartItem.quantity}
         </p>
         <p className="mt-1 text-sm font-medium text-gray-900">
-          Size:{" "}
+          {t("size")}:{" "}
           <span className="text-base font-bold capitalize">
             {cartItem.size}
           </span>

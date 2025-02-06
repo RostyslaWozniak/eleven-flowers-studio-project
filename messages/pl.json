@@ -167,6 +167,13 @@
         "postalCode": "Kod Pocztowy",
         "button": "Przejdz do płatnosci"
       }
+    },
+    "delivery": {
+      "title": "Metoda",
+      "methods": {
+        "delivery": "Dostawa",
+        "pickup": "Odbierz"
+      }
     }
   }
 }

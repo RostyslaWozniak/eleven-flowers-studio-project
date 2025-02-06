@@ -20,12 +20,12 @@ const requiredTranslationString = (
     .trim();
 };
 
-export function userDetailsSchema(
+export function deliveryFormSchema(
   t?: (key: Message, object?: TranslationValues) => string,
 ) {
   return z.object({
-    firstName: requiredTranslationString(t),
-    lastName: requiredTranslationString(t),
+    firstName: z.string().trim().optional(),
+    lastName: z.string().trim().optional(),
     email: requiredTranslationString(t).email(),
     address: requiredTranslationString(t),
     city: requiredTranslationString(t),
@@ -48,4 +48,4 @@ export function userDetailsSchema(
   });
 }
 
-export type UserDetailsSchema = z.infer<ReturnType<typeof userDetailsSchema>>;
+export type DeliveryFormSchema = z.infer<ReturnType<typeof deliveryFormSchema>>;
