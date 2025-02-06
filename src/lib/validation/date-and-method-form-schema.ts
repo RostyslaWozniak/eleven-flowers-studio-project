@@ -18,26 +18,51 @@ export const dateAndMethodFormSchema = z
     deliveryMethod: z.enum(deliveryMethods),
     description: z.string().optional(),
   })
-  .refine(
-    ({ date, time }) => {
-      const now = new Date();
-      const selectedDate = new Date(date);
-      const selectedHour = parseInt(time.split("-")[0]!); // Extract the first hour in range
+  .superRefine(({ date, time }, ctx) => {
+    const now = new Date();
+    const selectedDate = new Date(date);
+    const selectedHour = parseInt(time.split("-")[0]!); // Extract the first hour in range
 
-      // ✅ Convert selected date + selected hour into milliseconds
-      selectedDate.setHours(selectedHour, 0, 0, 0);
-      const selectedTimeMs = selectedDate.getTime();
+    // ✅ Convert selected date + selected hour into milliseconds
+    selectedDate.setHours(selectedHour, 0, 0, 0);
+    const selectedTimeMs = selectedDate.getTime();
 
-      // ✅ Get current time + 2 hours in milliseconds
-      const futureTimeMs = now.getTime() + ADDITIONAL_TIME;
+    // ✅ Get current time + 2 hours in milliseconds
+    const futureTimeMs = now.getTime() + ADDITIONAL_TIME;
 
-      // ✅ Check if selected time is at least 2 hours ahead of current time
-      return selectedTimeMs > futureTimeMs;
-    },
-    {
-      message: "Date and time must be in the future",
-      path: ["date"],
-    },
-  );
+    if (selectedTimeMs < futureTimeMs) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["date"],
+        message: "Date must be in the future",
+      });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["time"],
+        message: "Time must be in the future",
+      });
+    }
+  });
+// .refine(
+//   ({ date, time }) => {
+//     const now = new Date();
+//     const selectedDate = new Date(date);
+//     const selectedHour = parseInt(time.split("-")[0]!); // Extract the first hour in range
+
+//     // ✅ Convert selected date + selected hour into milliseconds
+//     selectedDate.setHours(selectedHour, 0, 0, 0);
+//     const selectedTimeMs = selectedDate.getTime();
+
+//     // ✅ Get current time + 2 hours in milliseconds
+//     const futureTimeMs = now.getTime() + ADDITIONAL_TIME;
+
+//     // ✅ Check if selected time is at least 2 hours ahead of current time
+//     return selectedTimeMs > futureTimeMs;
+//   },
+//   {
+//     message: "Date and time must be in the future",
+//     path: ["date", "time"],
+//   },
+// );
 
 export type DateAndMethodFormSchema = z.infer<typeof dateAndMethodFormSchema>;

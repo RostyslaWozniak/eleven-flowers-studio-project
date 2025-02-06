@@ -6,6 +6,7 @@ import type {
   ProductDTO,
   ProductFromPrisma,
 } from "@/types";
+import { Prisma } from "@prisma/client";
 
 const localeSchema = z.object({
   locale: z.string(),
@@ -153,6 +154,13 @@ export const productsRouter = createTRPCRouter({
 
         const productsCount = await ctx.db.product.count();
 
+        const orderBy =
+          input.orderBy === "popularity"
+            ? { orderItem: { _count: Prisma.SortOrder.desc } }
+            : input.orderBy === "createdAt"
+              ? { updatedAt: Prisma.SortOrder.desc }
+              : { createdAt: Prisma.SortOrder.desc };
+
         if (input.orderBy === "price") {
           const orderedProductIds = await ctx.db.productPrice.groupBy({
             by: ["productId"],
@@ -255,7 +263,7 @@ export const productsRouter = createTRPCRouter({
                 size: true,
               },
               orderBy: {
-                price: "asc",
+                price: Prisma.SortOrder.asc,
               },
             },
             translations: {
@@ -270,7 +278,7 @@ export const productsRouter = createTRPCRouter({
           },
           take: input.take,
           skip: input.skip,
-          orderBy: {},
+          orderBy: orderBy,
         });
 
         return { productsCount, products: mapProductsToDTO(products) };

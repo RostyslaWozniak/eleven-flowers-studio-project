@@ -1,19 +1,17 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../../trpc";
 import { TRPCError } from "@trpc/server";
-
-const requiredString = z.string().trim().min(1, "Required").max(50);
+import { dateAndMethodFormSchema } from "@/lib/validation/date-and-method-form-schema";
+import { deliveryFormSchema } from "@/lib/validation/delivery-form-schema";
 
 export const orderRouter = createTRPCRouter({
-  createNewOrder: publicProcedure
+  createOrderWithDelivery: publicProcedure
     .input(
       z.object({
-        deliveryDate: z.date(),
-        deliveryTime: z.string(),
-        deliveryMethod: z.enum(["pickup", "delivery"]),
-        delivaryDetails: z.string().optional(),
         cartId: z.string(),
         locale: z.string(),
+        dateAndMethodData: dateAndMethodFormSchema,
+        addressDetails: deliveryFormSchema,
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -47,19 +45,52 @@ export const orderRouter = createTRPCRouter({
           },
         },
       });
+
       if (cartItems.length === 0)
-        throw new TRPCError({ code: "BAD_REQUEST", message: "Cart is empty" });
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Cart is empty",
+        });
+      let contactInfoId: string;
+
+      const existingContactInfo = await ctx.db.contactInfo.findFirst({
+        where: {
+          email: input.addressDetails.email,
+        },
+      });
+
+      if (existingContactInfo) {
+        contactInfoId = existingContactInfo.id;
+      } else {
+        const newContactInfo = await ctx.db.contactInfo.create({
+          data: {
+            firsName: input.addressDetails.firstName,
+            lastName: input.addressDetails.lastName,
+            email: input.addressDetails.email,
+          },
+        });
+        contactInfoId = newContactInfo.id;
+      }
+
       try {
         const order = await ctx.db.order.create({
           data: {
             deliveryDetails: {
               create: {
-                deliveryDate: input.deliveryDate,
-                deliveryTime: input.deliveryTime,
-                description: input.delivaryDetails,
-                method: input.deliveryMethod,
+                deliveryDate: input.dateAndMethodData.date,
+                deliveryTime: input.dateAndMethodData.time,
+                description: input.dateAndMethodData.description,
+                method: input.dateAndMethodData.deliveryMethod,
               },
             },
+            address: {
+              create: {
+                city: input.addressDetails.city,
+                street: input.addressDetails.address,
+                postCode: input.addressDetails.postalCode,
+              },
+            },
+            contactInfoId: contactInfoId,
             orderItems: {
               createMany: {
                 data: cartItems.map((item) => ({
@@ -78,7 +109,13 @@ export const orderRouter = createTRPCRouter({
             },
           },
         });
-        return { order, err: null };
+
+        await ctx.db.cart.delete({
+          where: {
+            id: input.cartId,
+          },
+        });
+        return { orderId: order.id, err: null };
       } catch (err) {
         console.error(err);
         throw new TRPCError({

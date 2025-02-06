@@ -26,6 +26,7 @@ export default async function Home({
   const { products } = await api.public.products.getAllProducts({
     locale,
     take: 4,
+    orderBy: "popularity",
   });
   return (
     <>

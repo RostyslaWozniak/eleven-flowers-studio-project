@@ -1,5 +1,6 @@
 import { H1 } from "@/components/ui/typography";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
+import OrderItemsList from "./_components/order-items-list";
 
 export default function Page() {
   return (
@@ -7,7 +8,9 @@ export default function Page() {
       <MaxWidthWrapper className="">
         <H1 className="mb-8 text-center text-4xl font-light">Checkout</H1>
         <div className="space-y-12 lg:flex lg:space-x-8">
-          <div className="mt-8 w-full">{/* <CartSummary /> */}</div>
+          <div className="mt-8 w-full">
+            <OrderItemsList />
+          </div>
           <div className="w-full">{/* <StripeCheckoutForm /> */}</div>
         </div>
       </MaxWidthWrapper>

@@ -20,7 +20,7 @@ const requiredTranslationString = (
     .trim();
 };
 
-export function deliveryFormSchema(
+export function deliveryFormSchemaWithTranslation(
   t?: (key: Message, object?: TranslationValues) => string,
 ) {
   return z.object({
@@ -48,4 +48,26 @@ export function deliveryFormSchema(
   });
 }
 
-export type DeliveryFormSchema = z.infer<ReturnType<typeof deliveryFormSchema>>;
+export const deliveryFormSchema = z.object({
+  firstName: z.string().trim().optional(),
+  lastName: z.string().trim().optional(),
+  email: z.string().email(),
+  address: z.string().trim().min(1, "Required").max(50),
+  city: z.string().trim().min(1, "Required").max(50),
+  postalCode: z
+    .string()
+    .trim()
+    .refine(
+      (postalCode) => {
+        const deliveryInfo = checkDelivery(postalCode);
+        return deliveryInfo.price !== null;
+      },
+      {
+        message: "Delivery not available in this area.",
+      },
+    ),
+});
+
+export type DeliveryFormSchema = z.infer<
+  ReturnType<typeof deliveryFormSchemaWithTranslation>
+>;

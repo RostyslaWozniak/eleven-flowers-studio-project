@@ -16,11 +16,12 @@ import { useLocale, useTranslations } from "next-intl";
 import { useCart } from "@/context/cart-context";
 import { motion } from "framer-motion";
 import { type DateAndMethodFormSchema } from "@/lib/validation/date-and-method-form-schema";
-import { redirect } from "@/i18n/routing";
+import { redirect, useRouter } from "@/i18n/routing";
 import {
   type DeliveryFormSchema,
-  deliveryFormSchema,
+  deliveryFormSchemaWithTranslation,
 } from "@/lib/validation/delivery-form-schema";
+import { api } from "@/trpc/react";
 
 export default function DeliveryForm({
   dateAndMethodData,
@@ -30,12 +31,16 @@ export default function DeliveryForm({
   const tFormErrorMessages = useTranslations("Form");
   const t = useTranslations("Checkout.details");
 
+  const router = useRouter();
+
   const locale = useLocale();
 
   const { storedCartId } = useCart();
 
   const form = useForm<DeliveryFormSchema>({
-    resolver: zodResolver(deliveryFormSchema(tFormErrorMessages)),
+    resolver: zodResolver(
+      deliveryFormSchemaWithTranslation(tFormErrorMessages),
+    ),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -46,6 +51,25 @@ export default function DeliveryForm({
     },
   });
 
+  const { mutate: createOrderWithDelivery } =
+    api.public.order.createOrderWithDelivery.useMutation({
+      onSuccess: ({ orderId }) => {
+        localStorage.removeItem("cartId");
+        localStorage.setItem("orderId", orderId);
+        toast.success("Order created successfully!", {
+          className: "bg-emerald-500 text-background",
+        });
+        form.reset();
+        router.push("/checkout");
+      },
+      onError: (error) => {
+        console.error("Order creation error", error);
+        toast.error("Failed to create the order. Please try again.", {
+          className: "bg-destructive text-destructive-foreground",
+        });
+      },
+    });
+
   function onSubmit(values: DeliveryFormSchema) {
     if (!storedCartId) {
       toast.error("No Cart found!", {
@@ -54,21 +78,13 @@ export default function DeliveryForm({
       });
       return redirect({ locale, href: "/products" });
     }
-    try {
-      const data = {
-        cartId: storedCartId,
-        locale: locale,
-        dateAndMethodData: dateAndMethodData,
-        addressDetails: values,
-      };
 
-      console.log(data);
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.", {
-        className: "bg-destructive text-destructive-foreground",
-      });
-    }
+    createOrderWithDelivery({
+      cartId: storedCartId,
+      locale: locale,
+      dateAndMethodData: dateAndMethodData,
+      addressDetails: values,
+    });
   }
 
   return (

@@ -31,7 +31,7 @@ export function MostPopularProductsSection({
         </div>
 
         <Link
-          href={"/products"}
+          href={"/products?sort=popular"}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           {t("seeMoreButton")} <ArrowRight className="min-h-6 min-w-6" />
