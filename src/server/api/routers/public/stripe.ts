@@ -1,91 +1,94 @@
-import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../../trpc";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
+import { getCookieValue, ORDER_COOKIE_NAME } from "@/lib/utils/cookies";
+import { TRPCError } from "@trpc/server";
 
 export const stripeRouter = createTRPCRouter({
-  getClientSessionSecret: publicProcedure
-    .input(
-      z.object({
-        cartId: z.string().nullable(),
-        userId: z.string().nullable(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      console.log(input);
-      if (!input.userId) {
-        throw new Error("User not found");
-      }
-      if (!input.cartId) {
-        throw new Error("Cart not found");
-      }
+  getClientSessionSecret: publicProcedure.query(async ({ ctx }) => {
+    const orderId = getCookieValue(ctx.req, ORDER_COOKIE_NAME);
+    if (!orderId) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "order_not_found",
+      });
+    }
 
-      const cart = await ctx.db.cart.findUnique({
-        where: {
-          id: input.cartId,
+    const order = await ctx.db.order.findUnique({
+      where: {
+        id: orderId,
+      },
+      select: {
+        id: true,
+        contactInfo: {
+          select: {
+            email: true,
+            firsName: true,
+            lastName: true,
+          },
         },
-        select: {
-          id: true,
-          items: {
-            select: {
-              price: true,
-              quantity: true,
-              product: {
-                select: {
-                  translations: {
-                    select: {
-                      name: true,
-                    },
-                    where: {
-                      language: "pl",
-                    },
-                    take: 1,
+        orderItems: {
+          select: {
+            price: true,
+            quantity: true,
+            product: {
+              select: {
+                translations: {
+                  select: {
+                    name: true,
                   },
+                  where: {
+                    language: "pl",
+                  },
+                  take: 1,
                 },
               },
             },
           },
         },
+      },
+    });
+    if (!order) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "order_not_found",
       });
-      if (!cart) {
-        throw new Error("Cart not found");
+    }
+
+    const lineItems = order.orderItems.map((item) => {
+      if (item.price == null || item.price <= 0) {
+        throw new Error(
+          `Invalid price for item: ${item.product.translations[0]?.name}`,
+        );
       }
-
-      const lineItems = cart.items.map((item) => {
-        if (item.price == null || item.price <= 0) {
-          throw new Error(
-            `Invalid price for item: ${item.product.translations[0]?.name}`,
-          );
-        }
-        return {
-          quantity: item.quantity,
-          price_data: {
-            currency: "pln",
-            product_data: {
-              name: item.product.translations[0]?.name ?? "",
-            },
-            unit_amount: item.price,
+      return {
+        quantity: item.quantity,
+        price_data: {
+          currency: "pln",
+          product_data: {
+            name: item.product.translations[0]?.name ?? "",
           },
-        };
-      });
-
-      const session = await stripeServerClient.checkout.sessions.create({
-        line_items: lineItems,
-        ui_mode: "embedded",
-        mode: "payment",
-        return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
-        customer_email: "user.email",
-        payment_intent_data: {
-          receipt_email: "user.email",
+          unit_amount: item.price,
         },
-        metadata: {
-          cartId: cart.id,
-          // userId: user.id,
-        },
-      });
+      };
+    });
 
-      if (session.client_secret == null)
-        throw new Error("Client secret is null");
+    const session = await stripeServerClient.checkout.sessions.create({
+      line_items: lineItems,
+      ui_mode: "embedded",
+      mode: "payment",
+      // return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
+      return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}`,
+      customer_email: order.contactInfo?.email,
+      payment_intent_data: {
+        receipt_email: order.contactInfo?.email,
+      },
+      metadata: {
+        orderId: order.id,
+      },
+    });
 
-      return session.client_secret;
-    }),
+    if (session.client_secret == null) throw new Error("Client secret is null");
+
+    return session.client_secret;
+  }),
 });

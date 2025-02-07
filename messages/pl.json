@@ -175,5 +175,15 @@
         "pickup": "Odbierz"
       }
     }
+  },
+  "messages": {
+    "error": {
+      "title": "Błąd",
+      "cart_is_empty": "Koszyk jest pusty"
+    },
+    "success": {
+      "title": "Sukces",
+      "order_created": "Zamówienie zostało utworzone!"
+    }
   }
 }

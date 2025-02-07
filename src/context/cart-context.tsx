@@ -3,7 +3,6 @@
 import { useDebounceCallback } from "@/hooks/use-debounce-callback";
 import { api } from "@/trpc/react";
 import type { CartItem } from "@/types";
-import { useLocale } from "next-intl";
 import {
   createContext,
   type Dispatch,
@@ -17,7 +16,6 @@ import {
 
 type CartContextTypes = {
   cartItems: CartItem[];
-  storedCartId: string | null;
   isCartOpen: boolean;
   totalItems: number;
   totalPrice: number;
@@ -44,25 +42,17 @@ export default function CartProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const locale = useLocale();
-
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
-  const storedCartId =
-    typeof window !== "undefined" ? localStorage.getItem("cartId") : null;
-
   // Fetch cart items from API
-  const { data: serverCartItems } = api.public.cart.getCartItems.useQuery(
-    { cartId: storedCartId, locale: locale },
-    { enabled: Boolean(storedCartId) },
-  );
+  const { data: serverCartItems } = api.public.cart.getCartItems.useQuery();
 
   const { mutate: removeCartItemOnServer } =
     api.public.cart.removeCartItem.useMutation();
 
   const { mutate: setServerCartItem } = api.public.cart.mutateCart.useMutation({
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem("cartId", data.cartId);
     },
   });
@@ -107,19 +97,15 @@ export default function CartProvider({
     if (cartItemExists) {
       debouncedUpdateCart({
         cartItemId: cartItemExists.id,
-        cartId: storedCartId,
         productId: cartItemExists.productId,
         size: cartItemExists.size,
-        locale,
         quantity: cartItemQuantity,
       });
     } else {
       setServerCartItem({
         cartItemId: cartItemId,
-        cartId: storedCartId,
         productId: product.id,
         size: product.size,
-        locale,
         quantity: cartItemQuantity,
       });
     }
@@ -150,10 +136,8 @@ export default function CartProvider({
         if (updatedItem) {
           debouncedUpdateCart({
             cartItemId: updatedItem.id,
-            cartId: storedCartId,
             productId: updatedItem.productId,
             size: updatedItem.size,
-            locale,
             quantity: updatedItem.quantity,
           });
         }
@@ -187,13 +171,11 @@ export default function CartProvider({
   const contextValue = useMemo(
     () => ({
       cartItems,
-      locale,
-      storedCartId,
       isCartOpen,
       totalItems,
       totalPrice,
     }),
-    [cartItems, locale, storedCartId, isCartOpen, totalItems, totalPrice],
+    [cartItems, isCartOpen, totalItems, totalPrice],
   );
 
   return (

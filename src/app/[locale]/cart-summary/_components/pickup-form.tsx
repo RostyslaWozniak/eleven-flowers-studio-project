@@ -1,8 +1,6 @@
-import { useCart } from "@/context/cart-context";
-import { redirect } from "@/i18n/routing";
 import { type DateAndMethodFormSchema } from "@/lib/validation/date-and-method-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -28,10 +26,6 @@ export default function PickupForm({
 }) {
   const t = useTranslations("Checkout.details");
 
-  const locale = useLocale();
-
-  const { storedCartId } = useCart();
-
   const form = useForm<PickupFormSchema>({
     resolver: zodResolver(pickupFormSchema),
     defaultValues: {
@@ -42,17 +36,8 @@ export default function PickupForm({
   });
 
   function onSubmit(values: PickupFormSchema) {
-    if (!storedCartId) {
-      toast.error("No Cart found!", {
-        className: "bg-destructive  text-destructive-foreground",
-        position: "top-right",
-      });
-      return redirect({ locale, href: "/products" });
-    }
     try {
       const data = {
-        cartId: storedCartId,
-        locale: locale,
         dateAndMethodData: dateAndMethodData,
         pickupDetails: values,
       };

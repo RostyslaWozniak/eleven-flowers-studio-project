@@ -12,16 +12,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { H2 } from "@/components/ui/typography";
-import { useLocale, useTranslations } from "next-intl";
-import { useCart } from "@/context/cart-context";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { type DateAndMethodFormSchema } from "@/lib/validation/date-and-method-form-schema";
-import { redirect, useRouter } from "@/i18n/routing";
 import {
   type DeliveryFormSchema,
   deliveryFormSchemaWithTranslation,
 } from "@/lib/validation/delivery-form-schema";
 import { api } from "@/trpc/react";
+import { useCart } from "@/context/cart-context";
+import { useRouter } from "@/i18n/routing";
 
 export default function DeliveryForm({
   dateAndMethodData,
@@ -30,12 +30,9 @@ export default function DeliveryForm({
 }) {
   const tFormErrorMessages = useTranslations("Form");
   const t = useTranslations("Checkout.details");
+  const messages = useTranslations("messages");
 
-  const router = useRouter();
-
-  const locale = useLocale();
-
-  const { storedCartId } = useCart();
+  const { setCartItems } = useCart();
 
   const form = useForm<DeliveryFormSchema>({
     resolver: zodResolver(
@@ -50,38 +47,31 @@ export default function DeliveryForm({
       postalCode: "",
     },
   });
+  const router = useRouter();
 
   const { mutate: createOrderWithDelivery } =
     api.public.order.createOrderWithDelivery.useMutation({
-      onSuccess: ({ orderId }) => {
-        localStorage.removeItem("cartId");
-        localStorage.setItem("orderId", orderId);
-        toast.success("Order created successfully!", {
+      onSuccess: ({ message }) => {
+        toast.success(messages("success.title"), {
           className: "bg-emerald-500 text-background",
+          position: "top-right",
+          description: messages(`success.${message}`),
         });
-        form.reset();
         router.push("/checkout");
+        setCartItems([]);
+        form.reset();
       },
-      onError: (error) => {
-        console.error("Order creation error", error);
-        toast.error("Failed to create the order. Please try again.", {
+      onError: ({ message }) => {
+        toast.error(messages("error.title"), {
           className: "bg-destructive text-destructive-foreground",
+          position: "top-right",
+          description: messages(`error.${message}`),
         });
       },
     });
 
   function onSubmit(values: DeliveryFormSchema) {
-    if (!storedCartId) {
-      toast.error("No Cart found!", {
-        className: "bg-destructive  text-destructive-foreground",
-        position: "top-right",
-      });
-      return redirect({ locale, href: "/products" });
-    }
-
     createOrderWithDelivery({
-      cartId: storedCartId,
-      locale: locale,
       dateAndMethodData: dateAndMethodData,
       addressDetails: values,
     });
@@ -241,6 +231,7 @@ export default function DeliveryForm({
               />
             </div>
           </div>
+          {/* <Link href="/checkout" className="float-left"> */}
           <Button
             className="float-right h-12 w-full sm:w-min sm:max-w-sm"
             size="lg"
@@ -248,6 +239,7 @@ export default function DeliveryForm({
           >
             {t("form.button")}
           </Button>
+          {/* </Link> */}
         </form>
       </Form>
     </motion.div>

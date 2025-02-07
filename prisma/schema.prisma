@@ -143,7 +143,7 @@ model DeliveryDetails {
     method       String
     description  String?
     orderId      String?  @unique
-    order        Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+    order        Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model ContactInfo {

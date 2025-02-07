@@ -1,6 +1,7 @@
 import { H1 } from "@/components/ui/typography";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import OrderItemsList from "./_components/order-items-list";
+import { StripeCheckoutForm } from "./_components/stripe-checkout-form";
 
 export default function Page() {
   return (
@@ -11,7 +12,9 @@ export default function Page() {
           <div className="mt-8 w-full">
             <OrderItemsList />
           </div>
-          <div className="w-full">{/* <StripeCheckoutForm /> */}</div>
+          <div className="w-full">
+            <StripeCheckoutForm />
+          </div>
         </div>
       </MaxWidthWrapper>
     </section>

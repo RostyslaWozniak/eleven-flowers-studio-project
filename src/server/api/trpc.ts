@@ -11,6 +11,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "@/server/db";
+import { type NextRequest } from "next/server";
 
 /**
  * 1. CONTEXT
@@ -24,7 +25,10 @@ import { db } from "@/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: {
+  req: NextRequest;
+  resHeaders: Headers;
+}) => {
   return {
     db,
     ...opts,

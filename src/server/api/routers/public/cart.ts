@@ -2,20 +2,25 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../../trpc";
 import { mapProductToDTO } from "@/lib/utils/dto";
 import type { CartItem } from "@/types";
+import {
+  CART_COOKIE_NAME,
+  getCookieValue,
+  getLocaleFromCookie,
+  setCookieValue,
+} from "@/lib/utils/cookies";
 
 const mutateCartSchema = z.object({
   cartItemId: z.string(),
-  cartId: z.string().uuid().nullable(),
   productId: z.string(),
   size: z.string(),
   quantity: z.number().min(1),
-  locale: z.string(),
 });
 
 export const cartRouter = createTRPCRouter({
   mutateCart: publicProcedure
     .input(mutateCartSchema)
     .mutation(async ({ ctx, input }) => {
+      const locale = getLocaleFromCookie(ctx.req);
       // CHECK IF PRODUCT EXISTS
       const productFromPrisma = await ctx.db.product.findFirst({
         where: {
@@ -29,7 +34,7 @@ export const cartRouter = createTRPCRouter({
               slug: true,
               translations: {
                 where: {
-                  language: input.locale,
+                  language: locale,
                 },
                 select: {
                   name: true,
@@ -57,7 +62,7 @@ export const cartRouter = createTRPCRouter({
           },
           translations: {
             where: {
-              language: input.locale,
+              language: locale,
             },
             select: {
               name: true,
@@ -71,14 +76,15 @@ export const cartRouter = createTRPCRouter({
         throw new Error("Product not found");
       }
 
+      const cartId = getCookieValue(ctx.req, CART_COOKIE_NAME);
       // MAP TO DTO
       const product = mapProductToDTO(productFromPrisma);
 
       // Step 1: Check if cart ID is provided
       let cart;
-      if (input.cartId) {
+      if (cartId) {
         cart = await ctx.db.cart.findUnique({
-          where: { id: input.cartId },
+          where: { id: cartId },
           include: { items: true },
         });
       }
@@ -98,6 +104,7 @@ export const cartRouter = createTRPCRouter({
           },
           include: { items: true },
         });
+        setCookieValue(ctx.resHeaders, CART_COOKIE_NAME, cart.id);
         return { cartId: cart.id, message: "New cart created with item." };
       }
 
@@ -112,7 +119,7 @@ export const cartRouter = createTRPCRouter({
           where: { id: existingCartItem.id },
           data: { quantity: input.quantity },
         });
-
+        setCookieValue(ctx.resHeaders, CART_COOKIE_NAME, cart.id);
         return { cartId: cart.id, message: "Cart item updated." };
       } else {
         // Step 5: Create a new cart item if not exists
@@ -126,7 +133,7 @@ export const cartRouter = createTRPCRouter({
             price: product.prices[0]?.price ?? null,
           },
         });
-
+        setCookieValue(ctx.resHeaders, CART_COOKIE_NAME, cart.id);
         return { cartId: cart.id, message: "New cart item added." };
       }
     }),
@@ -141,59 +148,57 @@ export const cartRouter = createTRPCRouter({
       });
     }),
 
-  getCartItems: publicProcedure
-    .input(z.object({ cartId: z.string().nullable(), locale: z.string() }))
-    .query(async ({ ctx, input }): Promise<CartItem[]> => {
-      // Check if cart id exists
-      if (!input.cartId) return [];
-
-      const data = await ctx.db.cartItem.findMany({
-        where: {
-          cartId: input.cartId,
-        },
-        select: {
-          id: true,
-          price: true,
-          size: true,
-          quantity: true,
-          product: {
-            select: {
-              id: true,
-              slug: true,
-              images: {
-                select: {
-                  url: true,
-                },
+  getCartItems: publicProcedure.query(async ({ ctx }): Promise<CartItem[]> => {
+    const cartId = getCookieValue(ctx.req, CART_COOKIE_NAME);
+    if (!cartId) return [];
+    const locale = getLocaleFromCookie(ctx.req);
+    const data = await ctx.db.cartItem.findMany({
+      where: {
+        cartId: cartId,
+      },
+      select: {
+        id: true,
+        price: true,
+        size: true,
+        quantity: true,
+        product: {
+          select: {
+            id: true,
+            slug: true,
+            images: {
+              select: {
+                url: true,
               },
-              translations: {
-                where: {
-                  language: input.locale,
-                },
-                select: {
-                  name: true,
-                  description: true,
-                },
+            },
+            translations: {
+              where: {
+                language: locale,
+              },
+              select: {
+                name: true,
+                description: true,
               },
             },
           },
         },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-      if (!data) return [];
+    if (!data) return [];
 
-      return data.map((item) => ({
-        id: item.id,
-        productId: item.product.id,
-        productName: item.product.translations[0]?.name ?? "No name",
-        slug: item.product.slug,
-        price: item.price,
-        imageUrl:
-          item.product.images[0]?.url ?? "/images/bouquet-placeholder.jpg",
-        size: item.size,
-        quantity: item.quantity,
-      }));
-    }),
+    return data.map((item) => ({
+      id: item.id,
+      productId: item.product.id,
+      productName: item.product.translations[0]?.name ?? "No name",
+      slug: item.product.slug,
+      price: item.price,
+      imageUrl:
+        item.product.images[0]?.url ?? "/images/bouquet-placeholder.jpg",
+      size: item.size,
+      quantity: item.quantity,
+    }));
+  }),
 });

@@ -1,66 +1,86 @@
 "use client";
 
-import { H2 } from "@/components/ui/typography";
-// import { useCart } from "@/context/cart-context";
-// import { Link } from "@/i18n/routing";
-// import { formatPrice } from "@/lib/utils";
-// import { useTranslations } from "next-intl";
-// import Image from "next/image";
-// import { useState } from "react";
+import { H2, H3, Text } from "@/components/ui/typography";
+import { Link } from "@/i18n/routing";
+import { formatPrice } from "@/lib/utils";
+import { api } from "@/trpc/react";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function OrderItemsList() {
-  // const [orderItems, setOrderItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const { data: orderItems, isLoading } =
+    api.public.order.getOrderById.useQuery();
 
-  const storedCartId = localStorage.getItem("orderId");
+  const t = useTranslations("Checkout.summary");
 
+  useEffect(() => {
+    console.log(orderItems);
+    if (!orderItems) return;
+    setTotalPrice(orderItems.reduce((acc, item) => acc + item.price!, 0));
+  }, [orderItems]);
   return (
     <div className="lg:py-6">
-      <H2 className="text-start text-2xl font-light md:text-start">
-        {storedCartId}
-      </H2>
-      {/* {orderItems.map((item) => (
-        <div
-          key={item.id}
-          className="flex w-full items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0"
-        >
-          <div className="relative h-20 w-20 overflow-hidden bg-gray-100">
-            <Image
-              src={item.imageUrl}
-              alt={item.productName}
-              fill
-              sizes="(max-width: 768px) 50px, (max-width: 1200px) 50px"
-              className="object-cover"
-            />
-          </div>
-          <div className="flex-grow">
-            <Link
-              href={`/products/${item.slug}?size=${item.size}`}
-              className="text-primary hover:underline"
+      {orderItems && orderItems.length > 0 ? (
+        <div>
+          {orderItems.map((item) => (
+            <div
+              key={item.id}
+              className="flex w-full items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0"
             >
-              <H3 className="font-semibold">{item.productName}</H3>
-            </Link>
-            <div className="mt-3 flex justify-between">
-              <Text variant="muted">
-                {t("size")}:{" "}
-                <span className="text-base font-bold capitalize">
-                  {item.size}
-                </span>
-              </Text>
-              <Text size="subtitle" variant="muted">
-                {formatPrice(item.price)} x {item.quantity}
-              </Text>
+              <div className="relative h-20 w-20 overflow-hidden bg-gray-100">
+                <Image
+                  src={item.imageUrl}
+                  alt={item.productName}
+                  fill
+                  sizes="(max-width: 768px) 50px, (max-width: 1200px) 50px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex-grow">
+                <Link
+                  href={`/products/${item.slug}?size=${item.size}`}
+                  className="text-primary hover:underline"
+                >
+                  <H3 className="font-semibold">{item.productName}</H3>
+                </Link>
+                <div className="mt-3 flex justify-between">
+                  <Text variant="muted">
+                    {t("size")}:{" "}
+                    <span className="text-base font-bold capitalize">
+                      {item.size}
+                    </span>
+                  </Text>
+                  <Text size="subtitle" variant="muted">
+                    {formatPrice(item.price)} x {item.quantity}
+                  </Text>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="mt-6 border-t border-gray-100 pt-6">
+            <div className="flex items-center justify-between">
+              <span className="text-lg"> {t("total")}</span>
+              <span className="text-2xl font-medium">
+                {formatPrice(totalPrice)}
+              </span>
             </div>
           </div>
         </div>
-      ))}
-      <div className="mt-6 border-t border-gray-100 pt-6">
-        <div className="flex items-center justify-between">
-          <span className="text-lg"> {t("total")}</span>
-          <span className="text-2xl font-medium">
-            {formatPrice(totalPrice)}
-          </span>
-        </div>
-      </div> */}
+      ) : (
+        <>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <div>
+              <H2 className="text-start text-2xl font-light md:text-start">
+                Empty
+              </H2>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

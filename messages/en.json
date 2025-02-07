@@ -196,5 +196,15 @@
         "pickup": "Pickup"
       }
     }
+  },
+  "messages": {
+    "error": {
+      "title": "Error",
+      "cart_is_empty": "Cart is empty"
+    },
+    "success": {
+      "title": "Success",
+      "order_created": "Order created successfully!"
+    }
   }
 }

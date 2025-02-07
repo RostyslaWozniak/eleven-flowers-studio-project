@@ -196,5 +196,15 @@
         "pickup": "Самовывоз"
       }
     }
+  },
+  "messages": {
+    "error": {
+      "title": "Ошибка",
+      "cart_is_empty": "Корзина пуста"
+    },
+    "success": {
+      "title": "Успех",
+      "order_created": "Заказ создан успешно!"
+    }
   }
 }
