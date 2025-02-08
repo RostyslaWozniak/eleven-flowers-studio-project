@@ -1,7 +1,12 @@
 import { createTRPCRouter, publicProcedure } from "../../trpc";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
-import { getCookieValue, ORDER_COOKIE_NAME } from "@/lib/utils/cookies";
+import {
+  getCookieValue,
+  getLocaleFromCookie,
+  ORDER_COOKIE_NAME,
+} from "@/lib/utils/cookies";
 import { TRPCError } from "@trpc/server";
+import { getTranslations } from "next-intl/server";
 
 export const stripeRouter = createTRPCRouter({
   getClientSessionSecret: publicProcedure.query(async ({ ctx }) => {
@@ -28,6 +33,7 @@ export const stripeRouter = createTRPCRouter({
         },
         orderItems: {
           select: {
+            size: true,
             price: true,
             quantity: true,
             product: {
@@ -54,18 +60,26 @@ export const stripeRouter = createTRPCRouter({
       });
     }
 
+    const locale = getLocaleFromCookie(ctx.req);
+
+    const sizeTranslatedWord = await getTranslations({
+      locale,
+      namespace: "ProductPage",
+    });
+
     const lineItems = order.orderItems.map((item) => {
       if (item.price == null || item.price <= 0) {
         throw new Error(
           `Invalid price for item: ${item.product.translations[0]?.name}`,
         );
       }
+
       return {
         quantity: item.quantity,
         price_data: {
           currency: "pln",
           product_data: {
-            name: item.product.translations[0]?.name ?? "",
+            name: `${item.product.translations[0]?.name} - ${sizeTranslatedWord("size")}: ${item.size.toUpperCase()}  x ${item.quantity}`,
           },
           unit_amount: item.price,
         },
@@ -76,8 +90,8 @@ export const stripeRouter = createTRPCRouter({
       line_items: lineItems,
       ui_mode: "embedded",
       mode: "payment",
-      // return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
-      return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}`,
+      locale: locale,
+      return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
       customer_email: order.contactInfo?.email,
       payment_intent_data: {
         receipt_email: order.contactInfo?.email,

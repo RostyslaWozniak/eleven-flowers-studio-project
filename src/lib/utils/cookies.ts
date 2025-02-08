@@ -1,3 +1,4 @@
+import { type Locale } from "@/i18n/routing";
 import { type NextRequest } from "next/server";
 
 export const LOCALE_COOKIE_NAME = "NEXT_LOCALE";
@@ -33,8 +34,8 @@ export function deleteCookieValue(headers: Headers, name: string): void {
   );
 }
 
-export function getLocaleFromCookie(req: NextRequest): string {
+export function getLocaleFromCookie(req: NextRequest): Locale {
   const locale = getCookieValue(req, LOCALE_COOKIE_NAME);
-  if (!locale) return "en";
+  if (locale !== "en" && locale !== "pl" && locale !== "ru") return "en";
   return locale;
 }

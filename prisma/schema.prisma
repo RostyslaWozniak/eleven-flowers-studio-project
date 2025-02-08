@@ -100,7 +100,8 @@ model Order {
     createdAt       DateTime         @default(now())
     updatedAt       DateTime         @updatedAt
     orderItems      OrderItem[]
-    address         Address?
+    addressId       String?
+    address         Address?         @relation(fields: [addressId], references: [id], onDelete: SetNull)
     deliveryDetails DeliveryDetails?
     paymentIntentId String?
     paymentStatus   PaymentStatus    @default(PENDING)
@@ -127,13 +128,14 @@ model OrderItem {
 
 model Address {
     id        String   @id @default(uuid())
-    city      String?
-    street    String?
-    postCode  String?
-    orderId   String   @unique
-    order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    city      String
+    street    String
+    postCode  String
+    order     Order[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@unique([city, street, postCode])
 }
 
 model DeliveryDetails {

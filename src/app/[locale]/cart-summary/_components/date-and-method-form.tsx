@@ -35,8 +35,9 @@ import {
   deliveryTimeArray,
 } from "@/lib/validation/date-and-method-form-schema";
 import { useLocale, useTranslations } from "next-intl";
-import { type Dispatch, type SetStateAction } from "react";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { motion } from "framer-motion";
+import { getValidTime, isValidTime } from "@/lib/utils/date-and-time";
 
 export function DateAndMethodForm({
   dateAndMethodData,
@@ -67,6 +68,11 @@ export function DateAndMethodForm({
     setDateAndMethodData(values);
     setIsDateAndMethodFormOpen(false);
   }
+
+  useEffect(() => {
+    form.setValue("time", getValidTime(deliveryTimeArray)!);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch("date")]);
 
   const globalValidationError = form.formState.errors.root?.message;
   const formatter = new Intl.DateTimeFormat(locale);
@@ -116,6 +122,15 @@ export function DateAndMethodForm({
                           selected={field.value}
                           onSelect={field.onChange}
                           initialFocus
+                          disabled={(date) => {
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0); // Reset to midnight
+
+                            const selectedDate = new Date(date);
+                            selectedDate.setHours(0, 0, 0, 0); // Reset selected date to midnight
+
+                            return selectedDate < today; // Disable past dates
+                          }}
                         />
                       </PopoverContent>
                     </Popover>
@@ -144,7 +159,11 @@ export function DateAndMethodForm({
                       </SelectTrigger>
                       <SelectContent className="rounded-sm">
                         {deliveryTimeArray.map((hour) => (
-                          <SelectItem key={hour} value={hour}>
+                          <SelectItem
+                            key={hour}
+                            value={hour}
+                            disabled={!isValidTime(hour, form.watch("date"))}
+                          >
                             {hour}
                           </SelectItem>
                         ))}

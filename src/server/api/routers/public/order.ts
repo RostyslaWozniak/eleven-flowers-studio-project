@@ -87,6 +87,29 @@ export const orderRouter = createTRPCRouter({
         });
         contactInfoId = newContactInfo.id;
       }
+
+      // 3. check if address exists, if not create
+      let addressId: string;
+      const existingAddress = await ctx.db.address.findFirst({
+        where: {
+          city: input.addressDetails.city,
+          street: input.addressDetails.address,
+          postCode: input.addressDetails.postalCode,
+        },
+      });
+      if (existingAddress) {
+        addressId = existingAddress.id;
+      } else {
+        const address = await ctx.db.address.create({
+          data: {
+            city: input.addressDetails.city,
+            street: input.addressDetails.address,
+            postCode: input.addressDetails.postalCode,
+          },
+        });
+        addressId = address.id;
+      }
+
       //3.  create order
       try {
         const order = await ctx.db.order.create({
@@ -99,14 +122,8 @@ export const orderRouter = createTRPCRouter({
                 method: input.dateAndMethodData.deliveryMethod,
               },
             },
-            address: {
-              create: {
-                city: input.addressDetails.city,
-                street: input.addressDetails.address,
-                postCode: input.addressDetails.postalCode,
-              },
-            },
             contactInfoId: contactInfoId,
+            addressId: addressId,
             orderItems: {
               createMany: {
                 data: cartItems.map((item) => ({
