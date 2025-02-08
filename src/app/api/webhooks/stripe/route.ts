@@ -3,6 +3,7 @@ import { redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { db } from "@/server/db";
 import { sendEmail } from "@/services/resend";
+import { sendSms } from "@/services/twilio";
 import { type NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -38,8 +39,10 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
   }
 
   await updateOrder(orderId);
-  console.log({ checkoutSession });
-  console.log({ locale: checkoutSession.locale }); //checkoutSession.locale
+
+  const orderPrice = checkoutSession.amount_total
+    ? checkoutSession.amount_total / 100
+    : 0;
 
   await sendEmail({
     email: "rostik19wozniak@gmail.com",
@@ -47,8 +50,13 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     emailTemplate: PurchaseSucceedTemplate({
       firstName: "Rostyslav",
       lastName: "Vozniak",
-      price: checkoutSession.amount_total,
+      price: orderPrice,
     }),
+  });
+
+  await sendSms({
+    number: "+48798582849",
+    message: `New order from Eleven Flowers Studio. Price: ${orderPrice} PLN.`,
   });
 
   return orderId;
