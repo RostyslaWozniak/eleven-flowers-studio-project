@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import {
-  deliveryTimeArray,
+  DELIVERY_TIME_SLOTS,
   type DateAndMethodFormSchema,
 } from "@/lib/validation/date-and-method-form-schema";
 import { AnimatePresence } from "framer-motion";
@@ -20,7 +20,7 @@ export default function Forms() {
   const [dateAndMethodData, setDateAndMethodData] =
     useState<DateAndMethodFormSchema>({
       date: new Date(),
-      time: deliveryTimeArray[0],
+      time: DELIVERY_TIME_SLOTS[0],
       deliveryMethod: isDelivery ? "delivery" : "pickup",
       description: "",
     });
