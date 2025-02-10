@@ -13,7 +13,7 @@ export function CollectionsSection({
   collections: CollectionDTO[];
   currCollectionSlug?: string;
 }) {
-  const t = useTranslations("ProductPage");
+  const t = useTranslations("product");
   return (
     <section className="">
       <MaxWidthWrapper className="space-y-4 px-0">

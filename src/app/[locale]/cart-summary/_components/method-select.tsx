@@ -27,7 +27,9 @@ export function MethodSelect({
   setIsDelivery: Dispatch<SetStateAction<boolean>>;
 }) {
   return null;
-  const t = useTranslations("Checkout.delivery");
+  const t = useTranslations("cart.cart_page.delivary_instructions.form");
+
+  // const errorMessages = useTranslations("messages.error");
   return (
     <FormField
       control={control}

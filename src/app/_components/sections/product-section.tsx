@@ -11,7 +11,7 @@ import {
 } from "@/components/product";
 
 export function ProductSection({ product }: { product: ProductDTO }) {
-  const t = useTranslations("ProductPage");
+  const t = useTranslations("product");
 
   const images = product.images.map((image) => ({
     url: image,

@@ -11,7 +11,7 @@ import { Separator } from "../ui/separator";
 import { useTranslations } from "next-intl";
 
 export function Footer() {
-  const t = useTranslations("Footer");
+  const t = useTranslations("footer");
 
   const tNav = useTranslations("navigation");
   return (
@@ -25,7 +25,7 @@ export function Footer() {
             <div className="space-y-2">
               <Label>
                 <Text size="lg" variant="muted" className="">
-                  {t("form.label")}
+                  {t("newsletter.label")}
                 </Text>
               </Label>
               <form
@@ -34,7 +34,7 @@ export function Footer() {
               >
                 <Input
                   type="text"
-                  placeholder={t("form.placeholder")}
+                  placeholder={t("newsletter.placeholder")}
                   className="h-10 flex-grow placeholder:text-primary/70"
                 />
                 <Button
@@ -42,14 +42,14 @@ export function Footer() {
                   variant="outline"
                   className="h-10 w-full border bg-transparent text-base tracking-normal md:w-min"
                 >
-                  {t("form.button")}
+                  {t("newsletter.button")}
                 </Button>
               </form>
-              <Text size="sm">{t("form.description")}</Text>
+              <Text size="sm">{t("newsletter.description")}</Text>
             </div>
           </div>
           <div>
-            <Text> {t("links.title")}</Text>
+            <Text> {t("links")}</Text>
             <ul className="mt-2">
               <li className="hover:text-primary hover:underline">
                 <Link href="/">{tNav("home")}</Link>
@@ -66,7 +66,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <Text> {t("socials.title")}</Text>
+            <Text> {t("socials")}</Text>
             <div className="mt-2 flex items-start gap-2 text-primary">
               <Facebook />
               <Instagram />

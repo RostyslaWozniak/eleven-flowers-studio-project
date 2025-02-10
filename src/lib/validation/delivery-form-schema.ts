@@ -1,73 +1,39 @@
-import { type TranslationValues } from "next-intl";
-import { type Message } from "react-hook-form";
 import { z } from "zod";
 import { checkDelivery } from "../utils/delivery";
-
-const requiredTranslationString = (
-  t?: (key: Message, object?: TranslationValues) => string,
-) => {
-  return z
-    .string({
-      required_error: t?.("field-required"),
-      invalid_type_error: t?.("field-required"),
-    })
-    .min(1, {
-      message: t?.("field-min"),
-    })
-    .max(50, {
-      message: t?.("field-max"),
-    })
-    .trim();
-};
-
-export function deliveryFormSchemaWithTranslation(
-  t?: (key: Message, object?: TranslationValues) => string,
-) {
-  return z.object({
-    firstName: z.string().trim().optional(),
-    lastName: z.string().trim().optional(),
-    email: requiredTranslationString(t).email(),
-    address: requiredTranslationString(t),
-    city: requiredTranslationString(t),
-    postalCode: requiredTranslationString(t)
-      .trim()
-      .regex(/^\d{2}-\d{3}$/, {
-        message: t?.("field-required"),
-      })
-      .refine(
-        (postalCode) => {
-          const deliveryInfo = checkDelivery(postalCode);
-          return deliveryInfo.price !== null;
-        },
-        {
-          message:
-            t?.("postal-code-not-deliverable") ??
-            "Delivery not available in this area.",
-        },
-      ),
-  });
-}
 
 export const deliveryFormSchema = z.object({
   firstName: z.string().trim().optional(),
   lastName: z.string().trim().optional(),
-  email: z.string().email(),
-  address: z.string().trim().min(1, "Required").max(50),
-  city: z.string().trim().min(1, "Required").max(50),
+  email: z
+    .string({ errorMap: () => ({ message: "required" }) })
+    .email("invalid_email")
+    .trim(),
+  address: z.string().trim().min(1, "required").max(50, "max"),
+  city: z.string().trim().min(1, "required").max(50, "max"),
   postalCode: z
     .string()
     .trim()
-    .refine(
-      (postalCode) => {
-        const deliveryInfo = checkDelivery(postalCode);
-        return deliveryInfo.price !== null;
-      },
-      {
-        message: "Delivery not available in this area.",
-      },
-    ),
+    .superRefine((postalCode, ctx) => {
+      if (!postalCode) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "required",
+        });
+      }
+      const deliveryInfo = checkDelivery(postalCode);
+      if (deliveryInfo.message === "invalid_postal_code") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: deliveryInfo.message,
+        });
+      }
+      if (deliveryInfo.message === "postal_code_not_deliverable") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: deliveryInfo.message,
+        });
+      }
+    }),
 });
 
-export type DeliveryFormSchema = z.infer<
-  ReturnType<typeof deliveryFormSchemaWithTranslation>
->;
+export type DeliveryFormSchema = z.infer<typeof deliveryFormSchema>;

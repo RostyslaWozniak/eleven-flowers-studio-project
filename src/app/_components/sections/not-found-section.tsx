@@ -7,13 +7,13 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
 export function NotFoundSection() {
-  const t = useTranslations("NotFound");
+  const t = useTranslations("not_found");
   return (
     <section>
       <MaxWidthWrapper className="flex min-h-[600px] flex-col items-center justify-center">
         <H1 className="text-9xl lg:text-9xl">404</H1>
         <Text size="subtitle" variant="muted" className="mb-8 mt-4">
-          {t("title")}
+          {t("description")}
         </Text>
         <Link href="/" className={cn(buttonVariants({ variant: "outline" }))}>
           {t("button")}

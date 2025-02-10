@@ -21,6 +21,7 @@ export const stripeRouter = createTRPCRouter({
     const order = await ctx.db.order.findUnique({
       where: {
         id: orderId,
+        paymentStatus: "PENDING",
       },
       select: {
         id: true,
@@ -64,7 +65,7 @@ export const stripeRouter = createTRPCRouter({
 
     const sizeTranslatedWord = await getTranslations({
       locale,
-      namespace: "ProductPage",
+      namespace: "payment.order_summary",
     });
 
     const lineItems = order.orderItems.map((item) => {

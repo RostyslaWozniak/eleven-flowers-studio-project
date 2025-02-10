@@ -8,12 +8,12 @@ import { Fragment } from "react";
 import { cn } from "@/lib/utils";
 
 export function ContactSection({ className }: { className?: string }) {
-  const t = useTranslations("HomePage.ContactSection");
+  const t = useTranslations("home.contact");
 
   const contactData = [
     {
       id: 1,
-      label: t("contactData.emailLabel"),
+      label: t("details.email"),
       value: "elevenflowerstudio@gmail.com",
       icon: MailOpen,
       href: "mailto:elevenflowerstudio@gmail.com",
@@ -21,7 +21,7 @@ export function ContactSection({ className }: { className?: string }) {
     },
     {
       id: 2,
-      label: t("contactData.phoneLabel"),
+      label: t("details.phone"),
       value: "+48 571 944 969 ",
       icon: PhoneCall,
       href: "tel:+48571944969",
@@ -29,7 +29,7 @@ export function ContactSection({ className }: { className?: string }) {
     },
     {
       id: 3,
-      label: t("contactData.addressLabel"),
+      label: t("details.address"),
       value: "ul. Nocznickiego 25 lokal u12, 01-948 Warszawa",
       icon: MapPin,
       href: "https://www.google.com/maps/place/11+Flower+Studio/@52.2444049,20.9796979,17z/data=!4m5!3m4!1s0x471ecb0c5c9b3e6d:0x2a2d2c4e5b7c4e8!8m2!3d52.2444049!4d20.9825866",
@@ -37,8 +37,8 @@ export function ContactSection({ className }: { className?: string }) {
     },
     {
       id: 4,
-      label: t("contactData.openingHours.label"),
-      value: t("contactData.openingHours.value"),
+      label: t("details.opening_hours.label"),
+      value: t("details.opening_hours.value"),
       icon: Clock,
       href: null,
       target: null,

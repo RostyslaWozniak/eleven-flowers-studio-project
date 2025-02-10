@@ -7,27 +7,27 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export function CollectionsPreviewSection() {
-  const t = useTranslations("HomePage.CollectionsSection");
+  const t = useTranslations("home.collections");
 
   const collections = [
     {
       img: "/images/bouquets.png",
-      title: t("collections.bouquets"),
+      title: t("types.bouquets"),
       href: "/collections/bouquets",
     },
     {
       img: "/images/flower-box.png",
-      title: t("collections.flowerBox"),
+      title: t("types.flowerBox"),
       href: "/collections/flower-box",
     },
     {
       img: "/images/balloons.png",
-      title: t("collections.balloons"),
+      title: t("types.balloons"),
       href: "/collections/balloons",
     },
     {
       img: "/images/gift.png",
-      title: t("collections.gifts"),
+      title: t("types.gifts"),
       href: "/collections/gifts",
     },
   ];

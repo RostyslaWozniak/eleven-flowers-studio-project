@@ -5,7 +5,7 @@ import { FaqAccordion } from "../faq-accrdion/faq-accordion";
 import { useTranslations } from "next-intl";
 
 export function FaqSection() {
-  const t = useTranslations("HomePage.FAQSection");
+  const t = useTranslations("home.faq");
   return (
     <section className="w-full py-12 lg:pt-20">
       <MaxWidthWrapper className="space-y-6 md:space-y-14">

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const DELIVERY_TIME_SLOTS = [
+  "08:00-10:00",
   "10:00-13:00",
   "13:00-17:00",
   "17:00-20:00",
@@ -21,10 +22,9 @@ const ADDITIONAL_TIME_IN_MS = ADDITIONAL_TIME_HOURS * 60 * 60 * 1000; // Additio
 
 export const dateAndMethodFormSchema = z
   .object({
-    date: z.date(),
+    date: z.date({ errorMap: () => ({ message: "required" }) }),
     time: z.enum(DELIVERY_TIME_SLOTS, {
-      description: "Select time",
-      errorMap: () => ({ message: "Select time" }),
+      errorMap: () => ({ message: "required" }),
     }),
     deliveryMethod: z.enum(DELIVERY_METHODS),
     description: z.string().optional(),
@@ -45,12 +45,12 @@ export const dateAndMethodFormSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["date"],
-        message: "Date must be in the future",
+        message: "date_must_be_future",
       });
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["time"],
-        message: "Time must be in the future",
+        message: "time_must_be_future",
       });
     }
   });
@@ -107,5 +107,5 @@ export const isTimeSlotDisabled = (
 
   slotTime.setHours(startHour - ADDITIONAL_TIME_HOURS, startMinute, 0, 0);
 
-  return slotTime <= currentTime;
+  return slotTime < currentTime;
 };

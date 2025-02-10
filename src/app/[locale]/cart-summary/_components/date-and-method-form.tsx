@@ -25,6 +25,7 @@ import { motion } from "framer-motion";
 import { DateSelect } from "./date-select";
 import { TimeSelect } from "./time-select";
 import { MethodSelect } from "./method-select";
+import { useTranslations } from "next-intl";
 
 export type DeliveryFormControl = Control<
   {
@@ -65,6 +66,8 @@ export function DateAndMethodForm({
 
   const globalValidationError = form.formState.errors.root?.message;
 
+  const t = useTranslations("cart.cart_page.delivary_instructions");
+
   return (
     <motion.div
       key="detail-form"
@@ -74,8 +77,8 @@ export function DateAndMethodForm({
       transition={{ duration: 0.5 }}
       className="lg:py-6"
     >
-      <H2 className="text-start text-2xl font-light md:text-start">
-        Delivery details
+      <H2 className="text-start text-2xl font-light md:mb-8 md:text-start">
+        {t("title")}
       </H2>
       {globalValidationError && (
         <p className="mt-2 text-destructive">{globalValidationError}</p>
@@ -104,11 +107,11 @@ export function DateAndMethodForm({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Delivery Details</FormLabel>
+                <FormLabel>{t("form.instructions")}</FormLabel>
                 <FormControl>
                   <Textarea
                     className="min-h-[150px]"
-                    placeholder="Add any special instructions or notes here"
+                    placeholder={t("form.instructions_placeholder")}
                     value={field.value}
                     onChange={field.onChange}
                   />
@@ -119,8 +122,8 @@ export function DateAndMethodForm({
             )}
           />
 
-          <Button type="submit" className="float-right h-12 md:w-36">
-            Submit
+          <Button type="submit" className="float-right h-12 w-min">
+            {t("form.button")}
           </Button>
         </form>
       </Form>

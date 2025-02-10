@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   const locale = req.cookies.get("NEXT_LOCALE")?.value ?? "en";
   if (!stripeSessionId)
-    return redirect({ locale: locale, href: "/checkout/purchase-failure" });
+    return redirect({ locale: locale, href: "/payment/purchase-failure" });
 
   let redirectUrl: string;
 
@@ -22,10 +22,10 @@ export async function GET(req: NextRequest) {
       { expand: ["line_items"] },
     );
     await processStripeCheckout(checkoutSession);
-    redirectUrl = `/${locale}/checkout/purchase-success`;
+    redirectUrl = `/${locale}/payment/purchase-success`;
   } catch (error) {
     console.log(error);
-    redirectUrl = `/${locale}/checkout/purchase-failure`;
+    redirectUrl = `/${locale}/payment/purchase-failure`;
   }
 
   return NextResponse.redirect(new URL(redirectUrl, req.url));

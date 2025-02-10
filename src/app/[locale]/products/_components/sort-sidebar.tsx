@@ -6,36 +6,39 @@ import { Coins, Gem, Gift, Star } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useRouter } from "@/i18n/routing";
 import { H2 } from "@/components/ui/typography";
-
-const sidebarItems = [
-  {
-    query: "new",
-    label: "Nowe",
-    icon: Gift,
-  },
-  {
-    query: "popular",
-    label: "Popularne",
-    icon: Star,
-  },
-  {
-    query: "price-desc",
-    label: "Najdroższe",
-    icon: Gem,
-  },
-  {
-    query: "price-asc",
-    label: "Najtańsze",
-    icon: Coins,
-  },
-];
+import { useTranslations } from "next-intl";
 
 export const SortSidebar = () => {
   const [sort] = useQueryState("sort", {
     defaultValue: "new",
   });
 
+  const t = useTranslations("product.sidebar");
+
   const router = useRouter();
+
+  const sidebarItems = [
+    {
+      query: "new",
+      label: t("sort.new"),
+      icon: Gift,
+    },
+    {
+      query: "popular",
+      label: t("sort.popular"),
+      icon: Star,
+    },
+    {
+      query: "price-desc",
+      label: t("sort.price_desc"),
+      icon: Gem,
+    },
+    {
+      query: "price-asc",
+      label: t("sort.price_asc"),
+      icon: Coins,
+    },
+  ];
 
   return (
     <aside className="min-w-min py-4 md:py-20">

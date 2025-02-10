@@ -6,82 +6,64 @@
     "contact": "Kontakt",
     "cart": "Koszyk"
   },
-  "Form": {
-    "field-required": "Pole jest wymagane",
-    "field-min": "Pole jest wymagane",
-    "field-max": "Pole jest wymagane",
-    "postal-code-not-deliverable": "Dostawa w danym regionie niedostępna"
-  },
-  "Cart": {
-    "title": "Twój koszyk",
-    "totalPrice": "Suma",
-    "totalItems": "Produkty",
-    "button": "Przejdź do kasy",
-    "emptyCart": {
-      "title": "Twój koszyk jest pusty",
-      "subtitle": "Wygląda na to, że nie dodałeś jeszcze niczego do koszyka.",
-      "button": "Rozpocznij zakupy"
-    }
-  },
-  "HomePage": {
+  "home": {
     "title": "Eleven Flowers Studio - Idealne prezenty dla Ciebie",
     "description": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",
-    "HeroSection": {
-      "heroTitle": "Idealne prezenty dla Ciebie",
-      "heroSubtitle": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",
-      "primaryActionButton": "Zamów kwiaty",
-      "secondaryActionButton": "Zobacz kolekcje"
+    "hero": {
+      "title": "Idealne prezenty dla Ciebie",
+      "subtitle": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",
+      "primary_button": "Zamów kwiaty",
+      "secondary_button": "Zobacz kolekcje"
     },
-    "BenefitsSection": {
-      "freeShipping": {
+    "benefits": [
+      {
         "title": "Darmowa wysyłka",
         "description": "Skorzystaj z darmowej dostawy przy zamówieniach powyżej 350 zł."
       },
-      "discounts": {
+      {
         "title": "Zniżki do 30%",
         "description": "Zniżki dla stałych klientów oraz na zakupy powyżej 350 zł."
       },
-      "gifts": {
+      {
         "title": "Prezenty",
         "description": "Eleganckie wazony i inne prezenty pasujące do kwiatów."
       },
-      "personalizedService": {
+      {
         "title": "Indywidualne podejście",
         "description": "Tworzymy kompozycje spełniające Państwa życzenia i oczekiwania."
       },
-      "freshnessGuarantee": {
+      {
         "title": "Gwarancja świeżości",
         "description": "Tylko najświeższe kwiaty od sprawdzonych dostawców."
       },
-      "fastDelivery": {
+      {
         "title": "Szybka dostawa",
         "description": "Kwiaty dostarczamy terminowo, aby radość przyszła w odpowiednim momencie."
       },
-      "projectPhotos": {
+      {
         "title": "Zdjęcia realizacji",
         "description": "Profesjonalne fotografie kwiatów, aranżacje prezentowe i usługi fotograficzne."
       }
-    },
-    "CollectionsSection": {
+    ],
+    "collections": {
       "title": "Odkryj nasze wyjątkowe usługi florystyczne",
       "subtitle": "W naszym studiu florystycznym spełniamy Twoje marzenia związane z kwiatami. Odkryj nasze wykwintne aranżacje, spersonalizowane pudełka prezentowe i profesjonalne usługi fotograficzne.",
-      "collections": {
+      "types": {
         "bouquets": "Bukiety",
         "flowerBox": "Flower Box",
         "balloons": "Balony",
         "gifts": "Prezenty"
       }
     },
-    "MostPopularProductsSection": {
+    "popular_products": {
       "title": "Najbardziej popularne",
-      "seeMoreButton": "Zobacz więcej"
+      "see_more": "Zobacz więcej"
     },
-    "TestemonialsSection": {
+    "testimonials": {
       "title": "Opinie naszych klientów",
-      "subtitle": "Odkryj szczere historie i entuzjastyczne recenzje tych, którzy doświadczyli piękna",
-      "testemonials": []
+      "subtitle": "Odkryj szczere historie i entuzjastyczne recenzje tych, którzy doświadczyli piękna"
     },
-    "FAQSection": {
+    "faq": {
       "title": "Najczęściej zadawane pytania",
       "questions": [
         {
@@ -106,84 +88,143 @@
         }
       ]
     },
-    "ContactSection": {
+    "contact": {
       "title": "Skontaktuj sie z nami",
       "subtitle": "Masz pytania? Chcesz złożyć zamówienie? Jesteśmy tutaj, aby Ci pomóc! Skontaktuj się z nami przez:",
-      "contactData": {
-        "emailLabel": "Email",
-        "phoneLabel": "Telefon",
-        "addressLabel": "Adres",
-        "openingHours": {
+      "details": {
+        "email": "Email",
+        "phone": "Telefon",
+        "address": "Adres",
+        "opening_hours": {
           "label": "Godziny otwarcia",
           "value": "Pn-Sb: 10:00-19:00 Nd: 12:00-18:00"
         }
       }
     }
   },
-  "ProductPage": {
+  "product": {
     "size": "Rozmiar",
-    "addToCart": "Dodaj do koszyka",
-    "inCart": "W koszyku",
+    "add_to_cart": "Dodaj do koszykaу",
+    "in_cart": "W koszyku",
     "collections": "Kolekcje",
-    "relatedProducts": "Powiązane produkty",
-    "noProductsFound": "Nie znaleziono produktów.",
-    "priceFrom": "Od"
+    "related_products": "Powiązane produkty",
+    "no_products": "Nie znaleziono produktów.",
+    "price_from": "Od",
+    "sidebar": {
+      "sort": {
+        "new": "Nowe",
+        "popular": "Popularne",
+        "price_desc": "Najdroższe",
+        "price_asc": "Najtańsze"
+      }
+    }
   },
-  "Footer": {
-    "form": {
+  "footer": {
+    "newsletter": {
       "label": "Dołącz do naszego newslettera i otrzymuj specjalne oferty!",
       "placeholder": "Twój email",
       "button": "Wyślij",
       "description": "Zapisując się, zgadzasz się na otrzymywanie aktualizacji i akceptujesz naszą Politykę prywatności."
     },
-    "links": {
-      "title": "Przydatne linki"
-    },
-    "socials": {
-      "title": "Pozostań w kontakcie"
-    },
+    "links": "Przydatne linki",
+    "socials": "Pozostań w kontakcie",
     "rights": "Wszelkie prawa zastrzeżone.",
     "policy": "Polityka prywatności"
   },
-  "NotFound": {
+  "not_found": {
     "title": "Strona nie została znaleziona",
     "description": "Strona, która szukasz nie została znaleziona.",
     "button": "Przejdz do strony głównej"
   },
-  "Checkout": {
-    "summary": {
-      "title": "Podsumowanie zamówienia",
-      "total": "Suma",
-      "size": "Rozmiar"
-    },
-    "details": {
-      "title": "Twoje dane",
-      "form": {
-        "firstName": "Imię",
-        "lastName": "Nazwisko",
-        "email": "Email",
-        "address": "Adres",
-        "city": "Miasto",
-        "postalCode": "Kod Pocztowy",
-        "button": "Przejdz do płatnosci"
+
+  "cart": {
+    "cart_sheet": {
+      "title": "Twój koszyk",
+      "total_price": "Suma",
+      "total_items": "Produkty",
+      "size": "Rozmiar",
+      "button": "Przejdź do zamówienia",
+      "empty": {
+        "title": "Twój koszyk jest pusty",
+        "subtitle": "Wygląda na to, że nie dodałeś jeszcze niczego do koszyka.",
+        "button": "Rozpocznij zakupy"
       }
     },
-    "delivery": {
-      "title": "Metoda",
-      "methods": {
-        "delivery": "Dostawa",
-        "pickup": "Odbierz"
+    "cart_page": {
+      "summary": {
+        "title": "Podsumowanie zamówienia",
+        "total": "Suma",
+        "size": "Rozmiar"
+      },
+      "delivary_instructions": {
+        "title": "Instrukcje dostawy",
+        "form": {
+          "date": "Data",
+          "time": "Czas",
+          "select_time": "Wyświetl czas",
+          "method": "Metoda dostawy",
+          "options": { "delivery": "Dostawa", "pickup": "Odbiór na miejscu" },
+          "instructions": "Instrukcje (opcjonalne)",
+          "instructions_placeholder": "Wpisz instrukcje tutaj",
+          "button": "Dalej"
+        }
+      },
+      "delivery_details": {
+        "title": "Twoje dane",
+        "form": {
+          "first_name": "Imię",
+          "last_name": "Nazwisko",
+          "email": "Email",
+          "address": "Adres",
+          "city": "Miasto",
+          "postal_code": "Kod Pocztowy",
+          "button": "Przejdz do płatnosci"
+        }
       }
     }
   },
+  "payment": {
+    "order_summary": {
+      "title": "Podsumowanie zamówienia",
+      "size": "Rozmiar",
+      "total": "Suma",
+      "already_paid": "Juz zapłacono za ten zamówienie.",
+      "button": "Kontynuuj zakupy"
+    },
+    "purchase_success": {
+      "title": "Zakup udany",
+      "subtitle": "Twoje zamówienie zostało złożone pomyślnie! E-mail z potwierdzeniem został wysłany.",
+      "button": "Kontynuuj zakupy"
+    },
+    "purchase_failure": {
+      "title": "Zakup nieudany",
+      "subtitle": "Twoja płatność nie mogła zostać przetworzona. Spróbuj ponownie lub użyj innej metody płatności.",
+      "button": "Spróbuj ponownie"
+    }
+  },
+
   "messages": {
     "error": {
-      "title": "Błąd",
-      "cart_is_empty": "Koszyk jest pusty"
+      "title": "Coś poszło nie tak",
+      "required": "Pole jest wymagane.",
+      "min": "Wpisano zbyt mało symbolów.",
+      "max": "Wpisano zbyt duzo symbolów.",
+      "invalid_email": "Nieprawidłowy adres e-mail.",
+      "cart_is_empty": "Koszyk jest pusty. Dodaj przedmioty do swojego koszyka przed przejęciem do płatnosci.",
+      "form_validation_error": "Bład walidacji formularza. Przeładuj stronę i sprobuj ponownie.",
+      "payment_failed": "Płatnosć nie została zrealizowana. Sprobuj ponownie lub wybrane metody płatnosci.",
+      "invalid_coupon": "Kupon jest nieprawidłowy lub wygasł. Sprawdz i sprobuj ponownie.",
+      "address_not_found": "Nie udało się zweryfikować podanego adresu. Sprawdz i wprowadz poprawny adres.",
+      "invalid_postal_code": "Kod pocztowy jest niepoprawny.",
+      "postal_code_not_deliverable": "Dostawa w danym regionie niedostępna.",
+      "time_must_be_future": "Czas musi być w przyszłości.",
+      "date_must_be_future": "Data musi być w przyszłości."
     },
     "success": {
-      "title": "Sukces",
-      "order_created": "Zamówienie zostało utworzone!"
+      "title": "Akcja zakończyła się sukcesem.",
+      "order_created": "Twoje zamówienie zostało pomyślnie złożone! Potwierdzenie zostało wysłane na Twój adres e-mail.",
+      "payment_successful": "Twoja płatność została pomyślnie zrealizowana! Dziękujemy za zakup.",
+      "coupon_applied": "Świetnie! Rabat został zastosowany pomyślnie."
     }
   }
 }

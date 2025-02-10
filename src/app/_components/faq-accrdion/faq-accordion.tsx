@@ -9,13 +9,13 @@ import { Text } from "@/components/ui/typography";
 import Markdown from "react-markdown";
 
 export function FaqAccordion() {
-  const t = useTranslations("HomePage.FAQSection");
+  const t = useTranslations("home.faq");
 
   const questions = [
     {
       question: t("questions.0.question"),
       answer: (
-        <Markdown className="prose prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:prose-lg lg:min-w-[900px]">
+        <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]">
           {t("questions.0.answer")}
         </Markdown>
       ),
@@ -23,7 +23,7 @@ export function FaqAccordion() {
     {
       question: t("questions.1.question"),
       answer: (
-        <Markdown className="prose prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:prose-lg lg:min-w-[900px]">
+        <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]">
           {t("questions.1.answer")}
         </Markdown>
       ),
@@ -31,7 +31,7 @@ export function FaqAccordion() {
     {
       question: t("questions.2.question"),
       answer: (
-        <Markdown className="prose prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:prose-lg lg:min-w-[900px]">
+        <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]">
           {t("questions.2.answer")}
         </Markdown>
       ),
@@ -39,7 +39,7 @@ export function FaqAccordion() {
     {
       question: t("questions.3.question"),
       answer: (
-        <Markdown className="prose prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:prose-lg lg:min-w-[900px]">
+        <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]">
           {t("questions.3.answer")}
         </Markdown>
       ),
@@ -47,7 +47,7 @@ export function FaqAccordion() {
     {
       question: t("questions.4.question"),
       answer: (
-        <Markdown className="prose prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:prose-lg lg:min-w-[900px]">
+        <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]">
           {t("questions.4.answer")}
         </Markdown>
       ),

@@ -5,7 +5,6 @@ import { dateAndMethodFormSchema } from "@/lib/validation/date-and-method-form-s
 import { deliveryFormSchema } from "@/lib/validation/delivery-form-schema";
 import {
   CART_COOKIE_NAME,
-  deleteCookieValue,
   getCookieValue,
   getLocaleFromCookie,
   ORDER_COOKIE_NAME,
@@ -15,10 +14,17 @@ import {
 export const orderRouter = createTRPCRouter({
   createOrderWithDelivery: publicProcedure
     .input(
-      z.object({
-        dateAndMethodData: dateAndMethodFormSchema,
-        addressDetails: deliveryFormSchema,
-      }),
+      z
+        .object({
+          dateAndMethodData: dateAndMethodFormSchema,
+          addressDetails: deliveryFormSchema,
+        })
+        .catch(() => {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "form_validation_error",
+          });
+        }),
     )
     .mutation(async ({ ctx, input }) => {
       const cartId = getCookieValue(ctx.req, CART_COOKIE_NAME);
@@ -143,14 +149,14 @@ export const orderRouter = createTRPCRouter({
           },
         });
 
-        //4.  delete cart
-        deleteCookieValue(ctx.resHeaders, CART_COOKIE_NAME);
-        await ctx.db.cart.delete({
+        //4.  remove all cart items from cart
+        await ctx.db.cartItem.deleteMany({
           where: {
-            id: cartId,
+            cartId,
           },
         });
 
+        //5. set order id to cookie
         setCookieValue(ctx.resHeaders, ORDER_COOKIE_NAME, order.id);
         return { orderId: order.id, message: "order_created" };
       } catch (err) {
@@ -164,7 +170,7 @@ export const orderRouter = createTRPCRouter({
 
   getOrderById: publicProcedure.query(async ({ ctx }) => {
     const orderId = getCookieValue(ctx.req, ORDER_COOKIE_NAME);
-    if (!orderId) return null;
+    if (!orderId) return [];
 
     const locale = getLocaleFromCookie(ctx.req);
 
@@ -200,7 +206,8 @@ export const orderRouter = createTRPCRouter({
         },
       },
     });
-    return order?.orderItems.map((item) => ({
+    if (!order) return [];
+    return order.orderItems.map((item) => ({
       id: item.id,
       productName: item.product.translations[0]?.name ?? item.productName,
       slug: item.slug,

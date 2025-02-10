@@ -6,103 +6,64 @@
     "contact": "Контакт",
     "cart": "Корзина"
   },
-  "Form": {
-    "field-required": "Поле обязательно",
-    "field-min": "Поле обязательно",
-    "field-max": "Поле обязательно",
-    "postal-code-not-deliverable": "Доставка в данном регионе недоступна"
-  },
-  "Cart": {
-    "title": "Ваша Корзина",
-    "totalPrice": "Цена",
-    "totalItems": "Предметы",
-    "button": "Перейти к заказу",
-    "emptyCart": {
-      "title": "Ваша корзина пуста",
-      "subtitle": "Похоже, вы еще ничего не добавили в корзину.",
-      "button": "Начать покупки"
-    }
-  },
-  "HomePage": {
+  "home": {
     "title": "Eleven Flowers Studio - Идеальные подарки",
     "description": "В нашей цветочной студии мы верим в создание потрясающих цветочных композиций, которые рассказывают историю.",
-    "HeroSection": {
-      "heroTitle": "Идеальные подарки",
-      "heroSubtitle": "В нашей цветочной студии мы верим в создание потрясающих цветочных композиций, которые рассказывают историю.",
-      "primaryActionButton": "Заказать цветы",
-      "secondaryActionButton": "Посмотреть коллекции"
+    "hero": {
+      "title": "Идеальные подарки",
+      "subtitle": "В нашей цветочной студии мы верим в создание потрясающих цветочных композиций, которые рассказывают историю.",
+      "primary_button": "Заказать цветы",
+      "secondary_button": "Посмотреть коллекции"
     },
-    "BenefitsSection": {
-      "freeShipping": {
+    "benefits": [
+      {
         "title": "Бесплатная доставка",
         "description": "Наслаждайтесь бесплатной доставкой для заказов от 350 злотых."
       },
-      "discounts": {
+      {
         "title": "Скидки до 30%",
         "description": "Скидки для постоянных клиентов и на покупки от 350 злотых."
       },
-      "gifts": {
+      {
         "title": "Подарки",
         "description": "Элегантные вазы и другие подарки, подходящие к цветам."
       },
-      "personalizedService": {
+      {
         "title": "Индивидуальный подход",
         "description": "Мы создаем композиции, соответствующие вашим пожеланиям и ожиданиям."
       },
-      "freshnessGuarantee": {
+      {
         "title": "Гарантия свежести",
         "description": "Только самые свежие цветы от проверенных поставщиков."
       },
-      "fastDelivery": {
+      {
         "title": "Быстрая доставка",
         "description": "Мы доставляем цветы вовремя, чтобы радость пришла в нужный момент."
       },
-      "projectPhotos": {
+      {
         "title": "Фотографии проектов",
         "description": "Профессиональные фотографии цветов, подарочные композиции и фотосервисы."
       }
-    },
-    "CollectionsSection": {
+    ],
+    "collections": {
       "title": "Откройте наши уникальные флористические услуги",
       "subtitle": "В нашей цветочной студии мы воплощаем в жизнь ваши цветочные мечты. Откройте для себя наши изысканные композиции, персонализированные подарочные коробки и профессиональные фотоуслуги.",
-      "collections": {
+      "types": {
         "bouquets": "Букеты",
         "flowerBox": "Flower Box",
         "balloons": "Шары",
         "gifts": "Подарки"
       }
     },
-    "MostPopularProductsSection": {
+    "popular_products": {
       "title": "Самые популярные",
-      "seeMoreButton": "Посмотреть больше"
+      "see_more": "Посмотреть больше"
     },
-    "TestemonialsSection": {
+    "testimonials": {
       "title": "Отзывы наших клиентов",
-      "subtitle": "Откройте для себя искренние истории и восторженные отзывы тех, кто испытал эту красоту",
-      "testemonials": [
-        {
-          "name": "Иван Иванов",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "Иван Иванов",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "Иван Иванов",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "Иван Иванов",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "Иван Иванов",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        }
-      ]
+      "subtitle": "Откройте для себя искренние истории и восторженные отзывы тех, кто испытал эту красоту"
     },
-    "FAQSection": {
+    "faq": {
       "title": "Часто задаваемые вопросы",
       "questions": [
         {
@@ -127,84 +88,142 @@
         }
       ]
     },
-    "ContactSection": {
+    "contact": {
       "title": "Свяжитесь с нами",
       "subtitle": "Есть вопросы? Хотите сделать заказ? Мы здесь, чтобы помочь! Свяжитесь с нами через:",
-      "contactData": {
-        "emailLabel": "Электронная почта",
-        "phoneLabel": "Телефон",
-        "addressLabel": "Адрес",
-        "openingHours": {
+      "details": {
+        "email": "Электронная почта",
+        "phone": "Телефон",
+        "address": "Адрес",
+        "opening_hours": {
           "label": "Часы работы",
           "value": "Пн-Сб: 10:00-19:00 Вс: 12:00-18:00"
         }
       }
     }
   },
-  "ProductPage": {
+  "product": {
     "size": "Размер",
-    "addToCart": "Добавить в корзину",
-    "inCart": "В корзине",
+    "add_to_cart": "Добавить в корзину",
+    "in_cart": "В корзине",
     "collections": "Коллекции",
-    "relatedProducts": "Похожие продукты",
-    "noProductsFound": "Продукты не найдены.",
-    "priceFrom": "Oт"
+    "related_products": "Похожие продукты",
+    "no_products": "Продукты не найдены.",
+    "price_from": "Oт",
+    "sidebar": {
+      "sort": {
+        "new": "Новые",
+        "popular": "Популярные",
+        "price_desc": "Самые дорогие",
+        "price_asc": "Самые дешевые"
+      }
+    }
   },
-  "Footer": {
-    "form": {
+  "footer": {
+    "newsletter": {
       "label": "Подпишитесь на нашу рассылку и получайте специальные предложения!",
       "placeholder": "Ваш email",
       "button": "Отправить",
       "description": "Подписываясь, вы соглашаетесь получать обновления и принимаете нашу Политику конфиденциальности."
     },
-    "links": {
-      "title": "Полезные ссылки"
-    },
-    "socials": {
-      "title": "Будьте на связи"
-    },
+    "links": "Полезные ссылки",
+    "socials": "Будьте на связи",
     "rights": "Все права защищены.",
     "policy": "Политика конфиденциальности"
   },
-  "NotFound": {
+  "not_found": {
     "title": "Страница не найдена",
     "description": "Страница, которую вы ищете, не была найдена.",
     "button": "Перейти на главную страницу"
   },
-  "Checkout": {
-    "summary": {
-      "title": "Сводка заказа",
+
+  "cart": {
+    "cart_sheet": {
+      "title": "Ваша Корзина",
+      "total_price": "Цена",
+      "total_items": "Предметы",
+      "size": "Размер",
+      "button": "Перейти к заказу",
+      "empty": {
+        "title": "Ваша корзина пуста",
+        "subtitle": "Похоже, вы еще ничего не добавили в корзину.",
+        "button": "Начать покупки"
+      }
+    },
+    "cart_page": {
+      "summary": {
+        "title": "Суммарный заказ",
+        "total": "Итого",
+        "size": "Размер"
+      },
+      "delivary_instructions": {
+        "title": "Инструкции по доставке",
+        "form": {
+          "date": "Дата",
+          "time": "Время",
+          "select_time": "Выбрать время",
+          "method": "Способ доставки",
+          "options": { "delivery": "Доставка", "pickup": "Самовывоз" },
+          "instructions": "Инструкции (опционально)",
+          "instructions_placeholder": "Ввести инструкции здесь",
+          "button": "Далее"
+        }
+      },
+      "delivery_details": {
+        "title": "Детали доставки",
+        "form": {
+          "first_name": "Имя",
+          "last_name": "Фамилия",
+          "email": "Электронная Почта",
+          "address": "Адрес",
+          "city": "Город",
+          "postal_code": "Почтовый Индекс",
+          "button": "Перейти к Оплате"
+        }
+      }
+    }
+  },
+  "payment": {
+    "order_summary": {
+      "title": "Суммарный заказ",
+      "size": "Размер",
       "total": "Итого",
-      "size": "Размер"
+      "already_paid": "Вы уже оплатили за этот заказ.",
+      "button": "Продолжить покупки"
     },
-    "details": {
-      "title": "Подробности заказа",
-      "form": {
-        "firstName": "Имя",
-        "lastName": "Фамилия",
-        "email": "Электронная Почта",
-        "address": "Адрес",
-        "city": "Город",
-        "postalCode": "Почтовый Индекс",
-        "button": "Перейти к Оплате"
-      }
+    "purchase_success": {
+      "title": "Покупка прошла успешно",
+      "subtitle": "Ваш заказ успешно оформлен! Письмо с подтверждением отправлено.",
+      "button": "Продолжить покупки"
     },
-    "delivery": {
-      "title": "Метод доставки",
-      "methods": {
-        "delivery": "Доставка",
-        "pickup": "Самовывоз"
-      }
+    "purchase_failure": {
+      "title": "Покупка не удалась",
+      "subtitle": "Ваш платеж не может быть обработан. Попробуйте еще раз или используйте другой способ оплаты.",
+      "button": "Попробуйте еще раз"
     }
   },
   "messages": {
     "error": {
-      "title": "Ошибка",
-      "cart_is_empty": "Корзина пуста"
+      "title": "Что-то пошло не так",
+      "required": "Это поле обязательно.",
+      "min": "Введено слишком мало символов.",
+      "max": "Введено слишком много символов.",
+      "invalid_email": "Неправильная электронная почта.",
+      "cart_is_empty": "Ваша корзина пуста. Добавьте товары перед оформлением заказа.",
+      "form_validation_error": "Возникла проблема с вашими данными. Проверьте их и попробуйте снова.",
+      "payment_failed": "Платеж не удалось обработать. Попробуйте еще раз или используйте другой способ оплаты.",
+      "invalid_coupon": "Введенный купон недействителен или истек. Проверьте и попробуйте снова.",
+      "address_not_found": "Не удалось подтвердить указанный адрес. Проверьте и введите корректный адрес.",
+      "invalid_postal_code": "Неправильный почтовый индекс.",
+      "postal_code_not_deliverable": "Доставка в данном регионе недоступна.",
+      "time_must_be_future": "Время должно быть в будущем.",
+      "date_must_be_future": "Дата должна быть в будущем."
     },
     "success": {
-      "title": "Успех",
-      "order_created": "Заказ создан успешно!"
+      "title": "Действие успешно выполнено",
+      "order_created": "Ваш заказ успешно оформлен! Подтверждение отправлено на вашу электронную почту.",
+      "payment_successful": "Ваш платеж успешно выполнен! Спасибо за покупку.",
+      "coupon_applied": "Отлично! Скидка успешно применена."
     }
   }
 }

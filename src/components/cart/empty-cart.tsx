@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 export const EmptyCart = () => {
-  const t = useTranslations("Cart.emptyCart");
+  const t = useTranslations("cart.cart_sheet.empty");
   return (
     <div className="flex h-full min-h-[400px] flex-col items-center justify-center p-4 text-center">
       <motion.div

@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { FieldError } from "react-hook-form";
 import { type DeliveryFormControl } from "./date-and-method-form";
 import { MAX_AVAILABLE_DAYS } from "@/lib/validation/date-and-method-form-schema";
@@ -25,6 +25,10 @@ export function DateSelect({
 }) {
   const locale = useLocale();
 
+  const t = useTranslations("cart.cart_page.delivary_instructions.form");
+
+  const errorMessages = useTranslations("messages.error");
+
   const formatter = new Intl.DateTimeFormat(locale);
   return (
     <FormField
@@ -33,10 +37,10 @@ export function DateSelect({
       render={({ field }) => (
         <FormItem className="">
           <div className="flex h-3 items-center">
-            <FormLabel>Date</FormLabel>
+            <FormLabel>{t("date")}</FormLabel>
             {errors && (
               <span className="ml-2 text-xs text-destructive">
-                ({errors.message})
+                ({errorMessages(errors.message)})
               </span>
             )}
           </div>
@@ -63,12 +67,7 @@ export function DateSelect({
                     }
                   }}
                   initialFocus
-                  fromDate={
-                    // if delivery time slots are avaliable today set the date to today, if not set the date to tomorrow
-                    new Date() === field.value
-                      ? new Date()
-                      : new Date(new Date().setDate(new Date().getDate() + 1))
-                  }
+                  fromDate={new Date()}
                   toDate={
                     // set max range up to MAX_AVAILABLE_DAYS
                     new Date(

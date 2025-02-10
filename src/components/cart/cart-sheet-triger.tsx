@@ -16,7 +16,7 @@ export const CartSheetTrigger = ({
   setIsOpen,
 }: CartSheetTriggerProps) => {
   const { cartItems } = useCart();
-  const t = useTranslations("navigation");
+  const tNav = useTranslations("navigation");
 
   return (
     <motion.div
@@ -54,7 +54,7 @@ export const CartSheetTrigger = ({
         )}
       </button>
       <span className="mt-1 text-center text-xs font-medium md:hidden">
-        {t("cart")}
+        {tNav("cart")}
       </span>
     </motion.div>
   );

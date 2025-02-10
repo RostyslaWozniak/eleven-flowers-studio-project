@@ -15,7 +15,7 @@ import { testemonials } from "@/data/testemonials";
 import { useTranslations } from "next-intl";
 
 export function TestemonialsSection() {
-  const t = useTranslations("HomePage.TestemonialsSection");
+  const t = useTranslations("home.testimonials");
 
   return (
     <section className="relative w-full overflow-hidden pt-12 lg:pt-20">

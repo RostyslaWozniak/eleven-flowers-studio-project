@@ -6,103 +6,64 @@
     "contact": "Contact",
     "cart": "Cart"
   },
-  "Form": {
-    "field-required": "Field is required",
-    "field-min": "Field is required",
-    "field-max": "Field is required",
-    "postal-code-not-deliverable": "Delivery not available in this area."
-  },
-  "Cart": {
-    "title": "Your Cart",
-    "totalPrice": "Price",
-    "totalItems": "Items",
-    "button": "Proceed to checkout",
-    "emptyCart": {
-      "title": "Your cart is empty",
-      "subtitle": "Looks like you haven't added anything to your cart yet.",
-      "button": "Start Shopping"
-    }
-  },
-  "HomePage": {
+  "home": {
     "title": "Eleven Flowers Studio - Perfect gifts for you",
     "description": "In our floral studio, we believe in creating stunning floral compositions that tell a story.",
-    "HeroSection": {
-      "heroTitle": "Perfect gifts for you",
-      "heroSubtitle": "In our floral studio, we believe in creating stunning floral compositions that tell a story.",
-      "primaryActionButton": "Order Flowers",
-      "secondaryActionButton": "View Collections"
+    "hero": {
+      "title": "Perfect gifts for you",
+      "subtitle": "In our floral studio, we believe in creating stunning floral compositions that tell a story.",
+      "primary_button": "Order Flowers",
+      "secondary_button": "View Collections"
     },
-    "BenefitsSection": {
-      "freeShipping": {
+    "benefits": [
+      {
         "title": "Free Shipping",
         "description": "Enjoy free delivery for orders over 350 PLN."
       },
-      "discounts": {
+      {
         "title": "Discounts up to 30%",
         "description": "Discounts for loyal customers and on purchases over 350 PLN."
       },
-      "gifts": {
+      {
         "title": "Gifts",
         "description": "Elegant vases and other gifts to match the flowers."
       },
-      "personalizedService": {
+      {
         "title": "Personalized Approach",
         "description": "We create compositions tailored to your wishes and expectations."
       },
-      "freshnessGuarantee": {
+      {
         "title": "Freshness Guarantee",
         "description": "Only the freshest flowers from trusted suppliers."
       },
-      "fastDelivery": {
+      {
         "title": "Fast Delivery",
         "description": "We deliver flowers on time so the joy arrives at the perfect moment."
       },
-      "projectPhotos": {
+      {
         "title": "Project Photos",
         "description": "Professional photographs of flowers, gift arrangements, and photography services."
       }
-    },
-    "CollectionsSection": {
+    ],
+    "collections": {
       "title": "Discover Our Unique Floral Services",
       "subtitle": "At our floral studio, we fulfill your flower dreams. Discover our exquisite arrangements, personalized gift boxes, and professional photography services.",
-      "collections": {
+      "types": {
         "bouquets": "Bouquets",
         "flowerBox": "Flower Box",
         "balloons": "Balloons",
         "gifts": "Gifts"
       }
     },
-    "MostPopularProductsSection": {
+    "popular_products": {
       "title": "Most Popular",
-      "seeMoreButton": "See More"
+      "see_more": "See More"
     },
-    "TestemonialsSection": {
+    "testimonials": {
       "title": "Our Customers' Opinions",
-      "subtitle": "Discover genuine stories and enthusiastic reviews from those who have experienced the beauty",
-      "testemonials": [
-        {
-          "name": "John Smith",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "John Smith",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "John Smith",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "John Smith",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        },
-        {
-          "name": "John Smith",
-          "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus quam malesuada est pellentesque rhoncus."
-        }
-      ]
+      "subtitle": "Discover genuine stories and enthusiastic reviews from those who have experienced the beauty."
     },
-    "FAQSection": {
+    "faq": {
       "title": "Frequently Asked Questions",
       "questions": [
         {
@@ -127,84 +88,142 @@
         }
       ]
     },
-    "ContactSection": {
+    "contact": {
       "title": "Contact Us",
-      "subtitle": "Have questions? Want to place an order? We're here to help! Get in touch with us via:",
-      "contactData": {
-        "emailLabel": "Email",
-        "phoneLabel": "Phone",
-        "addressLabel": "Address",
-        "openingHours": {
+      "subtitle": "Have questions? Want to place an order? We're here to help!",
+      "details": {
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "opening_hours": {
           "label": "Opening Hours",
           "value": "Mon-Sat: 10:00 AM - 7:00 PM Sun: 12:00 PM - 6:00 PM"
         }
       }
     }
   },
-  "ProductPage": {
+  "product": {
     "size": "Size",
-    "addToCart": "Add to Cart",
-    "inCart": "In cart",
+    "add_to_cart": "Add to Cart",
+    "in_cart": "In cart",
     "collections": "Collections",
-    "relatedProducts": "Related Products",
-    "noProductsFound": "No products found.",
-    "priceFrom": "From"
+    "related_products": "Related Products",
+    "no_products": "No products found.",
+    "price_from": "From",
+    "sidebar": {
+      "sort": {
+        "new": "New",
+        "popular": "Popular",
+        "price_desc": "Most Expensive",
+        "price_asc": "Cheapest"
+      }
+    }
   },
-  "Footer": {
-    "form": {
+  "footer": {
+    "newsletter": {
       "label": "Join our newsletter and receive special offers!",
       "placeholder": "Your email",
       "button": "Submit",
       "description": "By signing up, you agree to receive updates and accept our Privacy Policy."
     },
-    "links": {
-      "title": "Useful Links"
-    },
-    "socials": {
-      "title": "Stay Connected"
-    },
+    "links": "Useful Links",
+    "socials": "Stay Connected",
     "rights": "All rights reserved.",
     "policy": "Privacy Policy"
   },
-  "NotFound": {
+  "not_found": {
     "title": "Page Not Found",
     "description": "The page you are looking for could not be found.",
     "button": "Go Home"
   },
-  "Checkout": {
-    "summary": {
+
+  "cart": {
+    "cart_sheet": {
+      "title": "Your Cart",
+      "total_price": "Price",
+      "total_items": "Items",
+      "size": "Size",
+      "button": "Proceed to checkout",
+      "empty": {
+        "title": "Your cart is empty",
+        "subtitle": "Looks like you haven't added anything to your cart yet.",
+        "button": "Start Shopping"
+      }
+    },
+    "cart_page": {
+      "summary": {
+        "title": "Order Summary",
+        "total": "Total",
+        "size": "Size"
+      },
+      "delivary_instructions": {
+        "title": "Delivery Instructions",
+        "form": {
+          "date": "Date",
+          "time": "Time",
+          "select_time": "Select Time",
+          "method": "Delivery method",
+          "options": { "delivery": "Delivery", "pickup": "Pickup" },
+          "instructions": "Instructions (optional)",
+          "instructions_placeholder": "Enter your instructions here",
+          "button": "Next"
+        }
+      },
+      "delivery_details": {
+        "title": "Delivery Details",
+        "form": {
+          "first_name": "First Name",
+          "last_name": "Last Name",
+          "email": "Email",
+          "address": "Address",
+          "city": "City",
+          "postal_code": "Postal Code",
+          "button": "Go to Payment"
+        }
+      }
+    }
+  },
+  "payment": {
+    "order_summary": {
       "title": "Order Summary",
+      "size": "Size",
       "total": "Total",
-      "size": "Size"
+      "already_paid": "You have already paid for this order.",
+      "button": "Continue Shopping"
     },
-    "details": {
-      "title": "Your Details",
-      "form": {
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "address": "Address",
-        "city": "City",
-        "postalCode": "Postal Code",
-        "button": "Go to Payment"
-      }
+    "purchase_success": {
+      "title": "Purchase Successful",
+      "subtitle": "Your order has been placed successfully! A confirmation email has been sent.",
+      "button": "Continue Shopping"
     },
-    "delivery": {
-      "title": "Method",
-      "methods": {
-        "delivery": "Delivery",
-        "pickup": "Pickup"
-      }
+    "purchase_failure": {
+      "title": "Purchase Failed",
+      "subtitle": "Your payment could not be processed. Please try again or use a different payment method.",
+      "button": "Try Again"
     }
   },
   "messages": {
     "error": {
-      "title": "Error",
-      "cart_is_empty": "Cart is empty"
+      "title": "Something went wrong",
+      "required": "This field is required.",
+      "min": "The input is too short.",
+      "max": "The input is too long.",
+      "invalid_email": "Invalid email address.",
+      "cart_is_empty": "Your cart is currently empty. Add items before proceeding to checkout.",
+      "form_validation_error": "There was an issue with your input. Please check and try again.",
+      "payment_failed": "Payment could not be processed. Please try again or use a different payment method.",
+      "invalid_coupon": "The coupon code entered is invalid or expired. Please check and try again.",
+      "address_not_found": "We couldn't verify the address provided. Please check and enter a valid address.",
+      "invalid_postal_code": "Invalid postal code format.",
+      "postal_code_not_deliverable": "Delivery not available in this area.",
+      "time_must_be_future": "Time must be in the future.",
+      "date_must_be_future": "Date must be in the future."
     },
     "success": {
-      "title": "Success",
-      "order_created": "Order created successfully!"
+      "title": "Action completed successfully",
+      "order_created": "Your order has been placed successfully! A confirmation email has been sent.",
+      "payment_successful": "Your payment was successful! Thank you for your purchase.",
+      "coupon_applied": "Great! Your discount has been applied successfully."
     }
   }
 }

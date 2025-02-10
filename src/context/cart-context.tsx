@@ -16,6 +16,7 @@ import {
 
 type CartContextTypes = {
   cartItems: CartItem[];
+  serverCartItemsLoading: boolean;
   isCartOpen: boolean;
   totalItems: number;
   totalPrice: number;
@@ -46,7 +47,8 @@ export default function CartProvider({
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
   // Fetch cart items from API
-  const { data: serverCartItems } = api.public.cart.getCartItems.useQuery();
+  const { data: serverCartItems, isLoading: serverCartItemsLoading } =
+    api.public.cart.getCartItems.useQuery();
 
   const { mutate: removeCartItemOnServer } =
     api.public.cart.removeCartItem.useMutation();
@@ -174,8 +176,9 @@ export default function CartProvider({
       isCartOpen,
       totalItems,
       totalPrice,
+      serverCartItemsLoading,
     }),
-    [cartItems, isCartOpen, totalItems, totalPrice],
+    [cartItems, isCartOpen, totalItems, totalPrice, serverCartItemsLoading],
   );
 
   return (

@@ -20,6 +20,7 @@ import {
 import { useEffect, useState } from "react";
 import type { FieldError, UseFormSetValue } from "react-hook-form";
 import { type DeliveryFormControl } from "./date-and-method-form";
+import { useTranslations } from "next-intl";
 
 export function TimeSelect({
   control,
@@ -37,7 +38,6 @@ export function TimeSelect({
   useEffect(() => {
     const { date, time } = getClosestAvailableDateAndTime(currentTime);
     console.log({ date, time });
-    setCurrentTime(new Date(time));
     setValue("date", date);
     setValue("time", time);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,6 +50,10 @@ export function TimeSelect({
 
     return () => clearInterval(interval);
   }, []);
+
+  const t = useTranslations("cart.cart_page.delivary_instructions.form");
+
+  const errorMessages = useTranslations("messages.error");
   return (
     <FormField
       control={control}
@@ -57,18 +61,18 @@ export function TimeSelect({
       render={({ field }) => (
         <FormItem>
           <div className="flex h-3 items-center">
-            <FormLabel>Time</FormLabel>
+            <FormLabel>{t("time")}</FormLabel>
             {errors && (
               <span className="ml-2 text-xs text-destructive">
                 {" "}
-                ({errors.message})
+                ({errorMessages(errors.message)})
               </span>
             )}
           </div>
           <FormControl>
             <Select value={field.value} onValueChange={field.onChange}>
               <SelectTrigger className="h-10 rounded-full border-2 border-primary text-base text-primary md:text-lg">
-                <SelectValue placeholder="Select a time" />
+                <SelectValue placeholder={t("select_time")} />
               </SelectTrigger>
               <SelectContent className="rounded-sm">
                 {DELIVERY_TIME_SLOTS.map((slot) => (

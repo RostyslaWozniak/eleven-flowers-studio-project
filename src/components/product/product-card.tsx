@@ -15,7 +15,7 @@ export function ProductCard({
   className?: string;
   textMobileLarge?: boolean;
 }) {
-  const t = useTranslations("ProductPage");
+  const t = useTranslations("product");
   return (
     <div
       className={cn(
@@ -62,7 +62,7 @@ export function ProductCard({
                   },
                 )}
               >
-                {t("priceFrom")}{" "}
+                {t("price_from")}{" "}
                 {product.prices[0] && formatPrice(product.prices[0].price)}
               </Text>
             </div>

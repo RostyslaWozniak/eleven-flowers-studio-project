@@ -16,8 +16,8 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { type DateAndMethodFormSchema } from "@/lib/validation/date-and-method-form-schema";
 import {
+  deliveryFormSchema,
   type DeliveryFormSchema,
-  deliveryFormSchemaWithTranslation,
 } from "@/lib/validation/delivery-form-schema";
 import { api } from "@/trpc/react";
 import { useCart } from "@/context/cart-context";
@@ -28,16 +28,13 @@ export default function DeliveryForm({
 }: {
   dateAndMethodData: DateAndMethodFormSchema;
 }) {
-  const tFormErrorMessages = useTranslations("Form");
-  const t = useTranslations("Checkout.details");
-  const messages = useTranslations("messages");
+  const t = useTranslations("cart.cart_page.delivery_details");
+  const errorMessages = useTranslations("messages.error");
 
   const { setCartItems } = useCart();
 
   const form = useForm<DeliveryFormSchema>({
-    resolver: zodResolver(
-      deliveryFormSchemaWithTranslation(tFormErrorMessages),
-    ),
+    resolver: zodResolver(deliveryFormSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -51,28 +48,22 @@ export default function DeliveryForm({
 
   const { mutate: createOrderWithDelivery } =
     api.public.order.createOrderWithDelivery.useMutation({
-      onSuccess: ({ message }) => {
-        toast.success(messages("success.title"), {
-          className: "bg-emerald-500 text-background",
-          position: "top-right",
-          description: messages(`success.${message}`),
-        });
-        router.push("/checkout");
+      onSuccess: () => {
+        router.push("/payment");
         setCartItems([]);
-        form.reset();
       },
       onError: ({ message }) => {
-        toast.error(messages("error.title"), {
+        toast.error(errorMessages("title"), {
           className: "bg-destructive text-destructive-foreground",
           position: "top-right",
-          description: messages(`error.${message}`),
+          description: errorMessages(message),
         });
       },
     });
 
   function onSubmit(values: DeliveryFormSchema) {
     createOrderWithDelivery({
-      dateAndMethodData: dateAndMethodData,
+      dateAndMethodData: { ...dateAndMethodData },
       addressDetails: values,
     });
   }
@@ -101,11 +92,15 @@ export default function DeliveryForm({
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex h-3 items-center">
-                      <FormLabel>{t("form.firstName")}</FormLabel>
+                      <FormLabel>{t("form.first_name")}</FormLabel>
                       {form.formState.errors.firstName && (
                         <span className="ml-2 text-xs text-destructive">
                           {" "}
-                          ({form.formState.errors.firstName.message})
+                          (
+                          {errorMessages(
+                            form.formState.errors.firstName.message,
+                          )}
+                          )
                         </span>
                       )}
                     </div>
@@ -124,11 +119,15 @@ export default function DeliveryForm({
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex h-3 items-center">
-                      <FormLabel>{t("form.lastName")}</FormLabel>
+                      <FormLabel>{t("form.last_name")}</FormLabel>
                       {form.formState.errors.lastName && (
                         <span className="ml-2 text-xs text-destructive">
                           {" "}
-                          ({form.formState.errors.lastName.message})
+                          (
+                          {errorMessages(
+                            form.formState.errors.lastName.message,
+                          )}
+                          )
                         </span>
                       )}
                     </div>
@@ -152,7 +151,7 @@ export default function DeliveryForm({
                   {form.formState.errors.email && (
                     <span className="ml-2 text-xs text-destructive">
                       {" "}
-                      ({form.formState.errors.email.message})
+                      ({errorMessages(form.formState.errors.email.message)})
                     </span>
                   )}
                 </div>
@@ -173,7 +172,7 @@ export default function DeliveryForm({
                   {form.formState.errors.address && (
                     <span className="ml-2 text-xs text-destructive">
                       {" "}
-                      ({form.formState.errors.address.message})
+                      ({errorMessages(form.formState.errors.address.message)})
                     </span>
                   )}
                 </div>
@@ -196,7 +195,7 @@ export default function DeliveryForm({
                       {form.formState.errors.city && (
                         <span className="ml-2 text-xs text-destructive">
                           {" "}
-                          ({form.formState.errors.city.message})
+                          ({errorMessages(form.formState.errors.city.message)})
                         </span>
                       )}
                     </div>
@@ -215,11 +214,15 @@ export default function DeliveryForm({
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex h-3 items-center">
-                      <FormLabel>{t("form.postalCode")}</FormLabel>
+                      <FormLabel>{t("form.postal_code")}</FormLabel>
                       {form.formState.errors.postalCode && (
                         <span className="ml-2 text-xs text-destructive">
                           {" "}
-                          ({form.formState.errors.postalCode.message})
+                          (
+                          {errorMessages(
+                            form.formState.errors.postalCode.message,
+                          )}
+                          )
                         </span>
                       )}
                     </div>

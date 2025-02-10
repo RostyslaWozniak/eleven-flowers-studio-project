@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 
 export function AddToCartButton({ product }: { product: ProductDTO }) {
   const { cartItems, addOneToCart, setIsCartOpen } = useCart();
-  const t = useTranslations("ProductPage");
+  const t = useTranslations("product");
 
   const [sizeQuery] = useQueryState("size", {
     defaultValue: product.prices[0]?.size ?? "",
@@ -41,7 +41,7 @@ export function AddToCartButton({ product }: { product: ProductDTO }) {
 
   return (
     <Button disabled={Boolean(existingCartItem)} onClick={addProductToCart}>
-      {Boolean(existingCartItem) ? t("inCart") : t("addToCart")}
+      {Boolean(existingCartItem) ? t("in_cart") : t("add_to_cart")}
     </Button>
   );
 }

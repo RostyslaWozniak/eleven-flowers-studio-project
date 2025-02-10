@@ -13,7 +13,8 @@ export function MostPopularProductsSection({
 }: {
   products: ProductDTO[];
 }) {
-  const t = useTranslations("HomePage.MostPopularProductsSection");
+  const t = useTranslations("home.popular_products");
+
   return (
     <section className="pace-y-8 w-full pt-12 lg:space-y-8 lg:pt-20">
       <MaxWidthWrapper className="flex flex-col items-center gap-6 px-0 lg:gap-y-12">
@@ -34,7 +35,7 @@ export function MostPopularProductsSection({
           href={"/products?sort=popular"}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
-          {t("seeMoreButton")} <ArrowRight className="min-h-6 min-w-6" />
+          {t("see_more")} <ArrowRight className="min-h-6 min-w-6" />
         </Link>
       </MaxWidthWrapper>
       {/* SEPARATOR */}

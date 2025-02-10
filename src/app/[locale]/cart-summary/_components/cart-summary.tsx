@@ -1,5 +1,6 @@
 "use client";
 
+import { OrderItemSkeleton } from "@/components/skeletons/order-item-skeleton";
 import { H2, H3, Text } from "@/components/ui/typography";
 import { useCart } from "@/context/cart-context";
 import { Link } from "@/i18n/routing";
@@ -8,57 +9,63 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function CartSummary() {
-  const { cartItems, totalPrice } = useCart();
-  const t = useTranslations("Checkout.summary");
+  const { cartItems, totalPrice, serverCartItemsLoading } = useCart();
+  const t = useTranslations("cart.cart_page.summary");
 
   return (
     <div className="lg:py-6">
       <H2 className="text-start text-2xl font-light md:text-start">
         {t("title")}
       </H2>
-      {cartItems.map((item) => (
-        <div
-          key={item.id}
-          className="flex w-full items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0"
-        >
-          <div className="relative h-20 w-20 overflow-hidden bg-gray-100">
-            <Image
-              src={item.imageUrl}
-              alt={item.productName}
-              fill
-              sizes="(max-width: 768px) 50px, (max-width: 1200px) 50px"
-              className="object-cover"
-            />
-          </div>
-          <div className="flex-grow">
-            <Link
-              href={`/products/${item.slug}?size=${item.size}`}
-              className="text-primary hover:underline"
+      {!serverCartItemsLoading ? (
+        <>
+          {cartItems.map((item) => (
+            <div
+              key={item.id}
+              className="flex w-full items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0"
             >
-              <H3 className="font-semibold">{item.productName}</H3>
-            </Link>
-            <div className="mt-3 flex justify-between">
-              <Text variant="muted">
-                {t("size")}:{" "}
-                <span className="text-base font-bold capitalize">
-                  {item.size}
-                </span>
-              </Text>
-              <Text size="subtitle" variant="muted">
-                {formatPrice(item.price)} x {item.quantity}
-              </Text>
+              <div className="relative h-20 w-20 overflow-hidden bg-gray-100">
+                <Image
+                  src={item.imageUrl}
+                  alt={item.productName}
+                  fill
+                  sizes="(max-width: 768px) 50px, (max-width: 1200px) 50px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex-grow">
+                <Link
+                  href={`/products/${item.slug}?size=${item.size}`}
+                  className="text-primary hover:underline"
+                >
+                  <H3 className="font-semibold">{item.productName}</H3>
+                </Link>
+                <div className="mt-3 flex justify-between">
+                  <Text variant="muted">
+                    {t("size")}:{" "}
+                    <span className="text-base font-bold capitalize">
+                      {item.size}
+                    </span>
+                  </Text>
+                  <Text size="subtitle" variant="muted">
+                    {formatPrice(item.price)} x {item.quantity}
+                  </Text>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="mt-6 border-t border-gray-100 pt-6">
+            <div className="flex items-center justify-between">
+              <span className="text-lg"> {t("total")}</span>
+              <span className="text-2xl font-medium">
+                {formatPrice(totalPrice)}
+              </span>
             </div>
           </div>
-        </div>
-      ))}
-      <div className="mt-6 border-t border-gray-100 pt-6">
-        <div className="flex items-center justify-between">
-          <span className="text-lg"> {t("total")}</span>
-          <span className="text-2xl font-medium">
-            {formatPrice(totalPrice)}
-          </span>
-        </div>
-      </div>
+        </>
+      ) : (
+        Array.from({ length: 3 }).map((_, i) => <OrderItemSkeleton key={i} />)
+      )}
     </div>
   );
 }

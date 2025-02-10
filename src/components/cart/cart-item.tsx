@@ -15,7 +15,7 @@ interface CartItemProps {
 export function CartItem({ cartItem }: CartItemProps) {
   const { removeOneFromCart, removeCartItem, addOneToCart, setIsCartOpen } =
     useCart();
-  const t = useTranslations("Checkout.summary");
+  const t = useTranslations("product");
 
   return (
     <motion.div

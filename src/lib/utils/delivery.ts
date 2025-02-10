@@ -14,12 +14,15 @@ const deliveryZones: Record<number, { price: number | null; message: string }> =
 // Check Delivery Function
 export function checkDelivery(postalCode: string) {
   if (!postalCodeSchema.test(postalCode)) {
-    return { price: null, message: "Invalid postal code format" };
+    return { price: null, message: "invalid_postal_code" };
   }
 
   const prefix = parseInt(postalCode.split("-")[0]!, 10); // Extract first two digits
 
   return (
-    deliveryZones[prefix] ?? { price: null, message: "Delivery not available" }
+    deliveryZones[prefix] ?? {
+      price: null,
+      message: "postal_code_not_deliverable",
+    }
   );
 }

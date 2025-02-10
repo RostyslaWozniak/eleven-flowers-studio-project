@@ -11,7 +11,7 @@ export function ProductsSection({
   title: string;
   products: ProductDTO[];
 }) {
-  const t = useTranslations("ProductPage");
+  const t = useTranslations("product");
   return (
     <section>
       <MaxWidthWrapper className="my-12 space-y-8 lg:my-24 lg:space-y-14">
@@ -24,7 +24,7 @@ export function ProductsSection({
           </div>
         ) : (
           <div className="flex min-h-[300px] items-center justify-center">
-            <H2 className="text-foreground/70">{t("noProductsFound")}</H2>
+            <H2 className="text-foreground/70">{t("no_products")}</H2>
           </div>
         )}
       </MaxWidthWrapper>
