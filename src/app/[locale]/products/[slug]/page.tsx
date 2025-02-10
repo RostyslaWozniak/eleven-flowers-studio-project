@@ -5,6 +5,7 @@ import { ContactSection } from "@/app/_components/sections";
 import type { CollectionDTO, ProductDTO } from "@/types";
 import { api } from "@/trpc/server";
 import { redirect } from "@/i18n/routing";
+import { RelatedProductsSection } from "@/app/_components/sections/related-products-section";
 
 export async function generateStaticParams() {
   const products = await db.product.findMany({
@@ -80,7 +81,14 @@ export default async function Page({
   return (
     <div>
       <ProductSection product={product} />
+
       <div className="mt-8">
+        <RelatedProductsSection
+          productId={product.id}
+          collectionSlug={product.collection?.slug ?? null}
+        />
+      </div>
+      <div className="mt-12">
         <CollectionsSection collections={collections} />
       </div>
       <ContactSection />

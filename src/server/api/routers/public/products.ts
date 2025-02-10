@@ -7,6 +7,7 @@ import type {
   ProductFromPrisma,
 } from "@/types";
 import { Prisma } from "@prisma/client";
+import { getLocale } from "next-intl/server";
 
 const localeSchema = z.object({
   locale: z.string(),
@@ -336,6 +337,76 @@ export const productsRouter = createTRPCRouter({
         },
       });
 
+      return mapProductsToDTO(products);
+    }),
+
+  getRelatedProducts: publicProcedure
+    .input(
+      z.object({
+        productId: z.string().uuid(),
+        collectionSlug: z.string().nullable(),
+        take: z.number().default(4),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const locale = await getLocale();
+      const products = await ctx.db.product.findMany({
+        where: {
+          id: {
+            not: input.productId,
+          },
+          ...(input.collectionSlug === null
+            ? {}
+            : { collection: { slug: input.collectionSlug } }),
+        },
+        select: {
+          id: true,
+          slug: true,
+          collection: {
+            select: {
+              slug: true,
+              translations: {
+                where: {
+                  language: locale,
+                },
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+          images: {
+            select: {
+              url: true,
+            },
+          },
+          prices: {
+            select: {
+              price: true,
+              size: true,
+            },
+            take: 1,
+            orderBy: {
+              price: "asc",
+            },
+          },
+          translations: {
+            where: {
+              language: locale,
+            },
+            select: {
+              name: true,
+              description: true,
+            },
+          },
+        },
+        orderBy: {
+          orderItem: {
+            _count: "desc",
+          },
+        },
+        take: input.take,
+      });
       return mapProductsToDTO(products);
     }),
 });

@@ -7,7 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useCart } from "@/context/cart-context";
+import { useCart } from "@/components/product/context/cart-context";
 
 import { CartItem } from "./cart-item";
 import { CartSheetTrigger } from "./cart-sheet-triger";

@@ -4,7 +4,7 @@ import { H1, H2 } from "@/components/ui/typography";
 import { type ProductDTO } from "@/types";
 import { useTranslations } from "next-intl";
 
-export function ProductsSection({
+export function ProductsGrid({
   title,
   products,
 }: {

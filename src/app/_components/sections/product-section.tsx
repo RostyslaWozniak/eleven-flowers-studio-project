@@ -35,7 +35,7 @@ export function ProductSection({ product }: { product: ProductDTO }) {
               </Badge>
             </Link>
           </div>
-          <Text variant="muted" size="subtitle">
+          <Text className="text-base" variant="muted" size="subtitle">
             {product.description}
           </Text>
           <ProductSizesAndPrice

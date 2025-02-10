@@ -2,7 +2,7 @@
 
 import type { ProductDTO } from "@/types";
 import { Button } from "../ui/button";
-import { useCart } from "@/context/cart-context";
+import { useCart } from "@/components/product/context/cart-context";
 import { useQueryState } from "nuqs";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";

@@ -3,7 +3,7 @@ import { Minus, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { CartItem } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { useCart } from "@/context/cart-context";
+import { useCart } from "@/components/product/context/cart-context";
 import { Link } from "@/i18n/routing";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";

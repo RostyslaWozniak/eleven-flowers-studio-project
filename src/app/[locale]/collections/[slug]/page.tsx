@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { getLocale } from "next-intl/server";
-import { ProductsSection } from "@/app/_components/sections/products-section";
+import { ProductsGrid } from "@/components/products-grid";
 import { CollectionsSection, ContactSection } from "@/app/_components/sections";
 import { api } from "@/trpc/server";
 import type { ProductDTO } from "@/types";
@@ -64,7 +64,7 @@ export default async function Page({
 
   return (
     <>
-      <ProductsSection products={products} title={collection.name} />
+      <ProductsGrid products={products} title={collection.name} />
       <CollectionsSection currCollectionSlug={slug} collections={collections} />
       <ContactSection />
     </>
