@@ -3,6 +3,7 @@ import type { Prisma } from "@prisma/client";
 export type CollectionFromPrisma = Prisma.CollectionGetPayload<{
   select: {
     slug: true;
+    imageUrl: true;
     translations: {
       where: {
         language: string;
@@ -19,4 +20,8 @@ export type CollectionDTO = {
   slug: string;
   name: string;
   description: string | null;
+};
+
+export type CollectionWithImageDto = CollectionDTO & {
+  imageUrl: string;
 };

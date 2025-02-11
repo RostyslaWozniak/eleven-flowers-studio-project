@@ -67,7 +67,6 @@ export default async function Page({
 
   const product: ProductDTO | null = await api.public.products.getProductBySlug(
     {
-      locale,
       slug,
     },
   );
@@ -76,7 +75,7 @@ export default async function Page({
   }
 
   const collections: CollectionDTO[] =
-    await api.public.collections.getAllCollections({ locale });
+    await api.public.collections.getAllCollections({});
 
   return (
     <div>

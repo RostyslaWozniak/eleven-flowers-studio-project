@@ -2,7 +2,7 @@
 
 import { OrderItemSkeleton } from "@/components/skeletons/order-item-skeleton";
 import { H2, H3, Text } from "@/components/ui/typography";
-import { useCart } from "@/components/product/context/cart-context";
+import { useCart } from "@/context/cart-context";
 import { Link } from "@/i18n/routing";
 import { formatPrice } from "@/lib/utils";
 import { useTranslations } from "next-intl";

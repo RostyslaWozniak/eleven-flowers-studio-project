@@ -21,10 +21,10 @@ export const stripeRouter = createTRPCRouter({
     const order = await ctx.db.order.findUnique({
       where: {
         id: orderId,
-        paymentStatus: "PENDING",
       },
       select: {
         id: true,
+        paymentStatus: true,
         contactInfo: {
           select: {
             email: true,
@@ -104,6 +104,9 @@ export const stripeRouter = createTRPCRouter({
 
     if (session.client_secret == null) throw new Error("Client secret is null");
 
-    return session.client_secret;
+    return {
+      stripeSession: session.client_secret,
+      isPayed: order.paymentStatus,
+    };
   }),
 });

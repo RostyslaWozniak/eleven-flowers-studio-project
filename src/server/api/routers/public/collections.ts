@@ -1,28 +1,28 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../../trpc";
-import type { CollectionDTO, CollectionFromPrisma } from "@/types";
+import type {
+  CollectionDTO,
+  CollectionFromPrisma,
+  CollectionWithImageDto,
+} from "@/types";
 import { mapCollectionsToDTO, mapCollectionToDTO } from "@/lib/utils/dto";
 import { TRPCError } from "@trpc/server";
-
-const localeSchema = z.object({
-  locale: z.string(),
-});
-
-const uniqCollectionBySlugSchema = localeSchema.extend({
-  slug: z.string(),
-});
+import { getLocale } from "next-intl/server";
 
 export const collectionsRouter = createTRPCRouter({
   getAllCollections: publicProcedure
-    .input(localeSchema)
-    .query(async ({ ctx, input }): Promise<CollectionDTO[]> => {
+    .input(z.object({ take: z.number().optional().default(4) }))
+    .query(async ({ ctx, input }): Promise<CollectionWithImageDto[]> => {
+      const locale = await getLocale();
+
       const collections: CollectionFromPrisma[] =
         await ctx.db.collection.findMany({
           select: {
             slug: true,
+            imageUrl: true,
             translations: {
               where: {
-                language: input.locale,
+                language: locale,
               },
               select: {
                 name: true,
@@ -30,14 +30,20 @@ export const collectionsRouter = createTRPCRouter({
               },
             },
           },
+          take: input.take,
+          orderBy: {
+            createdAt: "asc",
+          },
         });
 
       return mapCollectionsToDTO(collections);
     }),
 
   getUniqCollectionBySlug: publicProcedure
-    .input(uniqCollectionBySlugSchema)
+    .input(z.object({ slug: z.string() }))
     .query(async ({ ctx, input }): Promise<CollectionDTO> => {
+      const locale = await getLocale();
+
       const collection: CollectionFromPrisma | null =
         await ctx.db.collection.findUnique({
           where: {
@@ -45,13 +51,14 @@ export const collectionsRouter = createTRPCRouter({
           },
           select: {
             slug: true,
+            imageUrl: true,
             translations: {
               select: {
                 name: true,
                 description: true,
               },
               where: {
-                language: input.locale,
+                language: locale,
               },
             },
           },

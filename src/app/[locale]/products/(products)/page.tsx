@@ -18,18 +18,13 @@ const mapSortQueryToPrisma = (
 };
 
 export default async function Page({
-  params,
   searchParams,
 }: {
-  params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const { locale } = await params;
-
   const { sort, page } = await searchParams;
 
   const { products, productsCount } = await api.public.products.getAllProducts({
-    locale: locale,
     take: PRODUCTS_PER_PAGE,
     skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     orderBy: sort

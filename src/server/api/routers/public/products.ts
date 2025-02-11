@@ -9,26 +9,18 @@ import type {
 import { Prisma } from "@prisma/client";
 import { getLocale } from "next-intl/server";
 
-const localeSchema = z.object({
-  locale: z.string(),
-});
-
-const getAllProductsSchema = localeSchema.extend({
+const getAllProductsSchema = z.object({
   take: z.number().optional(),
   skip: z.number().optional(),
   orderBy: z.string().optional(),
   order: z.enum(["asc", "desc"]).optional(),
 });
 
-const getProductByIdSchema = localeSchema.extend({
+const getProductByIdSchema = z.object({
   id: z.string().uuid(),
 });
-const getProductBySlugSchema = localeSchema.extend({
+const getProductBySlugSchema = z.object({
   slug: z.string(),
-});
-
-const getProductsByCollectionSlugSchema = localeSchema.extend({
-  collectionSlug: z.string(),
 });
 
 export const productsRouter = createTRPCRouter({
@@ -37,6 +29,7 @@ export const productsRouter = createTRPCRouter({
   getProductById: publicProcedure
     .input(getProductByIdSchema)
     .query(async ({ ctx, input }): Promise<ProductDTO | null> => {
+      const locale = await getLocale();
       const product: ProductByIdFromPrisma | null =
         await ctx.db.product.findFirst({
           where: {
@@ -51,7 +44,7 @@ export const productsRouter = createTRPCRouter({
                 slug: true,
                 translations: {
                   where: {
-                    language: input.locale,
+                    language: locale,
                   },
                   select: {
                     name: true,
@@ -76,7 +69,7 @@ export const productsRouter = createTRPCRouter({
             },
             translations: {
               where: {
-                language: input.locale,
+                language: locale,
               },
 
               select: {
@@ -93,6 +86,7 @@ export const productsRouter = createTRPCRouter({
   getProductBySlug: publicProcedure
     .input(getProductBySlugSchema)
     .query(async ({ ctx, input }): Promise<ProductDTO | null> => {
+      const locale = await getLocale();
       const product: ProductByIdFromPrisma | null =
         await ctx.db.product.findFirst({
           where: {
@@ -106,7 +100,7 @@ export const productsRouter = createTRPCRouter({
                 slug: true,
                 translations: {
                   where: {
-                    language: input.locale,
+                    language: locale,
                   },
                   select: {
                     name: true,
@@ -130,7 +124,7 @@ export const productsRouter = createTRPCRouter({
             },
             translations: {
               where: {
-                language: input.locale,
+                language: locale,
               },
               select: {
                 name: true,
@@ -152,7 +146,7 @@ export const productsRouter = createTRPCRouter({
         input,
       }): Promise<{ products: ProductDTO[]; productsCount: number }> => {
         let products: ProductFromPrisma[];
-
+        const locale = await getLocale();
         const productsCount = await ctx.db.product.count();
 
         const orderBy =
@@ -193,7 +187,7 @@ export const productsRouter = createTRPCRouter({
                   slug: true,
                   translations: {
                     where: {
-                      language: input.locale,
+                      language: locale,
                     },
                     select: {
                       name: true,
@@ -217,7 +211,7 @@ export const productsRouter = createTRPCRouter({
               },
               translations: {
                 where: {
-                  language: input.locale,
+                  language: locale,
                 },
                 select: {
                   name: true,
@@ -245,7 +239,7 @@ export const productsRouter = createTRPCRouter({
                 slug: true,
                 translations: {
                   where: {
-                    language: input.locale,
+                    language: locale,
                   },
                   select: {
                     name: true,
@@ -269,7 +263,7 @@ export const productsRouter = createTRPCRouter({
             },
             translations: {
               where: {
-                language: input.locale,
+                language: locale,
               },
               select: {
                 name: true,
@@ -287,58 +281,81 @@ export const productsRouter = createTRPCRouter({
     ),
   // GET PRODUCTS BY COLLECTION SLUG
   getProductsByCollectionSlug: publicProcedure
-    .input(getProductsByCollectionSlugSchema)
-    .query(async ({ ctx, input }): Promise<ProductDTO[]> => {
-      const products: ProductFromPrisma[] = await ctx.db.product.findMany({
-        where: {
-          collection: {
-            slug: input.collectionSlug,
+    .input(
+      z.object({
+        collectionSlug: z.string(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+      }),
+    )
+    .query(
+      async ({
+        ctx,
+        input,
+      }): Promise<{ products: ProductDTO[]; productsCount: number }> => {
+        const locale = await getLocale();
+
+        const productsCount = await ctx.db.product.count({
+          where: {
+            collection: {
+              slug: input.collectionSlug,
+            },
           },
-        },
-        select: {
-          id: true,
-          slug: true,
-          collection: {
-            select: {
-              slug: true,
-              translations: {
-                where: {
-                  language: input.locale,
-                },
-                select: {
-                  name: true,
+        });
+
+        const products: ProductFromPrisma[] = await ctx.db.product.findMany({
+          where: {
+            collection: {
+              slug: input.collectionSlug,
+            },
+          },
+          select: {
+            id: true,
+            slug: true,
+            collection: {
+              select: {
+                slug: true,
+                translations: {
+                  where: {
+                    language: locale,
+                  },
+                  select: {
+                    name: true,
+                  },
                 },
               },
             },
-          },
-          images: {
-            select: {
-              url: true,
+            images: {
+              select: {
+                url: true,
+              },
+            },
+            prices: {
+              select: {
+                price: true,
+                size: true,
+              },
+              orderBy: {
+                price: "asc",
+              },
+            },
+            translations: {
+              where: {
+                language: locale,
+              },
+              select: {
+                name: true,
+                description: true,
+              },
             },
           },
-          prices: {
-            select: {
-              price: true,
-              size: true,
-            },
-            orderBy: {
-              price: "asc",
-            },
-          },
-          translations: {
-            where: {
-              language: input.locale,
-            },
-            select: {
-              name: true,
-              description: true,
-            },
-          },
-        },
-      });
+          take: input.take,
+          skip: input.skip,
+        });
 
-      return mapProductsToDTO(products);
-    }),
+        return { products: mapProductsToDTO(products), productsCount };
+      },
+    ),
 
   getRelatedProducts: publicProcedure
     .input(

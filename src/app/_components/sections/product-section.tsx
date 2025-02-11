@@ -1,6 +1,6 @@
 import type { ProductDTO } from "@/types";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { H1, Text } from "@/components/ui/typography";
+import { H1 } from "@/components/ui/typography";
 import { Link } from "@/i18n/routing";
 import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
@@ -9,6 +9,7 @@ import {
   ProductImageGallery,
   AddToCartButton,
 } from "@/components/product";
+import Markdown from "react-markdown";
 
 export function ProductSection({ product }: { product: ProductDTO }) {
   const t = useTranslations("product");
@@ -35,9 +36,12 @@ export function ProductSection({ product }: { product: ProductDTO }) {
               </Badge>
             </Link>
           </div>
-          <Text className="text-base" variant="muted" size="subtitle">
+          {/* <Text className="text-base" variant="muted" size="subtitle">
             {product.description}
-          </Text>
+          </Text> */}
+
+          <Markdown>{product.description}</Markdown>
+
           <ProductSizesAndPrice
             title={t("size")}
             prices={product.prices}

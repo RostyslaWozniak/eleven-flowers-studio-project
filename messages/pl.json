@@ -104,10 +104,11 @@
   },
   "product": {
     "size": "Rozmiar",
-    "add_to_cart": "Dodaj do koszykaу",
+    "add_to_cart": "Dodaj do koszyka",
     "in_cart": "W koszyku",
     "collections": "Kolekcje",
     "related_products": "Powiązane produkty",
+    "our_newest_products": "Nasze najnowsze produkty",
     "no_products": "Nie znaleziono produktów.",
     "price_from": "Od",
     "sidebar": {

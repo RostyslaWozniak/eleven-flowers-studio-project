@@ -58,7 +58,7 @@ export function ProductCard({
                 className={cn(
                   "text-base font-bold text-primary sm:text-lg md:text-2xl",
                   {
-                    "text-2xl": textMobileLarge,
+                    "text-xl md:text-2xl": textMobileLarge,
                   },
                 )}
               >

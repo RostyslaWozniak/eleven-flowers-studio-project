@@ -1,5 +1,5 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { GoogleStars } from "@/components/ui/icons";
 import { GoogleLogo } from "@/components/ui/icons/google-logo";
 import { H1, Text } from "@/components/ui/typography";
@@ -15,7 +15,7 @@ export function HomeHeroSection() {
       <MaxWidthWrapper className="hidden items-center justify-between gap-16 md:flex lg:pt-12">
         <div className="flex flex-col items-start gap-8">
           <div className="space-y-4">
-            <H1 className="text-nowrap">
+            <H1 className="text-nowrap lg:text-7xl">
               Eleven Flowers Studio <br></br>{" "}
               <span className="text-foreground/70">{t("title")}</span>
             </H1>
@@ -32,7 +32,7 @@ export function HomeHeroSection() {
           </div>
           <div className="flex items-center gap-8">
             <Link
-              href="/collections/bouquets"
+              href="/products?sort=popular"
               className={cn(buttonVariants({ variant: "default" }))}
             >
               {t("primary_button")}
@@ -64,7 +64,12 @@ export function HomeHeroSection() {
           height={650}
         />
         <div className="absolute -bottom-0 flex h-60 w-full items-end justify-center bg-gradient-to-b from-transparent via-background/30 to-background px-2.5">
-          <Button variant="outline"> {t("primary_button")}</Button>
+          <Link
+            href="/products?sort=popular"
+            className={cn(buttonVariants({ variant: "outline" }))}
+          >
+            {t("primary_button")}
+          </Link>
         </div>
       </div>
     </section>

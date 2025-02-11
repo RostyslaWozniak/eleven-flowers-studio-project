@@ -1,13 +1,18 @@
-import type { CollectionDTO, CollectionFromPrisma } from "@/types";
+import type {
+  CollectionDTO,
+  CollectionFromPrisma,
+  CollectionWithImageDto,
+} from "@/types";
 
 export const mapCollectionsToDTO = (
   collections: CollectionFromPrisma[],
-): CollectionDTO[] => {
+): CollectionWithImageDto[] => {
   return collections.map((collection) => ({
     slug: collection.slug,
     name: collection.translations.map(({ name }) => name)[0]!,
     description:
       collection.translations.map(({ description }) => description)[0] ?? null,
+    imageUrl: collection.imageUrl,
   }));
 };
 

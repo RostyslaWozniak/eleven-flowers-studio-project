@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/components/product/context/cart-context";
+import { useCart } from "@/context/cart-context";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";

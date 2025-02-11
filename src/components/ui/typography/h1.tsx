@@ -11,7 +11,7 @@ export function H1({
   return (
     <h1
       className={cn(
-        "font-philosopher text-6xl font-bold tracking-tighter text-primary lg:text-7xl",
+        "font-philosopher text-5xl font-bold tracking-tighter text-primary lg:text-6xl",
         className,
       )}
     >

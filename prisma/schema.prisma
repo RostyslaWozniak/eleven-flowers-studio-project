@@ -57,6 +57,7 @@ model Collection {
     slug         String                  @unique()
     createdAt    DateTime                @default(now())
     updatedAt    DateTime                @updatedAt
+    imageUrl     String                  @default("https://njmm8e6312.ufs.sh/f/mgG8Yp1X9p5v0Qj5FyUDxhnoKp8aAPubiYyHfqdCLRXFBstl")
     translations CollectionTranslation[] // Relation to CollectionTranslation
     products     Product[] // Relation to Products
 }
@@ -99,6 +100,7 @@ model Order {
     contactInfoId   String?
     createdAt       DateTime         @default(now())
     updatedAt       DateTime         @updatedAt
+    totalPrice      Int
     orderItems      OrderItem[]
     addressId       String?
     address         Address?         @relation(fields: [addressId], references: [id], onDelete: SetNull)

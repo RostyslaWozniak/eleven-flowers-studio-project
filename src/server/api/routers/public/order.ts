@@ -117,9 +117,20 @@ export const orderRouter = createTRPCRouter({
       }
 
       //3.  create order
+      const totalPrice = cartItems.reduce((total, item) => {
+        if (item.price == null || item.price <= 0) {
+          throw new Error(
+            `Invalid price for item: ${item.product.translations[0]?.name}`,
+          );
+        }
+        return total + item.price * item.quantity;
+      }, 0);
       try {
         const order = await ctx.db.order.create({
           data: {
+            contactInfoId,
+            addressId,
+            totalPrice,
             deliveryDetails: {
               create: {
                 deliveryDate: input.dateAndMethodData.date,
@@ -128,8 +139,6 @@ export const orderRouter = createTRPCRouter({
                 method: input.dateAndMethodData.deliveryMethod,
               },
             },
-            contactInfoId: contactInfoId,
-            addressId: addressId,
             orderItems: {
               createMany: {
                 data: cartItems.map((item) => ({
@@ -159,8 +168,7 @@ export const orderRouter = createTRPCRouter({
         //5. set order id to cookie
         setCookieValue(ctx.resHeaders, ORDER_COOKIE_NAME, order.id);
         return { orderId: order.id, message: "order_created" };
-      } catch (err) {
-        console.error(err);
+      } catch {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Something went wrong",
