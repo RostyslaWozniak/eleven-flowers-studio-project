@@ -22,6 +22,7 @@ import {
 import { api } from "@/trpc/react";
 import { useCart } from "@/context/cart-context";
 import { useRouter } from "@/i18n/routing";
+import { Loader } from "lucide-react";
 
 export default function DeliveryForm({
   dateAndMethodData,
@@ -46,7 +47,7 @@ export default function DeliveryForm({
   });
   const router = useRouter();
 
-  const { mutate: createOrderWithDelivery } =
+  const { mutate: createOrderWithDelivery, isPending } =
     api.public.order.createOrderWithDelivery.useMutation({
       onSuccess: () => {
         router.push("/payment");
@@ -234,15 +235,14 @@ export default function DeliveryForm({
               />
             </div>
           </div>
-          {/* <Link href="/checkout" className="float-left"> */}
           <Button
-            className="float-right h-12 w-full sm:w-min sm:max-w-sm"
+            className="float-right h-12 w-full sm:w-80 sm:max-w-sm"
             size="lg"
             type="submit"
+            disabled={isPending}
           >
-            {t("form.button")}
+            {isPending ? <Loader className="animate-spin" /> : t("form.button")}
           </Button>
-          {/* </Link> */}
         </form>
       </Form>
     </motion.div>

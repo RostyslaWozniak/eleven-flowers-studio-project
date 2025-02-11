@@ -1,7 +1,7 @@
 import * as React from "react";
 interface PurchaseSucceedTemplateProps {
-  firstName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
   price: number | null;
 }
 
@@ -12,7 +12,7 @@ export const PurchaseSucceedTemplate: React.FC<
     <h1>Thank you for your purchase!</h1>
     <p>
       <em>
-        Hello <strong>{`${firstName} ${lastName}`}</strong>,
+        Hello {firstName && <strong>{`${firstName} ${lastName}`}</strong>},
       </em>
     </p>
     <p>

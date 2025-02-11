@@ -7,10 +7,11 @@ export async function sendEmail({
   subject,
   emailTemplate: EmailTemplate,
 }: {
-  email: string;
+  email: string | null;
   subject: string;
   emailTemplate: React.ReactNode;
 }) {
+  if (!email) return null;
   const { data, error } = await resend.emails.send({
     from: "Eleven Flower Studio <onboarding@resend.dev>",
     to: [email],
