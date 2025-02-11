@@ -122,7 +122,7 @@ export function DateAndMethodForm({
             )}
           />
 
-          <Button type="submit" className="float-right h-12 w-min">
+          <Button type="submit" className="float-right h-12 w-full sm:w-min">
             {t("form.button")}
           </Button>
         </form>
