@@ -36,11 +36,14 @@ export function StripeCheckoutForm() {
         </EmbeddedCheckoutProvider>
       ) : (
         <div className="flex h-full flex-col items-center justify-center">
-          <H3>{t("already_paid")}</H3>
-          <div className="mt-8 space-y-4">
+          <H3 className="text-center">{t("already_paid")}</H3>
+          <div className="mt-8 flex w-full justify-center space-y-4">
             <Link
               href="/products"
-              className={cn(buttonVariants({ variant: "outline" }))}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "w-full md:w-min",
+              )}
             >
               {t("button")}
             </Link>

@@ -189,7 +189,7 @@
       "title": "Podsumowanie zamówienia",
       "size": "Rozmiar",
       "total": "Suma",
-      "already_paid": "Juz zapłacono za ten zamówienie.",
+      "already_paid": "Juz zapłacono za to zamówienie.",
       "button": "Kontynuuj zakupy"
     },
     "purchase_success": {
