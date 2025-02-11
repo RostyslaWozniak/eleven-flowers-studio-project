@@ -7,6 +7,8 @@ import { sendSms } from "@/services/twilio";
 import { type NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
+
 export async function GET(req: NextRequest) {
   const stripeSessionId = req.nextUrl.searchParams.get("stripeSessionId");
 
@@ -30,17 +32,19 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!STRIPE_WEBHOOK_SECRET) {
+    throw new Error("Missing STRIPE_WEBHOOK_SECRET");
+  }
+
   const event = stripeServerClient.webhooks.constructEvent(
     await req.text(),
     req.headers.get("stripe-signature")!,
-    process.env.STRIPE_WEBHOOK_SECRET!,
+    STRIPE_WEBHOOK_SECRET,
   );
-  console.log({ event });
   switch (event.type) {
     case "checkout.session.completed":
     case "checkout.session.async_payment_succeeded": {
       try {
-        console.warn("Payment completed successfully", event.data.object);
         await processStripeCheckout(event.data.object);
       } catch {
         return new Response(null, { status: 500 });
