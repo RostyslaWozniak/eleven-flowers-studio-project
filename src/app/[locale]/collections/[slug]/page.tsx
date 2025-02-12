@@ -7,6 +7,8 @@ import Pagination from "@/components/pagination";
 
 const PRODUCTS_PER_PAGE = 12;
 
+export const revalidate = 86400; // Refresh cached pages once every 24 hours
+
 export async function generateStaticParams() {
   const collections = await db.collection.findMany({
     select: {

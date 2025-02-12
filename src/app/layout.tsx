@@ -18,15 +18,13 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
+import CartProvider from "@/context/cart-context";
 
 const NavBar = dynamic(() =>
   import("@/components/nav-bar").then((mod) => mod.NavBar),
 );
 const MobileNavbar = dynamic(() =>
   import("@/components/nav-bar/mobile-nav-bar").then((mod) => mod.MobileNavbar),
-);
-const CartProvider = dynamic(() =>
-  import("@/context/cart-context").then((mod) => mod.default),
 );
 
 const philosopher = Philosopher({

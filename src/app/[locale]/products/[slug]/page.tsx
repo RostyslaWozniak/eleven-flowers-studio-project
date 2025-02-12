@@ -4,8 +4,10 @@ import { CollectionsSection } from "@/app/_components/sections/collections-secti
 import { ContactSection } from "@/app/_components/sections";
 import type { CollectionDTO, ProductDTO } from "@/types";
 import { api } from "@/trpc/server";
-import { redirect } from "@/i18n/routing";
 import { RelatedProductsSection } from "@/app/_components/sections/related-products-section";
+import { NotFoundSection } from "@/app/_components/sections/not-found-section";
+
+export const revalidate = 86400; // Refresh cached pages once every 24 hours
 
 export async function generateStaticParams() {
   const products = await db.product.findMany({
@@ -63,7 +65,7 @@ export default async function Page({
 }: {
   params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug, locale } = await params;
+  const { slug } = await params;
 
   const product: ProductDTO | null = await api.public.products.getProductBySlug(
     {
@@ -71,7 +73,7 @@ export default async function Page({
     },
   );
   if (!product) {
-    return redirect({ locale, href: "/404" });
+    return <NotFoundSection />;
   }
 
   const collections: CollectionDTO[] =

@@ -1,6 +1,7 @@
 import Pagination from "@/components/pagination";
 import { ProductCard } from "@/components/product";
 import { api } from "@/trpc/server";
+import { cache } from "react";
 
 const PRODUCTS_PER_PAGE = 6;
 
@@ -17,6 +18,26 @@ const mapSortQueryToPrisma = (
   return sortMapping[sortQuery] ?? { createdAt: "desc" };
 };
 
+type SortQuery = "new" | "popular" | "price-desc" | "price-asc";
+
+async function getAllProducts(
+  sort: SortQuery,
+  page: string | string[] | undefined,
+) {
+  const { products, productsCount } = await api.public.products.getAllProducts({
+    take: PRODUCTS_PER_PAGE,
+    skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
+    orderBy: sort ? Object.keys(mapSortQueryToPrisma(sort))[0] : "createdAt",
+    order: sort
+      ? (Object.values(mapSortQueryToPrisma(sort))[0] as "asc" | "desc")
+      : "asc",
+  });
+
+  return { products, productsCount };
+}
+
+const cachedProducts = cache(getAllProducts);
+
 export default async function Page({
   searchParams,
 }: {
@@ -24,24 +45,10 @@ export default async function Page({
 }) {
   const { sort, page } = await searchParams;
 
-  const { products, productsCount } = await api.public.products.getAllProducts({
-    take: PRODUCTS_PER_PAGE,
-    skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
-    orderBy: sort
-      ? Object.keys(
-          mapSortQueryToPrisma(
-            sort as "new" | "popular" | "price-desc" | "price-asc",
-          ),
-        )[0]
-      : "createdAt",
-    order: sort
-      ? (Object.values(
-          mapSortQueryToPrisma(
-            sort as "new" | "popular" | "price-desc" | "price-asc",
-          ),
-        )[0] as "asc" | "desc")
-      : "asc",
-  });
+  const { products, productsCount } = await cachedProducts(
+    sort as SortQuery,
+    page,
+  );
 
   return (
     <div className="w-full space-y-10 py-4 md:py-20">
