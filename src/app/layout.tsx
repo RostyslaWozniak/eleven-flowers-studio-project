@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 import { Philosopher, Manrope } from "next/font/google";
 
 import { TRPCReactProvider } from "@/trpc/react";
-import { NavBar } from "@/components/nav-bar";
 import { Footer } from "@/components/footer";
 
 import { NextIntlClientProvider } from "next-intl";
@@ -16,9 +15,19 @@ import {
 import { routing } from "@/i18n/routing";
 
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import CartProvider from "@/context/cart-context";
-import { MobileNavbar } from "@/components/nav-bar/mobile-nav-bar";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const NavBar = dynamic(() =>
+  import("@/components/nav-bar").then((mod) => mod.NavBar),
+);
+const MobileNavbar = dynamic(() =>
+  import("@/components/nav-bar/mobile-nav-bar").then((mod) => mod.MobileNavbar),
+);
+const CartProvider = dynamic(() =>
+  import("@/context/cart-context").then((mod) => mod.default),
+);
 
 const philosopher = Philosopher({
   subsets: ["latin"],
@@ -72,11 +81,17 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <TRPCReactProvider>
             <NuqsAdapter>
               <CartProvider>
-                <NavBar />
+                <Suspense fallback={null}>
+                  <NavBar />
+                </Suspense>
                 <main className="flex-grow">{children}</main>
                 <Footer />
-                <Toaster />
-                <MobileNavbar />
+                <Suspense fallback={null}>
+                  <Toaster />
+                </Suspense>
+                <Suspense fallback={null}>
+                  <MobileNavbar />
+                </Suspense>
               </CartProvider>
             </NuqsAdapter>
           </TRPCReactProvider>

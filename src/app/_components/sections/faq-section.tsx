@@ -1,8 +1,13 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { H2 } from "@/components/ui/typography";
 
-import { FaqAccordion } from "../faq-accrdion/faq-accordion";
+// import { FaqAccordion } from "../faq-accrdion/faq-accordion";
 import { useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
+
+const FaqAccordion = dynamic(() =>
+  import("@/app/_components/faq-accrdion").then((mod) => mod.FaqAccordion),
+);
 
 export function FaqSection() {
   const t = useTranslations("home.faq");

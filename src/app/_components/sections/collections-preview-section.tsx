@@ -4,6 +4,7 @@ import { H2, Text } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
 import { CollectionsPreview } from "@/components/collections-preview";
+import { Suspense } from "react";
 
 export function CollectionsPreviewSection() {
   const t = useTranslations("home.collections");
@@ -21,7 +22,9 @@ export function CollectionsPreviewSection() {
             {t("subtitle")}
           </Text>
         </div>
-        <CollectionsPreview />
+        <Suspense fallback={<div>Loading...</div>}>
+          <CollectionsPreview />
+        </Suspense>
         {/* SEPARATOR */}
         <div className="mx-auto max-w-[1400px] px-2.5">
           <Separator />
