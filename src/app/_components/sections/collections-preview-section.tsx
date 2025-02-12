@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
 import { CollectionsPreview } from "@/components/collections-preview";
 import { Suspense } from "react";
+import { CardSkeleton } from "@/components/skeletons/card-skeleton";
 
 export function CollectionsPreviewSection() {
   const t = useTranslations("home.collections");
@@ -22,7 +23,15 @@ export function CollectionsPreviewSection() {
             {t("subtitle")}
           </Text>
         </div>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={
+            <div className="flex w-full gap-8 px-2.5">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <CardSkeleton key={i} />
+              ))}
+            </div>
+          }
+        >
           <CollectionsPreview />
         </Suspense>
         {/* SEPARATOR */}
