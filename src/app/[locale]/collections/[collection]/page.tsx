@@ -5,9 +5,11 @@ import { api } from "@/trpc/server";
 import { redirect } from "@/i18n/routing";
 import Pagination from "@/components/pagination";
 
-const PRODUCTS_PER_PAGE = 12;
+const PRODUCTS_PER_PAGE = 60;
 
-export const revalidate = 86400; // Refresh cached pages once every 24 hours
+export const dynamic = "force-static";
+
+export const revalidate = 10;
 
 export async function generateStaticParams() {
   const collections = await db.collection.findMany({

@@ -11,7 +11,9 @@ import { CardSkeleton } from "@/components/skeletons/card-skeleton";
 
 import { mapProductToDTO } from "@/lib/utils/dto";
 
-export const revalidate = 86400; // Refresh cached pages once every 1 day
+export const dynamic = "force-static";
+
+export const revalidate = 60;
 
 const getProductsSlugWithCollections = cache(async () => {
   const products = await db.product

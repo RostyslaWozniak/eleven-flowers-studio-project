@@ -8,12 +8,13 @@ import type {
 } from "@/types";
 import { Prisma } from "@prisma/client";
 import { getLocale } from "next-intl/server";
+import { getAllProducts, getAllProductsOrderedByPrice } from "../lib/products";
 
 const getAllProductsSchema = z.object({
   take: z.number().optional(),
   skip: z.number().optional(),
   orderBy: z.string().optional(),
-  order: z.enum(["asc", "desc"]).optional(),
+  order: z.enum([Prisma.SortOrder.asc, Prisma.SortOrder.desc]).optional(),
 });
 
 const getProductByIdSchema = z.object({
@@ -145,8 +146,8 @@ export const productsRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<{ products: ProductDTO[]; productsCount: number }> => {
-        let products: ProductFromPrisma[];
         const locale = await getLocale();
+
         const productsCount = await ctx.db.product.count();
 
         const orderBy =
@@ -157,72 +158,16 @@ export const productsRouter = createTRPCRouter({
               : { createdAt: Prisma.SortOrder.desc };
 
         if (input.orderBy === "price") {
-          const orderedProductIds = await ctx.db.productPrice.groupBy({
-            by: ["productId"],
-            _min: {
-              price: true,
-            },
-            orderBy: {
-              _min: {
-                price: input.order,
-              },
-            },
-
+          const orderedProducts = await getAllProductsOrderedByPrice({
+            locale,
+            order: input.order,
             take: input.take,
             skip: input.skip,
           });
 
-          // Extract ordered product IDs
-          const productIdsInOrder = orderedProductIds.map((p) => p.productId);
-          // QUERY PRODUCTS
-          products = await ctx.db.product.findMany({
-            where: {
-              id: { in: productIdsInOrder },
-            },
-            select: {
-              id: true,
-              slug: true,
-              collection: {
-                select: {
-                  slug: true,
-                  translations: {
-                    where: {
-                      language: locale,
-                    },
-                    select: {
-                      name: true,
-                    },
-                  },
-                },
-              },
-              images: {
-                select: {
-                  url: true,
-                },
-              },
-              prices: {
-                select: {
-                  price: true,
-                  size: true,
-                },
-                orderBy: {
-                  price: "asc",
-                },
-              },
-              translations: {
-                where: {
-                  language: locale,
-                },
-                select: {
-                  name: true,
-                  description: true,
-                },
-              },
-            },
-          });
-          const orderedProducts = productIdsInOrder.map((id) =>
-            products.find((product) => product.id === id),
-          );
+          if (orderedProducts.length === 0)
+            return { products: [], productsCount };
+
           return {
             products: mapProductsToDTO(
               orderedProducts.filter((product) => product !== undefined),
@@ -230,47 +175,9 @@ export const productsRouter = createTRPCRouter({
             productsCount,
           };
         }
-        products = await ctx.db.product.findMany({
-          select: {
-            id: true,
-            slug: true,
-            collection: {
-              select: {
-                slug: true,
-                translations: {
-                  where: {
-                    language: locale,
-                  },
-                  select: {
-                    name: true,
-                  },
-                },
-              },
-            },
-            images: {
-              select: {
-                url: true,
-              },
-            },
-            prices: {
-              select: {
-                price: true,
-                size: true,
-              },
-              orderBy: {
-                price: Prisma.SortOrder.asc,
-              },
-            },
-            translations: {
-              where: {
-                language: locale,
-              },
-              select: {
-                name: true,
-                description: true,
-              },
-            },
-          },
+
+        const products = await getAllProducts({
+          locale,
           take: input.take,
           skip: input.skip,
           orderBy: orderBy,
