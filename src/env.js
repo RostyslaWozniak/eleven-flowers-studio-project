@@ -18,6 +18,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_SERVER_URL: z.string().url(),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
+    NEXT_PUBLIC_UPLOADTHING_APP_ID: z.string().min(1),
   },
 
   runtimeEnv: {
@@ -32,6 +33,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_UPLOADTHING_APP_ID: process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 

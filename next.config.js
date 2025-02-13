@@ -15,7 +15,7 @@ const config = {
       {
         protocol: "https",
         hostname: "njmm8e6312.ufs.sh",
-        // pathname: `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+        pathname: `/f/*`,
       },
     ],
   },

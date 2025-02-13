@@ -10,6 +10,7 @@ import {
   AddToCartButton,
 } from "@/components/product";
 import Markdown from "react-markdown";
+import { Suspense } from "react";
 
 export function ProductSection({ product }: { product: ProductDTO }) {
   const t = useTranslations("product");
@@ -22,7 +23,9 @@ export function ProductSection({ product }: { product: ProductDTO }) {
   return (
     <section className="bg-gradient-to-b from-card to-transparent">
       <MaxWidthWrapper className="grid gap-x-8 md:grid-cols-2">
-        <ProductImageGallery images={images} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProductImageGallery images={images} />
+        </Suspense>
 
         <div className="flex flex-col gap-y-6 lg:pt-28">
           <div>
@@ -36,23 +39,22 @@ export function ProductSection({ product }: { product: ProductDTO }) {
               </Badge>
             </Link>
           </div>
-          {/* <Text className="text-base" variant="muted" size="subtitle">
-            {product.description}
-          </Text> */}
 
-          <Markdown>{product.description}</Markdown>
-
-          <ProductSizesAndPrice
-            title={t("size")}
-            prices={product.prices}
-            testPrice={product.prices.map(({ size, price }) => ({
-              [size]: price,
-            }))}
-          />
-
-          <div className="flex justify-center sm:justify-start">
-            <AddToCartButton product={product} />
-          </div>
+          <Markdown className="prose-p:text-lg">{product.description}</Markdown>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ProductSizesAndPrice
+              title={t("size")}
+              prices={product.prices}
+              testPrice={product.prices.map(({ size, price }) => ({
+                [size]: price,
+              }))}
+            />
+          </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <div className="flex justify-center sm:justify-start">
+              <AddToCartButton product={product} />
+            </div>
+          </Suspense>
         </div>
       </MaxWidthWrapper>
     </section>

@@ -116,6 +116,9 @@ importers:
       resend:
         specifier: ^4.1.2
         version: 4.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      schema-dts:
+        specifier: ^1.1.2
+        version: 1.1.2(typescript@5.7.3)
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -2716,6 +2719,11 @@ packages:
 
   scheduler@0.23.2:
     resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
+
+  schema-dts@1.1.2:
+    resolution: {integrity: sha512-MpNwH0dZJHinVxk9bT8XUdjKTxMYrA5bLtrrGmFA6PTLwlOKnhi67XoRd6/ty+Djt6ZC0slR57qFhZDNMI6DhQ==}
+    peerDependencies:
+      typescript: '>=4.1.0'
 
   scmp@2.1.0:
     resolution: {integrity: sha512-o/mRQGk9Rcer/jEEw/yw4mwo3EU/NvYvp577/Btqrym9Qy5/MdWGBqipbALgd2lrdWTJ5/gqDusxfnQBxOxT2Q==}
@@ -5897,6 +5905,10 @@ snapshots:
   scheduler@0.23.2:
     dependencies:
       loose-envify: 1.4.0
+
+  schema-dts@1.1.2(typescript@5.7.3):
+    dependencies:
+      typescript: 5.7.3
 
   scmp@2.1.0: {}
 

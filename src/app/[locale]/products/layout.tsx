@@ -1,5 +1,5 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { SortSidebar } from "../_components/sort-sidebar";
+import { SortSidebar } from "./_components/sort-sidebar";
 
 export default function ProductsLayout({
   children,

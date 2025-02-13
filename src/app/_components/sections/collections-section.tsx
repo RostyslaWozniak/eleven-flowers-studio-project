@@ -3,23 +3,23 @@ import { buttonVariants } from "@/components/ui/button";
 import { H2 } from "@/components/ui/typography";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import type { CollectionDTO } from "@/types";
-import { useTranslations } from "next-intl";
+import { api } from "@/trpc/server";
 
-export function CollectionsSection({
-  collections,
+export async function CollectionsSection({
   currCollectionSlug,
 }: {
-  collections: CollectionDTO[];
   currCollectionSlug?: string;
 }) {
-  const t = useTranslations("product");
+  // const t = getTranslations("product");
+
+  const collections = await api.public.collections.getAllCollections({});
   return (
     <section className="">
       <MaxWidthWrapper className="space-y-4 px-0">
         <div className="px-2.5">
           <H2 className="border-b pb-2 text-start md:text-start">
-            {t("collections")}
+            {/* {t("collections")} */}
+            title
           </H2>
         </div>
         <div className="scrollbar-hide flex w-full space-x-4 overflow-x-scroll px-2.5">

@@ -3,6 +3,10 @@ import { api } from "@/trpc/server";
 import { type MetadataRoute } from "next";
 import { getLocale } from "next-intl/server";
 
+export async function generateStaticParams() {
+  return [];
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const collections = await api.public.collections.getAllCollections({});
   const { products } = await api.public.products.getAllProducts({});

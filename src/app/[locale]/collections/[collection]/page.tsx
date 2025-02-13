@@ -17,26 +17,27 @@ export async function generateStaticParams() {
   });
 
   return collections.map(({ slug }) => ({
-    slug,
+    collection: slug,
   }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ collection: string }>;
 }) {
-  const { slug } = await params;
+  const { collection } = await params;
 
-  const collection = await api.public.collections.getUniqCollectionBySlug({
-    slug,
+  const collectionData = await api.public.collections.getUniqCollectionBySlug({
+    slug: collection,
   });
   return {
     title:
-      collection.name.slice(0, 1).toLocaleUpperCase() +
-      collection.name.slice(1).toLocaleLowerCase(),
+      collectionData.name.slice(0, 1).toLocaleUpperCase() +
+      collectionData.name.slice(1).toLocaleLowerCase(),
     description:
-      collection.description ?? `This is collection - ${collection.name}`,
+      collectionData.description ??
+      `This is collection - ${collectionData.name}`,
   };
 }
 
@@ -44,34 +45,34 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string; locale: string }>;
+  params: Promise<{ collection: string; locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { page } = await searchParams;
-  const { slug, locale } = await params;
+  const { collection, locale } = await params;
 
   const collections = await api.public.collections.getAllCollections({});
 
-  const collection = collections.find((collection) => collection.slug === slug);
+  const collectionData = collections.find((item) => item.slug === collection);
 
-  if (!collection) {
+  if (!collectionData) {
     return redirect({ locale, href: "/404" });
   }
 
   const { products, productsCount } =
     await api.public.products.getProductsByCollectionSlug({
-      collectionSlug: slug,
+      collectionSlug: collection,
       take: PRODUCTS_PER_PAGE,
       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     });
 
   return (
     <>
-      <ProductsGrid products={products} title={collection.name} />
+      <ProductsGrid products={products} title={collectionData.name} />
       <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">
         <Pagination totalPages={Math.ceil(productsCount / PRODUCTS_PER_PAGE)} />
       </div>
-      <CollectionsSection currCollectionSlug={slug} collections={collections} />
+      <CollectionsSection currCollectionSlug={collection} />
       <ContactSection />
     </>
   );

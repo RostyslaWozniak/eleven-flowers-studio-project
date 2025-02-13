@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 
 import { Philosopher, Manrope } from "next/font/google";
 
+import type { WebSite, WithContext } from "schema-dts";
+
 import { TRPCReactProvider } from "@/trpc/react";
 import { Footer } from "@/components/footer";
 
@@ -61,13 +63,30 @@ export async function generateMetadata({
 
 type RootLayoutProps = {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 };
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({
+  children,
+  params,
+}: RootLayoutProps) {
   const localeFromNext = await getLocale();
   setRequestLocale(localeFromNext);
 
   const messages = await getMessages();
+
+  const locale = (await params).locale;
+
+  const t = await getTranslations({ locale, namespace: "home" });
+
+  const jsonLd: WithContext<WebSite> = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: "./",
+    name: t("title"),
+    image: "./opengraph-image.png",
+    description: t("description"),
+  };
 
   return (
     <html
@@ -75,6 +94,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       className={`${manrope.variable} ${philosopher.variable}`}
     >
       <body className="flex min-h-screen flex-col overflow-x-hidden font-manrope">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <NextIntlClientProvider messages={messages}>
           <TRPCReactProvider>
             <NuqsAdapter>

@@ -31,13 +31,21 @@ export function ProductCard({
             </Badge>
           </Link>
         )}
-        <Link href={`/products/${product.slug}`}>
+        <Link
+          href={
+            product.collection
+              ? `/collections/${product.collection.slug}/${product.slug}`
+              : `/products/${product.slug}`
+          }
+        >
           <div className="relative flex h-full flex-col">
             <div className="relative aspect-[5/6] overflow-hidden">
               <Image
                 className="object-cover"
                 src={product.images[0] ?? "/images/bouquet-placeholder.jpg"}
                 alt={product.name}
+                sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 350px"}
+                priority
                 fill
               />
               <div className="absolute inset-0 -z-10 animate-pulse bg-secondary"></div>
