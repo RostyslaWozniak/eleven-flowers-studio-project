@@ -72,21 +72,18 @@ export async function generateMetadata({
 
 type RootLayoutProps = {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
 };
 
-export default async function RootLayout({
-  children,
-  params,
-}: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
   const localeFromNext = await getLocale();
   setRequestLocale(localeFromNext);
 
   const messages = await getMessages();
 
-  const locale = (await params).locale;
-
-  const t = await getTranslations({ locale, namespace: "home" });
+  const t = await getTranslations({
+    locale: localeFromNext,
+    namespace: "home",
+  });
 
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",

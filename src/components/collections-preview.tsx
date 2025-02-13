@@ -18,7 +18,7 @@ export async function CollectionsPreview({ take = 4 }: { take?: number }) {
           <Image
             fill
             priority
-            sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 300px "}
+            sizes="(min-width: 1400px) 321px, 296px"
             src={imageUrl}
             alt={name}
             className="absolute object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"

@@ -44,7 +44,7 @@ export function ProductCard({
                 className="object-cover"
                 src={product.images[0] ?? "/images/bouquet-placeholder.jpg"}
                 alt={product.name}
-                sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 350px"}
+                sizes="(min-width: 1500px) 333px, (min-width: 1040px) calc(20.45vw + 30px), (min-width: 640px) calc(33.42vw - 18px), calc(50vw - 18px)"
                 priority
                 fill
               />
