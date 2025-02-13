@@ -16,6 +16,8 @@ import { NextRequest } from "next/server";
 const createContext = cache(async () => {
   const heads = new Headers(await headers());
   heads.set("x-trpc-source", "rsc");
+  // test cache
+  heads.set("Cache-Control", "public, max-age=31536000, immutable");
   return createTRPCContext({
     resHeaders: heads,
     req: new NextRequest(process.env.NEXT_PUBLIC_SERVER_URL!),

@@ -11,10 +11,6 @@ import { CardSkeleton } from "@/components/skeletons/card-skeleton";
 
 import { mapProductToDTO } from "@/lib/utils/dto";
 
-export const dynamic = "force-static";
-
-export const revalidate = 60;
-
 const getProductsSlugWithCollections = cache(async () => {
   const products = await db.product
     .findMany({

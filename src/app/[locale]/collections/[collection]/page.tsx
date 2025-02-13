@@ -7,10 +7,6 @@ import Pagination from "@/components/pagination";
 
 const PRODUCTS_PER_PAGE = 60;
 
-export const dynamic = "force-static";
-
-export const revalidate = 10;
-
 export async function generateStaticParams() {
   const collections = await db.collection.findMany({
     select: {
