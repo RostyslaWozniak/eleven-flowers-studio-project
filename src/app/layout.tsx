@@ -21,6 +21,7 @@ import { Toaster } from "sonner";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import CartProvider from "@/context/cart-context";
+import { env } from "@/env";
 
 const NavBar = dynamic(() =>
   import("@/components/nav-bar").then((mod) => mod.NavBar),
@@ -53,11 +54,19 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "home" });
 
   return {
+    metadataBase: env.NEXT_PUBLIC_SERVER_URL,
     title: {
       default: t("title"),
       template: "%s | Eleven Flowers Studio",
     },
     description: t("description"),
+    alternates: {
+      canonical: "./",
+    },
+    openGraph: {
+      url: "./",
+      type: "website",
+    },
   };
 }
 
