@@ -3,7 +3,7 @@
 import { OrderItemSkeleton } from "@/components/skeletons/order-item-skeleton";
 import { H2, H3, Text } from "@/components/ui/typography";
 import { useCart } from "@/context/cart-context";
-import { Link } from "@/i18n/routing";
+// import { Link } from "@/i18n/routing";
 import { formatPrice } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -34,12 +34,12 @@ export default function CartSummary() {
                 />
               </div>
               <div className="flex-grow">
-                <Link
+                {/* <Link
                   href={`/products/${item.slug}?size=${item.size}`}
                   className="text-primary hover:underline"
-                >
-                  <H3 className="font-semibold">{item.productName}</H3>
-                </Link>
+                > */}
+                <H3 className="font-semibold">{item.productName}</H3>
+                {/* </Link> */}
                 <div className="mt-3 flex justify-between">
                   <Text variant="muted">
                     {t("size")}:{" "}

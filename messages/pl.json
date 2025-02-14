@@ -136,7 +136,9 @@
   "not_found": {
     "title": "Strona nie została znaleziona",
     "description": "Strona, którą szukasz nie została znaleziona.",
-    "button": "Przejdz do strony głównej"
+    "button": "Przejdz do strony głównej",
+    "collection_not_found": "Kolekcja nie została znaleziona.",
+    "product_not_found": "Produkt nie został znaleziony."
   },
 
   "cart": {

@@ -136,7 +136,9 @@
   "not_found": {
     "title": "Page Not Found",
     "description": "The page you are looking for could not be found.",
-    "button": "Go Home"
+    "button": "Go Home",
+    "collection_not_found": "Collection not found.",
+    "product_not_found": "Product not found."
   },
 
   "cart": {

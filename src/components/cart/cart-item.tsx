@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import type { CartItem } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/context/cart-context";
-import { Link } from "@/i18n/routing";
+// import { Link } from "@/i18n/routing";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
@@ -31,17 +31,17 @@ export function CartItem({ cartItem }: CartItemProps) {
         />
       </div>
       <div className="flex-grow">
-        <Link
-          href={`/products/${cartItem.slug}?size=${cartItem.size}`}
+        {/* <Link
+          href={`/collections/${cartItem.slug}`}
           className="hover:underline"
+        > */}
+        <h3
+          className="text-lg font-semibold leading-6 tracking-tight text-gray-900"
+          onClick={() => setIsCartOpen(false)}
         >
-          <h3
-            className="text-lg font-semibold leading-6 tracking-tight text-gray-900"
-            onClick={() => setIsCartOpen(false)}
-          >
-            {cartItem.productName}
-          </h3>
-        </Link>
+          {cartItem.productName}
+        </h3>
+        {/* </Link> */}
         <p className="text-sm text-gray-500">
           {formatPrice(cartItem.price)} x {cartItem.quantity}
         </p>

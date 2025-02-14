@@ -1,4 +1,5 @@
 import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-template";
+import { env } from "@/env";
 import { redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { db } from "@/server/db";
@@ -6,8 +7,6 @@ import { sendEmail } from "@/services/resend";
 import { sendSms } from "@/services/twilio";
 import { type NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
-
-const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function GET(req: NextRequest) {
   const stripeSessionId = req.nextUrl.searchParams.get("stripeSessionId");
@@ -32,14 +31,13 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!STRIPE_WEBHOOK_SECRET) {
-    throw new Error("Missing STRIPE_WEBHOOK_SECRET");
-  }
+  const sig = req.headers.get("stripe-signature");
+  if (!sig) return new Response("Missing signature", { status: 400 });
 
   const event = stripeServerClient.webhooks.constructEvent(
     await req.text(),
-    req.headers.get("stripe-signature")!,
-    STRIPE_WEBHOOK_SECRET,
+    sig,
+    env.STRIPE_WEBHOOK_SECRET,
   );
   switch (event.type) {
     case "checkout.session.completed":

@@ -2,8 +2,9 @@ import { db } from "@/server/db";
 import { ProductsGrid } from "@/components/products-grid";
 import { CollectionsSection, ContactSection } from "@/app/_components/sections";
 import { api } from "@/trpc/server";
-import { redirect } from "@/i18n/routing";
 import Pagination from "@/components/pagination";
+import { NotFoundSection } from "@/app/_components/sections/not-found-section";
+import { getTranslations } from "next-intl/server";
 
 const PRODUCTS_PER_PAGE = 60;
 
@@ -22,21 +23,27 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ collection: string }>;
+  params: Promise<{ collection: string; locale: string }>;
 }) {
-  const { collection } = await params;
-
-  const collectionData = await api.public.collections.getUniqCollectionBySlug({
-    slug: collection,
-  });
-  return {
-    title:
-      collectionData.name.slice(0, 1).toLocaleUpperCase() +
-      collectionData.name.slice(1).toLocaleLowerCase(),
-    description:
-      collectionData.description ??
-      `This is collection - ${collectionData.name}`,
-  };
+  const { collection: collectionSlug, locale } = await params;
+  const t = await getTranslations({ locale, namespace: "not_found" });
+  try {
+    const collection = await api.public.collections.getUniqCollectionBySlug({
+      slug: collectionSlug,
+    });
+    return {
+      title:
+        collection.name.slice(0, 1).toLocaleUpperCase() +
+        collection.name.slice(1).toLocaleLowerCase(),
+      description:
+        collection.description ?? `This is collection - ${collection.name}`,
+    };
+  } catch {
+    return {
+      title: "404 " + t("collection_not_found"),
+      description: t("collection_not_found"),
+    };
+  }
 }
 
 export default async function Page({
@@ -47,30 +54,30 @@ export default async function Page({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { page } = await searchParams;
-  const { collection, locale } = await params;
+  const { collection: collectionSlug } = await params;
 
   const collections = await api.public.collections.getAllCollections({});
 
-  const collectionData = collections.find((item) => item.slug === collection);
+  const collection = collections.find((item) => item.slug === collectionSlug);
 
-  if (!collectionData) {
-    return redirect({ locale, href: "/404" });
+  if (!collection) {
+    return <NotFoundSection />;
   }
 
   const { products, productsCount } =
     await api.public.products.getProductsByCollectionSlug({
-      collectionSlug: collection,
+      collectionSlug: collectionSlug,
       take: PRODUCTS_PER_PAGE,
       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     });
 
   return (
     <>
-      <ProductsGrid products={products} title={collectionData.name} />
+      <ProductsGrid products={products} title={collection.name} />
       <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">
         <Pagination totalPages={Math.ceil(productsCount / PRODUCTS_PER_PAGE)} />
       </div>
-      <CollectionsSection currCollectionSlug={collection} />
+      <CollectionsSection currCollectionSlug={collectionSlug} />
       <ContactSection />
     </>
   );

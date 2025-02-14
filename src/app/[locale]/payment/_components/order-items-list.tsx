@@ -57,12 +57,12 @@ export default function OrderItemsList() {
                       />
                     </div>
                     <div className="flex-grow">
-                      <Link
+                      {/* <Link
                         href={`/products/${item.slug}?size=${item.size}`}
                         className="text-primary hover:underline"
-                      >
-                        <H3 className="font-semibold">{item.productName}</H3>
-                      </Link>
+                      > */}
+                      <H3 className="font-semibold">{item.productName}</H3>
+                      {/* </Link> */}
                       <div className="mt-3 flex justify-between">
                         <Text variant="muted">
                           {t("size")}:{" "}

@@ -98,10 +98,7 @@ export async function generateMetadata({
   const product = await getProductBySlug(productSlug, locale);
 
   if (!product) {
-    return {
-      title: "404",
-      description: "Product not found",
-    };
+    return <NotFoundSection />;
   }
 
   return {
