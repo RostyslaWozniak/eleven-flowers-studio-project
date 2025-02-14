@@ -1,6 +1,5 @@
 import { type Metadata } from "next";
 import { Sidebar } from "../_components/sidebar";
-
 export const metadata: Metadata = {
   title: {
     template: "Admin | %s | Eleven Flowers Studio",

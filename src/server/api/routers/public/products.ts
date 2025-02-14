@@ -24,6 +24,8 @@ const getProductBySlugSchema = z.object({
   slug: z.string(),
 });
 
+export const dynamic = "force-static";
+
 export const productsRouter = createTRPCRouter({
   // GET PRODUCT BY SLUG
 

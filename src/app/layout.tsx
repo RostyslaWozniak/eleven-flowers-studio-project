@@ -5,7 +5,6 @@ import { Philosopher, Manrope } from "next/font/google";
 import type { WebSite, WithContext } from "schema-dts";
 
 import { TRPCReactProvider } from "@/trpc/react";
-import { Footer } from "@/components/footer";
 
 import { NextIntlClientProvider } from "next-intl";
 import {
@@ -18,16 +17,7 @@ import { routing } from "@/i18n/routing";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
-import CartProvider from "@/context/cart-context";
 import { env } from "@/env";
-
-const NavBar = dynamic(() =>
-  import("@/components/nav-bar").then((mod) => mod.NavBar),
-);
-const MobileNavbar = dynamic(() =>
-  import("@/components/nav-bar/mobile-nav-bar").then((mod) => mod.MobileNavbar),
-);
 
 const philosopher = Philosopher({
   subsets: ["latin"],
@@ -110,19 +100,10 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <TRPCReactProvider>
             <NuqsAdapter>
-              <CartProvider>
-                <Suspense fallback={null}>
-                  <NavBar />
-                </Suspense>
-                <main className="flex-grow">{children}</main>
-                <Footer />
-                <Suspense fallback={null}>
-                  <Toaster />
-                </Suspense>
-                <Suspense fallback={null}>
-                  <MobileNavbar />
-                </Suspense>
-              </CartProvider>
+              {children}{" "}
+              <Suspense fallback={null}>
+                <Toaster />
+              </Suspense>
             </NuqsAdapter>
           </TRPCReactProvider>
         </NextIntlClientProvider>

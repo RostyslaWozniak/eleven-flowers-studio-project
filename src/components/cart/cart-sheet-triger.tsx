@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Button } from "../ui/button";
 
 type CartSheetTriggerProps = {
   isOpen: boolean;
@@ -27,8 +28,10 @@ export const CartSheetTrigger = ({
       initial={cartItems.length > 0}
       animate={{ rotate: [0, -5, 5, -5, 5, 0] }}
     >
-      <button
-        className="pointer-events-auto relative flex flex-col items-center rounded-full text-gray-600 transition-colors duration-200"
+      <Button
+        className="pointer-events-auto relative flex flex-col items-center rounded-full p-0 text-gray-600 transition-colors duration-200"
+        size="icon"
+        variant="ghost"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div
@@ -39,20 +42,20 @@ export const CartSheetTrigger = ({
             },
           )}
         >
-          <ShoppingBag className="lg:h-8 lg:w-8" />
+          <ShoppingBag className="lg:min-h-8 lg:min-w-8" />
         </div>
 
         {cartItems.length > 0 && (
           <div
             key={cartItems.length + 1}
-            className="absolute -bottom-2 -right-2 aspect-square h-5 rounded-full bg-primary text-center text-primary-foreground lg:bottom-0 lg:right-0"
+            className="absolute -bottom-2 -right-2 aspect-square h-5 rounded-full bg-primary text-center text-primary-foreground lg:-bottom-1 lg:-right-1"
           >
-            <p className="absolute left-[55%] top-1/2 -translate-x-1/2 -translate-y-1/2 text-base">
+            <p className="absolute left-[50%] top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm tracking-tighter">
               {cartItems.length}
             </p>
           </div>
         )}
-      </button>
+      </Button>
       <span className="mt-1 text-center text-xs font-medium md:hidden">
         {tNav("cart")}
       </span>

@@ -13,6 +13,10 @@ export const env = createEnv({
     TWILIO_AUTH_TOKEN: z.string().min(1),
     TWILIO_ACCOUNT_SID: z.string().min(1),
     TWILIO_PHONE_NUMBER: z.string().min(1),
+    ADMIN_USERNAME: z.string().min(1),
+    ADMIN_HASHED_PASSWORD: z.string().min(1),
+    UPSTASH_REDIS_REST_URL: z.string().min(1),
+    UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
   },
 
   client: {
@@ -34,6 +38,10 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_UPLOADTHING_APP_ID: process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID,
+    ADMIN_USERNAME: process.env.ADMIN_USERNAME,
+    ADMIN_HASHED_PASSWORD: process.env.ADMIN_HASHED_PASSWORD,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 

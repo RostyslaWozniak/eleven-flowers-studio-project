@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SignOutButton } from "./sign-out-button";
 
 const sidebarItems = [
   {
@@ -58,7 +59,7 @@ export const Sidebar = () => {
               <li
                 key={href}
                 className={cn("", {
-                  "mt-2 border-t-2 pt-2 text-muted-foreground":
+                  "mt-2 border-t pt-2 text-muted-foreground":
                     label === "Settings",
                 })}
               >
@@ -79,6 +80,9 @@ export const Sidebar = () => {
                 </Link>
               </li>
             ))}
+            <div className="flex w-full justify-center">
+              <SignOutButton />
+            </div>
           </ul>
         </div>
       </nav>
