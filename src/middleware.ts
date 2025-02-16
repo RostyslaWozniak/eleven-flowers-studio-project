@@ -40,7 +40,7 @@ export async function middleware(req: NextRequest) {
 }
 export const config = {
   // Match only internationalized pathnames
-  matcher: ["/", "/(pl|en|ru)/:path*", "/dashboard/:path*"],
+  matcher: ["/", "/((?!api|_next|.*\\..*).*)", "/dashboard/:path*"],
 };
 
 async function isAuth(req: NextRequest): Promise<boolean> {

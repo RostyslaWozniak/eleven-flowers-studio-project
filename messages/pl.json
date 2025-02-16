@@ -102,6 +102,30 @@
       }
     }
   },
+  "collections_page": {
+    "metadata": {
+      "title": "Zobacz nasze wyjątkowe kolekcje",
+      "description": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio."
+    },
+    "title": "Zobacz nasze wyjątkowe kolekcje",
+    "subtitle": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio.",
+    "our_newest_products": "Nasze najnowsze produkty",
+    "see_more": "Zobacz więcej"
+  },
+  "collection_page": {
+    "metadata": {
+      "title": "Zobacz nasze wyjątkowe kolekcje",
+      "description": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio."
+    },
+    "title": "Zobacz nasze wyjątkowe kolekcje",
+    "subtitle": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio."
+  },
+  "product_page": {
+    "metadata": {
+      "title": "Zobacz nasze wyjątkowe kolekcje",
+      "description": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio."
+    }
+  },
   "product": {
     "size": "Rozmiar",
     "add_to_cart": "Dodaj do koszyka",

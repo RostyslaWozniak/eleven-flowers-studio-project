@@ -1,14 +1,23 @@
-/* eslint-disable @next/next/no-img-element */
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { H2, Text } from "@/components/ui/typography";
+import { H2, H3, Text } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
-import { useTranslations } from "next-intl";
-import { CollectionsPreview } from "@/components/collections-preview";
-import { Suspense } from "react";
-import { CardSkeleton } from "@/components/skeletons/card-skeleton";
+import { Link, type Locale } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
+import Image from "next/image";
+import { getAllCollections } from "@/server/api/routers/lib/collections";
 
-export function CollectionsPreviewSection() {
-  const t = useTranslations("home.collections");
+export async function CollectionsPreviewSection({
+  locale,
+}: {
+  locale: Locale;
+}) {
+  const t = await getTranslations({ locale, namespace: "home.collections" });
+  const collections = await getAllCollections({
+    locale,
+    take: 4,
+    skip: 0,
+    order: "asc",
+  });
 
   return (
     <section className="w-full pt-12 lg:pt-20">
@@ -23,18 +32,31 @@ export function CollectionsPreviewSection() {
             {t("subtitle")}
           </Text>
         </div>
-        <Suspense
-          fallback={
-            <div className="flex w-full gap-8 px-2.5">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <CardSkeleton key={i} />
-              ))}
-            </div>
-          }
-        >
-          <CollectionsPreview />
-        </Suspense>
-        {/* SEPARATOR */}
+        <div className="scrollbar-hide flex w-full gap-4 overflow-x-scroll px-2.5 xl:grid xl:grid-cols-4 xl:gap-8">
+          {collections.map(({ slug, name, imageUrl }, i) => (
+            <Link
+              locale={locale}
+              href={`/collections/${slug}`}
+              key={i}
+              className="group relative grid aspect-square min-w-[300px] place-items-center overflow-hidden"
+            >
+              <Image
+                fill
+                priority
+                sizes="(min-width: 1400px) 321px, 296px"
+                src={imageUrl}
+                alt={name}
+                className="absolute object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+              />
+
+              <H3 className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-nowrap capitalize text-background lg:text-4xl">
+                {name}
+              </H3>
+
+              <div className="absolute inset-0 z-10 backdrop-brightness-90 duration-300 ease-in-out group-hover:backdrop-brightness-75"></div>
+            </Link>
+          ))}
+        </div>
         <div className="mx-auto max-w-[1400px] px-2.5">
           <Separator />
         </div>

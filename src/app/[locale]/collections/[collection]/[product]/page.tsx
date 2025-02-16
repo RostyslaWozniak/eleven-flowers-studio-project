@@ -1,15 +1,21 @@
 import { db } from "@/server/db";
 import { ProductSection } from "@/app/_components/sections/product-section";
-import { CollectionsSection } from "@/app/_components/sections/collections-section";
-import { ContactSection } from "@/app/_components/sections";
+import { CollectionsSection, ContactSection } from "@/app/_components/sections";
 import type { ProductDTO } from "@/types";
-import { api } from "@/trpc/server";
-import { RelatedProductsSection } from "@/app/_components/sections/related-products-section";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
-import { cache, Suspense } from "react";
-import { CardSkeleton } from "@/components/skeletons/card-skeleton";
+import { cache } from "react";
 
 import { mapProductToDTO } from "@/lib/utils/dto";
+import { capitalizeString, validateLang } from "@/lib/utils";
+import { H2 } from "@/components/ui/typography";
+import { getTranslations } from "next-intl/server";
+import { ProductsRow } from "@/components/product/products-row";
+import { getRelatedProducts } from "@/server/api/routers/lib/products";
+import { MaxWidthWrapper } from "@/components/max-width-wrapper";
+
+export const dynamic = "force-static";
+
+export const revalidate = 86400; // 1 day
 
 const getProductsSlugWithCollections = cache(async () => {
   const products = await db.product
@@ -95,15 +101,29 @@ export async function generateMetadata({
 }) {
   const { product: productSlug, locale } = await params;
 
-  const product = await getProductBySlug(productSlug, locale);
+  const lang = validateLang(locale);
+
+  const product = await getProductBySlug(productSlug, lang);
+
+  const t = await getTranslations({
+    locale: lang,
+    namespace: "collection_page",
+  });
+  const notFoundTranslation = await getTranslations({
+    locale: lang,
+    namespace: "not_found",
+  });
 
   if (!product) {
-    return <NotFoundSection />;
+    return {
+      title: "404 " + notFoundTranslation("product_not_found"),
+      description: notFoundTranslation("product_not_found"),
+    };
   }
 
   return {
-    title: product.name,
-    description: product.description,
+    title: `${capitalizeString(product.name)} - ${t("metadata.title")}`,
+    description: `${product.name} -${t("metadata.title")} - ${t("metadata.description")}`,
     openGraph: {
       images: product.images,
     },
@@ -115,43 +135,44 @@ export default async function Page({
 }: {
   params: Promise<{ product: string; locale: string }>;
 }) {
-  const { product: slug } = await params;
+  const { product: slug, locale } = await params;
 
-  const product: ProductDTO | null = await api.public.products.getProductBySlug(
-    {
-      slug,
-    },
-  );
+  const lang = validateLang(locale);
+
+  const product: ProductDTO | null = await getProductBySlug(slug, lang);
   if (!product) {
     return <NotFoundSection />;
   }
 
+  const relatedProducts = await getRelatedProducts({
+    productId: product.id,
+    collectionSlug: product.collection?.slug,
+    locale: lang,
+    take: 4,
+  });
+
+  const t = await getTranslations({ locale: lang, namespace: "product" });
+
   return (
     <div>
-      <ProductSection product={product} />
+      <ProductSection product={product} locale={lang} />
 
-      <div className="mt-8">
-        <Suspense
-          fallback={
-            <div className="flex w-full gap-8 px-2.5">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <CardSkeleton key={i} className="aspect-[5/6]" />
-              ))}
-            </div>
-          }
-        >
-          <RelatedProductsSection
-            productId={product.id}
-            collectionSlug={product.collection?.slug ?? null}
-          />
-        </Suspense>
-      </div>
-      <div className="mt-12">
-        <Suspense fallback={<div>Loading...</div>}>
-          <CollectionsSection />
-        </Suspense>
-      </div>
-      <ContactSection />
+      <section>
+        <MaxWidthWrapper>
+          <div className="space-y-4 px-2.5">
+            <H2 className="border-b pb-2 text-start md:text-start">
+              {t("related_products")}
+            </H2>
+
+            <ProductsRow products={relatedProducts} locale={lang} />
+          </div>
+        </MaxWidthWrapper>
+      </section>
+      <CollectionsSection
+        currCollectionSlug={product.collection?.slug}
+        locale={lang}
+      />
+      <ContactSection locale={lang} />
     </div>
   );
 }

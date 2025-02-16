@@ -2,20 +2,25 @@ import Image from "next/image";
 import { H3, Text } from "@/components/ui/typography";
 import { Badge } from "../ui/badge";
 import { cn, formatPrice } from "@/lib/utils";
-import { useTranslations } from "next-intl";
 import { type ProductDTO } from "@/types";
-import { Link } from "@/i18n/routing";
+import { Link, type Locale } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
-export function ProductCard({
+export async function ProductCard({
   product,
+  locale,
   className,
   textMobileLarge,
 }: {
   product: ProductDTO;
+  locale: Locale;
   className?: string;
   textMobileLarge?: boolean;
 }) {
-  const t = useTranslations("product");
+  const t = await getTranslations({
+    locale,
+    namespace: "product",
+  });
   return (
     <div
       className={cn(
@@ -25,13 +30,17 @@ export function ProductCard({
     >
       <div className="group relative flex-grow">
         {product.collection && (
-          <Link href={`/collections/${product.collection.slug}`}>
+          <Link
+            locale={locale}
+            href={`/collections/${product.collection.slug}`}
+          >
             <Badge className="absolute left-2 top-3 z-20">
               {product.collection.name}
             </Badge>
           </Link>
         )}
         <Link
+          locale={locale}
           href={
             product.collection
               ? `/collections/${product.collection.slug}/${product.slug}`

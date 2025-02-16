@@ -6,12 +6,7 @@ import type { WebSite, WithContext } from "schema-dts";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
-import { NextIntlClientProvider } from "next-intl";
-import {
-  getMessages,
-  getTranslations,
-  setRequestLocale,
-} from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -69,10 +64,6 @@ export default async function RootLayout({
   params,
 }: RootLayoutProps) {
   const { locale } = await params;
-  setRequestLocale(locale);
-
-  const messages = await getMessages();
-
   const t = await getTranslations({
     locale: locale,
     namespace: "home",
@@ -97,16 +88,14 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <NextIntlClientProvider messages={messages}>
-          <TRPCReactProvider>
-            <NuqsAdapter>
-              {children}{" "}
-              <Suspense fallback={null}>
-                <Toaster />
-              </Suspense>
-            </NuqsAdapter>
-          </TRPCReactProvider>
-        </NextIntlClientProvider>
+        <TRPCReactProvider>
+          <NuqsAdapter>
+            {children}{" "}
+            <Suspense fallback={null}>
+              <Toaster />
+            </Suspense>
+          </NuqsAdapter>
+        </TRPCReactProvider>
       </body>
     </html>
   );

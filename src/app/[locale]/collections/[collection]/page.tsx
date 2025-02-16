@@ -5,8 +5,12 @@ import { api } from "@/trpc/server";
 import Pagination from "@/components/pagination";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { getTranslations } from "next-intl/server";
+import { capitalizeString, validateLang } from "@/lib/utils";
+import { getAllCollections } from "@/server/api/routers/lib/collections";
 
-const PRODUCTS_PER_PAGE = 60;
+const PRODUCTS_PER_PAGE = 6;
+
+export const dynamic = "force-static";
 
 export async function generateStaticParams() {
   const collections = await db.collection.findMany({
@@ -26,22 +30,32 @@ export async function generateMetadata({
   params: Promise<{ collection: string; locale: string }>;
 }) {
   const { collection: collectionSlug, locale } = await params;
-  const t = await getTranslations({ locale, namespace: "not_found" });
+  const lang = validateLang(locale);
+
+  const t = await getTranslations({
+    locale: lang,
+    namespace: "collection_page",
+  });
+  const notFoundTranslation = await getTranslations({
+    locale: lang,
+    namespace: "not_found",
+  });
   try {
     const collection = await api.public.collections.getUniqCollectionBySlug({
       slug: collectionSlug,
     });
+
+    const capitalizedCollectionName = capitalizeString(collection.name);
     return {
-      title:
-        collection.name.slice(0, 1).toLocaleUpperCase() +
-        collection.name.slice(1).toLocaleLowerCase(),
+      title: `${capitalizedCollectionName} - ${t("metadata.title")}`,
       description:
-        collection.description ?? `This is collection - ${collection.name}`,
+        collection.description ??
+        `${t("metadata.title")} - ${t("metadata.description")}`,
     };
   } catch {
     return {
-      title: "404 " + t("collection_not_found"),
-      description: t("collection_not_found"),
+      title: "404 " + notFoundTranslation("collection_not_found"),
+      description: notFoundTranslation("collection_not_found"),
     };
   }
 }
@@ -54,15 +68,22 @@ export default async function Page({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { page } = await searchParams;
-  const { collection: collectionSlug } = await params;
+  const { collection: collectionSlug, locale } = await params;
 
-  const collections = await api.public.collections.getAllCollections({});
+  const lang = validateLang(locale);
+
+  const collections = await getAllCollections({ locale: lang });
 
   const collection = collections.find((item) => item.slug === collectionSlug);
 
   if (!collection) {
     return <NotFoundSection />;
   }
+
+  const t = await getTranslations({
+    locale: lang,
+    namespace: "collection_page",
+  });
 
   const { products, productsCount } =
     await api.public.products.getProductsByCollectionSlug({
@@ -73,12 +94,17 @@ export default async function Page({
 
   return (
     <>
-      <ProductsGrid products={products} title={collection.name} />
+      <ProductsGrid
+        products={products}
+        title={collection?.name ?? t("title")}
+        locale={lang}
+      />
+
       <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">
         <Pagination totalPages={Math.ceil(productsCount / PRODUCTS_PER_PAGE)} />
       </div>
-      <CollectionsSection currCollectionSlug={collectionSlug} />
-      <ContactSection />
+      <CollectionsSection currCollectionSlug={collectionSlug} locale={lang} />
+      <ContactSection locale={lang} />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import Pagination from "@/components/pagination";
 import { ProductCard } from "@/components/product";
+import { validateLang } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { cache } from "react";
 
@@ -40,10 +41,16 @@ const cachedProducts = cache(getAllProducts);
 
 export default async function Page({
   searchParams,
+  params,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
+  params: Promise<{ locale: string }>;
 }) {
   const { sort, page } = await searchParams;
+
+  const { locale } = await params;
+
+  const lang = validateLang(locale);
 
   const { products, productsCount } = await cachedProducts(
     sort as SortQuery,
@@ -54,7 +61,7 @@ export default async function Page({
     <div className="w-full space-y-10 py-4 md:py-20">
       <div className="grid grid-cols-2 gap-x-4 gap-y-12 px-2.5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} locale={lang} />
         ))}
       </div>
       <div className="flex justify-center md:justify-end">

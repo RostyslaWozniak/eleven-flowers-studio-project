@@ -1,22 +1,30 @@
 "use client";
 
-import { Link, usePathname } from "@/i18n/routing";
+import { usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
-export function NavItem({ name, href }: { name: string; href: string }) {
+export function NavItem({
+  children,
+  href,
+}: {
+  children: React.ReactNode;
+  href: string;
+}) {
   const pathname = usePathname();
   return (
-    <Link
-      href={href}
+    <div
       className={cn(
-        "mx-1 flex h-full items-center px-4 font-medium capitalize tracking-wider transition-opacity hover:opacity-70",
+        "mx-1 flex h-full items-center font-medium capitalize tracking-wider transition-opacity hover:opacity-70",
         {
           "border-b-[3px] border-primary font-bold text-primary hover:opacity-70":
-            pathname === href,
+            pathname
+              .replace("/en", "")
+              .replace("/ru", "")
+              .replace("/pl", "") === href,
         },
       )}
     >
-      {name}
-    </Link>
+      {children}
+    </div>
   );
 }

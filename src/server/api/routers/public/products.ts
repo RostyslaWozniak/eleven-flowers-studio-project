@@ -171,8 +171,8 @@ export const productsRouter = createTRPCRouter({
             return { products: [], productsCount };
 
           return {
-            products: mapProductsToDTO(
-              orderedProducts.filter((product) => product !== undefined),
+            products: orderedProducts.filter(
+              (product) => product !== undefined,
             ),
             productsCount,
           };
@@ -185,7 +185,7 @@ export const productsRouter = createTRPCRouter({
           orderBy: orderBy,
         });
 
-        return { productsCount, products: mapProductsToDTO(products) };
+        return { productsCount, products };
       },
     ),
   // GET PRODUCTS BY COLLECTION SLUG

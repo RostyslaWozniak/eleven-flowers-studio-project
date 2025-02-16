@@ -5,11 +5,17 @@ import { Button } from "../ui/button";
 import { useCart } from "@/context/cart-context";
 import { useQueryState } from "nuqs";
 import { useMemo } from "react";
-import { useTranslations } from "next-intl";
 
-export function AddToCartButton({ product }: { product: ProductDTO }) {
+export function AddToCartButton({
+  product,
+  buttonInCart,
+  buttonAddToCart,
+}: {
+  product: ProductDTO;
+  buttonInCart: string;
+  buttonAddToCart: string;
+}) {
   const { cartItems, addOneToCart, setIsCartOpen } = useCart();
-  const t = useTranslations("product");
 
   const [sizeQuery] = useQueryState("size", {
     defaultValue: product.prices[0]?.size ?? "",
@@ -41,7 +47,7 @@ export function AddToCartButton({ product }: { product: ProductDTO }) {
 
   return (
     <Button disabled={Boolean(existingCartItem)} onClick={addProductToCart}>
-      {Boolean(existingCartItem) ? t("in_cart") : t("add_to_cart")}
+      {Boolean(existingCartItem) ? buttonInCart : buttonAddToCart}
     </Button>
   );
 }

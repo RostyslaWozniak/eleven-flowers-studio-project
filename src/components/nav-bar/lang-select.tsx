@@ -1,20 +1,22 @@
 "use client";
-import { usePathname, getPathname } from "@/i18n/routing";
+import { redirect, usePathname } from "@/i18n/routing";
 import { Loader } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { useParams } from "next/navigation";
 import { type ChangeEvent, useTransition } from "react";
 
 export function LangSelect() {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
-  const pathname = usePathname();
+
   const { locale } = useParams();
+
+  const pathname = usePathname();
 
   const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const nextLocale = e.target.value;
     startTransition(() => {
-      router.push(getPathname({ href: pathname, locale: nextLocale }));
-      router.refresh();
+      redirect({ locale: nextLocale, href: pathname });
+      setRequestLocale(nextLocale);
     });
   };
 
@@ -33,6 +35,11 @@ export function LangSelect() {
           <option value="pl">pl</option>
           <option value="ru">ru</option>
         </select>
+        // <div className="space-x-2">
+        //   <a href="en">en</a>
+        //   <a href="pl">pl</a>
+        //   <a href="ru">ru</a>
+        // </div>
       )}
     </div>
   );

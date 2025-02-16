@@ -2,15 +2,22 @@ import { type ProductDTO } from "@/types";
 import { ProductCard } from "./product-card";
 import { H3 } from "../ui/typography";
 import { useTranslations } from "next-intl";
+import { type Locale } from "@/i18n/routing";
 
-export function ProductsRow({ products }: { products: ProductDTO[] }) {
+export function ProductsRow({
+  products,
+  locale,
+}: {
+  products: ProductDTO[];
+  locale: Locale;
+}) {
   const t = useTranslations("product");
   return (
     <div>
       {products.length > 0 ? (
         <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} locale={locale} />
           ))}
         </div>
       ) : (

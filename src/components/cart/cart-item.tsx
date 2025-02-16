@@ -31,17 +31,12 @@ export function CartItem({ cartItem }: CartItemProps) {
         />
       </div>
       <div className="flex-grow">
-        {/* <Link
-          href={`/collections/${cartItem.slug}`}
-          className="hover:underline"
-        > */}
         <h3
           className="text-lg font-semibold leading-6 tracking-tight text-gray-900"
           onClick={() => setIsCartOpen(false)}
         >
           {cartItem.productName}
         </h3>
-        {/* </Link> */}
         <p className="text-sm text-gray-500">
           {formatPrice(cartItem.price)} x {cartItem.quantity}
         </p>
