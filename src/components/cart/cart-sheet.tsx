@@ -29,23 +29,19 @@ export function CartSheet() {
       <CartSheetTrigger isOpen={isCartOpen} setIsOpen={setIsCartOpen} />
 
       <SheetContent className="flex max-h-screen flex-col gap-y-0 p-0 pb-20 lg:pb-0">
-        <SheetHeader className="flex h-16 items-center justify-center">
+        <SheetHeader className="flex h-16 items-center justify-center bg-secondary">
           <SheetTitle>{t("title")}</SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
         {cartItems.length === 0 && <EmptyCart />}
-        <ScrollArea className="flex-grow pl-2 lg:px-4">
+        <ScrollArea className="flex-grow pl-2 md:px-4">
           {cartItems.map((cartItem) => (
             <CartItem cartItem={cartItem} key={cartItem.id} />
           ))}
         </ScrollArea>
         <div
           className={cn(
-            "z-10 flex max-h-20 flex-grow items-center justify-between px-2 lg:py-6",
-            {
-              "shadow-[0_-20px_10px_-2px_rgba(0,0,0,0.2)]":
-                cartItems.length > 0,
-            },
+            "z-10 flex max-h-20 flex-grow items-center justify-between bg-secondary px-2 py-4 md:px-4 lg:py-6",
           )}
         >
           {totalItems > 0 && (

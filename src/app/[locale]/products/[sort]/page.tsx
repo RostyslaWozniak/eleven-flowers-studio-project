@@ -1,14 +1,19 @@
+import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import Pagination from "@/components/pagination";
 import { ProductCard } from "@/components/product";
 import { validateLang } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { cache } from "react";
 
+export const dynamic = "force-static";
+
+export const revalidate = 86400; // 1 day
+
 const PRODUCTS_PER_PAGE = 6;
 
-const mapSortQueryToPrisma = (
-  sortQuery: "new" | "popular" | "price-desc" | "price-asc",
-) => {
+type SortQuery = "new" | "popular" | "price-desc" | "price-asc";
+
+const mapSortQueryToPrisma = (sortQuery: SortQuery) => {
   const sortMapping = {
     new: { createdAt: "desc" },
     popular: { popularity: "desc" },
@@ -18,8 +23,6 @@ const mapSortQueryToPrisma = (
 
   return sortMapping[sortQuery] ?? { createdAt: "desc" };
 };
-
-type SortQuery = "new" | "popular" | "price-desc" | "price-asc";
 
 async function getAllProducts(
   sort: SortQuery,
@@ -44,18 +47,25 @@ export default async function Page({
   params,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string; sort: SortQuery }>;
 }) {
-  const { sort, page } = await searchParams;
+  const { page } = await searchParams;
 
-  const { locale } = await params;
+  const { locale, sort } = await params;
+
+  if (
+    !(
+      sort == "new" ||
+      sort === "popular" ||
+      sort === "price-desc" ||
+      sort === "price-asc"
+    )
+  )
+    return <NotFoundSection />;
 
   const lang = validateLang(locale);
 
-  const { products, productsCount } = await cachedProducts(
-    sort as SortQuery,
-    page,
-  );
+  const { products, productsCount } = await cachedProducts(sort, page);
 
   return (
     <div className="w-full space-y-10 py-4 md:py-20">

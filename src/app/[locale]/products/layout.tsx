@@ -1,7 +1,7 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { SortSidebar } from "./_components/sort-sidebar";
 
-export default function ProductsLayout({
+export default async function ProductsLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ export default function ProductsLayout({
     <div className="relative w-full">
       <MaxWidthWrapper className="relative flex flex-col px-0 md:flex-row">
         <SortSidebar />
-        {children}
+        <div className="w-full">{children}</div>
       </MaxWidthWrapper>
     </div>
   );

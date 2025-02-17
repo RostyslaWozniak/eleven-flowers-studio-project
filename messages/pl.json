@@ -8,7 +8,7 @@
   },
   "home": {
     "title": "Eleven Flowers Studio - Idealne prezenty dla Ciebie",
-    "description": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",
+    "description": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię. ",
     "hero": {
       "title": "Idealne prezenty dla Ciebie",
       "subtitle": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię.",
@@ -228,7 +228,9 @@
       "title": "Zakup nieudany",
       "subtitle": "Twoja płatność nie mogła zostać przetworzona. Spróbuj ponownie lub użyj innej metody płatności.",
       "button": "Spróbuj ponownie"
-    }
+    },
+    "delivery": "Delivery",
+    "pickup": "Pickup"
   },
 
   "messages": {

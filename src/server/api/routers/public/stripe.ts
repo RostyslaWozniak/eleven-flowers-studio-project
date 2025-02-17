@@ -5,6 +5,7 @@ import {
   getLocaleFromCookie,
   ORDER_COOKIE_NAME,
 } from "@/lib/utils/cookies";
+import { checkDelivery } from "@/lib/utils/delivery";
 import { TRPCError } from "@trpc/server";
 import { getTranslations } from "next-intl/server";
 
@@ -25,6 +26,11 @@ export const stripeRouter = createTRPCRouter({
       select: {
         id: true,
         paymentStatus: true,
+        address: {
+          select: {
+            postCode: true,
+          },
+        },
         contactInfo: {
           select: {
             email: true,
@@ -68,6 +74,37 @@ export const stripeRouter = createTRPCRouter({
       namespace: "payment.order_summary",
     });
 
+    const postalCode = order.address?.postCode;
+
+    if (!postalCode) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "postal_code_not_found",
+      });
+    }
+
+    const deliveryData = checkDelivery(postalCode);
+
+    if (!deliveryData.price) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: deliveryData.message,
+      });
+    }
+
+    const t = await getTranslations({ locale, namespace: "payment" });
+
+    const delivery = {
+      quantity: 1,
+      price_data: {
+        currency: "pln",
+        product_data: {
+          name: t("delivery"),
+        },
+        unit_amount: deliveryData.price * 100, // in cents
+      },
+    };
+
     const lineItems = order.orderItems.map((item) => {
       if (item.price == null || item.price <= 0) {
         throw new Error(
@@ -88,7 +125,7 @@ export const stripeRouter = createTRPCRouter({
     });
 
     const session = await stripeServerClient.checkout.sessions.create({
-      line_items: lineItems,
+      line_items: [...lineItems, delivery],
       ui_mode: "embedded",
       mode: "payment",
       locale: locale,

@@ -17,6 +17,8 @@ export const env = createEnv({
     ADMIN_HASHED_PASSWORD: z.string().min(1),
     UPSTASH_REDIS_REST_URL: z.string().min(1),
     UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
+    RESEND_DOMAIN: z.string().min(1),
+    RESEND_FROM_NAME: z.string().min(1),
   },
 
   client: {
@@ -42,6 +44,8 @@ export const env = createEnv({
     ADMIN_HASHED_PASSWORD: process.env.ADMIN_HASHED_PASSWORD,
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    RESEND_DOMAIN: process.env.RESEND_DOMAIN,
+    RESEND_FROM_NAME: process.env.RESEND_FROM_NAME,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 

@@ -45,7 +45,7 @@ export async function CollectionsPreviewSection({
                 priority
                 sizes="(min-width: 1400px) 321px, 296px"
                 src={imageUrl}
-                alt={name}
+                alt="image of collection"
                 className="absolute object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
               />
 

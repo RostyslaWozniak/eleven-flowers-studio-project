@@ -135,7 +135,9 @@ export default async function Page({
 }: {
   params: Promise<{ product: string; locale: string }>;
 }) {
-  const { product: slug, locale } = await params;
+  const paramsData = await params;
+
+  const { product: slug, locale } = paramsData;
 
   const lang = validateLang(locale);
 
@@ -159,7 +161,7 @@ export default async function Page({
 
       <section>
         <MaxWidthWrapper>
-          <div className="space-y-4 px-2.5">
+          <div className="space-y-4 pt-8">
             <H2 className="border-b pb-2 text-start md:text-start">
               {t("related_products")}
             </H2>

@@ -61,6 +61,7 @@ export async function HomeHeroSection({ locale }: { locale: string }) {
       </MaxWidthWrapper>
       <div className="relative md:hidden">
         <Image
+          priority
           src="/images/hero-mobile.jpg"
           alt="Eleven Flowers Studio"
           width={550}

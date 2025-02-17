@@ -1,11 +1,9 @@
 import { z } from "zod";
 
 export const DELIVERY_TIME_SLOTS = [
-  "08:00-10:00",
   "10:00-13:00",
   "13:00-17:00",
   "17:00-20:00",
-  "22:00-23:00",
 ] as const;
 
 export type DeliveryTimeSlot = (typeof DELIVERY_TIME_SLOTS)[number];
@@ -16,7 +14,7 @@ export type DeliveryMethodsSlot = (typeof DELIVERY_METHODS)[number];
 
 export const MAX_AVAILABLE_DAYS = 14; // Maximum available days from the current date
 
-export const ADDITIONAL_TIME_HOURS = 2; // Additional buffer time in hours
+export const ADDITIONAL_TIME_HOURS = 1; // Additional buffer time in hours
 
 const ADDITIONAL_TIME_IN_MS = ADDITIONAL_TIME_HOURS * 60 * 60 * 1000; // Additional buffer time in milliseconds
 

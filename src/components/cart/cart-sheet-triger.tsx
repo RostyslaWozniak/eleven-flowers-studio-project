@@ -29,6 +29,7 @@ export const CartSheetTrigger = ({
       animate={{ rotate: [0, -5, 5, -5, 5, 0] }}
     >
       <Button
+        aria-label="cart-button"
         className="pointer-events-auto relative flex flex-col items-center rounded-full p-0 text-gray-600 transition-colors duration-200"
         size="icon"
         variant="ghost"
@@ -42,7 +43,7 @@ export const CartSheetTrigger = ({
             },
           )}
         >
-          <ShoppingBag className="lg:min-h-8 lg:min-w-8" />
+          <ShoppingBag className="min-h-6 min-w-6 stroke-[2px] lg:min-h-8 lg:min-w-8" />
         </div>
 
         {cartItems.length > 0 && (

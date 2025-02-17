@@ -1,22 +1,19 @@
 "use client";
 import IconMenu from "@/components/ui/icon-menu";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Coins, Gem, Gift, Star } from "lucide-react";
-import { useQueryState } from "nuqs";
-import { useRouter } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { H2 } from "@/components/ui/typography";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 export const SortSidebar = () => {
-  const [sort] = useQueryState("sort", {
-    defaultValue: "new",
-  });
+  const locale = useLocale();
+
+  const params = useParams();
 
   const t = useTranslations("product.sidebar");
-
-  const router = useRouter();
-
   const sidebarItems = [
     {
       query: "new",
@@ -50,14 +47,17 @@ export const SortSidebar = () => {
           <ul className="scrollbar-hide flex w-screen items-start gap-x-2 gap-y-1 overflow-x-scroll px-2.5 py-1 sm:w-min sm:overflow-visible md:flex-col">
             {sidebarItems.map(({ query, label, icon: Icon }) => (
               <li key={query}>
-                <Button
-                  onClick={async () => router.push(`/products?sort=${query}`)}
-                  variant={sort === query ? "outline" : "secondary"}
-                  size="lg"
+                <Link
+                  locale={locale}
+                  href={`/products/${query}`}
                   className={cn(
+                    buttonVariants({
+                      variant: params.sort === query ? "outline" : "secondary",
+                      size: "lg",
+                    }),
                     "px-4 md:bg-transparent md:px-6 md:shadow-none",
                     {
-                      "md:border-transparent": sort !== query,
+                      "md:border-transparent": params.sort !== query,
                     },
                   )}
                 >
@@ -67,7 +67,7 @@ export const SortSidebar = () => {
                     className="text-base"
                     iconSize={24}
                   />
-                </Button>
+                </Link>
               </li>
             ))}
           </ul>

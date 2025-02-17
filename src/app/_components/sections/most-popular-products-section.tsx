@@ -45,14 +45,13 @@ export async function MostPopularProductsSection({
         </div>
         <Link
           locale={locale}
-          href="/products?sort=popular"
+          href="/products/popular"
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           {t("see_more")} <ArrowRight className="min-h-6 min-w-6" />
         </Link>
       </MaxWidthWrapper>
       {/* SEPARATOR */}
-
       <div className="mx-auto max-w-[1400px] px-2.5 pt-4 lg:px-0 lg:pt-0">
         <Separator />
       </div>

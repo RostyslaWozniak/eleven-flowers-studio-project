@@ -228,7 +228,9 @@
       "title": "Purchase Failed",
       "subtitle": "Your payment could not be processed. Please try again or use a different payment method.",
       "button": "Try Again"
-    }
+    },
+    "delivery": "Delivery",
+    "pickup": "Pickup"
   },
   "messages": {
     "error": {
