@@ -4,7 +4,7 @@ import { OrderItemSkeleton } from "@/components/skeletons/order-item-skeleton";
 import { H2, H3, Text } from "@/components/ui/typography";
 import { useCart } from "@/context/cart-context";
 // import { Link } from "@/i18n/routing";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -19,10 +19,12 @@ export default function CartSummary() {
       </H2>
       {!serverCartItemsLoading ? (
         <>
-          {cartItems.map((item) => (
+          {cartItems.map((item, i) => (
             <div
               key={item.id}
-              className="flex w-full items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0"
+              className={cn("flex w-full items-center space-x-4 py-4", {
+                "border-b border-gray-200": cartItems.length - 1 !== i,
+              })}
             >
               <div className="relative h-20 w-20 overflow-hidden bg-gray-100">
                 <Image
@@ -34,12 +36,7 @@ export default function CartSummary() {
                 />
               </div>
               <div className="flex-grow">
-                {/* <Link
-                  href={`/products/${item.slug}?size=${item.size}`}
-                  className="text-primary hover:underline"
-                > */}
                 <H3 className="font-semibold">{item.productName}</H3>
-                {/* </Link> */}
                 <div className="mt-3 flex justify-between">
                   <Text variant="muted">
                     {t("size")}:{" "}

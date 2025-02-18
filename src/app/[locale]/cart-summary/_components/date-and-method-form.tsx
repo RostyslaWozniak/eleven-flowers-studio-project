@@ -92,7 +92,6 @@ export function DateAndMethodForm({
             />
             <TimeSelect
               control={form.control}
-              setValue={form.setValue}
               selectedDate={form.watch("date")}
               errors={form.formState.errors.time}
             />

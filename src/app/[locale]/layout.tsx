@@ -104,7 +104,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${manrope.variable} ${philosopher.variable} `}
+      className={`${manrope.variable} ${philosopher.variable}`}
     >
       <body className="flex min-h-screen flex-col overflow-x-hidden font-manrope">
         <script

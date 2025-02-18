@@ -12,36 +12,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  type DateAndMethodFormSchema,
   DELIVERY_TIME_SLOTS,
-  getClosestAvailableDateAndTime,
   isTimeSlotDisabled,
 } from "@/lib/validation/date-and-method-form-schema";
 import { useEffect, useState } from "react";
-import type { FieldError, UseFormSetValue } from "react-hook-form";
+import type { FieldError } from "react-hook-form";
 import { type DeliveryFormControl } from "./date-and-method-form";
 import { useTranslations } from "next-intl";
 
 export function TimeSelect({
   control,
-  setValue,
   selectedDate,
   errors,
 }: {
   control: DeliveryFormControl;
-  setValue: UseFormSetValue<DateAndMethodFormSchema>;
   selectedDate: Date;
   errors?: FieldError | undefined;
 }) {
   const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    const { date, time } = getClosestAvailableDateAndTime(currentTime);
-    console.log({ date, time });
-    setValue("date", date);
-    setValue("time", time);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {

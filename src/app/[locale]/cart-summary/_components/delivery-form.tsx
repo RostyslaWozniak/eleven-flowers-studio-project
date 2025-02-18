@@ -23,12 +23,14 @@ import { api } from "@/trpc/react";
 import { useCart } from "@/context/cart-context";
 import { useRouter } from "@/i18n/routing";
 import { Loader } from "lucide-react";
+import { useState } from "react";
 
 export default function DeliveryForm({
   dateAndMethodData,
 }: {
   dateAndMethodData: DateAndMethodFormSchema;
 }) {
+  const [isFormPending, setIsFormPending] = useState(false);
   const t = useTranslations("cart.cart_page.delivery_details");
   const errorMessages = useTranslations("messages.error");
 
@@ -47,7 +49,7 @@ export default function DeliveryForm({
   });
   const router = useRouter();
 
-  const { mutate: createOrderWithDelivery, isPending } =
+  const { mutate: createOrderWithDelivery } =
     api.public.order.createOrderWithDelivery.useMutation({
       onSuccess: () => {
         router.push("/payment");
@@ -63,6 +65,7 @@ export default function DeliveryForm({
     });
 
   function onSubmit(values: DeliveryFormSchema) {
+    setIsFormPending(true);
     createOrderWithDelivery({
       dateAndMethodData: { ...dateAndMethodData },
       addressDetails: values,
@@ -239,9 +242,13 @@ export default function DeliveryForm({
             className="float-right h-12 w-full sm:w-80 sm:max-w-sm"
             size="lg"
             type="submit"
-            disabled={isPending}
+            disabled={isFormPending}
           >
-            {isPending ? <Loader className="animate-spin" /> : t("form.button")}
+            {isFormPending ? (
+              <Loader className="animate-spin" />
+            ) : (
+              t("form.button")
+            )}
           </Button>
         </form>
       </Form>

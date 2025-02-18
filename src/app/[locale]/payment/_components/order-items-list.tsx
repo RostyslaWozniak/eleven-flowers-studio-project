@@ -39,10 +39,13 @@ export default function OrderItemsList() {
                 <H2 className="text-start text-2xl font-light md:text-start">
                   {t("title")}
                 </H2>
-                {data.orderItems.map((item) => (
+                {data.orderItems.map((item, i) => (
                   <div
                     key={item.id}
-                    className="flex w-full items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0"
+                    className={cn("flex w-full items-center space-x-4 py-4", {
+                      "border-b border-gray-200":
+                        data.orderItems.length - 1 !== i,
+                    })}
                   >
                     <div className="relative h-20 w-20 overflow-hidden bg-gray-100">
                       <Image
@@ -54,12 +57,7 @@ export default function OrderItemsList() {
                       />
                     </div>
                     <div className="flex-grow">
-                      {/* <Link
-                        href={`/products/${item.slug}?size=${item.size}`}
-                        className="text-primary hover:underline"
-                      > */}
                       <H3 className="font-semibold">{item.productName}</H3>
-                      {/* </Link> */}
                       <div className="mt-3 flex justify-between">
                         <Text variant="muted">
                           {t("size")}:{" "}

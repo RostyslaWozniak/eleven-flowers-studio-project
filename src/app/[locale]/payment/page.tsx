@@ -5,9 +5,9 @@ import { StripeCheckoutForm } from "./_components/stripe-checkout-form";
 export default function Page() {
   return (
     <section className="pb-8 md:py-12">
-      <MaxWidthWrapper className="">
+      <MaxWidthWrapper>
         <div className="space-y-12 lg:flex lg:space-x-8">
-          <div className="relative mt-8 w-full">
+          <div className="mt-8 w-full">
             <OrderItemsList />
           </div>
           <div className="w-full">
