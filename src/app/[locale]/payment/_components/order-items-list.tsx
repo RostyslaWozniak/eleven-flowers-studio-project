@@ -12,20 +12,17 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function OrderItemsList() {
-  const [totalPrice, setTotalPrice] = useState(0);
-
   const [isDataLoading, setIsDataLoading] = useState(true);
-  const { data: orderItems } = api.public.order.getOrderById.useQuery();
+  const { data } = api.public.order.getOrderById.useQuery();
 
   const t = useTranslations("payment.order_summary");
 
   useEffect(() => {
-    if (orderItems && orderItems.length > 0) {
+    if (data && data.orderItems.length > 0) {
       setIsDataLoading(false);
-      setTotalPrice(orderItems.reduce((acc, item) => acc + item.price!, 0));
     }
     if (setIsDataLoading) setTimeout(() => setIsDataLoading(false), 5000);
-  }, [orderItems]);
+  }, [data]);
   return (
     <div>
       <div className="lg:py-6">
@@ -37,12 +34,12 @@ export default function OrderItemsList() {
           </div>
         ) : (
           <>
-            {orderItems && orderItems.length > 0 ? (
+            {data && data.orderItems.length > 0 ? (
               <div>
                 <H2 className="text-start text-2xl font-light md:text-start">
                   {t("title")}
                 </H2>
-                {orderItems.map((item) => (
+                {data.orderItems.map((item) => (
                   <div
                     key={item.id}
                     className="flex w-full items-center space-x-4 border-b border-gray-200 py-4 last:border-b-0"
@@ -81,7 +78,7 @@ export default function OrderItemsList() {
                   <div className="flex items-center justify-between">
                     <span className="text-lg"> {t("total")}</span>
                     <span className="text-2xl font-medium">
-                      {formatPrice(totalPrice)}
+                      {formatPrice(data.totalPrice)}
                     </span>
                   </div>
                 </div>

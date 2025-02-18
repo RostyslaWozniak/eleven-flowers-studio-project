@@ -178,7 +178,8 @@ export const orderRouter = createTRPCRouter({
 
   getOrderById: publicProcedure.query(async ({ ctx }) => {
     const orderId = getCookieValue(ctx.req, ORDER_COOKIE_NAME);
-    if (!orderId) return [];
+    if (!orderId)
+      throw new TRPCError({ code: "BAD_REQUEST", message: "order_not_found" });
 
     const locale = getLocaleFromCookie(ctx.req);
 
@@ -187,6 +188,7 @@ export const orderRouter = createTRPCRouter({
         id: orderId,
       },
       select: {
+        totalPrice: true,
         orderItems: {
           select: {
             product: {
@@ -214,15 +216,19 @@ export const orderRouter = createTRPCRouter({
         },
       },
     });
-    if (!order) return [];
-    return order.orderItems.map((item) => ({
-      id: item.id,
-      productName: item.product.translations[0]?.name ?? item.productName,
-      slug: item.slug,
-      price: item.price,
-      imageUrl: item.imageUrl,
-      size: item.size,
-      quantity: item.quantity,
-    }));
+    if (!order)
+      throw new TRPCError({ code: "BAD_REQUEST", message: "order_not_found" });
+    return {
+      orderItems: order.orderItems.map((item) => ({
+        id: item.id,
+        productName: item.product.translations[0]?.name ?? item.productName,
+        slug: item.slug,
+        price: item.price,
+        imageUrl: item.imageUrl,
+        size: item.size,
+        quantity: item.quantity,
+      })),
+      totalPrice: order.totalPrice,
+    };
   }),
 });
