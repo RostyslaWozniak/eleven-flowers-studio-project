@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Sidebar } from "../_components/sidebar";
+import { Sidebar } from "./_components/sidebar";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TRPCReactProvider } from "@/trpc/react";
 import { Suspense } from "react";

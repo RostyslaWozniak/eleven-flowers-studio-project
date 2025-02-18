@@ -102,7 +102,7 @@ export default async function Page({
           <H2>{t("our_newest_products")}</H2>
           <ProductsPreview locale={lang} orderBy="new" />
           <Link
-            href="/products?sort=popular"
+            href="/products/new"
             className={buttonVariants({ size: "lg", variant: "link" })}
           >
             {t("see_more")} <ArrowRight className="min-h-6 min-w-6" />

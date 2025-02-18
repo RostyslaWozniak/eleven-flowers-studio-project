@@ -1,5 +1,6 @@
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { PagePagination } from "@/components/page-pagination";
+
 import { ProductCard } from "@/components/product";
 import { validateLang } from "@/lib/utils";
 import { api } from "@/trpc/server";
@@ -40,15 +41,11 @@ async function getAllProducts(
 }
 
 export default async function Page({
-  searchParams,
   params,
 }: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-  params: Promise<{ locale: string; sort: SortQuery }>;
+  params: Promise<{ locale: string; sort: SortQuery; page: string }>;
 }) {
-  const { page } = await searchParams;
-
-  const { locale, sort } = await params;
+  const { locale, sort, page } = await params;
 
   if (
     !(

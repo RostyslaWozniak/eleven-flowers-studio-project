@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 
-import { Footer } from "@/components/footer";
 import {
   getMessages,
   getTranslations,
@@ -8,8 +7,6 @@ import {
 } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
-import CartProvider from "@/context/cart-context";
 import { env } from "@/env";
 import { validateLang } from "@/lib/utils";
 import { NextIntlClientProvider } from "next-intl";
@@ -18,6 +15,9 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
 import { Manrope, Philosopher } from "next/font/google";
 import type { WebSite, WithContext } from "schema-dts";
+import CartProvider from "@/context/cart-context";
+import { Footer } from "@/components/footer";
+import dynamic from "next/dynamic";
 
 const NavBar = dynamic(() =>
   import("@/components/nav-bar").then((mod) => mod.NavBar),

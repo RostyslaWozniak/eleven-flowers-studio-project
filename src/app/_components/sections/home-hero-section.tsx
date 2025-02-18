@@ -34,7 +34,7 @@ export async function HomeHeroSection({ locale }: { locale: string }) {
           <div className="flex items-center gap-8">
             <Link
               locale={locale}
-              href="/products?sort=popular"
+              href="/products/new"
               className={cn(buttonVariants({ variant: "default" }))}
             >
               {t("primary_button")}
@@ -69,7 +69,7 @@ export async function HomeHeroSection({ locale }: { locale: string }) {
         />
         <div className="absolute -bottom-0 flex h-60 w-full items-end justify-center bg-gradient-to-b from-transparent via-background/30 to-background px-2.5">
           <Link
-            href="/products?sort=popular"
+            href="/products/new"
             className={cn(buttonVariants({ variant: "outline" }))}
           >
             {t("primary_button")}

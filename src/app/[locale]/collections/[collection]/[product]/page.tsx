@@ -6,12 +6,15 @@ import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { cache } from "react";
 
 import { mapProductToDTO } from "@/lib/utils/dto";
-import { capitalizeString, validateLang } from "@/lib/utils";
+import { capitalizeString, cn, validateLang } from "@/lib/utils";
 import { H2 } from "@/components/ui/typography";
 import { getTranslations } from "next-intl/server";
 import { ProductsRow } from "@/components/product/products-row";
 import { getRelatedProducts } from "@/server/api/routers/lib/products";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
+import { Link } from "@/i18n/routing";
+import { buttonVariants } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export const dynamic = "force-static";
 
@@ -167,6 +170,17 @@ export default async function Page({
             </H2>
 
             <ProductsRow products={relatedProducts} locale={lang} />
+          </div>
+          <div className="flex items-center">
+            <Link
+              href="/products/new"
+              className={cn(
+                buttonVariants({ size: "lg", variant: "link" }),
+                "mx-auto pt-4 md:pt-8",
+              )}
+            >
+              {t("see_more")} <ArrowRight className="min-h-6 min-w-6" />
+            </Link>
           </div>
         </MaxWidthWrapper>
       </section>
