@@ -2,11 +2,12 @@ import "@/styles/globals.css";
 
 import { type Metadata } from "next";
 import { Sidebar } from "./_components/sidebar";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { TRPCReactProvider } from "@/trpc/react";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
 import { Manrope, Philosopher } from "next/font/google";
+import { Providers } from "../providers";
+import { validateLang } from "@/lib/utils";
+import { getMessages, setRequestLocale } from "next-intl/server";
 export const metadata: Metadata = {
   title: {
     template: "Admin | %s | Eleven Flowers Studio",
@@ -29,23 +30,36 @@ const manrope = Manrope({
 
 export default async function AdminLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const paramsData = await params;
+
+  const { locale } = paramsData;
+
+  const lang = validateLang(locale);
+
+  setRequestLocale(lang);
+
+  const messages = await getMessages({ locale: lang });
+
   return (
-    <html lang="en" className={`${manrope.variable} ${philosopher.variable}`}>
+    <html
+      lang={locale}
+      className={`${manrope.variable} ${philosopher.variable}`}
+    >
       <body className="flex min-h-screen flex-col overflow-x-hidden font-manrope">
-        <TRPCReactProvider>
-          <NuqsAdapter>
-            <div className="container relative mx-auto flex min-h-[calc(100vh-240px)] max-w-7xl grow justify-between">
-              <Sidebar />
-              <div className="relative grow px-10 py-5">{children}</div>
-            </div>
-            <Suspense fallback={null}>
-              <Toaster />
-            </Suspense>
-          </NuqsAdapter>
-        </TRPCReactProvider>
+        <Providers locale="en" messages={messages}>
+          <div className="relative mx-auto flex min-h-[calc(100vh-240px)] w-full max-w-[1400px] grow justify-between">
+            <Sidebar />
+            <div className="relative grow px-10 py-5">{children}</div>
+          </div>
+          <Suspense fallback={null}>
+            <Toaster />
+          </Suspense>
+        </Providers>
       </body>
     </html>
   );

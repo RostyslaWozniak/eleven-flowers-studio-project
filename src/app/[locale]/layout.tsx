@@ -9,15 +9,13 @@ import { routing } from "@/i18n/routing";
 import { Suspense } from "react";
 import { env } from "@/env";
 import { validateLang } from "@/lib/utils";
-import { NextIntlClientProvider } from "next-intl";
-import { TRPCReactProvider } from "@/trpc/react";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
 import { Manrope, Philosopher } from "next/font/google";
 import type { WebSite, WithContext } from "schema-dts";
 import CartProvider from "@/context/cart-context";
 import { Footer } from "@/components/footer";
 import dynamic from "next/dynamic";
+import { Providers } from "../providers";
 
 const NavBar = dynamic(() =>
   import("@/components/nav-bar").then((mod) => mod.NavBar),
@@ -111,25 +109,21 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <TRPCReactProvider>
-          <NuqsAdapter>
-            <NextIntlClientProvider messages={messages} locale={locale}>
-              <CartProvider>
-                <Suspense fallback={null}>
-                  <NavBar locale={lang} />
-                </Suspense>
-                <main className="flex-grow">{children}</main>
-                <Footer />
-                <Suspense fallback={null}>
-                  <MobileNavbar />
-                </Suspense>
-              </CartProvider>
-            </NextIntlClientProvider>
+        <Providers locale={lang} messages={messages}>
+          <CartProvider>
             <Suspense fallback={null}>
-              <Toaster />
+              <NavBar locale={lang} />
             </Suspense>
-          </NuqsAdapter>
-        </TRPCReactProvider>
+            <main className="flex-grow">{children}</main>
+            <Footer />
+            <Suspense fallback={null}>
+              <MobileNavbar />
+            </Suspense>
+          </CartProvider>
+          <Suspense fallback={null}>
+            <Toaster />
+          </Suspense>
+        </Providers>
       </body>
     </html>
   );

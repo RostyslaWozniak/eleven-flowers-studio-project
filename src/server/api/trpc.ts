@@ -108,3 +108,18 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+export const adminProcedure = t.procedure.use(
+  t.middleware(async ({ next }) => {
+    // const isAuthnticated = await isAuth(ctx.resHeaders);
+
+    // if (!isAuthnticated) {
+    //   throw new TRPCError({
+    //     code: "UNAUTHORIZED",
+    //     message: "Unauthorized",
+    //   });
+    // }
+
+    return next();
+  }),
+);

@@ -1,9 +1,11 @@
 import { addProductSchema } from "@/lib/validation/product";
-import { createTRPCRouter, publicProcedure } from "../../trpc";
+import { adminProcedure, createTRPCRouter } from "../../trpc";
 import { TRPCError } from "@trpc/server";
+import { ADMIN_PRODUCT_SELECT_FIELDS } from "./services/products-queries";
+import { mapAdminProductsToDto } from "./dto/admin-product-dto";
 
 export const productsRouter = createTRPCRouter({
-  createProduct: publicProcedure
+  createProduct: adminProcedure
     .input(addProductSchema)
     .mutation(async ({ ctx, input }) => {
       const { slug, collection, translations, prices, images } = input;
@@ -30,9 +32,9 @@ export const productsRouter = createTRPCRouter({
           description: value.description,
         }),
       );
-      const pricesData = Object.entries(prices).map(([key, value]) => ({
-        size: key.slice(0, 1),
-        price: value * 100,
+      const pricesData = prices.map(({ size, price }) => ({
+        size: size,
+        price: price * 100,
       }));
       const imagesData = images.map((image) => ({ url: image }));
       try {
@@ -69,4 +71,14 @@ export const productsRouter = createTRPCRouter({
         });
       }
     }),
+
+  getProducts: adminProcedure.query(async ({ ctx }) => {
+    const productsCount = await ctx.db.product.count();
+
+    const products = await ctx.db.product.findMany({
+      select: ADMIN_PRODUCT_SELECT_FIELDS,
+    });
+
+    return { products: mapAdminProductsToDto(products), productsCount };
+  }),
 });

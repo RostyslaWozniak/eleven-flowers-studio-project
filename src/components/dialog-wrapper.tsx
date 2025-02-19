@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Dialog,
   DialogContent,
@@ -36,7 +34,7 @@ type DialogProps = {
 export const DialogWrapper = ({
   children,
   closeButton,
-  closeButtonVariant = { variant: "default", size: "default" },
+  closeButtonVariant = { variant: "default", size: "lg" },
   className,
   isOpen,
   setIsOpen,
@@ -48,7 +46,7 @@ export const DialogWrapper = ({
     <>
       {isDesktop ? (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="flex h-min max-h-min max-w-min flex-col">
+          <DialogContent className="flex h-min max-h-[90vh] max-w-min flex-col overflow-y-scroll">
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>

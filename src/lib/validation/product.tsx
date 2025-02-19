@@ -20,21 +20,15 @@ export const addProductSchema = z.object({
       description: requiredString,
     }),
   }),
-  prices: z.object({
-    small: z.coerce
-      .number({ message: "Price must be a number! Example: 9.99" })
-      .min(1, "Price is required!")
-      .optional(),
-    medium: z.coerce
-      .number({ message: "Price must be a number! Example: 9.99" })
-      .min(1, "Price is required!")
-      .optional(),
-    large: z.coerce
-      .number({ message: "Price must be a number! Example: 9.99" })
-      .min(1, "Price is required!")
-      .optional(),
-  }),
   images: z.array(z.string().url()),
+  prices: z
+    .array(
+      z.object({
+        size: z.string().min(1),
+        price: z.coerce.number().min(1),
+      }),
+    )
+    .nonempty({ message: "Product is required" }),
 });
 
 export type AddProductSchema = z.infer<typeof addProductSchema>;

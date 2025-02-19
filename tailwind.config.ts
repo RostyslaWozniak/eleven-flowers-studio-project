@@ -2,8 +2,9 @@ import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import tailwindAnimate from "tailwindcss-animate";
 import tailwindTypography from "@tailwindcss/typography";
+import { withUt } from "uploadthing/tw";
 
-export default {
+export default withUt({
   darkMode: ["class"],
   content: ["./src/**/*.tsx"],
   theme: {
@@ -84,4 +85,4 @@ export default {
     },
   },
   plugins: [tailwindAnimate, tailwindTypography],
-} satisfies Config;
+}) satisfies Config;

@@ -7,14 +7,6 @@ export const routing = defineRouting({
 
   // Used when no locale matches
   defaultLocale: "pl",
-  // localePrefix: {
-  //   mode: "always",
-  //   prefixes: {
-  //     en: "/en",
-  //     pl: "/",
-  //     ru: "/ru",
-  //   },
-  // },
 });
 
 export type Locale = (typeof routing.locales)[number];
