@@ -8,7 +8,7 @@ import { getTranslations } from "next-intl/server";
 import { capitalizeString, validateLang } from "@/lib/utils";
 import { getAllCollections } from "@/server/api/routers/lib/collections";
 
-const PRODUCTS_PER_PAGE = 6;
+const PRODUCTS_PER_PAGE = 12;
 
 export const dynamic = "force-static";
 
@@ -91,7 +91,7 @@ export default async function Page({
       take: PRODUCTS_PER_PAGE,
       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     });
-
+  console.log({ productsCount });
   return (
     <>
       <ProductsGrid
@@ -100,9 +100,13 @@ export default async function Page({
         locale={lang}
       />
 
-      <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">
-        <Pagination totalPages={Math.ceil(productsCount / PRODUCTS_PER_PAGE)} />
-      </div>
+      {productsCount / PRODUCTS_PER_PAGE > 1 && (
+        <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">
+          <Pagination
+            totalPages={Math.ceil(productsCount / PRODUCTS_PER_PAGE)}
+          />
+        </div>
+      )}
       <CollectionsSection currCollectionSlug={collectionSlug} locale={lang} />
       <ContactSection locale={lang} />
     </>

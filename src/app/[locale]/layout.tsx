@@ -57,7 +57,7 @@ export async function generateMetadata({
       template: "%s | Eleven Flowers Studio",
     },
     description: t("description"),
-    icons: "./icon.ico",
+    icons: "/icon.ico",
     alternates: {
       canonical: "./",
     },

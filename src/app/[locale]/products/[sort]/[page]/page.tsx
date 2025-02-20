@@ -24,13 +24,10 @@ const mapSortQueryToPrisma = (sortQuery: SortQuery) => {
   return sortMapping[sortQuery] ?? { createdAt: "desc" };
 };
 
-async function getAllProducts(
-  sort: SortQuery,
-  page: string | string[] | undefined,
-) {
+async function getAllProducts(sort: SortQuery, page: string) {
   const { products, productsCount } = await api.public.products.getAllProducts({
     take: PRODUCTS_PER_PAGE,
-    skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
+    skip: (Number(page) - 1) * PRODUCTS_PER_PAGE,
     orderBy: sort ? Object.keys(mapSortQueryToPrisma(sort))[0] : "createdAt",
     order: sort
       ? (Object.values(mapSortQueryToPrisma(sort))[0] as "asc" | "desc")
@@ -46,7 +43,8 @@ export default async function Page({
   params: Promise<{ locale: string; sort: SortQuery; page: string }>;
 }) {
   const { locale, sort, page } = await params;
-
+  const paramsData = await params;
+  console.log({ paramsData });
   if (
     !(
       sort == "new" ||
