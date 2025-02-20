@@ -3,9 +3,9 @@ import { api } from "@/trpc/server";
 import { type MetadataRoute } from "next";
 import { getLocale } from "next-intl/server";
 
-export async function generateStaticParams() {
-  return [];
-}
+export const dynamic = "force-static";
+
+export const revalidate = 86400; // 1 day
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const collections = await api.public.collections.getAllCollections({});
