@@ -6,7 +6,6 @@ import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { getTranslations } from "next-intl/server";
 import { capitalizeString, validateLang } from "@/lib/utils";
 import { getAllCollections } from "@/server/api/routers/lib/collections";
-import { Suspense } from "react";
 import { PagePagination } from "@/components/page-pagination";
 
 const PRODUCTS_PER_PAGE = 12;
@@ -65,13 +64,10 @@ export async function generateMetadata({
 
 export default async function Page({
   params,
-  searchParams,
 }: {
-  params: Promise<{ collection: string; locale: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  params: Promise<{ collection: string; locale: string; page: string }>;
 }) {
-  const { page } = await searchParams;
-  const { collection: collectionSlug, locale } = await params;
+  const { collection: collectionSlug, locale, page } = await params;
 
   const lang = validateLang(locale);
 
@@ -94,21 +90,21 @@ export default async function Page({
       take: PRODUCTS_PER_PAGE,
       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     });
+
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      {productsCount > PRODUCTS_PER_PAGE * (parseInt(page) - 1) && (
         <ProductsGrid
           products={products}
           title={collection?.name ?? t("title")}
           locale={lang}
         />
-      </Suspense>
+      )}
 
       {productsCount / PRODUCTS_PER_PAGE > 1 && (
         <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">
           <PagePagination
             totalPages={Math.ceil(productsCount / PRODUCTS_PER_PAGE)}
-            path={`/collections/${collectionSlug}/page`}
           />
         </div>
       )}

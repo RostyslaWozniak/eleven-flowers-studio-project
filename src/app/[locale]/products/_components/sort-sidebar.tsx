@@ -42,7 +42,7 @@ export const SortSidebar = () => {
       <nav className="sticky top-0 space-y-8 md:top-20 md:pr-4">
         <div>
           <H2 className="mb-2 px-2.5 text-start text-base uppercase md:text-start md:text-base lg:text-base">
-            sortowanie
+            {t("sort.label")}
           </H2>
           <ul className="scrollbar-hide flex w-screen items-start gap-x-2 gap-y-1 overflow-x-scroll px-2.5 py-1 sm:w-min sm:overflow-visible md:flex-col">
             {sidebarItems.map(({ query, label, icon: Icon }) => (

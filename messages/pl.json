@@ -138,6 +138,7 @@
     "see_more": "Zobacz więcej",
     "sidebar": {
       "sort": {
+        "label": "Sortuj",
         "new": "Nowe",
         "popular": "Popularne",
         "price_desc": "Najdroższe",

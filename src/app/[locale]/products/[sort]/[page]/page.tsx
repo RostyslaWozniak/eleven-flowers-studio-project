@@ -43,8 +43,6 @@ export default async function Page({
   params: Promise<{ locale: string; sort: SortQuery; page: string }>;
 }) {
   const { locale, sort, page } = await params;
-  const paramsData = await params;
-  console.log({ paramsData });
   if (
     !(
       sort == "new" ||

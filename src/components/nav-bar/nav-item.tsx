@@ -11,6 +11,7 @@ export function NavItem({
   href: string;
 }) {
   const pathname = usePathname();
+
   return (
     <div
       className={cn(

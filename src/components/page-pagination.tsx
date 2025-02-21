@@ -8,16 +8,24 @@ import { useParams } from "next/navigation";
 import { generatePagination } from "@/lib/utils";
 import { usePathname } from "@/i18n/routing";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
+import { useLocale } from "next-intl";
 
-export function PagePagination({ totalPages }: { totalPages: number }) {
+export function PagePagination({
+  totalPages,
+  path,
+}: {
+  totalPages: number;
+  path?: string;
+}) {
   const pathname = usePathname();
+  const locale = useLocale();
 
   const params = useParams();
 
   const currentPage = params.page ? Number(params.page) : 1;
 
   const createPageURL = (pageNumber: number | string) => {
-    return `${pathname.replace(`/${currentPage}`, ``)}/${pageNumber.toString()}`;
+    return `/${locale}/${path ?? pathname.replace(`/${currentPage}`, ``)}/${pageNumber.toString()}`;
   };
 
   const allPages = generatePagination(currentPage, totalPages);
