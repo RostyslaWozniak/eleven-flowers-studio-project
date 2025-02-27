@@ -1,4 +1,4 @@
-import { type Prisma } from "@prisma/client";
+import { type $Enums, type Prisma } from "@prisma/client";
 import { type ADMIN_PRODUCT_SELECT_FIELDS } from "../services/products-queries";
 import { type routing } from "@/i18n/routing";
 
@@ -20,4 +20,5 @@ export type AdminProductDto = {
   };
   images: string[];
   prices: { size: string; price: number }[];
+  status: $Enums.ProductStatus;
 };

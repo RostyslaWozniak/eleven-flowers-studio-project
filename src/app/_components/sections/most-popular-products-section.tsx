@@ -3,28 +3,21 @@ import { ProductCard } from "@/components/product";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { H2 } from "@/components/ui/typography";
-import { Link, type Locale } from "@/i18n/routing";
-import { getAllProducts } from "@/server/api/routers/lib/products";
-import { Prisma } from "@prisma/client";
+import { Link } from "@/i18n/routing";
+import { api } from "@/trpc/server";
 import { ArrowRight } from "lucide-react";
 
 import { getTranslations } from "next-intl/server";
 
-export async function MostPopularProductsSection({
-  locale,
-}: {
-  locale: Locale;
-}) {
+export async function MostPopularProductsSection() {
   const t = await getTranslations({
-    locale,
     namespace: "home.popular_products",
   });
 
-  const products = await getAllProducts({
-    locale,
+  const { products } = await api.public.products.getAll({
     take: 4,
     skip: 0,
-    orderBy: { orderItem: { _count: Prisma.SortOrder.desc } },
+    orderBy: "popular",
   });
 
   return (
@@ -35,7 +28,6 @@ export async function MostPopularProductsSection({
           {products.map((product) => (
             <div key={product.id} className="min-h-full">
               <ProductCard
-                locale={locale}
                 product={product}
                 className="min-w-[300px]"
                 textMobileLarge
@@ -44,7 +36,6 @@ export async function MostPopularProductsSection({
           ))}
         </div>
         <Link
-          locale={locale}
           href="/products/popular"
           className={buttonVariants({ size: "lg", variant: "link" })}
         >

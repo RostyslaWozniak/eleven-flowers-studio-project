@@ -1,20 +1,19 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { buttonVariants } from "@/components/ui/button";
 import { H2 } from "@/components/ui/typography";
-import { Link, type Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import { getAllCollections } from "@/server/api/routers/lib/collections";
-import { getTranslations } from "next-intl/server";
+import { type CollectionDTO } from "@/types";
+import { useTranslations } from "next-intl";
 
-export async function CollectionsSection({
+export function CollectionsSection({
+  collections,
   currCollectionSlug,
-  locale,
 }: {
+  collections: CollectionDTO[];
   currCollectionSlug?: string;
-  locale: Locale;
 }) {
-  const t = await getTranslations({ locale, namespace: "product" });
-  const collections = await getAllCollections({ locale });
+  const t = useTranslations("product");
   return (
     <section>
       <MaxWidthWrapper className="space-y-4 px-0 py-12">
@@ -26,7 +25,6 @@ export async function CollectionsSection({
         <div className="scrollbar-hide flex w-full space-x-4 overflow-x-scroll px-2.5">
           {collections.map(({ name, slug }) => (
             <Link
-              locale={locale}
               href={`/collections/${slug}`}
               key={name}
               className={cn(

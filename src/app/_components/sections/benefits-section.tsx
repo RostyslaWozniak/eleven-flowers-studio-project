@@ -8,10 +8,10 @@ import {
   ShoppingBag,
   Sprout,
 } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export async function BenefitsSection({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "home.benefits" });
+export function BenefitsSection() {
+  const t = useTranslations("home.benefits");
   const benefits = [
     {
       title: t("0.title"),

@@ -5,8 +5,6 @@ import { api } from "@/trpc/server";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { getTranslations } from "next-intl/server";
 import { capitalizeString, validateLang } from "@/lib/utils";
-import { getAllCollections } from "@/server/api/routers/lib/collections";
-import { Suspense } from "react";
 import { PagePagination } from "@/components/page-pagination";
 
 const PRODUCTS_PER_PAGE = 12;
@@ -44,7 +42,7 @@ export async function generateMetadata({
     namespace: "not_found",
   });
   try {
-    const collection = await api.public.collections.getUniqCollectionBySlug({
+    const collection = await api.public.collections.getUniqueBySlug({
       slug: collectionSlug,
     });
 
@@ -67,15 +65,13 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: Promise<{ collection: string; locale: string }>;
+  params: Promise<{ collection: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { page } = await searchParams;
-  const { collection: collectionSlug, locale } = await params;
+  const { collection: collectionSlug } = await params;
 
-  const lang = validateLang(locale);
-
-  const collections = await getAllCollections({ locale: lang });
+  const collections = await api.public.collections.getAll();
 
   const collection = collections.find((item) => item.slug === collectionSlug);
 
@@ -83,26 +79,20 @@ export default async function Page({
     return <NotFoundSection />;
   }
 
-  const t = await getTranslations({
-    locale: lang,
-    namespace: "collection_page",
-  });
+  const t = await getTranslations("collection_page");
 
   const { products, productsCount } =
-    await api.public.products.getProductsByCollectionSlug({
+    await api.public.products.getByCollectionSlug({
       collectionSlug: collectionSlug,
       take: PRODUCTS_PER_PAGE,
       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     });
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
-        <ProductsGrid
-          products={products}
-          title={collection?.name ?? t("title")}
-          locale={lang}
-        />
-      </Suspense>
+      <ProductsGrid
+        products={products}
+        title={collection?.name ?? t("title")}
+      />
 
       {productsCount / PRODUCTS_PER_PAGE > 1 && (
         <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">
@@ -112,8 +102,11 @@ export default async function Page({
           />
         </div>
       )}
-      <CollectionsSection currCollectionSlug={collectionSlug} locale={lang} />
-      <ContactSection locale={lang} />
+      <CollectionsSection
+        currCollectionSlug={collectionSlug}
+        collections={collections}
+      />
+      <ContactSection />
     </>
   );
 }

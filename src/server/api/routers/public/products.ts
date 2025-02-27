@@ -6,180 +6,115 @@ import type {
   ProductDTO,
   ProductFromPrisma,
 } from "@/types";
-import { Prisma } from "@prisma/client";
+import { $Enums, Prisma } from "@prisma/client";
 import { getLocale } from "next-intl/server";
 import { getAllProducts, getAllProductsOrderedByPrice } from "../lib/products";
+import { validateLang } from "@/lib/utils";
+import { PUBLIC_PRODUCT_SELECT_FIELDS } from "./services/product-quries";
 
-const getAllProductsSchema = z.object({
-  take: z.number().optional(),
-  skip: z.number().optional(),
-  orderBy: z.string().optional(),
-  order: z.enum([Prisma.SortOrder.asc, Prisma.SortOrder.desc]).optional(),
-});
+const productSort = ["new", "popular", "price-desc", "price-asc"] as const;
 
-const getProductByIdSchema = z.object({
-  id: z.string().uuid(),
-});
-const getProductBySlugSchema = z.object({
-  slug: z.string(),
-});
-
-export const dynamic = "force-static";
+export type ProductSort = (typeof productSort)[number];
 
 export const productsRouter = createTRPCRouter({
-  // GET PRODUCT BY SLUG
-
-  getProductById: publicProcedure
-    .input(getProductByIdSchema)
+  getById: publicProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      }),
+    )
     .query(async ({ ctx, input }): Promise<ProductDTO | null> => {
       const locale = await getLocale();
+      const lang = validateLang(locale);
+
       const product: ProductByIdFromPrisma | null =
         await ctx.db.product.findFirst({
           where: {
             id: input.id,
+            status: $Enums.ProductStatus.AVAILABLE,
           },
 
-          select: {
-            id: true,
-            slug: true,
-            collection: {
-              select: {
-                slug: true,
-                translations: {
-                  where: {
-                    language: locale,
-                  },
-                  select: {
-                    name: true,
-                  },
-                },
-              },
-            },
-            images: {
-              select: {
-                url: true,
-              },
-            },
-
-            prices: {
-              select: {
-                price: true,
-                size: true,
-              },
-              orderBy: {
-                price: "asc",
-              },
-            },
-            translations: {
-              where: {
-                language: locale,
-              },
-
-              select: {
-                name: true,
-                description: true,
-              },
-            },
-          },
+          select: PUBLIC_PRODUCT_SELECT_FIELDS({ locale: lang }),
         });
 
       return product ? mapProductToDTO(product) : null;
     }),
-  // GET PRODUCT BY SLUG
-  getProductBySlug: publicProcedure
-    .input(getProductBySlugSchema)
+
+  getBySlug: publicProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+      }),
+    )
     .query(async ({ ctx, input }): Promise<ProductDTO | null> => {
       const locale = await getLocale();
+      const lang = validateLang(locale);
+
       const product: ProductByIdFromPrisma | null =
         await ctx.db.product.findFirst({
           where: {
             slug: input.slug,
+            status: $Enums.ProductStatus.AVAILABLE,
           },
-          select: {
-            id: true,
-            slug: true,
-            collection: {
-              select: {
-                slug: true,
-                translations: {
-                  where: {
-                    language: locale,
-                  },
-                  select: {
-                    name: true,
-                  },
-                },
-              },
-            },
-            images: {
-              select: {
-                url: true,
-              },
-            },
-            prices: {
-              select: {
-                price: true,
-                size: true,
-              },
-              orderBy: {
-                price: "asc",
-              },
-            },
-            translations: {
-              where: {
-                language: locale,
-              },
-              select: {
-                name: true,
-                description: true,
-              },
-            },
-          },
+          select: PUBLIC_PRODUCT_SELECT_FIELDS({ locale: lang }),
         });
 
       return product ? mapProductToDTO(product) : null;
     }),
 
-  // GET ALL PRODUCTS
-  getAllProducts: publicProcedure
-    .input(getAllProductsSchema)
+  getAll: publicProcedure
+    .input(
+      z.object({
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        orderBy: z.enum(productSort).optional(),
+        order: z.enum([Prisma.SortOrder.asc, Prisma.SortOrder.desc]).optional(),
+      }),
+    )
     .query(
       async ({
         ctx,
         input,
       }): Promise<{ products: ProductDTO[]; productsCount: number }> => {
         const locale = await getLocale();
+        const lang = validateLang(locale);
 
         const productsCount = await ctx.db.product.count();
 
-        const orderBy =
-          input.orderBy === "popularity"
-            ? { orderItem: { _count: Prisma.SortOrder.desc } }
-            : input.orderBy === "createdAt"
-              ? { updatedAt: Prisma.SortOrder.desc }
-              : { createdAt: Prisma.SortOrder.desc };
-
-        if (input.orderBy === "price") {
+        // if ordering by price desc or asc
+        if (input.orderBy === "price-desc") {
           const orderedProducts = await getAllProductsOrderedByPrice({
-            locale,
-            order: input.order,
+            locale: lang,
+            order: "desc",
             take: input.take,
             skip: input.skip,
           });
 
-          if (orderedProducts.length === 0)
-            return { products: [], productsCount };
+          return {
+            products: orderedProducts,
+            productsCount,
+          };
+        } else if (input.orderBy === "price-asc") {
+          const orderedProducts = await getAllProductsOrderedByPrice({
+            locale: lang,
+            order: "asc",
+            take: input.take,
+            skip: input.skip,
+          });
 
           return {
-            products: orderedProducts.filter(
-              (product) => product !== undefined,
-            ),
+            products: orderedProducts,
             productsCount,
           };
         }
 
+        // if  ordering by new, popular
+        const orderBy =
+          input.orderBy === "popular"
+            ? { orderItem: { _count: Prisma.SortOrder.desc } }
+            : { createdAt: Prisma.SortOrder.desc };
         const products = await getAllProducts({
-          locale,
+          locale: lang,
           take: input.take,
           skip: input.skip,
           orderBy: orderBy,
@@ -188,8 +123,8 @@ export const productsRouter = createTRPCRouter({
         return { productsCount, products };
       },
     ),
-  // GET PRODUCTS BY COLLECTION SLUG
-  getProductsByCollectionSlug: publicProcedure
+
+  getByCollectionSlug: publicProcedure
     .input(
       z.object({
         collectionSlug: z.string(),
@@ -203,12 +138,14 @@ export const productsRouter = createTRPCRouter({
         input,
       }): Promise<{ products: ProductDTO[]; productsCount: number }> => {
         const locale = await getLocale();
+        const lang = validateLang(locale);
 
         const productsCount = await ctx.db.product.count({
           where: {
             collection: {
               slug: input.collectionSlug,
             },
+            status: $Enums.ProductStatus.AVAILABLE,
           },
         });
 
@@ -217,47 +154,9 @@ export const productsRouter = createTRPCRouter({
             collection: {
               slug: input.collectionSlug,
             },
+            status: $Enums.ProductStatus.AVAILABLE,
           },
-          select: {
-            id: true,
-            slug: true,
-            collection: {
-              select: {
-                slug: true,
-                translations: {
-                  where: {
-                    language: locale,
-                  },
-                  select: {
-                    name: true,
-                  },
-                },
-              },
-            },
-            images: {
-              select: {
-                url: true,
-              },
-            },
-            prices: {
-              select: {
-                price: true,
-                size: true,
-              },
-              orderBy: {
-                price: "asc",
-              },
-            },
-            translations: {
-              where: {
-                language: locale,
-              },
-              select: {
-                name: true,
-                description: true,
-              },
-            },
-          },
+          select: PUBLIC_PRODUCT_SELECT_FIELDS({ locale: lang }),
           take: input.take,
           skip: input.skip,
         });
@@ -266,7 +165,7 @@ export const productsRouter = createTRPCRouter({
       },
     ),
 
-  getRelatedProducts: publicProcedure
+  getRelated: publicProcedure
     .input(
       z.object({
         productId: z.string().uuid(),
@@ -276,59 +175,22 @@ export const productsRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const locale = await getLocale();
+      const lang = validateLang(locale);
+
       const products = await ctx.db.product.findMany({
         where: {
           id: {
             not: input.productId,
           },
+          status: $Enums.ProductStatus.AVAILABLE,
           ...(input.collectionSlug === null
             ? {}
             : { collection: { slug: input.collectionSlug } }),
         },
-        select: {
-          id: true,
-          slug: true,
-          collection: {
-            select: {
-              slug: true,
-              translations: {
-                where: {
-                  language: locale,
-                },
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-          images: {
-            select: {
-              url: true,
-            },
-          },
-          prices: {
-            select: {
-              price: true,
-              size: true,
-            },
-            take: 1,
-            orderBy: {
-              price: "asc",
-            },
-          },
-          translations: {
-            where: {
-              language: locale,
-            },
-            select: {
-              name: true,
-              description: true,
-            },
-          },
-        },
+        select: PUBLIC_PRODUCT_SELECT_FIELDS({ locale: lang }),
         orderBy: {
           orderItem: {
-            _count: "desc",
+            _count: Prisma.SortOrder.desc,
           },
         },
         take: input.take,

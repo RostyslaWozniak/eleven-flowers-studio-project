@@ -6,24 +6,28 @@ import {
 } from "@stripe/react-stripe-js";
 import { stripeClientPromise } from "@/lib/stripe/stripe-client";
 import { api } from "@/trpc/react";
-import { H1, H3 } from "@/components/ui/typography";
-import { $Enums } from "@prisma/client";
+import { H3 } from "@/components/ui/typography";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { Loader } from "lucide-react";
 
 export function StripeCheckoutForm() {
-  const { data, error } = api.public.stripe.getClientSessionSecret.useQuery();
+  const { data, error, isLoading } =
+    api.public.stripe.getClientSessionSecret.useQuery();
 
   const t = useTranslations("payment.order_summary");
 
-  if (!data) return null;
-  if (error) return <H1>Something went wrong!</H1>;
+  if (error) return <H3 className="text-center">Something went wrong</H3>;
 
   return (
     <>
-      {data.isPayed === $Enums.PaymentStatus.PENDING ? (
+      {isLoading ? (
+        <div className="absolute inset-0 grid place-items-center bg-white">
+          <Loader size={40} className="animate-spin" />
+        </div>
+      ) : data?.stripeSession ? (
         <EmbeddedCheckoutProvider
           stripe={stripeClientPromise}
           options={{

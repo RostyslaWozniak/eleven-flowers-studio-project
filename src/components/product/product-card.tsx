@@ -1,26 +1,21 @@
 import Image from "next/image";
 import { H3, Text } from "@/components/ui/typography";
 import { Badge } from "../ui/badge";
-import { cn, formatPrice } from "@/lib/utils";
+import { capitalizeString, cn, formatPrice } from "@/lib/utils";
 import { type ProductDTO } from "@/types";
-import { Link, type Locale } from "@/i18n/routing";
-import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
-export async function ProductCard({
+export function ProductCard({
   product,
-  locale,
   className,
   textMobileLarge,
 }: {
   product: ProductDTO;
-  locale: Locale;
   className?: string;
   textMobileLarge?: boolean;
 }) {
-  const t = await getTranslations({
-    locale,
-    namespace: "product",
-  });
+  const t = useTranslations("product");
   return (
     <div
       className={cn(
@@ -30,17 +25,13 @@ export async function ProductCard({
     >
       <div className="group relative flex-grow">
         {product.collection && (
-          <Link
-            locale={locale}
-            href={`/collections/${product.collection.slug}`}
-          >
+          <Link href={`/collections/${product.collection.slug}`}>
             <Badge className="absolute left-2 top-3 z-20">
               {product.collection.name}
             </Badge>
           </Link>
         )}
         <Link
-          locale={locale}
           href={
             product.collection
               ? `/collections/${product.collection.slug}/${product.slug}`
@@ -62,13 +53,13 @@ export async function ProductCard({
             <div className="flex flex-grow flex-col items-center justify-center space-y-2 px-2">
               <H3
                 className={cn(
-                  "mt-2 text-base font-normal capitalize group-hover:underline sm:text-lg md:text-2xl",
+                  "mt-2 text-base font-normal group-hover:underline sm:text-lg md:text-2xl",
                   {
                     "text-2xl sm:text-2xl md:text-3xl": textMobileLarge,
                   },
                 )}
               >
-                {product.name}
+                {capitalizeString(product.name)}
               </H3>
               <Text
                 size="subtitle"

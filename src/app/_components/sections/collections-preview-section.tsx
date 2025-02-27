@@ -1,22 +1,19 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { H2, H3, Text } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
-import { Link, type Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { getAllCollections } from "@/server/api/routers/lib/collections";
 
-export async function CollectionsPreviewSection({
-  locale,
-}: {
-  locale: Locale;
-}) {
-  const t = await getTranslations({ locale, namespace: "home.collections" });
-  const collections = await getAllCollections({
-    locale,
+import { api } from "@/trpc/server";
+
+export async function CollectionsPreviewSection() {
+  const t = await getTranslations("home.collections");
+
+  const collections = await api.public.collections.getAll({
     take: 4,
-    skip: 0,
-    order: "asc",
+    order: "desc",
+    orderBy: "updatedAt",
   });
 
   return (
@@ -35,7 +32,7 @@ export async function CollectionsPreviewSection({
         <div className="scrollbar-hide flex w-full gap-4 overflow-x-scroll px-2.5 xl:grid xl:grid-cols-4 xl:gap-8">
           {collections.map(({ slug, name, imageUrl }, i) => (
             <Link
-              locale={locale}
+              // locale={locale}
               href={`/collections/${slug}`}
               key={i}
               className="group relative grid aspect-square min-w-[300px] place-items-center overflow-hidden"

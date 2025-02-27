@@ -1,7 +1,7 @@
 import { env } from "@/env";
+import { cookies } from "next/headers";
 
 export async function isAuth(headers: Headers): Promise<boolean> {
-  // console.log(req);
   const authHeader =
     headers.get("Authorization") ?? headers.get("authorization");
 
@@ -15,14 +15,20 @@ export async function isAuth(headers: Headers): Promise<boolean> {
     .split(":");
 
   if (!username || !password) return false;
-
-  return (
+  if (
     username === env.ADMIN_USERNAME &&
     (await isValidPassword(password, env.ADMIN_HASHED_PASSWORD))
-  );
+  ) {
+    (await cookies()).set("admin", authHeader.split(" ")[1] ?? "");
+    return true;
+  }
+  return false;
 }
 
-async function isValidPassword(password: string, hashedPassword: string) {
+export async function isValidPassword(
+  password: string,
+  hashedPassword: string,
+) {
   return (await hashPassword(password)) === hashedPassword;
 }
 

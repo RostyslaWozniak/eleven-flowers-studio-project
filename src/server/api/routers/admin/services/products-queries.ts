@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 export const ADMIN_PRODUCT_SELECT_FIELDS = {
   id: true,
   slug: true,
+  status: true,
   collection: {
     select: {
       slug: true,

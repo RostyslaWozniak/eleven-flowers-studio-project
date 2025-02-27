@@ -2,49 +2,22 @@ import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { PagePagination } from "@/components/page-pagination";
 import { ProductCard } from "@/components/product";
 import { validateLang } from "@/lib/utils";
+import { type ProductSort } from "@/server/api/routers/public/products";
 import { api } from "@/trpc/server";
+import { setRequestLocale } from "next-intl/server";
 
 export const dynamic = "force-static";
 
 export const revalidate = 86400; // 1 day
 
-const PRODUCTS_PER_PAGE = 6;
-
-type SortQuery = "new" | "popular" | "price-desc" | "price-asc";
-
-const mapSortQueryToPrisma = (sortQuery: SortQuery) => {
-  const sortMapping = {
-    new: { createdAt: "desc" },
-    popular: { popularity: "desc" },
-    "price-desc": { price: "desc" },
-    "price-asc": { price: "asc" },
-  };
-
-  return sortMapping[sortQuery] ?? { createdAt: "desc" };
-};
-
-async function getAllProducts(
-  sort: SortQuery,
-  page: string | string[] | undefined,
-) {
-  const { products, productsCount } = await api.public.products.getAllProducts({
-    take: PRODUCTS_PER_PAGE,
-    skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
-    orderBy: sort ? Object.keys(mapSortQueryToPrisma(sort))[0] : "createdAt",
-    order: sort
-      ? (Object.values(mapSortQueryToPrisma(sort))[0] as "asc" | "desc")
-      : "asc",
-  });
-
-  return { products, productsCount };
-}
+const PRODUCTS_PER_PAGE = 12;
 
 export default async function Page({
   searchParams,
   params,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
-  params: Promise<{ locale: string; sort: SortQuery }>;
+  params: Promise<{ locale: string; sort: ProductSort }>;
 }) {
   const { page } = await searchParams;
 
@@ -62,13 +35,19 @@ export default async function Page({
 
   const lang = validateLang(locale);
 
-  const { products, productsCount } = await getAllProducts(sort, page);
+  setRequestLocale(lang);
+
+  const { products, productsCount } = await api.public.products.getAll({
+    take: PRODUCTS_PER_PAGE,
+    skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
+    orderBy: sort,
+  });
 
   return (
     <div className="w-full space-y-10 py-4 md:py-20">
       <div className="grid grid-cols-2 gap-x-4 gap-y-12 px-2.5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} locale={lang} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
       {productsCount / PRODUCTS_PER_PAGE > 1 && (

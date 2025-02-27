@@ -10,6 +10,7 @@ export const mapAdminProductToDto = (
   return {
     id: product.id,
     slug: product.slug,
+    status: product.status,
     name: product.translations.map(({ name, language }) => ({
       lang: language as Locale,
       name,
@@ -38,6 +39,7 @@ export const mapAdminProductsToDto = (
   return products.map((product) => ({
     id: product.id,
     slug: product.slug,
+    status: product.status,
     name: product.translations.map(({ name, language }) => ({
       lang: language as Locale,
       name,

@@ -161,7 +161,7 @@
   "not_found": {
     "title": "Page Not Found",
     "description": "The page you are looking for could not be found.",
-    "button": "Go Home",
+    "button": "Go to Home Page",
     "collection_not_found": "Collection not found.",
     "product_not_found": "Product not found."
   },
@@ -185,29 +185,46 @@
         "total": "Total",
         "size": "Size"
       },
-      "delivary_instructions": {
-        "title": "Delivery Instructions",
-        "form": {
-          "date": "Date",
-          "time": "Time",
-          "select_time": "Select Time",
-          "method": "Delivery method",
-          "options": { "delivery": "Delivery", "pickup": "Pickup" },
-          "instructions": "Instructions (optional)",
-          "instructions_placeholder": "Enter your instructions here",
-          "button": "Next"
-        }
-      },
-      "delivery_details": {
-        "title": "Delivery Details",
-        "form": {
-          "first_name": "First Name",
-          "last_name": "Last Name",
-          "email": "Email",
-          "address": "Address",
-          "city": "City",
-          "postal_code": "Postal Code",
-          "button": "Go to Payment"
+      "forms": {
+        "recipient": {
+          "title": "For whom are the flowers?",
+          "labels": {
+            "name": "Recipient’s name",
+            "phone": "Phone number for delivery contact",
+            "address": "Street and house/apartment number",
+            "city": "City",
+            "postal_code": "Postal code",
+            "flower_message": "Your message for the bouquet"
+          },
+          "placeholders": {
+            "name": "Enter your name",
+            "phone": "Enter your phone number",
+            "address": "Enter your address",
+            "city": "Enter your city",
+            "postal_code": "Enter your postal code",
+            "flower_message": "Enter your flower message"
+          },
+          "button_next": "Go to the next step"
+        },
+        "ordering": {
+          "title": "Your details and delivery information",
+          "labels": {
+            "name": "Your name",
+            "phone": "Phone number ",
+            "email": "Your email (we’ll send the order confirmation here!)",
+            "date": "Select delivery date (click the calendar)",
+            "time": "Select delivery time",
+            "instructions": "Additional instructions for the courier (optional)"
+          },
+          "placeholders": {
+            "name": "Enter your name",
+            "phone": "Enter your phone number",
+            "email": "Enter your email",
+            "date": "Enter your date",
+            "time": "Select your time",
+            "instructions": "Instructions (optional)"
+          },
+          "button_payment": "Proceed to payment"
         }
       }
     }
@@ -255,6 +272,21 @@
       "order_created": "Your order has been placed successfully! A confirmation email has been sent.",
       "payment_successful": "Your payment was successful! Thank you for your purchase.",
       "coupon_applied": "Great! Your discount has been applied successfully."
+    }
+  },
+  "emails": {
+    "purchase_success": {
+      "title": "Thank You for Your Purchase!",
+      "greeting": "Hello {name},",
+      "purchase_details": {
+        "title": "Your Order Has Been Successfully Processed!",
+        "message": "We're excited to confirm your order. Below are the details of your purchase:",
+        "date": "Purchase Date:",
+        "amount": "Total Amount: {price} zł"
+      },
+      "support": "If you have any questions or concerns about your order, feel free to contact our customer support team.",
+      "appreciation": "We sincerely appreciate your business and thank you for choosing our store!",
+      "copyright": "All rights reserved."
     }
   }
 }

@@ -1,5 +1,6 @@
 import { ContactSection } from "@/app/_components/sections";
-import { type Locale, routing } from "@/i18n/routing";
+import { validateLang } from "@/lib/utils";
+import { setRequestLocale } from "next-intl/server";
 
 export const dynamic = "force-static";
 
@@ -8,16 +9,14 @@ export default async function Contact({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  let lang: Locale = routing.defaultLocale;
   const { locale } = await params;
+  const lang = validateLang(locale);
 
-  if (routing.locales.includes(locale as Locale)) {
-    lang = locale as Locale;
-  }
+  setRequestLocale(lang);
 
   return (
     <>
-      <ContactSection locale={lang} />
+      <ContactSection />
     </>
   );
 }

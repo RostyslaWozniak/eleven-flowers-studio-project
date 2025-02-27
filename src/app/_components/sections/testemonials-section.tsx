@@ -12,11 +12,10 @@ import { GoogleLogo } from "@/components/ui/icons/google-logo";
 import { Separator } from "@/components/ui/separator";
 import { H2, Text } from "@/components/ui/typography";
 import { testemonials } from "@/data/testemonials";
-import { type Locale } from "@/i18n/routing";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export async function TestemonialsSection({ locale }: { locale: Locale }) {
-  const t = await getTranslations({ locale, namespace: "home.testimonials" });
+export function TestemonialsSection() {
+  const t = useTranslations("home.testimonials");
 
   return (
     <section className="relative w-full overflow-hidden pt-12 lg:pt-20">

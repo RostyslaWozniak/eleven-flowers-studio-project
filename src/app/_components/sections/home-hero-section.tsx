@@ -6,10 +6,10 @@ import { H1, Text } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export async function HomeHeroSection({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "home.hero" });
+export function HomeHeroSection() {
+  const t = useTranslations("home.hero");
 
   return (
     <section className="bg-gradient-to-b from-card to-transparent pb-4">
@@ -33,14 +33,12 @@ export async function HomeHeroSection({ locale }: { locale: string }) {
           </div>
           <div className="flex items-center gap-8">
             <Link
-              locale={locale}
               href="/products/new"
               className={cn(buttonVariants({ variant: "default" }))}
             >
               {t("primary_button")}
             </Link>
             <Link
-              locale={locale}
               href="/collections"
               className={cn(buttonVariants({ variant: "outline" }))}
             >

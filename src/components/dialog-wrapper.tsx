@@ -29,6 +29,7 @@ type DialogProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
+  overflowYScroll?: boolean;
 };
 
 export const DialogWrapper = ({
@@ -40,13 +41,18 @@ export const DialogWrapper = ({
   setIsOpen,
   title,
   description,
+  overflowYScroll = false,
 }: DialogProps) => {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   return (
     <>
       {isDesktop ? (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="flex h-min max-h-[90vh] max-w-min flex-col overflow-y-scroll">
+          <DialogContent
+            className={cn("flex h-min max-h-[90vh] max-w-min flex-col", {
+              "overflow-y-auto": overflowYScroll,
+            })}
+          >
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>

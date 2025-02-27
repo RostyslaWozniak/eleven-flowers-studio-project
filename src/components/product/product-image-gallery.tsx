@@ -23,20 +23,22 @@ export function ProductImageGallery({
   }, [activeImageIndex, images.length, setActiveImageIndex]);
 
   return (
-    <div className="flex flex-col space-y-4 py-8 xl:p-12">
-      <div className="relative aspect-square lg:h-full">
-        <Image
-          fill
-          priority
-          sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 500px"}
-          src={
-            images[activeImageIndex]?.url ?? "/images/bouquet-placeholder.jpg"
-          }
-          alt={images[0]?.alt ?? "image of flowers"}
-          className="aspect-square w-full object-cover shadow-lg"
-        />
+    <div className="flex flex-col space-y-4 pb-8 lg:p-8">
+      <div className="">
+        <div className="relative aspect-square lg:h-full">
+          <Image
+            fill
+            priority
+            sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 500px"}
+            src={
+              images[activeImageIndex]?.url ?? "/images/bouquet-placeholder.jpg"
+            }
+            alt={images[0]?.alt ?? "image of flowers"}
+            className="aspect-square w-full object-cover shadow-lg"
+          />
+        </div>
       </div>
-      <div className="flex h-[100px] w-full grid-cols-3 items-start justify-start gap-x-4">
+      <div className="scrollbar-hide flex h-[100px] w-screen grid-cols-3 items-start justify-start gap-x-2 overflow-x-auto px-2.5 lg:px-0">
         {images.map((image, index) => (
           <div
             key={index}

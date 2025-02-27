@@ -2,19 +2,13 @@ import GoogleMap from "@/components/google-map";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { H2, Text } from "@/components/ui/typography";
 import { Clock, MailOpen, MapPin, PhoneCall } from "lucide-react";
-import { Link, type Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { Fragment } from "react";
 import { cn } from "@/lib/utils";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export async function ContactSection({
-  className,
-  locale,
-}: {
-  className?: string;
-  locale: Locale;
-}) {
-  const t = await getTranslations({ locale, namespace: "home.contact" });
+export function ContactSection({ className }: { className?: string }) {
+  const t = useTranslations("home.contact");
   const contactData = [
     {
       id: 1,

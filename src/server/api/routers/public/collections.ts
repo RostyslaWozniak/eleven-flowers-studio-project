@@ -8,10 +8,27 @@ import type {
 import { mapCollectionsToDTO, mapCollectionToDTO } from "@/lib/utils/dto";
 import { TRPCError } from "@trpc/server";
 import { getLocale } from "next-intl/server";
+import { Prisma } from "@prisma/client";
+
+const collectionScalarFieldEnum = z.enum([
+  Prisma.CollectionScalarFieldEnum.createdAt,
+  Prisma.CollectionScalarFieldEnum.updatedAt,
+  Prisma.CollectionScalarFieldEnum.slug,
+]);
+const sortOrderEnum = z.enum([Prisma.SortOrder.asc, Prisma.SortOrder.desc]);
 
 export const collectionsRouter = createTRPCRouter({
-  getAllCollections: publicProcedure
-    .input(z.object({ take: z.number().optional().default(4) }))
+  getAll: publicProcedure
+    .input(
+      z
+        .object({
+          take: z.number().optional(),
+          skip: z.number().optional(),
+          orderBy: collectionScalarFieldEnum.optional(),
+          order: sortOrderEnum.optional(),
+        })
+        .optional(),
+    )
     .query(async ({ ctx, input }): Promise<CollectionWithImageDto[]> => {
       const locale = await getLocale();
 
@@ -21,25 +38,27 @@ export const collectionsRouter = createTRPCRouter({
             slug: true,
             imageUrl: true,
             translations: {
-              where: {
-                language: locale,
-              },
               select: {
                 name: true,
                 description: true,
               },
+              where: {
+                language: locale,
+              },
             },
           },
-          take: input.take,
+          take: input?.take,
+          skip: input?.skip,
           orderBy: {
-            createdAt: "asc",
+            [input?.orderBy ?? "updatedAt"]:
+              input?.order ?? Prisma.SortOrder.desc,
           },
         });
 
       return mapCollectionsToDTO(collections);
     }),
 
-  getUniqCollectionBySlug: publicProcedure
+  getUniqueBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))
     .query(async ({ ctx, input }): Promise<CollectionDTO> => {
       const locale = await getLocale();

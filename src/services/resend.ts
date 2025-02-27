@@ -14,7 +14,6 @@ export async function sendEmail({
   emailTemplate: React.ReactNode;
   name?: string;
 }) {
-  console.log({ from: `${name}@${env.RESEND_DOMAIN}` });
   if (!email) return null;
   const { data, error } = await resend.emails.send({
     from: `Eleven Flowers Studio <${name}@${env.RESEND_DOMAIN}>`,

@@ -2,7 +2,7 @@ import { mapCollectionsToDTO } from "@/lib/utils/dto";
 import { db } from "@/server/db";
 import { type CollectionFromPrisma } from "@/types";
 import { type Locale } from "@/i18n/routing";
-import { type Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export async function getAllCollections({
   locale,
@@ -33,7 +33,7 @@ export async function getAllCollections({
     },
     take,
     skip,
-    orderBy: orderBy ?? { createdAt: order ?? "asc" },
+    orderBy: orderBy ?? { updatedAt: order ?? Prisma.SortOrder.desc },
   });
 
   return mapCollectionsToDTO(collections);

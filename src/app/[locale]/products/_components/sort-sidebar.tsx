@@ -39,7 +39,7 @@ export const SortSidebar = () => {
 
   return (
     <aside className="min-w-min py-4 md:py-20">
-      <nav className="sticky top-0 space-y-8 md:top-20 md:pr-4">
+      <nav className="sticky space-y-8 md:top-20 md:pr-4">
         <div>
           <H2 className="mb-2 px-2.5 text-start text-base uppercase md:text-start md:text-base lg:text-base">
             {t("sort.label")}

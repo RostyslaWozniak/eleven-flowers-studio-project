@@ -1,10 +1,14 @@
-"use client"; // Error boundaries must be Client Components
+"use client";
+import { type TRPCError } from "@trpc/server";
+
+// Error boundaries must be Client Components
 
 export default function GlobalError({
   children,
   reset,
 }: {
   children: React.ReactNode;
+  error: TRPCError;
   reset: () => void;
 }) {
   return (

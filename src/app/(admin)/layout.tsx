@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: "Admin | Eleven Flowers Studio",
   },
   description: "The e-commerce platform for tea products",
-  icons: [{ rel: "icon", url: "/favicon.svg" }],
+  icons: [{ rel: "icon", url: "/icon.ico" }],
 };
 
 const philosopher = Philosopher({
@@ -50,14 +50,23 @@ export default async function AdminLayout({
       lang={locale}
       className={`${manrope.variable} ${philosopher.variable}`}
     >
-      <body className="flex min-h-screen flex-col overflow-x-hidden font-manrope">
+      <body className="flex min-h-screen w-screen flex-col overflow-x-hidden font-manrope">
         <Providers locale="en" messages={messages}>
           <div className="relative mx-auto flex min-h-[calc(100vh-240px)] w-full max-w-[1400px] grow justify-between">
             <Sidebar />
-            <div className="relative grow px-10 py-5">{children}</div>
+            <div className="relative grow px-10 py-12">{children}</div>
           </div>
           <Suspense fallback={null}>
-            <Toaster />
+            <Toaster
+              toastOptions={{
+                classNames: {
+                  error: "bg-destructive text-destructive-foreground",
+                  success: "bg-emerald-500 text-white",
+                  warning: "text-yellow-400",
+                  info: "bg-blue-400",
+                },
+              }}
+            />
           </Suspense>
         </Providers>
       </body>

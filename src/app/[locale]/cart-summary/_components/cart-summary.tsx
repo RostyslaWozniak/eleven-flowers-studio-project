@@ -1,10 +1,10 @@
 "use client";
 
-import { OrderItemSkeleton } from "@/components/skeletons/order-item-skeleton";
+import { CartItemSkeleton } from "@/components/skeletons/cart-item-skeleton";
 import { H2, H3, Text } from "@/components/ui/typography";
 import { useCart } from "@/context/cart-context";
-// import { Link } from "@/i18n/routing";
 import { cn, formatPrice } from "@/lib/utils";
+import { api } from "@/trpc/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -12,6 +12,7 @@ export default function CartSummary() {
   const { cartItems, totalPrice, serverCartItemsLoading } = useCart();
   const t = useTranslations("cart.cart_page.summary");
 
+  api.public.order.removeOrderFromCoockie.useQuery();
   return (
     <div className="lg:py-6">
       <H2 className="text-start text-2xl font-light md:text-start">
@@ -61,7 +62,7 @@ export default function CartSummary() {
           </div>
         </>
       ) : (
-        Array.from({ length: 3 }).map((_, i) => <OrderItemSkeleton key={i} />)
+        Array.from({ length: 3 }).map((_, i) => <CartItemSkeleton key={i} />)
       )}
     </div>
   );

@@ -9,11 +9,9 @@ import { useEffect } from "react";
 export function ProductSizesAndPrice({
   title,
   prices,
-  testPrice,
 }: {
   title: string;
   prices: { size: string; price: number }[];
-  testPrice: Record<string, number>[];
 }) {
   const [sizeQuery, setSizeQuery] = useQueryState("size", {
     defaultValue: prices[0]?.size ?? "",
@@ -28,26 +26,27 @@ export function ProductSizesAndPrice({
   return (
     <div>
       <div>
-        <H3 className="mb-2">{title}</H3>
-        <div className="flex space-x-4">
-          {testPrice.map((obj, i) => (
+        <H3 className="mb-2 px-2.5">{title}</H3>
+
+        <div className="scrollbar-hide flex w-screen items-start gap-x-2 gap-y-1 overflow-x-auto px-2.5 py-1">
+          {prices.map(({ size }, i) => (
             <Button
               key={i}
               onClick={async () => {
-                await setSizeQuery(Object.keys(obj)[0] ?? "");
+                await setSizeQuery(size);
               }}
               className="flex w-min min-w-20 items-center space-x-2 capitalize"
-              variant={
-                Object.keys(obj)[0] === sizeQuery ? "outline" : "secondary"
-              }
+              variant={size === sizeQuery ? "outline" : "secondary"}
             >
-              {Object.keys(obj)[0]}
+              {size}
             </Button>
           ))}
         </div>
       </div>
-      <div className="mt-4 text-3xl font-bold">
-        {testPrice.map((obj) => obj[sizeQuery] && formatPrice(obj[sizeQuery]))}
+      <div className="mt-4 px-2.5 text-3xl font-bold">
+        {formatPrice(
+          prices.find(({ size }) => size === sizeQuery)?.price ?? null,
+        )}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { createCaller, type AppRouter } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
 import { createQueryClient } from "./query-client";
 import { NextRequest } from "next/server";
+import { env } from "@/env";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -18,7 +19,7 @@ const createContext = cache(async () => {
   heads.set("x-trpc-source", "rsc");
   return createTRPCContext({
     resHeaders: heads,
-    req: new NextRequest(process.env.NEXT_PUBLIC_SERVER_URL!),
+    req: new NextRequest(env.NEXT_PUBLIC_SERVER_URL),
   });
 });
 

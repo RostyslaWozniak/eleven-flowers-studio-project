@@ -1,23 +1,25 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../../trpc";
 import { TRPCError } from "@trpc/server";
-import { dateAndMethodFormSchema } from "@/lib/validation/date-and-method-form-schema";
-import { deliveryFormSchema } from "@/lib/validation/delivery-form-schema";
+import { recipientFormSchema } from "@/lib/validation/recipient-form-schema";
+import { orderingFormSchema } from "@/lib/validation/ordering-form-schema";
 import {
   CART_COOKIE_NAME,
+  deleteCookieValue,
   getCookieValue,
   getLocaleFromCookie,
   ORDER_COOKIE_NAME,
   setCookieValue,
 } from "@/lib/utils/cookies";
+import { PUBLIC_ORDER_CART_ITEMS_SELECT_FIELDS } from "./services/order-queries";
 
 export const orderRouter = createTRPCRouter({
   createOrderWithDelivery: publicProcedure
     .input(
       z
         .object({
-          dateAndMethodData: dateAndMethodFormSchema,
-          addressDetails: deliveryFormSchema,
+          recipientFormData: recipientFormSchema,
+          orderingFormData: orderingFormSchema,
         })
         .catch(() => {
           throw new TRPCError({
@@ -41,31 +43,7 @@ export const orderRouter = createTRPCRouter({
         where: {
           cartId: cartId,
         },
-        select: {
-          price: true,
-          productId: true,
-          size: true,
-          quantity: true,
-          product: {
-            select: {
-              slug: true,
-              images: {
-                select: {
-                  url: true,
-                },
-                take: 1,
-              },
-              translations: {
-                where: {
-                  language: locale,
-                },
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
+        select: PUBLIC_ORDER_CART_ITEMS_SELECT_FIELDS({ locale }),
       });
 
       if (cartItems.length === 0)
@@ -77,18 +55,34 @@ export const orderRouter = createTRPCRouter({
       //2. check if contact info exists, if not create
       const existingContactInfo = await ctx.db.contactInfo.findFirst({
         where: {
-          email: input.addressDetails.email,
+          email: input.orderingFormData.email,
         },
       });
 
       if (existingContactInfo) {
         contactInfoId = existingContactInfo.id;
+        if (
+          (input.orderingFormData.name && !existingContactInfo.name) ||
+          (input.orderingFormData.phone && !existingContactInfo.phone)
+        ) {
+          const updatedContactIngo = {
+            name: input.orderingFormData.name ?? existingContactInfo.name,
+            phone: input.orderingFormData.phone ?? existingContactInfo.phone,
+          };
+
+          await ctx.db.contactInfo.update({
+            where: {
+              id: contactInfoId,
+            },
+            data: updatedContactIngo,
+          });
+        }
       } else {
         const newContactInfo = await ctx.db.contactInfo.create({
           data: {
-            firsName: input.addressDetails.firstName,
-            lastName: input.addressDetails.lastName,
-            email: input.addressDetails.email,
+            name: input.orderingFormData.name,
+            email: input.orderingFormData.email,
+            phone: input.orderingFormData.phone,
           },
         });
         contactInfoId = newContactInfo.id;
@@ -98,9 +92,9 @@ export const orderRouter = createTRPCRouter({
       let addressId: string;
       const existingAddress = await ctx.db.address.findFirst({
         where: {
-          city: input.addressDetails.city,
-          street: input.addressDetails.address,
-          postCode: input.addressDetails.postalCode,
+          city: input.recipientFormData.city,
+          street: input.recipientFormData.address,
+          postCode: input.recipientFormData.postalCode,
         },
       });
       if (existingAddress) {
@@ -108,9 +102,9 @@ export const orderRouter = createTRPCRouter({
       } else {
         const address = await ctx.db.address.create({
           data: {
-            city: input.addressDetails.city,
-            street: input.addressDetails.address,
-            postCode: input.addressDetails.postalCode,
+            city: input.recipientFormData.city,
+            street: input.recipientFormData.address,
+            postCode: input.recipientFormData.postalCode,
           },
         });
         addressId = address.id;
@@ -129,14 +123,18 @@ export const orderRouter = createTRPCRouter({
         const order = await ctx.db.order.create({
           data: {
             contactInfoId,
+            locale,
             addressId,
             totalPrice,
             deliveryDetails: {
               create: {
-                deliveryDate: input.dateAndMethodData.date,
-                deliveryTime: input.dateAndMethodData.time,
-                description: input.dateAndMethodData.description,
-                method: input.dateAndMethodData.deliveryMethod,
+                name: input.orderingFormData.name,
+                phone: input.orderingFormData.phone,
+                deliveryDate: input.orderingFormData.date,
+                deliveryTime: input.orderingFormData.time,
+                description: input.orderingFormData.description,
+                flowerMessage: input.recipientFormData.flowerMessage,
+                method: "delivery",
               },
             },
             orderItems: {
@@ -164,7 +162,6 @@ export const orderRouter = createTRPCRouter({
             cartId,
           },
         });
-
         //5. set order id to cookie
         setCookieValue(ctx.resHeaders, ORDER_COOKIE_NAME, order.id);
         return { orderId: order.id, message: "order_created" };
@@ -230,5 +227,18 @@ export const orderRouter = createTRPCRouter({
       })),
       totalPrice: order.totalPrice,
     };
+  }),
+
+  removeOrderFromCoockie: publicProcedure.query(async ({ ctx }) => {
+    const orderId = getCookieValue(ctx.req, ORDER_COOKIE_NAME);
+    if (orderId) {
+      deleteCookieValue(ctx.resHeaders, ORDER_COOKIE_NAME);
+      await ctx.db.order.delete({
+        where: {
+          id: orderId,
+        },
+      });
+    }
+    return null;
   }),
 });

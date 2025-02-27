@@ -1,25 +1,16 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { H2, Text } from "@/components/ui/typography";
-import { type Locale } from "@/i18n/routing";
-import { getTranslations } from "next-intl/server";
-import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 import Markdown from "react-markdown";
 
-const Accordion = dynamic(() =>
-  import("@/components/ui/accordion").then((mod) => mod.Accordion),
-);
-const AccordionContent = dynamic(() =>
-  import("@/components/ui/accordion").then((mod) => mod.AccordionContent),
-);
-const AccordionItem = dynamic(() =>
-  import("@/components/ui/accordion").then((mod) => mod.AccordionItem),
-);
-const AccordionTrigger = dynamic(() =>
-  import("@/components/ui/accordion").then((mod) => mod.AccordionTrigger),
-);
-
-export async function FaqSection({ locale }: { locale: Locale }) {
-  const t = await getTranslations({ locale, namespace: "home.faq" });
+export function FaqSection() {
+  const t = useTranslations("home.faq");
 
   const questions = [
     {

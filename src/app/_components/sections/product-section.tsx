@@ -1,7 +1,7 @@
 import type { ProductDTO } from "@/types";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { H1 } from "@/components/ui/typography";
-import { Link, type Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { Badge } from "@/components/ui/badge";
 import {
   ProductSizesAndPrice,
@@ -10,15 +10,10 @@ import {
 } from "@/components/product";
 import Markdown from "react-markdown";
 import { getTranslations } from "next-intl/server";
+import { capitalizeString } from "@/lib/utils";
 
-export async function ProductSection({
-  product,
-  locale,
-}: {
-  product: ProductDTO;
-  locale: Locale;
-}) {
-  const t = await getTranslations({ locale: locale, namespace: "product" });
+export async function ProductSection({ product }: { product: ProductDTO }) {
+  const t = await getTranslations("product");
 
   const images = product.images.map((image) => ({
     url: image,
@@ -30,14 +25,13 @@ export async function ProductSection({
 
   return (
     <section className="bg-gradient-to-b from-card to-transparent">
-      <MaxWidthWrapper className="grid gap-x-8 md:grid-cols-2">
+      <MaxWidthWrapper className="grid gap-x-12 px-0 md:grid-cols-2">
         <ProductImageGallery images={images} />
 
         <div className="flex flex-col gap-y-6 lg:pt-28">
-          <div>
-            <H1 className="capitalize">{product.name}</H1>
+          <div className="px-2.5">
+            <H1>{capitalizeString(product.name)}</H1>
             <Link
-              locale={locale}
               href={`/collections/${product.collection?.slug}`}
               className="mt-4 inline-block"
             >
@@ -47,15 +41,11 @@ export async function ProductSection({
             </Link>
           </div>
 
-          <Markdown className="prose-p:text-lg">{product.description}</Markdown>
+          <Markdown className="prose-p: px-2.5 prose-p:text-lg">
+            {product.description}
+          </Markdown>
 
-          <ProductSizesAndPrice
-            title={t("size")}
-            prices={product.prices}
-            testPrice={product.prices.map(({ size, price }) => ({
-              [size]: price,
-            }))}
-          />
+          <ProductSizesAndPrice title={t("size")} prices={product.prices} />
 
           <div className="flex justify-center sm:justify-start">
             <AddToCartButton

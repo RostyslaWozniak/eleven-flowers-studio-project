@@ -13,21 +13,20 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { FieldError } from "react-hook-form";
-import { type DeliveryFormControl } from "./date-and-method-form";
-import { MAX_AVAILABLE_DAYS } from "@/lib/validation/date-and-method-form-schema";
+import { type OrderingFormControl } from "./ordering-form";
 
 export function DateSelect({
   control,
   errors,
 }: {
-  control: DeliveryFormControl;
+  control: OrderingFormControl;
   errors?: FieldError | undefined;
 }) {
   const locale = useLocale();
 
-  const t = useTranslations("cart.cart_page.delivary_instructions.form");
+  const tLabel = useTranslations("cart.cart_page.forms.ordering.labels");
 
-  const errorMessages = useTranslations("messages.error");
+  const tError = useTranslations("messages.error");
 
   const formatter = new Intl.DateTimeFormat(locale);
   return (
@@ -36,14 +35,8 @@ export function DateSelect({
       name="date"
       render={({ field }) => (
         <FormItem className="">
-          <div className="flex h-3 items-center">
-            <FormLabel>{t("date")}</FormLabel>
-            {errors && (
-              <span className="ml-2 text-xs text-destructive">
-                ({errorMessages(errors.message)})
-              </span>
-            )}
-          </div>
+          <FormLabel>{tLabel("date")}</FormLabel>
+
           <FormControl>
             <Popover>
               <PopoverTrigger asChild>
@@ -68,18 +61,15 @@ export function DateSelect({
                   }}
                   initialFocus
                   fromDate={new Date()}
-                  toDate={
-                    // set max range up to MAX_AVAILABLE_DAYS
-                    new Date(
-                      new Date().setDate(
-                        new Date().getDate() + MAX_AVAILABLE_DAYS,
-                      ),
-                    )
-                  }
                 />
               </PopoverContent>
             </Popover>
           </FormControl>
+          {errors && (
+            <span className="absolute text-xs text-destructive">
+              ({tError(errors.message)})
+            </span>
+          )}
         </FormItem>
       )}
     />

@@ -2,7 +2,8 @@ import { type Locale } from "@/i18n/routing";
 import { mapProductsToDTO, mapProductToDTO } from "@/lib/utils/dto";
 import { db } from "@/server/db";
 import type { ProductByIdFromPrisma, ProductDTO } from "@/types";
-import { Prisma } from "@prisma/client";
+import { $Enums, Prisma } from "@prisma/client";
+import { PUBLIC_PRODUCT_SELECT_FIELDS } from "../public/services/product-quries";
 
 export async function getAllProducts({
   locale,
@@ -16,6 +17,9 @@ export async function getAllProducts({
   orderBy?: Prisma.ProductOrderByWithRelationInput;
 }) {
   const products = await db.product.findMany({
+    where: {
+      status: $Enums.ProductStatus.AVAILABLE,
+    },
     select: {
       id: true,
       slug: true,
@@ -69,7 +73,7 @@ export async function getAllProductsOrderedByPrice({
   take,
   skip,
 }: {
-  locale: string;
+  locale: Locale;
   order: Prisma.SortOrder | undefined;
   take: number | undefined;
   skip: number | undefined;
@@ -94,47 +98,9 @@ export async function getAllProductsOrderedByPrice({
   const products = await db.product.findMany({
     where: {
       id: { in: productIdsInOrder },
+      status: $Enums.ProductStatus.AVAILABLE,
     },
-    select: {
-      id: true,
-      slug: true,
-      collection: {
-        select: {
-          slug: true,
-          translations: {
-            where: {
-              language: locale,
-            },
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-      images: {
-        select: {
-          url: true,
-        },
-      },
-      prices: {
-        select: {
-          price: true,
-          size: true,
-        },
-        orderBy: {
-          price: "asc",
-        },
-      },
-      translations: {
-        where: {
-          language: locale,
-        },
-        select: {
-          name: true,
-          description: true,
-        },
-      },
-    },
+    select: PUBLIC_PRODUCT_SELECT_FIELDS({ locale }),
   });
   const orderedProducts = productIdsInOrder
     .map((id) => products.find((product) => product.id === id))
@@ -161,51 +127,10 @@ export async function getRelatedProducts({
       id: {
         not: productId,
       },
-      ...(collectionSlug === null
-        ? {}
-        : { collection: { slug: collectionSlug } }),
+      status: $Enums.ProductStatus.AVAILABLE,
+      ...(collectionSlug ? { collection: { slug: collectionSlug } } : {}),
     },
-    select: {
-      id: true,
-      slug: true,
-      collection: {
-        select: {
-          slug: true,
-          translations: {
-            where: {
-              language: locale,
-            },
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-      images: {
-        select: {
-          url: true,
-        },
-      },
-      prices: {
-        select: {
-          price: true,
-          size: true,
-        },
-        take: 1,
-        orderBy: {
-          price: "asc",
-        },
-      },
-      translations: {
-        where: {
-          language: locale,
-        },
-        select: {
-          name: true,
-          description: true,
-        },
-      },
-    },
+    select: PUBLIC_PRODUCT_SELECT_FIELDS({ locale }),
     orderBy: {
       orderItem: {
         _count: "desc",
@@ -219,52 +144,14 @@ export async function getRelatedProducts({
 
 export async function getProductBySlug(
   slug: string,
-  locale: string,
+  locale: Locale,
 ): Promise<ProductDTO | null> {
   const product: ProductByIdFromPrisma | null = await db.product.findFirst({
     where: {
       slug: slug,
+      status: $Enums.ProductStatus.AVAILABLE,
     },
-    select: {
-      id: true,
-      slug: true,
-      collection: {
-        select: {
-          slug: true,
-          translations: {
-            where: {
-              language: locale,
-            },
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-      images: {
-        select: {
-          url: true,
-        },
-      },
-      prices: {
-        select: {
-          price: true,
-          size: true,
-        },
-        orderBy: {
-          price: "asc",
-        },
-      },
-      translations: {
-        where: {
-          language: locale,
-        },
-        select: {
-          name: true,
-          description: true,
-        },
-      },
-    },
+    select: PUBLIC_PRODUCT_SELECT_FIELDS({ locale }),
   });
 
   return product ? mapProductToDTO(product) : null;

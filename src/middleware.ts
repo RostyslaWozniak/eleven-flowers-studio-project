@@ -8,6 +8,7 @@ const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(req: NextRequest) {
   // Check if the request is for /dashboard
+
   if (req.nextUrl.pathname.startsWith("/dashboard")) {
     const isAuthenticated = await isAuth(req.headers);
     if (!isAuthenticated) {
@@ -18,9 +19,7 @@ export async function middleware(req: NextRequest) {
       //     headers: { "WWW-Authenticate": "Basic" },
       //   });
       // }
-
       // const { success } = await rateLimiter(3, "1 m").limit(ip);
-
       // if (!success) {
       //   return new NextResponse("Too many requests", {
       //     status: 429,

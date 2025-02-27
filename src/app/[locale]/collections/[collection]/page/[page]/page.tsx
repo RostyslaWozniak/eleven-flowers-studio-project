@@ -4,11 +4,11 @@ import { CollectionsSection, ContactSection } from "@/app/_components/sections";
 import { api } from "@/trpc/server";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { getTranslations } from "next-intl/server";
-import { capitalizeString, validateLang } from "@/lib/utils";
-import { getAllCollections } from "@/server/api/routers/lib/collections";
+import { capitalizeString } from "@/lib/utils";
 import { PagePagination } from "@/components/page-pagination";
+import { $Enums } from "@prisma/client";
 
-const PRODUCTS_PER_PAGE = 12;
+const PRODUCTS_PER_PAGE = 1;
 
 export const dynamic = "force-static";
 
@@ -21,29 +21,43 @@ export async function generateStaticParams() {
     },
   });
 
-  return collections.map(({ slug }) => ({
-    collection: slug,
-  }));
+  return (
+    await Promise.all(
+      collections.map(async ({ slug }) => {
+        const productsCount = await db.product.count({
+          where: {
+            collection: {
+              slug,
+            },
+            status: $Enums.ProductStatus.AVAILABLE,
+          },
+        });
+        const totalPages = Math.ceil(productsCount / PRODUCTS_PER_PAGE);
+
+        return Array.from({ length: totalPages }, (_, index) => ({
+          collection: slug,
+          page: (index + 1).toString(), // Convert page number to string
+        }));
+      }),
+    )
+  ).flat();
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ collection: string; locale: string }>;
+  params: Promise<{ collection: string }>;
 }) {
-  const { collection: collectionSlug, locale } = await params;
-  const lang = validateLang(locale);
+  const { collection: collectionSlug } = await params;
 
   const t = await getTranslations({
-    locale: lang,
     namespace: "collection_page",
   });
   const notFoundTranslation = await getTranslations({
-    locale: lang,
     namespace: "not_found",
   });
   try {
-    const collection = await api.public.collections.getUniqCollectionBySlug({
+    const collection = await api.public.collections.getUniqueBySlug({
       slug: collectionSlug,
     });
 
@@ -65,13 +79,11 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ collection: string; locale: string; page: string }>;
+  params: Promise<{ collection: string; page: string }>;
 }) {
-  const { collection: collectionSlug, locale, page } = await params;
+  const { collection: collectionSlug, page } = await params;
 
-  const lang = validateLang(locale);
-
-  const collections = await getAllCollections({ locale: lang });
+  const collections = await api.public.collections.getAll();
 
   const collection = collections.find((item) => item.slug === collectionSlug);
 
@@ -79,13 +91,10 @@ export default async function Page({
     return <NotFoundSection />;
   }
 
-  const t = await getTranslations({
-    locale: lang,
-    namespace: "collection_page",
-  });
+  const t = await getTranslations("collection_page");
 
   const { products, productsCount } =
-    await api.public.products.getProductsByCollectionSlug({
+    await api.public.products.getByCollectionSlug({
       collectionSlug: collectionSlug,
       take: PRODUCTS_PER_PAGE,
       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
@@ -97,7 +106,6 @@ export default async function Page({
         <ProductsGrid
           products={products}
           title={collection?.name ?? t("title")}
-          locale={lang}
         />
       )}
 
@@ -108,8 +116,11 @@ export default async function Page({
           />
         </div>
       )}
-      <CollectionsSection currCollectionSlug={collectionSlug} locale={lang} />
-      <ContactSection locale={lang} />
+      <CollectionsSection
+        currCollectionSlug={collectionSlug}
+        collections={collections}
+      />
+      <ContactSection />
     </>
   );
 }

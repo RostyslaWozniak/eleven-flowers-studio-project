@@ -2,6 +2,7 @@ import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-te
 import { env } from "@/env";
 import { redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
+import { validateLang } from "@/lib/utils";
 import { db } from "@/server/db";
 import { sendEmail } from "@/services/resend";
 import { sendSms } from "@/services/twilio";
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
 
 async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
   const orderId = checkoutSession.metadata?.orderId;
+  const locale = validateLang(checkoutSession.metadata?.locale);
 
   if (orderId == null) {
     throw new Error("Missing metadata");
@@ -67,27 +69,15 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     ? checkoutSession.amount_total / 100
     : null;
 
-  if (customer) {
-    await sendEmail({
-      email: customer.email,
-      subject: "Thank you for your purchase!",
-      emailTemplate: PurchaseSucceedTemplate({
-        firstName: customer.firstName,
-        lastName: customer.lastName,
-        price: orderPrice,
-      }),
-    });
-  } else {
-    await sendEmail({
-      email: checkoutSession.customer_email,
-      subject: "Thank you for your purchase!",
-      emailTemplate: PurchaseSucceedTemplate({
-        price: orderPrice,
-        firstName: null,
-        lastName: null,
-      }),
-    });
-  }
+  await sendEmail({
+    email: customer ? customer.email : checkoutSession.customer_email,
+    subject: "Thank you for your purchase!",
+    emailTemplate: PurchaseSucceedTemplate({
+      name: customer ? customer.name : null,
+      price: orderPrice,
+      locale,
+    }),
+  });
 
   await sendSms({
     number: "+48798582849",
@@ -105,14 +95,12 @@ async function getCustomerInfo(customerEmail: string | null) {
     },
     select: {
       email: true,
-      firsName: true,
-      lastName: true,
+      name: true,
     },
   });
   if (!customer) return null;
   return {
-    firstName: customer.firsName,
-    lastName: customer.lastName,
+    name: customer.name,
     email: customer.email,
   };
 }

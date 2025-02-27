@@ -30,13 +30,13 @@ export default async function Home({
   setRequestLocale(lang);
   return (
     <>
-      <HomeHeroSection locale={lang} />
-      <BenefitsSection locale={lang} />
-      <CollectionsPreviewSection locale={lang} />
-      <MostPopularProductsSection locale={lang} />
-      <TestemonialsSection locale={lang} />
-      <FaqSection locale={lang} />
-      <ContactSection locale={lang} />
+      <HomeHeroSection />
+      <BenefitsSection />
+      <CollectionsPreviewSection />
+      <MostPopularProductsSection />
+      <TestemonialsSection />
+      <FaqSection />
+      <ContactSection />
     </>
   );
 }

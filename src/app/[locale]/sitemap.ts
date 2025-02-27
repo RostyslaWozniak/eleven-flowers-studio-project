@@ -8,8 +8,8 @@ export const dynamic = "force-static";
 export const revalidate = 86400; // 1 day
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const collections = await api.public.collections.getAllCollections({});
-  const { products } = await api.public.products.getAllProducts({});
+  const collections = await api.public.collections.getAll();
+  const { products } = await api.public.products.getAll({});
 
   const locale = await getLocale();
   const baseUrl = `${env.NEXT_PUBLIC_SERVER_URL}/${locale}`;

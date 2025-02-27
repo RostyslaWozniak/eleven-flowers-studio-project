@@ -7,9 +7,14 @@ export function SignOutButton() {
     redirect("/api/admin/auth/signout");
   };
   return (
-    <Button size="lg" className="px-4" onClick={handleSignOut}>
-      <LogOut className="" />
-      <span>Log out</span>
+    <Button
+      size="lg"
+      variant={"outline"}
+      className="w-min"
+      onClick={handleSignOut}
+    >
+      <LogOut />
+      <span>Logout</span>
     </Button>
   );
 }

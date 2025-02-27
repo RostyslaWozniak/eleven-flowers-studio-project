@@ -2,33 +2,26 @@
 import IconMenu from "@/components/ui/icon-menu";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  Home,
-  Image,
-  Package,
-  Settings,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
+import { Grid2x2Plus, Home, Image, Package, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignOutButton } from "./sign-out-button";
 
 const sidebarItems = [
-  {
-    href: "/dashboard",
-    label: "Overview",
-    icon: Home,
-  },
+  // {
+  //   href: "/dashboard",
+  //   label: "Overview",
+  //   icon: Home,
+  // },
   {
     href: "/dashboard/products",
     label: "Products",
     icon: Package,
   },
   {
-    href: "/dashboard/customers",
-    label: "Customers",
-    icon: Users,
+    href: "/dashboard/collections",
+    label: "Collections",
+    icon: Grid2x2Plus,
   },
   {
     href: "/dashboard/orders",
@@ -39,11 +32,6 @@ const sidebarItems = [
     href: "/dashboard/images",
     label: "Images",
     icon: Image,
-  },
-  {
-    href: "/dashboard/settings",
-    label: "Settings",
-    icon: Settings,
   },
 ];
 
@@ -67,7 +55,11 @@ export const Sidebar = () => {
                   href={href}
                   className={cn(
                     buttonVariants({
-                      variant: pathname === href ? "secondary" : "ghost",
+                      variant:
+                        pathname.split("/")[2] === href.split("/")[2]
+                          ? "secondary"
+                          : "ghost",
+                      size: "lg",
                     }),
                   )}
                 >
@@ -80,9 +72,9 @@ export const Sidebar = () => {
                 </Link>
               </li>
             ))}
-            <div className="flex w-full justify-center">
+            <li className="mt-2 w-full border-t pt-4 text-muted-foreground">
               <SignOutButton />
-            </div>
+            </li>
           </ul>
         </div>
       </nav>

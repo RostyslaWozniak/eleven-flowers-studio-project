@@ -7,6 +7,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Settings } from "lucide-react";
 import { ProductTableSettings } from "./table-settings";
+import { StatusSelect } from "./status-select";
 export const columns: ColumnDef<AdminProductDto>[] = [
   {
     accessorKey: "images",
@@ -42,6 +43,13 @@ export const columns: ColumnDef<AdminProductDto>[] = [
           {row.original.collection?.name}
         </Badge>
       </Link>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <StatusSelect id={row.original.id} status={row.original.status} />
     ),
   },
   {

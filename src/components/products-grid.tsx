@@ -1,23 +1,17 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { ProductCard } from "@/components/product";
 import { H1, H2 } from "@/components/ui/typography";
-import { type Locale } from "@/i18n/routing";
 import { type ProductDTO } from "@/types";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export async function ProductsGrid({
+export function ProductsGrid({
   title,
   products,
-  locale,
 }: {
   title: string;
   products: ProductDTO[];
-  locale: Locale;
 }) {
-  const productTranslations = await getTranslations({
-    locale,
-    namespace: "product",
-  });
+  const productTranslations = useTranslations("product");
   return (
     <section className="bg-gradient-to-b from-card to-transparent">
       <MaxWidthWrapper className="space-y-8 py-12 lg:space-y-14 lg:py-16">
@@ -27,7 +21,7 @@ export async function ProductsGrid({
         {products.length > 0 ? (
           <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} locale={locale} />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (

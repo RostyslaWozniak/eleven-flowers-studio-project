@@ -4,7 +4,7 @@ import { H3 } from "./ui/typography";
 import { api } from "@/trpc/server";
 
 export async function CollectionsPreview({ take = 4 }: { take?: number }) {
-  const collections = await api.public.collections.getAllCollections({
+  const collections = await api.public.collections.getAll({
     take,
   });
   return (

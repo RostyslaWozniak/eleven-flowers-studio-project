@@ -10,68 +10,85 @@ datasource db {
 model Product {
     id           String               @id @default(uuid())
     slug         String               @unique()
-    createdAt    DateTime             @default(now())
-    updatedAt    DateTime             @updatedAt
+    createdAt    DateTime             @default(now()) @map("created_at")
+    updatedAt    DateTime             @updatedAt @map("updated_at")
     translations ProductTranslation[]
     prices       ProductPrice[]
     images       ProductImage[]
-    collectionId String?
+    collectionId String?              @map("collection_id")
     collection   Collection?          @relation(fields: [collectionId], references: [id], onDelete: SetNull)
     cartItem     CartItem[]
     orderItem    OrderItem[]
     status       ProductStatus        @default(AVAILABLE)
 
     @@index([slug])
+    @@map("products")
 }
 
 model ProductTranslation {
     id          String  @id @default(uuid())
-    productId   String
+    productId   String  @map("product_id")
     language    String
     name        String
     description String
     product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@unique([productId, language])
+    @@map("product_translations")
 }
 
 model ProductPrice {
     id        String  @id @default(uuid())
-    productId String
+    productId String  @map("product_id")
     size      String
     price     Int
     product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@unique([productId, size]) // Ensures a product has unique price per size
+    @@map("product_prices")
+}
+
+model Images {
+    id        String   @id
+    name      String
+    url       String   @unique()
+    createdAt DateTime @default(now()) @map("created_at")
+
+    @@map("images")
 }
 
 model ProductImage {
     id        String  @id @default(uuid())
-    productId String
+    productId String  @map("product_id")
     name      String  @default("image")
     url       String // URL to the image
     product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    @@map("product_images")
 }
 
 model Collection {
     id           String                  @id @default(uuid())
     slug         String                  @unique()
-    createdAt    DateTime                @default(now())
-    updatedAt    DateTime                @updatedAt
-    imageUrl     String                  @default("https://njmm8e6312.ufs.sh/f/mgG8Yp1X9p5v0Qj5FyUDxhnoKp8aAPubiYyHfqdCLRXFBstl")
+    createdAt    DateTime                @default(now()) @map("created_at")
+    updatedAt    DateTime                @updatedAt @map("updated_at")
+    imageUrl     String                  @map("image_url")
     translations CollectionTranslation[] // Relation to CollectionTranslation
     products     Product[] // Relation to Products
+
+    @@map("collections")
 }
 
 model CollectionTranslation {
     id           String     @id @default(uuid())
-    collectionId String
+    collectionId String     @map("collection_id")
     language     String // e.g., 'en', 'pl', 'ru'
     name         String
-    description  String?
+    description  String
     collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
     @@unique([collectionId, language]) // Ensures a collection has only one translation per language
+    @@map("collection_translations")
 }
 
 model Cart {
@@ -79,92 +96,108 @@ model Cart {
     items     CartItem[] // Relation to CartItem
     createdAt DateTime   @default(now())
     updatedAt DateTime   @updatedAt
+
+    @@map("carts")
 }
 
 model CartItem {
     id        String   @id @default(uuid())
-    cartId    String
-    productId String
+    cartId    String   @map("cart_id")
+    productId String   @map("product_id")
     size      String // To match ProductPrice
     quantity  Int      @default(1)
     price     Int? // Store price at the time of adding to the cart
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
     cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
     product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@unique([cartId, productId, size]) // Prevents duplicate entries for the same product and size in a cart
+    @@map("cart_items")
 }
 
 model Order {
     id              String           @id @default(uuid())
-    contactInfoId   String?
-    createdAt       DateTime         @default(now())
-    updatedAt       DateTime         @updatedAt
-    totalPrice      Int
+    createdAt       DateTime         @default(now()) @map("created_at")
+    updatedAt       DateTime         @updatedAt @map("updated_at")
+    totalPrice      Int              @map("total_price")
+    locale          String           @default("en")
     orderItems      OrderItem[]
-    addressId       String?
-    address         Address?         @relation(fields: [addressId], references: [id], onDelete: SetNull)
     deliveryDetails DeliveryDetails?
-    paymentIntentId String?
+    addressId       String?          @map("address_id")
+    address         Address?         @relation(fields: [addressId], references: [id], onDelete: SetNull)
+    paymentIntentId String?          @map("payment_intent_id")
     paymentStatus   PaymentStatus    @default(PENDING)
+    contactInfoId   String?          @map("contact_info_id")
     contactInfo     ContactInfo?     @relation(fields: [contactInfoId], references: [id], onDelete: Cascade)
+
+    @@map("orders")
 }
 
 model OrderItem {
     id          String   @id @default(uuid())
-    orderId     String
-    productId   String
-    productName String
+    orderId     String   @map("order_id")
+    productId   String   @map("product_id")
+    productName String   @map("product_name")
     size        String
     quantity    Int      @default(1)
-    imageUrl    String
+    imageUrl    String   @map("image_url")
     slug        String
     price       Int?
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
     order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
     product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@unique([orderId, productId, size])
+    @@map("order_items")
 }
 
 model Address {
     id        String   @id @default(uuid())
     city      String
     street    String
-    postCode  String
+    postCode  String   @map("post_code")
     order     Order[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     @@unique([city, street, postCode])
+    @@map("addresses")
 }
 
 model DeliveryDetails {
-    id           String   @id @default(uuid())
-    deliveryDate DateTime
-    deliveryTime String
-    method       String
-    description  String?
-    orderId      String?  @unique
-    order        Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    id            String   @id @default(uuid())
+    name          String?
+    phone         String   @default("N/A")
+    deliveryDate  DateTime @map("delivery_date")
+    deliveryTime  String   @map("delivery_time")
+    method        String
+    description   String?
+    flowerMessage String?  @map("flower_message") // Optional message attached to the flowers
+    orderId       String   @unique @map("order_id")
+    order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+    @@map("delivery_details")
 }
 
 model ContactInfo {
     id                   String  @id @default(uuid())
-    firsName             String?
-    lastName             String?
     email                String  @unique
+    name                 String?
     phone                String? // Optional phone number
-    wantsMarketingEmails Boolean @default(false) // Opt-in for marketing
+    wantsMarketingEmails Boolean @default(false) @map("wants_marketing_emails") // Opt-in for marketing
     orders               Order[]
+
+    @@map("contact_infos")
 }
 
 enum ProductStatus {
     AVAILABLE // Product can be purchased
     OUT_OF_STOCK // Temporarily unavailable
     DISCONTINUED // No longer sold
+
+    @@map("product_status")
 }
 
 enum PaymentStatus {
@@ -172,4 +205,6 @@ enum PaymentStatus {
     SUCCESS // Payment confirmed by Stripe
     FAILED // Payment failed or was rejected
     REFUNDED // Payment refunded
+
+    @@map("payment_status")
 }

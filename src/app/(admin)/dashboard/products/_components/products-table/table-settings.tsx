@@ -7,10 +7,11 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { InfoIcon, Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { ProductForm } from "../../../../_components/add-edit-product-form";
+import { ProductForm } from "../add-edit-product-form";
 import { type AdminProductDto } from "@/server/api/routers/admin/types/product-types";
+import { DeleteProductButton } from "./delete-product-button";
 
 type ProductTableSettingsProps = {
   product: AdminProductDto;
@@ -19,35 +20,19 @@ type ProductTableSettingsProps = {
 export const ProductTableSettings = ({
   product,
 }: ProductTableSettingsProps) => {
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   return (
     <>
       <DialogWrapper
-        title="Info About Product"
-        description="Here you can find more information about the product."
-        isOpen={isInfoOpen}
-        setIsOpen={setIsInfoOpen}
-        className="flex max-h-[90vh] w-[800px] flex-col gap-3"
-        closeButton="Ok"
-      >
-        INFO
-        {/* <InfoCard
-          product={product}
-          warningStockLevel={warningStockLevel}
-          lowStockAlertLevel={lowStockAlertLevel}
-          hideImageOnMobile
-        /> */}
-      </DialogWrapper>
-      <DialogWrapper
         title="Edit Product"
         description="Make changes to your product here. Do not forget to save changes."
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
-        className="flex max-h-[90vh] w-[1000px] justify-end gap-3"
+        className="scrollbar-hide flex max-h-[90vh] w-[1000px] justify-end gap-3"
+        overflowYScroll
       >
-        <ProductForm product={product} />
+        <ProductForm product={product} setIsEditOpen={setIsEditOpen} />
       </DialogWrapper>
       <DialogWrapper
         title="Delete Product"
@@ -56,24 +41,15 @@ export const ProductTableSettings = ({
         setIsOpen={setIsDeleteOpen}
         className="flex w-[500px] flex-row-reverse justify-start gap-3"
         closeButton="Cancel"
-        closeButtonVariant={{ variant: "outline", size: "lg" }}
+        closeButtonVariant={{ variant: "outline", size: "md" }}
       >
-        {/* <DeleteProductButton
+        <DeleteProductButton
           id={product.id}
           setIsDeleteOpen={setIsDeleteOpen}
-        /> */}
-        DELETE BUTTON
+        />
       </DialogWrapper>
 
       <DropdownWrapper>
-        <DropdownMenuItem onClick={() => setIsInfoOpen(true)}>
-          <IconMenu
-            icon={InfoIcon}
-            text="Info"
-            className="text-muted-foreground"
-          />
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
           <IconMenu icon={Edit} text="Edit" />
         </DropdownMenuItem>
