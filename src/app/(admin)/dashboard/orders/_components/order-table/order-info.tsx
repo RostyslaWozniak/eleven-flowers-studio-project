@@ -19,12 +19,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Link from "next/link";
+import { env } from "@/env";
 
 type OrderInfoProps = {
   order: AdminOrderDto;
 };
 
 export function OrderInfo({ order }: OrderInfoProps) {
+  const isStripeTest = env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.includes("test");
   return (
     <div className="mb-4 flex w-full flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -43,7 +46,14 @@ export function OrderInfo({ order }: OrderInfoProps) {
           </div>
           <div className="flex items-center gap-2">
             <ClipboardList className="h-4 w-4 text-muted-foreground" />
-            <p className="text-sm font-medium">ID: {order.paymentIntentId}</p>
+            Payment ID:
+            <Link
+              className="hover:underline"
+              href={`https://dashboard.stripe.com/${isStripeTest ? "test" : ""}/payments/${order.paymentIntentId}`}
+              target="_blank"
+            >
+              {order.paymentIntentId}
+            </Link>
           </div>
         </div>
         <Badge

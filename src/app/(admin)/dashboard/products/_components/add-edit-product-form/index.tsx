@@ -75,9 +75,9 @@ export const ProductForm = ({
             price: price / 100,
           }))
         : [
-            { size: undefined, price: undefined },
-            { size: undefined, price: undefined },
-            { size: undefined, price: undefined },
+            { size: "s", price: 0 },
+            { size: "m", price: 0 },
+            { size: "l", price: 0 },
           ],
       images: product?.images ?? [],
     },

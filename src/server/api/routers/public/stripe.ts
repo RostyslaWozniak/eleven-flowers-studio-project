@@ -162,21 +162,6 @@ export const stripeRouter = createTRPCRouter({
 
     if (session.client_secret == null) throw new Error("Client secret is null");
 
-    const paymentIntentId = session.payment_intent
-      ? typeof session.payment_intent === "string"
-        ? session.payment_intent
-        : session.payment_intent.id
-      : null;
-
-    await ctx.db.order.update({
-      where: {
-        id: order.id,
-      },
-      data: {
-        paymentIntentId,
-      },
-    });
-
     return {
       stripeSession: session.client_secret,
     };

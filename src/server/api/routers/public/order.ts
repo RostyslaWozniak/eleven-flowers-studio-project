@@ -233,12 +233,17 @@ export const orderRouter = createTRPCRouter({
     const orderId = getCookieValue(ctx.req, ORDER_COOKIE_NAME);
     if (orderId) {
       deleteCookieValue(ctx.resHeaders, ORDER_COOKIE_NAME);
-      await ctx.db.order.delete({
-        where: {
-          id: orderId,
-        },
-      });
+      try {
+        await ctx.db.order.delete({
+          where: {
+            id: orderId,
+            paymentStatus: "PENDING",
+          },
+        });
+        return null;
+      } catch {
+        return null;
+      }
     }
-    return null;
   }),
 });

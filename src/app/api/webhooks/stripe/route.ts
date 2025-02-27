@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
     sig,
     env.STRIPE_WEBHOOK_SECRET,
   );
+
   switch (event.type) {
     case "checkout.session.completed":
     case "checkout.session.async_payment_succeeded": {
@@ -61,7 +62,13 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     throw new Error("Missing metadata");
   }
 
-  await updateOrder(orderId);
+  const paymentIntentId = checkoutSession.payment_intent
+    ? typeof checkoutSession.payment_intent === "string"
+      ? checkoutSession.payment_intent
+      : checkoutSession.payment_intent.id
+    : null;
+
+  await updateOrder(orderId, paymentIntentId);
 
   const customer = await getCustomerInfo(checkoutSession.customer_email);
 
@@ -105,13 +112,14 @@ async function getCustomerInfo(customerEmail: string | null) {
   };
 }
 
-async function updateOrder(orderId: string) {
+async function updateOrder(orderId: string, paymantIntentId: string | null) {
   await db.order.updateMany({
     where: {
       id: orderId,
     },
     data: {
       paymentStatus: "SUCCESS",
+      paymentIntentId: paymantIntentId,
     },
   });
 }
