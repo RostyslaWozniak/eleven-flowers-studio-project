@@ -91,7 +91,7 @@ export default async function Page({
     return <NotFoundSection />;
   }
 
-  const collections = await api.public.collections.getAll();
+  const collections = await api.public.collections.getAll({});
 
   const relatedProducts = await api.public.products.getRelated({
     productId: product.id,
@@ -118,7 +118,7 @@ function RelatedProductsSection({
 }) {
   const t = useTranslations("product");
   return (
-    <section>
+    <section className="pt-8 md:pt-0">
       <MaxWidthWrapper>
         <div className="space-y-4">
           <H2 className="border-b pb-2 text-start md:text-start">

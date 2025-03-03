@@ -190,7 +190,7 @@
           "title": "Dla kogo są kwiaty?",
           "labels": {
             "name": "Imię",
-            "phone": "Numer telefonu do kontaktu w dniu dostawy",
+            "phone": "Numer telefonu",
             "address": "Ulica i numer domu/mieszkania",
             "city": "Miasto",
             "postal_code": "Kod pocztowy",
@@ -211,21 +211,21 @@
           "title": "Twoje dane i szczegóły dostawy",
           "labels": {
             "name": "Twoje imię",
-            "phone": "Twój numer telefonu (na wypadek pytań o zamówienie)",
-            "email": "Twój e-mail (potwierdzenie zamówienia wyślemy tutaj!)",
-            "date": "Wybierz dzień dostawy (kliknij w kalendarz)",
-            "time": "Wybierz godzinę dostawy (z listy dostępnych przedziałów czasowych)",
+            "phone": "Twój numer telefonu",
+            "email": "Twój e-mail",
+            "date": "Wybierz dzień dostawy",
+            "time": "Wybierz godzinę dostawy",
             "instructions": "Dodatkowe instrukcje dla kuriera (opcionalnie)"
           },
           "placeholders": {
             "name": "Wpisz swoje imię i nazwisko",
             "phone": "Wpisz numer telefonu",
-            "email": "Wpisz email",
-            "date": "Enter your date",
+            "email": "Wpisz  email",
+            "date": "Wpisz date",
             "time": "Wybierz czas",
             "instructions": "np. „Proszę zadzwonić przed doręczeniem” – daje przykład użytkownikowi"
           },
-
+          "button_go_back": "Powrót",
           "button_payment": "Przejdź do płatności"
         }
       }

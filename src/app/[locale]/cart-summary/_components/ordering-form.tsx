@@ -27,6 +27,8 @@ import { DateSelect } from "./date-select";
 import { TimeSelect } from "./time-select";
 import { Textarea } from "@/components/ui/textarea";
 import LoadingButton from "@/components/loading-button";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export type OrderingFormControl = Control<{
   email: string;
@@ -39,8 +41,10 @@ export type OrderingFormControl = Control<{
 
 export default function OrderingForm({
   recipientFormData,
+  setIsRecipientFormOpen,
 }: {
   recipientFormData: RecipientFormSchema;
+  setIsRecipientFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [isFormPending, setIsFormPending] = useState(false);
 
@@ -62,12 +66,18 @@ export default function OrderingForm({
       date: new Date(),
       time: undefined,
       description: "",
+      // name: "zamawiający_name",
+      // phone: "zamawiający_phone",
+      // email: "zamawiajacy@email.com",
+      // date: new Date(),
+      // time: undefined,
+      // description: "",
     },
   });
   const router = useRouter();
 
   const { mutate: createOrderWithDelivery } =
-    api.public.order.createOrderWithDelivery.useMutation({
+    api.public.order.createWithDetails.useMutation({
       onSuccess: () => {
         router.push("/payment");
         setCartItems([]);
@@ -78,8 +88,6 @@ export default function OrderingForm({
           position: "top-right",
           description: tError(message),
         });
-
-        console.log({ message });
       },
     });
   function onSubmit(values: OrderingFormSchema) {
@@ -95,6 +103,7 @@ export default function OrderingForm({
       key="detail-form"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.5, delay: 0.5 }}
       className="lg:py-6"
     >
@@ -104,7 +113,7 @@ export default function OrderingForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="mx-auto max-w-3xl space-y-5 py-8"
+          className="mx-auto max-w-3xl space-y-7 py-2 lg:py-8"
         >
           <div className="grid gap-x-4 gap-y-5 lg:grid-cols-2">
             <FormField
@@ -122,7 +131,7 @@ export default function OrderingForm({
                     />
                   </FormControl>
                   {form.formState.errors.name && (
-                    <span className="absolute text-xs text-destructive">
+                    <span className="text-xs text-destructive">
                       ({tError(form.formState.errors.name.message)})
                     </span>
                   )}
@@ -161,17 +170,21 @@ export default function OrderingForm({
                 <FormLabel>{tLabel("email")}</FormLabel>
 
                 <FormControl>
-                  <Input type="text" {...field} />
+                  <Input
+                    type="text"
+                    {...field}
+                    placeholder={tPlaceholder("email")}
+                  />
                 </FormControl>
-                {form.formState.errors.phone && (
+                {form.formState.errors.email && (
                   <span className="absolute text-xs text-destructive">
-                    ({tError(form.formState.errors.phone.message)})
+                    ({tError(form.formState.errors.email.message)})
                   </span>
                 )}
               </FormItem>
             )}
           />
-          <div className="grid gap-x-4 gap-y-5 lg:grid-cols-2">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-5">
             <DateSelect
               control={form.control}
               errors={form.formState.errors.date}
@@ -193,7 +206,7 @@ export default function OrderingForm({
                   <Textarea
                     name="description"
                     className="min-h-[150px]"
-                    placeholder="Flower Message"
+                    placeholder={tPlaceholder("instructions")}
                     value={field.value}
                     onChange={field.onChange}
                   />
@@ -206,14 +219,24 @@ export default function OrderingForm({
               </FormItem>
             )}
           />
+          <div className="flex items-center justify-between">
+            <Button
+              variant="secondary"
+              className="w-12 border-none md:w-min"
+              onClick={() => setIsRecipientFormOpen(true)}
+            >
+              <ArrowLeft />
+              <span className="hidden md:inline"> {t("button_go_back")}</span>
+            </Button>
 
-          <LoadingButton
-            loading={isFormPending}
-            className="float-right h-12"
-            size="lg"
-          >
-            {t("button_payment")}
-          </LoadingButton>
+            <LoadingButton
+              loading={isFormPending}
+              className="float-right h-12"
+              size="lg"
+            >
+              {t("button_payment")}
+            </LoadingButton>
+          </div>
         </form>
       </Form>
     </motion.div>

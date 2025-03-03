@@ -121,15 +121,16 @@ model Order {
     createdAt       DateTime         @default(now()) @map("created_at")
     updatedAt       DateTime         @updatedAt @map("updated_at")
     totalPrice      Int              @map("total_price")
+    deliveryPrice   Int              @default(0) @map("delivery_price")
     locale          String           @default("en")
     orderItems      OrderItem[]
     deliveryDetails DeliveryDetails?
-    addressId       String?          @map("address_id")
-    address         Address?         @relation(fields: [addressId], references: [id], onDelete: SetNull)
+    addressId       String           @map("address_id")
+    address         Address          @relation(fields: [addressId], references: [id], onDelete: Cascade)
     paymentIntentId String?          @map("payment_intent_id")
     paymentStatus   PaymentStatus    @default(PENDING)
-    contactInfoId   String?          @map("contact_info_id")
-    contactInfo     ContactInfo?     @relation(fields: [contactInfoId], references: [id], onDelete: Cascade)
+    contactInfoId   String           @map("contact_info_id")
+    contactInfo     ContactInfo      @relation(fields: [contactInfoId], references: [id], onDelete: Cascade)
 
     @@map("orders")
 }

@@ -3,7 +3,7 @@ import { PagePagination } from "@/components/page-pagination";
 
 import { ProductCard } from "@/components/product";
 import { validateLang } from "@/lib/utils";
-import { type ProductSort } from "@/server/api/routers/public/products";
+import type { ProductSort } from "@/server/modules/product/product.types";
 import { api } from "@/trpc/server";
 import { setRequestLocale } from "next-intl/server";
 

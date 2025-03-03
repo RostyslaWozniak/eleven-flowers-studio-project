@@ -1,7 +1,7 @@
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { type NextRequest, NextResponse } from "next/server";
-import { isAuth } from "./lib/auth";
+import { isAuth } from "@/server/lib/auth";
 // import { rateLimiter } from "./services/updtash";
 
 const intlMiddleware = createMiddleware(routing);

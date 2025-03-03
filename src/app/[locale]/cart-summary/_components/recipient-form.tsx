@@ -46,7 +46,6 @@ export function RecipientForm({
   function onSubmit(values: RecipientFormSchema) {
     setRecipientFormData(values);
     setIsRecipientFormOpen(false);
-    console.log(values);
   }
 
   const globalValidationError = form.formState.errors.root?.message;

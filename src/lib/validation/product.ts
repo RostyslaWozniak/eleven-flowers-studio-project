@@ -1,13 +1,9 @@
 import { z } from "zod";
-import {
-  schemaOptionalString,
-  schemaRequiredString,
-  schemaSlug,
-} from "./schemas";
+import { schemaRequiredString, schemaSlug } from "./schemas";
 
 export const addProductSchema = z.object({
   slug: schemaSlug,
-  collection: schemaOptionalString,
+  collectionSlug: schemaSlug,
   translations: z.object({
     pl: z.object({
       name: schemaRequiredString.toLowerCase(),

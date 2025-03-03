@@ -8,6 +8,7 @@ import { Manrope, Philosopher } from "next/font/google";
 import { Providers } from "../providers";
 import { validateLang } from "@/lib/utils";
 import { getMessages, setRequestLocale } from "next-intl/server";
+import { EnvironmentBanner } from "@/components/environment-babner";
 export const metadata: Metadata = {
   title: {
     template: "Admin | %s | Eleven Flowers Studio",
@@ -51,6 +52,7 @@ export default async function AdminLayout({
       className={`${manrope.variable} ${philosopher.variable}`}
     >
       <body className="flex min-h-screen w-screen flex-col overflow-x-hidden font-manrope">
+        <EnvironmentBanner />
         <Providers locale="en" messages={messages}>
           <div className="relative mx-auto flex min-h-[calc(100vh-240px)] w-full max-w-[1400px] grow justify-between">
             <Sidebar />

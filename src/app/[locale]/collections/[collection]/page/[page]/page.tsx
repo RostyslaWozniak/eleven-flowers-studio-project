@@ -57,7 +57,7 @@ export async function generateMetadata({
     namespace: "not_found",
   });
   try {
-    const collection = await api.public.collections.getUniqueBySlug({
+    const collection = await api.public.collections.getBySlug({
       slug: collectionSlug,
     });
 
@@ -83,7 +83,7 @@ export default async function Page({
 }) {
   const { collection: collectionSlug, page } = await params;
 
-  const collections = await api.public.collections.getAll();
+  const collections = await api.public.collections.getAll({});
 
   const collection = collections.find((item) => item.slug === collectionSlug);
 
@@ -94,7 +94,7 @@ export default async function Page({
   const t = await getTranslations("collection_page");
 
   const { products, productsCount } =
-    await api.public.products.getByCollectionSlug({
+    await api.public.products.getManyByColectionSlug({
       collectionSlug: collectionSlug,
       take: PRODUCTS_PER_PAGE,
       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,

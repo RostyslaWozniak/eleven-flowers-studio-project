@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { type AdminOrderDto } from "@/server/api/routers/admin/types/order-types";
 import {
   CalendarIcon,
   ClipboardList,
@@ -21,9 +20,10 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { env } from "@/env";
+import type { OrderAdminDTO } from "@/server/modules/admin/order-admin/order-admin.types";
 
 type OrderInfoProps = {
-  order: AdminOrderDto;
+  order: OrderAdminDTO;
 };
 
 export function OrderInfo({ order }: OrderInfoProps) {

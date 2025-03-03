@@ -10,11 +10,11 @@ import {
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { ProductForm } from "../add-edit-product-form";
-import { type AdminProductDto } from "@/server/api/routers/admin/types/product-types";
 import { DeleteProductButton } from "./delete-product-button";
+import type { ProductAdminDTO } from "@/server/modules/admin/product-admin/product-admin.types";
 
 type ProductTableSettingsProps = {
-  product: AdminProductDto;
+  product: ProductAdminDTO;
 };
 
 export const ProductTableSettings = ({

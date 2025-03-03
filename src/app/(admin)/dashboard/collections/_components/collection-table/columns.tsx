@@ -5,8 +5,8 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Settings } from "lucide-react";
 import { CollectionTableSettings } from "./table-settings";
-import { type AdminCollectionDto } from "@/server/api/routers/admin/types/collection-types";
-export const columns: ColumnDef<AdminCollectionDto>[] = [
+import type { CollectionAdminDTO } from "@/server/modules/admin/collection-admin/collection-admin.types";
+export const columns: ColumnDef<CollectionAdminDTO>[] = [
   {
     accessorKey: "images",
     header: "Image",

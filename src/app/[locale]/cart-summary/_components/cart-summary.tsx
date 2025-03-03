@@ -12,7 +12,7 @@ export default function CartSummary() {
   const { cartItems, totalPrice, serverCartItemsLoading } = useCart();
   const t = useTranslations("cart.cart_page.summary");
 
-  api.public.order.removeOrderFromCoockie.useQuery();
+  api.public.order.removeOrderIfStatusPending.useQuery();
   return (
     <div className="lg:py-6">
       <H2 className="text-start text-2xl font-light md:text-start">

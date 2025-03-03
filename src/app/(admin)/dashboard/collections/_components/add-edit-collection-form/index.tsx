@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 
 import { api } from "@/trpc/react";
-import { type AdminCollectionDto } from "@/server/api/routers/admin/types/collection-types";
 import {
   addCollectionSchema,
   type AddCollectionSchema,
@@ -23,12 +22,13 @@ import { ImageSelect } from "./image-select";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import LoadingButton from "@/components/loading-button";
+import type { CollectionAdminDTO } from "@/server/modules/admin/collection-admin/collection-admin.types";
 
 export const CollectionForm = ({
   collection,
   setIsEditOpen,
 }: {
-  collection?: AdminCollectionDto;
+  collection?: CollectionAdminDTO;
   setIsEditOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const router = useRouter();

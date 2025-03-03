@@ -100,6 +100,7 @@ export default async function RootLayout({
     image: "./opengraph-image.png",
     description: t("description"),
   };
+
   return (
     <html
       lang={locale}

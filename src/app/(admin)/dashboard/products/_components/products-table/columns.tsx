@@ -2,13 +2,13 @@
 
 import { Link } from "@/i18n/routing";
 import { formatPrice } from "@/lib/utils";
-import { type AdminProductDto } from "@/server/api/routers/admin/types/product-types";
 import { type ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Settings } from "lucide-react";
 import { ProductTableSettings } from "./table-settings";
 import { StatusSelect } from "./status-select";
-export const columns: ColumnDef<AdminProductDto>[] = [
+import type { ProductAdminDTO } from "@/server/modules/admin/product-admin/product-admin.types";
+export const columns: ColumnDef<ProductAdminDTO>[] = [
   {
     accessorKey: "images",
     header: "Image",
@@ -38,11 +38,17 @@ export const columns: ColumnDef<AdminProductDto>[] = [
     accessorKey: "collection",
     header: "Collection",
     cell: ({ row }) => (
-      <Link href={`/collections/${row.original.collection?.slug}`}>
-        <Badge className="bg-primary text-primary-foreground hover:opacity-80">
-          {row.original.collection?.name}
-        </Badge>
-      </Link>
+      <>
+        {row.original.collection ? (
+          <Link href={`/collections/${row.original.collection.slug}`}>
+            <Badge className="bg-primary text-primary-foreground hover:opacity-80">
+              {row.original.collection.name}
+            </Badge>
+          </Link>
+        ) : (
+          <Badge variant="destructive">N/A</Badge>
+        )}
+      </>
     ),
   },
   {

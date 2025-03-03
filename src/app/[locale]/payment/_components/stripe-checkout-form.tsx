@@ -7,19 +7,28 @@ import {
 import { stripeClientPromise } from "@/lib/stripe/stripe-client";
 import { api } from "@/trpc/react";
 import { H3 } from "@/components/ui/typography";
-import { Link } from "@/i18n/routing";
+import { Link, redirect } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Loader } from "lucide-react";
+import { toast } from "sonner";
 
 export function StripeCheckoutForm() {
   const { data, error, isLoading } =
     api.public.stripe.getClientSessionSecret.useQuery();
+  const locale = useLocale();
 
   const t = useTranslations("payment.order_summary");
 
-  if (error) return <H3 className="text-center">Something went wrong</H3>;
+  if (error) {
+    if (error.data?.code === "BAD_REQUEST") {
+      toast.error(t("already_paid"));
+      redirect({ href: "/", locale: locale });
+    }
+
+    return <H3 className="text-center">Something went wrong</H3>;
+  }
 
   return (
     <>

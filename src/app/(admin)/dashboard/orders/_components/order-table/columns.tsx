@@ -4,9 +4,9 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Settings } from "lucide-react";
 import { OrderTableSettings } from "./table-settings";
-import { type AdminOrderDto } from "@/server/api/routers/admin/types/order-types";
 import { formatPrice } from "@/lib/utils";
-export const orderColumns: ColumnDef<AdminOrderDto>[] = [
+import type { OrderAdminDTO } from "@/server/modules/admin/order-admin/order-admin.types";
+export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
   {
     accessorKey: "email",
     header: "Email",

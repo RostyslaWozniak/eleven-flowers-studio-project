@@ -1,5 +1,5 @@
-import { isAuth } from "@/lib/auth";
 import { db } from "@/server/db";
+import { isAuth } from "@/server/lib/auth";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 

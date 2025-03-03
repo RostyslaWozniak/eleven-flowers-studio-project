@@ -10,11 +10,11 @@ import {
 import { Info, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { DeleteOrderButton } from "./delete-order-button";
-import { type AdminOrderDto } from "@/server/api/routers/admin/types/order-types";
 import { OrderInfo } from "./order-info";
+import type { OrderAdminDTO } from "@/server/modules/admin/order-admin/order-admin.types";
 
 type OrderTableSettingsProps = {
-  order: AdminOrderDto;
+  order: OrderAdminDTO;
 };
 
 export const OrderTableSettings = ({ order }: OrderTableSettingsProps) => {

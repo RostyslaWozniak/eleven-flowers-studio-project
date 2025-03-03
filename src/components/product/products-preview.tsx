@@ -1,4 +1,4 @@
-import { type ProductSort } from "@/server/api/routers/public/products";
+import type { ProductSort } from "@/server/modules/product/product.types";
 import { ProductCard } from "./product-card";
 import { api } from "@/trpc/server";
 

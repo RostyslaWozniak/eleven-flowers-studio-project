@@ -19,10 +19,16 @@ export default function Forms() {
       city: "",
       postalCode: "",
       flowerMessage: "",
+      // name: "odboirca_name",
+      // phone: "odboirca_phone",
+      // address: "odboirca_address",
+      // city: "odboirca_city",
+      // postalCode: "01-001",
+      // flowerMessage: "",
     });
 
   return (
-    <div className="w-full overflow-y-hidden overflow-x-visible px-2.5 md:pl-12 md:pr-2">
+    <div className="relative h-[750px] w-full overflow-y-hidden px-2.5 md:pl-12 md:pr-2">
       <AnimatePresence>
         {isRecipientFormOpen && (
           <RecipientForm
@@ -32,8 +38,12 @@ export default function Forms() {
           />
         )}
       </AnimatePresence>
+
       {!isRecipientFormOpen && (
-        <OrderingForm recipientFormData={recipientFormData} />
+        <OrderingForm
+          recipientFormData={recipientFormData}
+          setIsRecipientFormOpen={setIsRecipientFormOpen}
+        />
       )}
     </div>
   );

@@ -190,19 +190,19 @@
           "title": "For whom are the flowers?",
           "labels": {
             "name": "Recipient’s name",
-            "phone": "Phone number for delivery contact",
+            "phone": "Phone number",
             "address": "Street and house/apartment number",
             "city": "City",
             "postal_code": "Postal code",
             "flower_message": "Your message for the bouquet"
           },
           "placeholders": {
-            "name": "Enter your name",
-            "phone": "Enter your phone number",
-            "address": "Enter your address",
-            "city": "Enter your city",
-            "postal_code": "Enter your postal code",
-            "flower_message": "Enter your flower message"
+            "name": "Enter name",
+            "phone": "Enter phone number",
+            "address": "Enter address",
+            "city": "Enter city",
+            "postal_code": "Enter postal code",
+            "flower_message": "Enter flower message"
           },
           "button_next": "Go to the next step"
         },
@@ -211,8 +211,8 @@
           "labels": {
             "name": "Your name",
             "phone": "Phone number ",
-            "email": "Your email (we’ll send the order confirmation here!)",
-            "date": "Select delivery date (click the calendar)",
+            "email": "Your email",
+            "date": "Select delivery date",
             "time": "Select delivery time",
             "instructions": "Additional instructions for the courier (optional)"
           },
@@ -220,10 +220,11 @@
             "name": "Enter your name",
             "phone": "Enter your phone number",
             "email": "Enter your email",
-            "date": "Enter your date",
-            "time": "Select your time",
+            "date": "Enter date",
+            "time": "Select time",
             "instructions": "Instructions (optional)"
           },
+          "button_go_back": "Go back",
           "button_payment": "Proceed to payment"
         }
       }

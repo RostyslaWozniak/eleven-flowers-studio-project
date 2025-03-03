@@ -28,18 +28,18 @@ import {
 } from "@/lib/validation/product";
 
 import { api } from "@/trpc/react";
-import { type AdminProductDto } from "@/server/api/routers/admin/types/product-types";
 import { PriceSizeInput } from "./price-size-input";
 import { ImageSelect } from "./image-select";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import LoadingButton from "@/components/loading-button";
+import type { ProductAdminDTO } from "@/server/modules/admin/product-admin/product-admin.types";
 
 export const ProductForm = ({
   product,
   setIsEditOpen,
 }: {
-  product?: AdminProductDto;
+  product?: ProductAdminDTO;
   setIsEditOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const router = useRouter();
@@ -47,7 +47,7 @@ export const ProductForm = ({
   const form = useForm<AddProductSchema>({
     resolver: zodResolver(addProductSchema),
     defaultValues: {
-      collection: product?.collection?.slug ?? "",
+      collectionSlug: product?.collection?.slug ?? "",
       translations: {
         pl: {
           name: product?.name.find(({ lang }) => lang === "pl")?.name ?? "",
@@ -98,7 +98,7 @@ export const ProductForm = ({
   const { mutate: updateProduct, isPending: isUpdating } =
     api.admin.products.update.useMutation({
       onSuccess: () => {
-        toast.success("Product created");
+        toast.success("Product updated");
         router.refresh();
         if (setIsEditOpen) setIsEditOpen(false);
       },
@@ -112,7 +112,7 @@ export const ProductForm = ({
     if (!product) {
       createProduct(values);
     } else {
-      updateProduct(values);
+      updateProduct({ id: product.id, ...values });
     }
   }
 
@@ -243,7 +243,7 @@ export const ProductForm = ({
               {collections && (
                 <FormField
                   control={form.control}
-                  name="collection"
+                  name="collectionSlug"
                   render={({ field }) => (
                     <FormItem className="h-24">
                       <FormLabel>Collection</FormLabel>

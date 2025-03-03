@@ -31,14 +31,16 @@ export async function ProductSection({ product }: { product: ProductDTO }) {
         <div className="flex flex-col gap-y-6 lg:pt-28">
           <div className="px-2.5">
             <H1>{capitalizeString(product.name)}</H1>
-            <Link
-              href={`/collections/${product.collection?.slug}`}
-              className="mt-4 inline-block"
-            >
-              <Badge className="" variant="outline">
-                {product.collection?.name}
-              </Badge>
-            </Link>
+            {product.collection && (
+              <Link
+                href={`/collections/${product.collection?.slug}`}
+                className="mt-4 inline-block"
+              >
+                <Badge className="" variant="outline">
+                  {product.collection.name}
+                </Badge>
+              </Link>
+            )}
           </div>
 
           <Markdown className="prose-p: px-2.5 prose-p:text-lg">

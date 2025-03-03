@@ -10,11 +10,11 @@ import {
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { CollectionForm } from "../add-edit-collection-form";
-import { type AdminCollectionDto } from "@/server/api/routers/admin/types/collection-types";
 import { DeleteCollectionButton } from "./delete-collection-button";
+import type { CollectionAdminDTO } from "@/server/modules/admin/collection-admin/collection-admin.types";
 
 type ProductTableSettingsProps = {
-  collection: AdminCollectionDto;
+  collection: CollectionAdminDTO;
 };
 
 export const CollectionTableSettings = ({
