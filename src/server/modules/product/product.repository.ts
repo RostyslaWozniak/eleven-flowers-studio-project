@@ -56,6 +56,17 @@ export class ProductRepository {
     });
   }
 
+  static async getCountByCollectionSlug(collectionSlug: string) {
+    return await db.product.count({
+      where: {
+        collection: {
+          slug: collectionSlug,
+        },
+        status: "AVAILABLE",
+      },
+    });
+  }
+
   static async getRelated(
     { productId, collectionSlug, take }: GetRelatedSchema,
     locale: Locale,

@@ -90,7 +90,9 @@ export class ProductService {
     productsCount: number;
   }> {
     const locale = await getLocale().then(validateLang);
-    const productsCount = await ProductRepository.getProductsCount();
+    const productsCount = await ProductRepository.getCountByCollectionSlug(
+      input.collectionSlug,
+    );
     const products: ProductFromDb[] =
       await ProductRepository.getManyByColectionSlug(input, locale);
 

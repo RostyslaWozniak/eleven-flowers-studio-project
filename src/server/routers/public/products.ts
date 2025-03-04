@@ -23,8 +23,8 @@ export const productsRouter = createTRPCRouter({
 
   getBySlug: publicProcedure
     .input(ProductSchema.getProductBySlug)
-    .query(async ({ input }): Promise<ProductDTO> => {
-      const product = await ProductService.getBySlugOrThrow(input.slug);
+    .query(async ({ input }): Promise<ProductDTO | null> => {
+      const product = await ProductService.getBySlug(input.slug);
       return product;
     }),
 

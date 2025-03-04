@@ -255,6 +255,8 @@
   "messages": {
     "error": {
       "title": "Something went wrong",
+      "sorry_message": "We're sorry, but we encountered an unexpected error.",
+      "back_to_home": "Go to Home Page",
       "required": "This field is required.",
       "min": "The input is too short.",
       "max": "The input is too long.",

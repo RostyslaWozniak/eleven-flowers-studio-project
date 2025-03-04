@@ -8,7 +8,7 @@ import { capitalizeString } from "@/lib/utils";
 import { PagePagination } from "@/components/page-pagination";
 import { $Enums } from "@prisma/client";
 
-const PRODUCTS_PER_PAGE = 1;
+const PRODUCTS_PER_PAGE = 12;
 
 export const dynamic = "force-static";
 
@@ -99,6 +99,10 @@ export default async function Page({
       take: PRODUCTS_PER_PAGE,
       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     });
+
+  if (!products.length) {
+    return <NotFoundSection />;
+  }
 
   return (
     <>

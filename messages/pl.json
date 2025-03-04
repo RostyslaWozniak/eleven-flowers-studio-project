@@ -257,6 +257,8 @@
   "messages": {
     "error": {
       "title": "Coś poszło nie tak",
+      "sorry_message": "Przepraszamy, ale wystąpił nieoczekiwany bład.",
+      "back_to_home": "Przejdz do strony głównej",
       "required": "Pole jest wymagane.",
       "min": "Wpisano zbyt mało symbolów.",
       "max": "Wpisano zbyt duzo symbolów.",

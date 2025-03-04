@@ -47,22 +47,28 @@ export class StripeService {
     locale: Locale,
     orderId: string,
   ): Promise<string> => {
-    const session = await stripeServerClient.checkout.sessions.create({
-      line_items: lineItems,
-      ui_mode: "embedded",
-      mode: "payment",
-      locale: locale,
-      return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
-      customer_email: customerEmail,
-      payment_intent_data: {
-        receipt_email: customerEmail,
-      },
+    const session = await stripeServerClient.checkout.sessions.create(
+      {
+        line_items: lineItems,
+        ui_mode: "embedded",
+        mode: "payment",
+        locale: locale,
+        return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
+        customer_email: customerEmail,
 
-      metadata: {
-        orderId,
-        locale,
+        payment_intent_data: {
+          receipt_email: customerEmail,
+        },
+
+        metadata: {
+          orderId,
+          locale,
+        },
       },
-    });
+      {
+        idempotencyKey: orderId,
+      },
+    );
 
     if (session.client_secret == null)
       throw new TRPCError({
@@ -102,6 +108,7 @@ export class StripeService {
 
       return {
         quantity: item.quantity,
+
         price_data: {
           currency: "pln",
           product_data: {
