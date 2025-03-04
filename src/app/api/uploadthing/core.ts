@@ -18,13 +18,15 @@ export const ourFileRouter = {
       return { admin: true };
     })
     .onUploadComplete(async ({ file }) => {
-      console.log({ id: file.key, name: file.name, url: file.ufsUrl });
       const existingImage = await db.images.findFirst({
         where: {
           id: file.key,
         },
       });
-      if (!existingImage) {
+
+      console.log({ existingImage });
+      if (existingImage == null) {
+        console.error("CREATING");
         await db.images.create({
           data: {
             id: file.key,
