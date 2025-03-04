@@ -21,6 +21,8 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/loading-button";
+import { getDeliveryPriceInCents } from "@/lib/utils/delivery";
+import { useCart } from "@/context/cart-context";
 
 export function RecipientForm({
   recipientFormData,
@@ -31,6 +33,8 @@ export function RecipientForm({
   setRecipientFormData: Dispatch<SetStateAction<RecipientFormSchema>>;
   setIsRecipientFormOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const { totalPrice, setDeliveryPrice } = useCart();
+
   const form = useForm<RecipientFormSchema>({
     resolver: zodResolver(recipientFormSchema),
     defaultValues: {
@@ -46,6 +50,8 @@ export function RecipientForm({
   function onSubmit(values: RecipientFormSchema) {
     setRecipientFormData(values);
     setIsRecipientFormOpen(false);
+    setDeliveryPrice(getDeliveryPriceInCents(totalPrice, values.postalCode));
+    scrollTo({ top: 100, behavior: "smooth" });
   }
 
   const globalValidationError = form.formState.errors.root?.message;
@@ -66,7 +72,7 @@ export function RecipientForm({
       transition={{ duration: 0.5 }}
       className="lg:py-6"
     >
-      <H2 className="text-start text-2xl font-light md:mb-8 md:text-start">
+      <H2 className="text-start font-light md:mb-8 md:text-start">
         {t("title")}
       </H2>
       {globalValidationError && (
@@ -146,7 +152,7 @@ export function RecipientForm({
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
               name="city"
@@ -224,7 +230,7 @@ export function RecipientForm({
           <LoadingButton
             type="submit"
             loading={false}
-            className="float-right h-12"
+            className="float-right h-12 w-full sm:w-auto"
             size="lg"
           >
             {t("button_next")}

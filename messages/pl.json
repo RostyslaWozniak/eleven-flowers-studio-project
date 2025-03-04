@@ -18,11 +18,11 @@
     "benefits": [
       {
         "title": "Darmowa wysyłka",
-        "description": "Skorzystaj z darmowej dostawy przy zamówieniach powyżej 350 zł."
+        "description": "Skorzystaj z darmowej dostawy przy zamówieniach powyżej 500 zł."
       },
       {
         "title": "Zniżki do 30%",
-        "description": "Zniżki dla stałych klientów oraz na zakupy powyżej 350 zł."
+        "description": "Zniżki dla stałych klientów oraz na zakupy powyżej 500 zł."
       },
       {
         "title": "Prezenty",
@@ -183,6 +183,7 @@
       "summary": {
         "title": "Podsumowanie zamówienia",
         "total": "Suma",
+        "delivery": "Dostawa",
         "size": "Rozmiar"
       },
       "forms": {

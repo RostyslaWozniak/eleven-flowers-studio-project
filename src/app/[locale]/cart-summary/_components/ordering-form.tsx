@@ -29,6 +29,7 @@ import { Textarea } from "@/components/ui/textarea";
 import LoadingButton from "@/components/loading-button";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { IS_LOCAL_PROJECT } from "@/components/environment-banner";
 
 export type OrderingFormControl = Control<{
   email: string;
@@ -59,20 +60,23 @@ export default function OrderingForm({
 
   const form = useForm<OrderingFormSchema>({
     resolver: zodResolver(orderingFormSchema),
-    defaultValues: {
-      name: "",
-      phone: "",
-      email: "",
-      date: new Date(),
-      time: undefined,
-      description: "",
-      // name: "zamawiający_name",
-      // phone: "zamawiający_phone",
-      // email: "zamawiajacy@email.com",
-      // date: new Date(),
-      // time: undefined,
-      // description: "",
-    },
+    defaultValues: IS_LOCAL_PROJECT
+      ? {
+          name: "ordering_name",
+          phone: "ordering_phone",
+          email: "ordering@email.com",
+          date: new Date(),
+          time: "10:00-13:00",
+          description: "",
+        }
+      : {
+          name: "",
+          phone: "",
+          email: "",
+          date: new Date(),
+          time: undefined,
+          description: "",
+        },
   });
   const router = useRouter();
 
@@ -107,9 +111,7 @@ export default function OrderingForm({
       transition={{ duration: 0.5, delay: 0.5 }}
       className="lg:py-6"
     >
-      <H2 className="text-start text-2xl font-light md:text-start">
-        {t("title")}
-      </H2>
+      <H2 className="text-start font-light md:text-start">{t("title")}</H2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -219,19 +221,20 @@ export default function OrderingForm({
               </FormItem>
             )}
           />
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center justify-between gap-y-4 sm:flex-row">
             <Button
               variant="secondary"
-              className="w-12 border-none md:w-min"
+              size="lg"
+              className="h-12 w-full border-none md:w-auto"
               onClick={() => setIsRecipientFormOpen(true)}
             >
-              <ArrowLeft />
-              <span className="hidden md:inline"> {t("button_go_back")}</span>
+              <ArrowLeft className="min-h-6 min-w-6" />
+              <span className="flex-grow pr-6"> {t("button_go_back")}</span>
             </Button>
 
             <LoadingButton
               loading={isFormPending}
-              className="float-right h-12"
+              className="float-right h-12 w-full sm:w-auto"
               size="lg"
             >
               {t("button_payment")}

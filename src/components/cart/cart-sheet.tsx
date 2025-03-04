@@ -28,7 +28,7 @@ export function CartSheet() {
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
       <CartSheetTrigger isOpen={isCartOpen} setIsOpen={setIsCartOpen} />
 
-      <SheetContent className="flex max-h-screen flex-col gap-y-0 p-0 pb-20 lg:pb-0">
+      <SheetContent className="z-[70] flex max-h-screen flex-col gap-y-0 p-0 pb-20 lg:pb-0">
         <SheetHeader className="flex h-16 items-center justify-center bg-secondary">
           <SheetTitle>{t("title")}</SheetTitle>
           <SheetDescription></SheetDescription>

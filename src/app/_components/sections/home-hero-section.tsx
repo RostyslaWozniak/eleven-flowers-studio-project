@@ -46,12 +46,12 @@ export function HomeHeroSection() {
             </Link>
           </div>
         </div>
-        <div className="relative h-[600px] min-w-[500px]">
+        <div className="relative h-[600px] min-w-[500px] overflow-hidden rounded-sm">
           <Image
             fill
             priority
             sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 500px"}
-            className="w-auto min-w-[500px] rounded-sm object-cover opacity-90"
+            className="z-10 w-auto min-w-[500px] rounded-sm bg-slate-100 object-cover"
             src="/images/hero.png"
             alt="Eleven Flowers Studio"
           />

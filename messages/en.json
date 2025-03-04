@@ -18,11 +18,11 @@
     "benefits": [
       {
         "title": "Free Shipping",
-        "description": "Enjoy free delivery for orders over 350 PLN."
+        "description": "Enjoy free delivery for orders over 500 PLN."
       },
       {
         "title": "Discounts up to 30%",
-        "description": "Discounts for loyal customers and on purchases over 350 PLN."
+        "description": "Discounts for loyal customers and on purchases over 500 PLN."
       },
       {
         "title": "Gifts",
@@ -183,6 +183,7 @@
       "summary": {
         "title": "Order Summary",
         "total": "Total",
+        "delivery": "Delivery",
         "size": "Size"
       },
       "forms": {

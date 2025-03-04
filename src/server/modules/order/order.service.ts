@@ -60,11 +60,10 @@ export class OrderService {
     // 4. calculate total price and delivery price
     const totalPrice = this.calculateTotalPrice(cartItems);
 
-    const { price: deliveryPriceInCents } =
-      DeliveryDetailsService.getDeliveryPriceInCents(
-        totalPrice,
-        address.postCode,
-      );
+    const deliveryPriceInCents = DeliveryDetailsService.getDeliveryPriceInCents(
+      totalPrice,
+      address.postCode,
+    );
     // 5. create delivery details variable
     const deliveryDetails = {
       name: input.recipientFormData.name,

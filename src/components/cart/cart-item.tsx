@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Minus, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { CartItem } from "@/types";
-import { formatPrice } from "@/lib/utils";
+import { capitalizeString, formatPrice } from "@/lib/utils";
 import { useCart } from "@/context/cart-context";
 // import { Link } from "@/i18n/routing";
 import { motion } from "framer-motion";
@@ -35,7 +35,7 @@ export function CartItem({ cartItem }: CartItemProps) {
           className="text-lg font-semibold leading-6 tracking-tight text-gray-900"
           onClick={() => setIsCartOpen(false)}
         >
-          {cartItem.productName}
+          {capitalizeString(cartItem.productName)}
         </h3>
         <p className="text-sm text-gray-500">
           {formatPrice(cartItem.price)} x {cartItem.quantity}

@@ -10,12 +10,12 @@ export function EnvironmentBanner() {
   return (
     <>
       {IS_LOCAL_PROJECT && (
-        <div className="sticky top-0 z-[60] grid h-10 place-items-center bg-black">
+        <div className="sticky top-0 z-[60] grid h-10 w-screen place-items-center bg-black">
           <Badge>THIS IS A LOCAL PROJECT</Badge>
         </div>
       )}
       {IS_TEST_PROJECT && (
-        <div className="sticky top-0 z-[60] grid h-10 place-items-center bg-amber-600">
+        <div className="sticky top-0 z-[60] grid h-10 w-screen place-items-center bg-amber-600">
           <Badge>THIS IS A TEST PROJECT</Badge>
         </div>
       )}

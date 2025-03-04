@@ -16,10 +16,12 @@ import {
 
 type CartContextTypes = {
   cartItems: CartItem[];
+  deliveryPrice: number | null;
   serverCartItemsLoading: boolean;
   isCartOpen: boolean;
   totalItems: number;
   totalPrice: number;
+  setDeliveryPrice: Dispatch<SetStateAction<number | null>>;
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
   addOneToCart: (product: AddProductType) => void;
   removeCartItem: (id: string) => void;
@@ -45,6 +47,7 @@ export default function CartProvider({
 }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [deliveryPrice, setDeliveryPrice] = useState<number | null>(null);
 
   // Fetch cart items from API
   const { data: serverCartItems, isLoading: serverCartItemsLoading } =
@@ -177,8 +180,16 @@ export default function CartProvider({
       totalItems,
       totalPrice,
       serverCartItemsLoading,
+      deliveryPrice,
     }),
-    [cartItems, isCartOpen, totalItems, totalPrice, serverCartItemsLoading],
+    [
+      cartItems,
+      isCartOpen,
+      totalItems,
+      totalPrice,
+      serverCartItemsLoading,
+      deliveryPrice,
+    ],
   );
 
   return (
@@ -189,6 +200,7 @@ export default function CartProvider({
         removeCartItem,
         setCartItems,
         addOneToCart,
+        setDeliveryPrice,
         ...contextValue,
       }}
     >

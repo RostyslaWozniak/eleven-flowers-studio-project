@@ -46,3 +46,16 @@ export function checkDelivery(postalCode: string) {
     }
   );
 }
+
+export function getDeliveryPriceInCents(
+  totalPrice: number,
+  postalCode: string,
+) {
+  const { price, message } = checkDelivery(postalCode);
+
+  if (totalPrice >= MIN_FREE_DELIVERY_PRICE_IN_CENTS) {
+    return 0;
+  }
+
+  return price && message === DELIVERY_AVAILABLE_MESSAGE ? price : null;
+}

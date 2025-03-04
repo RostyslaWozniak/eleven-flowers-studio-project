@@ -36,8 +36,7 @@ const DialogContent = React.forwardRef<
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
-      onCloseAutoFocus={(event) => {
-        event.preventDefault();
+      onCloseAutoFocus={() => {
         document.body.style.pointerEvents = "";
       }}
       ref={ref}

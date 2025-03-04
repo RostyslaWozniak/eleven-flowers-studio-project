@@ -3,13 +3,15 @@
 import { CartItemSkeleton } from "@/components/skeletons/cart-item-skeleton";
 import { H2, H3, Text } from "@/components/ui/typography";
 import { useCart } from "@/context/cart-context";
-import { cn, formatPrice } from "@/lib/utils";
+import { capitalizeString, cn, formatPrice } from "@/lib/utils";
 import { api } from "@/trpc/react";
+import { Truck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function CartSummary() {
-  const { cartItems, totalPrice, serverCartItemsLoading } = useCart();
+  const { cartItems, totalPrice, serverCartItemsLoading, deliveryPrice } =
+    useCart();
   const t = useTranslations("cart.cart_page.summary");
 
   api.public.order.removeOrderIfStatusPending.useQuery();
@@ -37,7 +39,9 @@ export default function CartSummary() {
                 />
               </div>
               <div className="flex-grow">
-                <H3 className="font-semibold">{item.productName}</H3>
+                <H3 className="font-semibold">
+                  {capitalizeString(item.productName)}
+                </H3>
                 <div className="mt-3 flex justify-between">
                   <Text variant="muted">
                     {t("size")}:{" "}
@@ -52,11 +56,26 @@ export default function CartSummary() {
               </div>
             </div>
           ))}
+          {deliveryPrice! > 0 && (
+            <div className={cn("flex w-full items-center space-x-4 py-4")}>
+              <div className="relative h-20 min-w-20 overflow-hidden">
+                <Truck className="h-full w-full object-cover p-3" />
+              </div>
+              <div className="mt-3 flex w-full items-center justify-between">
+                <H3 className="font-semibold">
+                  {capitalizeString(t("delivery"))}
+                </H3>
+                <Text size="subtitle" variant="muted">
+                  {formatPrice(deliveryPrice)} x 1
+                </Text>
+              </div>
+            </div>
+          )}
           <div className="mt-6 border-t border-gray-100 pt-6">
             <div className="flex items-center justify-between">
               <span className="text-lg"> {t("total")}</span>
               <span className="text-2xl font-medium">
-                {formatPrice(totalPrice)}
+                {formatPrice(totalPrice + (deliveryPrice ?? 0))}
               </span>
             </div>
           </div>

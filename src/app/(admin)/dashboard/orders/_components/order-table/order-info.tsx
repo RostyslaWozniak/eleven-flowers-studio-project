@@ -1,8 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Banknote,
   CalendarIcon,
   ClipboardList,
-  CreditCard,
   Package,
   ShoppingBag,
   User,
@@ -38,12 +40,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
               Created on {format(order.createdAt, "PPP")}
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
-            <p className="text-sm font-medium">
-              Total Price: {formatPrice(order.totalPrice)}
-            </p>
-          </div>
+
           <div className="flex items-center gap-2">
             <ClipboardList className="h-4 w-4 text-muted-foreground" />
             Payment ID:
@@ -56,71 +53,119 @@ export function OrderInfo({ order }: OrderInfoProps) {
             </Link>
           </div>
         </div>
-        <Badge
-          variant={
-            order.paymentStatus === "SUCCESS"
-              ? "success"
-              : order.paymentStatus === "PENDING"
-                ? "warning"
-                : "destructive"
-          }
-        >
-          {order.paymentStatus}
-        </Badge>
+        <div>
+          <Badge
+            variant={
+              order.paymentStatus === "SUCCESS"
+                ? "success"
+                : order.paymentStatus === "PENDING"
+                  ? "warning"
+                  : "destructive"
+            }
+          >
+            {order.paymentStatus}
+          </Badge>
+        </div>
       </div>
-
-      <div className="grid gap-2 rounded-sm bg-card/80">
-        <ScrollArea className="max-h-[250px] p-4">
+      <div className="flex gap-4">
+        <div className="space-y-1 rounded-sm bg-card/80 p-4">
           <div className="flex items-center gap-2">
-            <ShoppingBag className="h-4 w-4 text-muted-foreground" />
-            <p className="text-sm font-medium">Order Items</p>
+            <Banknote className="h-4 w-4 text-muted-foreground" />
+            <p className="text-sm font-medium">Price</p>
           </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Product</TableHead>
-                <TableHead>Size</TableHead>
-                <TableHead>Quantity</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {order.orderItems.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>{item.productName}</TableCell>
-                  <TableCell>{item.size}</TableCell>
-                  <TableCell>{item.quantity}</TableCell>
+          <div className="flex items-center gap-2 text-nowrap">
+            <p className="text-sm font-medium">
+              Order Price: <b>{formatPrice(order.totalPrice)}</b>
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-nowrap">
+            <p className="text-sm font-medium">
+              Delivery Price: <b>{formatPrice(order.deliveryPrice)}</b>
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-nowrap">
+            <p className="text-sm font-medium">
+              Total Price:{" "}
+              <b>{formatPrice(order.totalPrice + order.deliveryPrice)}</b>
+            </p>
+          </div>
+        </div>
+
+        <div className="grid w-full gap-2 rounded-sm bg-card/80">
+          <ScrollArea className="max-h-[250px] p-4">
+            <div className="flex items-center gap-2">
+              <ShoppingBag className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-medium">Order Items</p>
+            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Product</TableHead>
+                  <TableHead>Size</TableHead>
+                  <TableHead>Quantity</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ScrollArea>
+              </TableHeader>
+              <TableBody>
+                {order.orderItems.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{item.productName}</TableCell>
+                    <TableCell>{item.size}</TableCell>
+                    <TableCell>{item.quantity}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2 rounded-sm bg-card/80 p-2">
           <div className="flex items-center gap-2">
-            <Package className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center">
+              <User className="h-4 w-4 text-muted-foreground" />
+              <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+            </div>
             <p className="text-sm font-medium">Ordering Party Details</p>
           </div>
-          <p className="text-sm">{order.deliveryDetails?.name}</p>
-          <p className="text-sm">{order.deliveryDetails?.phone}</p>
-          {order.deliveryDetails && (
+          <p className="text-sm">
+            Name: <b>{order.contactInfo.name}</b>
+          </p>
+          <p className="text-sm">
+            Email: <b>{order.contactInfo.email}</b>
+          </p>
+          {order.contactInfo.phone && (
             <p className="text-sm">
-              Date: {format(order.deliveryDetails.deliveryDate, "PPP")}
+              Phone: <b>{order.contactInfo.phone}</b>
             </p>
           )}
-          <p className="text-sm">Time: {order.deliveryDetails?.deliveryTime}</p>
         </div>
 
         {order.contactInfo && (
           <div className="space-y-1 rounded-sm bg-card/80 p-2">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm font-medium">Contact Information</p>
+              <div className="flex items-center">
+                <ArrowDownRight className="h-4 w-4 text-muted-foreground" />
+                <User className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <p className="text-sm font-medium">Recipient Details</p>
             </div>
-            <p className="text-sm">{order.contactInfo.name}</p>
-            <p className="text-sm">{order.contactInfo.email}</p>
-            <p className="text-sm">{order.contactInfo.phone}</p>
+            {order.deliveryDetails?.name && (
+              <p className="text-sm">
+                Name: <b>{order.deliveryDetails.name}</b>
+              </p>
+            )}
+            {order.deliveryDetails?.phone && (
+              <p className="text-sm">
+                Phone: <b>{order.deliveryDetails.phone}</b>
+              </p>
+            )}
+            {order.deliveryDetails?.flowerMessage && (
+              <div className="">
+                <p className="text-sm font-medium">Flower message:</p>
+                <p className="text-sm">{order.deliveryDetails.flowerMessage}</p>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -131,27 +176,28 @@ export function OrderInfo({ order }: OrderInfoProps) {
             <Package className="h-4 w-4 text-muted-foreground" />
             <p className="text-sm font-medium">Delivery Details</p>
           </div>
-          <p className="text-sm">{order.address?.street}</p>
           <p className="text-sm">
-            {order.address?.city}, {order.address?.postCode}
+            Street: <b>{order.address?.street}</b>
+          </p>
+          <p className="text-sm">
+            City:{" "}
+            <b>
+              {order.address?.city}, {order.address?.postCode}
+            </b>
           </p>
           {order.deliveryDetails && (
             <p className="text-sm">
-              Date: {format(order.deliveryDetails.deliveryDate, "PPP")}
+              Date: <b>{format(order.deliveryDetails.deliveryDate, "PPP")}</b>
             </p>
           )}
-          <p className="text-sm">Time: {order.deliveryDetails?.deliveryTime}</p>
+          <p className="text-sm">
+            Time: <b>{order.deliveryDetails?.deliveryTime}</b>
+          </p>
         </div>
-        {order.deliveryDetails && (
-          <div className="p-2">
+        {order.deliveryDetails?.description && (
+          <div className="col-span-2 p-2">
             <p className="text-sm font-medium">Delivery Instructions:</p>
             <p className="text-sm">{order.deliveryDetails.description}</p>
-          </div>
-        )}
-        {order.deliveryDetails && (
-          <div className="p-2">
-            <p className="text-sm font-medium">Flower message:</p>
-            <p className="text-sm">{order.deliveryDetails.flowerMessage}</p>
           </div>
         )}
       </div>

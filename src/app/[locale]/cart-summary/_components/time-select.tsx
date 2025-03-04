@@ -42,7 +42,7 @@ export function TimeSelect({
               value={field.value}
               onValueChange={field.onChange}
             >
-              <SelectTrigger className="h-10 rounded-full border-2 border-primary text-base text-primary md:text-lg">
+              <SelectTrigger className="h-9 rounded-full border border-primary text-base text-primary md:text-lg">
                 <SelectValue placeholder={tPlaceholder("time")} />
               </SelectTrigger>
               <SelectContent className="rounded-sm">

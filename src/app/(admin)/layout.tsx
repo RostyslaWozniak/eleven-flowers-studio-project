@@ -8,7 +8,7 @@ import { Manrope, Philosopher } from "next/font/google";
 import { Providers } from "../providers";
 import { validateLang } from "@/lib/utils";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { EnvironmentBanner } from "@/components/environment-babner";
+import { EnvironmentBanner } from "@/components/environment-banner";
 export const metadata: Metadata = {
   title: {
     template: "Admin | %s | Eleven Flowers Studio",

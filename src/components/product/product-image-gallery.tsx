@@ -34,7 +34,7 @@ export function ProductImageGallery({
               images[activeImageIndex]?.url ?? "/images/bouquet-placeholder.jpg"
             }
             alt={images[0]?.alt ?? "image of flowers"}
-            className="aspect-square w-full object-cover shadow-lg"
+            className="aspect-square w-full bg-slate-100 object-cover shadow-lg"
           />
         </div>
       </div>
@@ -56,7 +56,7 @@ export function ProductImageGallery({
               sizes={"(max-width: 768px) 200px, (max-width: 1200px) 100px"}
               src={image.url ?? "/images/bouquet-placeholder.svg"}
               alt={`${image.alt} - View ${index + 1}`}
-              className="object-cover"
+              className="bg-slate-100 object-cover"
               blurDataURL="/images/bouquet-placeholder.svg"
             />
           </div>

@@ -8,7 +8,7 @@ import {
   EnvironmentBanner,
   IS_LOCAL_PROJECT,
   IS_TEST_PROJECT,
-} from "../environment-babner";
+} from "../environment-banner";
 
 export async function NavBar({ locale }: { locale: Locale }) {
   const t = await getTranslations({ namespace: "navigation", locale: locale });
@@ -20,7 +20,7 @@ export async function NavBar({ locale }: { locale: Locale }) {
         className={cn(
           "inset-x-0 top-0 z-50 w-screen bg-background/70 shadow-md shadow-foreground/20 backdrop-blur-sm md:sticky",
           {
-            "top-10": IS_LOCAL_PROJECT ?? IS_TEST_PROJECT,
+            "top-10": IS_TEST_PROJECT || IS_LOCAL_PROJECT,
           },
         )}
       >

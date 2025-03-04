@@ -1,4 +1,5 @@
 import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-template";
+import { IS_LOCAL_PROJECT } from "@/components/environment-banner";
 import { env } from "@/env";
 import { redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
@@ -76,20 +77,22 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     ? checkoutSession.amount_total / 100
     : null;
 
-  await sendEmail({
-    email: customer ? customer.email : checkoutSession.customer_email,
-    subject: "Thank you for your purchase!",
-    emailTemplate: PurchaseSucceedTemplate({
-      name: customer ? customer.name : null,
-      price: orderPrice,
-      locale,
-    }),
-  });
+  if (!IS_LOCAL_PROJECT) {
+    await sendEmail({
+      email: customer ? customer.email : checkoutSession.customer_email,
+      subject: "Thank you for your purchase!",
+      emailTemplate: PurchaseSucceedTemplate({
+        name: customer ? customer.name : null,
+        price: orderPrice,
+        locale,
+      }),
+    });
 
-  await sendSms({
-    number: "+48798582849",
-    message: `New order from Eleven Flowers Studio. Price: ${orderPrice} zł.`,
-  });
+    await sendSms({
+      number: "+48798582849",
+      message: `New order from Eleven Flowers Studio. Price: ${orderPrice} zł.`,
+    });
+  }
 
   return orderId;
 }

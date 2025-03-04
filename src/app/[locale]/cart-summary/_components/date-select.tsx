@@ -40,7 +40,7 @@ export function DateSelect({
           <FormControl>
             <Popover>
               <PopoverTrigger asChild>
-                <div className="flex h-10 w-full cursor-pointer items-center justify-center rounded-full border-2 px-3 text-base text-primary md:text-lg">
+                <div className="flex h-9 w-full cursor-pointer items-center justify-start rounded-full border px-3 text-base text-primary md:text-lg">
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {formatter.format(field.value)}
                 </div>

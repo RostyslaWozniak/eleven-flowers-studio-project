@@ -32,7 +32,6 @@ export async function CollectionsPreviewSection() {
         <div className="scrollbar-hide flex w-full gap-4 overflow-x-scroll px-2.5 xl:grid xl:grid-cols-4 xl:gap-8">
           {collections.map(({ slug, name, imageUrl }, i) => (
             <Link
-              // locale={locale}
               href={`/collections/${slug}`}
               key={i}
               className="group relative grid aspect-square min-w-[300px] place-items-center overflow-hidden"
