@@ -39,7 +39,9 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
   {
     accessorKey: "price",
     header: "Price",
-    cell: ({ row }) => <p>{formatPrice(row.original.totalPrice)}</p>,
+    cell: ({ row }) => (
+      <p>{formatPrice(row.original.totalPrice + row.original.deliveryPrice)}</p>
+    ),
   },
 
   {
