@@ -16,7 +16,9 @@ export default async function Contact({
 
   return (
     <>
-      <ContactSection />
+      <div className="bg-gradient-to-b from-card to-transparent pb-4">
+        <ContactSection />
+      </div>
     </>
   );
 }

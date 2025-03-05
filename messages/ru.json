@@ -272,7 +272,9 @@
       "invalid_postal_code": "Неправильный почтовый индекс.",
       "postal_code_not_deliverable": "Доставка в данном регионе недоступна.",
       "time_must_be_future": "Время должно быть в будущем.",
-      "date_must_be_future": "Дата должна быть в будущем."
+      "date_must_be_future": "Дата должна быть в будущем.",
+      "INTERNAL_SERVER_ERROR": "Внутренняя ошибка сервера. Попробуйте еще раз.",
+      "already_subscribed": "Вы уже подписаны на рассылку."
     },
     "success": {
       "title": "Действие успешно выполнено",

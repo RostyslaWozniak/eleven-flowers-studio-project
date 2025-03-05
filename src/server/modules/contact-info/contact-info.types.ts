@@ -1,9 +1,12 @@
-export type CreateContactInfoSchema = {
-  email: string;
-  name?: string;
-  phone?: string;
-  wantsMarketingEmails?: boolean;
-};
+import type { z } from "zod";
+import type {
+  createContactInfoSchema,
+  updateContactInfoSchema,
+} from "./contact-info.schema";
+
+export type CreateContactInfoSchema = z.infer<typeof createContactInfoSchema>;
+
+export type UpdateContactInfoSchema = z.infer<typeof updateContactInfoSchema>;
 
 export type ContactInfoDTO = {
   id: string;

@@ -19,7 +19,7 @@ export async function isAuth(headers: Headers): Promise<boolean> {
     username === env.ADMIN_USERNAME &&
     (await isValidPassword(password, env.ADMIN_HASHED_PASSWORD))
   ) {
-    (await cookies()).set("admin", authHeader.split(" ")[1] ?? "");
+    (await cookies()).set("token", authHeader.split(" ")[1] ?? "");
     return true;
   }
   return false;

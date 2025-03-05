@@ -33,6 +33,12 @@ export async function generateStaticParams() {
           },
         },
       },
+      take: 10,
+      orderBy: {
+        orderItem: {
+          _count: "desc",
+        },
+      },
     })
     .then((res) =>
       res.map(({ slug, collection }) => ({

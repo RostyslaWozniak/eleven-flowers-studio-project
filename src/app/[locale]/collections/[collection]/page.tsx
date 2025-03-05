@@ -18,6 +18,7 @@ export async function generateStaticParams() {
     select: {
       slug: true,
     },
+    take: 10,
   });
 
   return collections.map(({ slug }) => ({

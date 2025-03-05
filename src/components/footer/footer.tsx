@@ -1,14 +1,11 @@
 import { MaxWidthWrapper } from "../max-width-wrapper";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Logo2 } from "../ui/logo";
 import { Text } from "../ui/typography";
 import Link from "next/link";
-import { Facebook, Linkedin, Twitter } from "lucide-react";
 import { Instagram } from "../ui/icons";
 import { Separator } from "../ui/separator";
 import { useTranslations } from "next-intl";
+import { SubscribeForm } from "./subscribe-form";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -22,57 +19,55 @@ export function Footer() {
             <Logo2 />
           </div>
           <div className="col-span-2 h-full place-items-center md:grid">
-            <div className="space-y-2">
-              <Label>
-                <Text size="lg" variant="muted" className="">
-                  {t("newsletter.label")}
-                </Text>
-              </Label>
-              <form
-                action=""
-                className="flex w-full flex-col items-end gap-3 sm:flex-row"
-              >
-                <Input
-                  type="text"
-                  placeholder={t("newsletter.placeholder")}
-                  className="h-10 flex-grow placeholder:text-primary/70"
-                />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="h-10 w-full border bg-transparent text-base tracking-normal md:w-min"
-                >
-                  {t("newsletter.button")}
-                </Button>
-              </form>
-              <Text size="sm">{t("newsletter.description")}</Text>
-            </div>
+            <SubscribeForm />
           </div>
           <div>
             <Text> {t("links")}</Text>
             <ul className="mt-2">
-              <li className="hover:text-primary hover:underline">
-                <Link href="/">{tNav("home")}</Link>
+              <li>
+                <Link href="/" className="hover:text-primary hover:underline">
+                  {tNav("home")}
+                </Link>
               </li>
-              <li className="hover:text-primary hover:underline">
-                <Link href="/bouquets">{tNav("bouquets")}</Link>
+              <li>
+                <Link
+                  href="/bouquets"
+                  className="hover:text-primary hover:underline"
+                >
+                  {tNav("bouquets")}
+                </Link>
               </li>
-              <li className="hover:text-primary hover:underline">
-                <Link href="/gifts">{tNav("gifts")}</Link>
+              <li>
+                <Link
+                  href="/gifts"
+                  className="hover:text-primary hover:underline"
+                >
+                  {tNav("gifts")}
+                </Link>
               </li>
-              <li className="hover:text-primary hover:underline">
-                <Link href="/contact">{tNav("contact")}</Link>
+              <li>
+                <Link
+                  href="/contact"
+                  className="hover:text-primary hover:underline"
+                >
+                  {tNav("contact")}
+                </Link>
               </li>
             </ul>
           </div>
           <div>
             <Text> {t("socials")}</Text>
-            <div className="mt-2 flex items-start gap-2 text-primary">
-              <Facebook />
-              <Instagram />
-              <Twitter />
-              <Linkedin />
-            </div>
+            <ul className="mt-2 flex items-start gap-2 text-primary">
+              <li>
+                <Link
+                  target="_blank"
+                  href="https://www.instagram.com/eleven_flowers.pl/"
+                  className="hover:text-primary hover:underline"
+                >
+                  <Instagram />
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
         {/* SEPARATOR */}

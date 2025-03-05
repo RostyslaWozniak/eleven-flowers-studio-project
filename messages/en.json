@@ -269,7 +269,9 @@
       "invalid_postal_code": "Invalid postal code format.",
       "postal_code_not_deliverable": "Delivery not available in this area.",
       "time_must_be_future": "Time must be in the future.",
-      "date_must_be_future": "Date must be in the future."
+      "date_must_be_future": "Date must be in the future.",
+      "INTERNAL_SERVER_ERROR": "An internal server error occurred. Please try again.",
+      "already_subscribed": "You are already subscribed."
     },
     "success": {
       "title": "Action completed successfully",

@@ -4,6 +4,7 @@ import { collectionsRouter } from "./collections";
 import { cartRouter } from "./cart";
 import { orderRouter } from "./order";
 import { stripeRouter } from "./stripe";
+import { subscribersRouter } from "./subscribers";
 
 export const publicRouter = createTRPCRouter({
   products: productsRouter,
@@ -11,4 +12,5 @@ export const publicRouter = createTRPCRouter({
   cart: cartRouter,
   order: orderRouter,
   stripe: stripeRouter,
+  subscribers: subscribersRouter,
 });

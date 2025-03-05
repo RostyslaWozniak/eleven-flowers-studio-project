@@ -31,7 +31,7 @@ export function ContactSection({ className }: { className?: string }) {
       label: t("details.address"),
       value: "ul. Nocznickiego 25 lokal u12, 01-948 Warszawa",
       icon: MapPin,
-      href: "https://www.google.com/maps/place/11+Flower+Studio/@52.2444049,20.9796979,17z/data=!4m5!3m4!1s0x471ecb0c5c9b3e6d:0x2a2d2c4e5b7c4e8!8m2!3d52.2444049!4d20.9825866",
+      href: "https://www.google.com/maps/place/Eleven+Flowers+Studio/@52.286502,20.927094,16z/data=!4m6!3m5!1s0x471ecb002f5e760f:0xc77633ae366395b3!8m2!3d52.2865016!4d20.9270936!16s%2Fg%2F11y9cxyws_?hl=en&entry=ttu&g_ep=EgoyMDI1MDMwMi4wIKXMDSoASAFQAw%3D%3D",
       target: "_blank",
     },
     {

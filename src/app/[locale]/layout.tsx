@@ -123,7 +123,17 @@ export default async function RootLayout({
             </Suspense>
           </CartProvider>
           <Suspense fallback={null}>
-            <Toaster />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                classNames: {
+                  error: "bg-destructive text-destructive-foreground",
+                  success: "bg-emerald-500 text-white",
+                  warning: "text-yellow-400",
+                  info: "bg-blue-400 text-white",
+                },
+              }}
+            />
           </Suspense>
         </Providers>
       </body>

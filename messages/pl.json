@@ -271,7 +271,9 @@
       "invalid_postal_code": "Kod pocztowy jest niepoprawny.",
       "postal_code_not_deliverable": "Dostawa w danym regionie niedostępna.",
       "time_must_be_future": "Czas musi być w przyszłości.",
-      "date_must_be_future": "Data musi być w przyszłości."
+      "date_must_be_future": "Data musi być w przyszłości.",
+      "INTERNAL_SERVER_ERROR": "Wewnętrzna bład serwera. Sprobuj ponownie.",
+      "already_subscribed": "Juz jestes subskrybentem."
     },
     "success": {
       "title": "Akcja zakończyła się sukcesem.",

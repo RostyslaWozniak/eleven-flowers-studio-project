@@ -22,7 +22,7 @@ export const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 export const adminMiddleware = t.middleware(async ({ ctx, next }) => {
-  const cookiesValue = getCookieValue(ctx.req, "admin");
+  const cookiesValue = getCookieValue(ctx.req, "token");
   const authorization =
     ctx.resHeaders.get("Authorization")?.split(" ")[1] ??
     ctx.resHeaders.get("authorization")?.split(" ")[1] ??

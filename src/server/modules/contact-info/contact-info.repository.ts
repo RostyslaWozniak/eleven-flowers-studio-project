@@ -1,6 +1,9 @@
 import { db } from "@/server/db";
 import { ContactInfoQueries } from "./contact-info.queries";
-import type { CreateContactInfoSchema } from "./contact-info.types";
+import type {
+  CreateContactInfoSchema,
+  UpdateContactInfoSchema,
+} from "./contact-info.types";
 
 export class ContactInfoRepository {
   public static findByEmail = async (email: string) => {
@@ -23,6 +26,16 @@ export class ContactInfoRepository {
   public static create = async (input: CreateContactInfoSchema) => {
     return await db.contactInfo.create({
       data: input,
+    });
+  };
+
+  public static update = async (input: UpdateContactInfoSchema) => {
+    const { id, ...data } = input;
+    return await db.contactInfo.update({
+      where: {
+        id,
+      },
+      data,
     });
   };
 }
