@@ -296,5 +296,10 @@
       "appreciation": "Dziękujemy za zaufanie i wybór naszego sklepu!",
       "copyright": "Wszelkie prawa zastrzeżone."
     }
+  },
+  "cookies": {
+    "title": "Polityka ciasteczek",
+    "description": "Ta strona używa plików cookie, aby poprawić Twoje doświadczenia. Korzystając z naszej strony internetowej, wyrażasz zgodę na używanie plików cookie.",
+    "button": "Ok"
   }
 }

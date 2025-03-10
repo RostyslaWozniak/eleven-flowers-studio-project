@@ -294,5 +294,10 @@
       "appreciation": "We sincerely appreciate your business and thank you for choosing our store!",
       "copyright": "All rights reserved."
     }
+  },
+  "cookies": {
+    "title": "Cookies Policy",
+    "description": "This website uses cookies to improve your experience. By using our website, you consent to the use of cookies.",
+    "button": "Ok"
   }
 }
