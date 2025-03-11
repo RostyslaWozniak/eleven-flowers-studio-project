@@ -16,26 +16,24 @@ export async function isAuth(headers: Headers): Promise<boolean> {
 
   if (!username || !password) return false;
   if (
-    username === env.ADMIN_USERNAME &&
-    (await isValidPassword(password, env.ADMIN_HASHED_PASSWORD))
+    (await isValidHash(username, env.ADMIN_HASHED_USERNAME)) &&
+    (await isValidHash(password, env.ADMIN_HASHED_PASSWORD))
   ) {
     (await cookies()).set("token", authHeader.split(" ")[1] ?? "");
     return true;
   } else {
-    const hashedPassword = await hashPassword(password);
-    console.error({ username, hashedPassword });
+    const hashedUsername = await hashString(username);
+    const hashedPassword = await hashString(password);
+    console.error({ username: hashedUsername, password: hashedPassword });
   }
   return false;
 }
 
-export async function isValidPassword(
-  password: string,
-  hashedPassword: string,
-) {
-  return (await hashPassword(password)) === hashedPassword;
+export async function isValidHash(password: string, hashedPassword: string) {
+  return (await hashString(password)) === hashedPassword;
 }
 
-async function hashPassword(password: string) {
+async function hashString(password: string) {
   const arrayBuffer = await crypto.subtle.digest(
     "SHA-512",
     new TextEncoder().encode(password),

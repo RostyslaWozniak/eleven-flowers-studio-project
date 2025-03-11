@@ -1,5 +1,5 @@
 import { env } from "@/env";
-import { isValidPassword } from "./index";
+import { isValidHash } from "./index";
 
 export async function validateAdmin(authHeader: string | null) {
   if (!authHeader) return false;
@@ -8,8 +8,8 @@ export async function validateAdmin(authHeader: string | null) {
     .split(":");
   if (!username || !password) return false;
   if (
-    username === env.ADMIN_USERNAME &&
-    (await isValidPassword(password, env.ADMIN_HASHED_PASSWORD))
+    (await isValidHash(username, env.ADMIN_HASHED_USERNAME)) &&
+    (await isValidHash(password, env.ADMIN_HASHED_PASSWORD))
   ) {
     return true;
   }
