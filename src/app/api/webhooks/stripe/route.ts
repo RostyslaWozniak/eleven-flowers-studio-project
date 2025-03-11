@@ -6,7 +6,7 @@ import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { validateLang } from "@/lib/utils";
 import { db } from "@/server/db";
 import { sendEmail } from "@/services/resend";
-// import { sendSms } from "@/services/twilio";
+import { sendSms } from "@/services/twilio";
 import { type NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -88,10 +88,10 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
       }),
     });
 
-    // await sendSms({
-    //   number: "+48798582849",
-    //   message: `New order from Eleven Flowers Studio. Price: ${orderPrice} zł.`,
-    // });
+    await sendSms({
+      number: env.RECEIVE_SMS_NUMBER,
+      message: `New order from Eleven Flowers Studio. Price: ${orderPrice} zł.`,
+    });
   }
 
   return orderId;
