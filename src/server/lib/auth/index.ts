@@ -22,7 +22,8 @@ export async function isAuth(headers: Headers): Promise<boolean> {
     (await cookies()).set("token", authHeader.split(" ")[1] ?? "");
     return true;
   } else {
-    console.error({ username, password });
+    const hashedPassword = await hashPassword(password);
+    console.error({ username, hashedPassword });
   }
   return false;
 }
