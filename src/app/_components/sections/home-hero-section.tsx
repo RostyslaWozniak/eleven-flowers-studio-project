@@ -59,7 +59,7 @@ export function HomeHeroSection() {
       </MaxWidthWrapper>
       <div className="relative md:hidden">
         <Image
-          className="w-auto"
+          className="w-full"
           priority
           src="/images/hero-mobile.jpg"
           alt="Eleven Flowers Studio"

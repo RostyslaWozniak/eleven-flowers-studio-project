@@ -42,7 +42,7 @@ export function ProductImageGallery({
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative aspect-square h-full cursor-pointer border-2 border-transparent"
+            className="relative aspect-square h-full cursor-pointer overflow-hidden border-2 border-transparent"
             onClick={() => changeImage(index)}
           >
             {index === activeImageIndex && (

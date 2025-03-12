@@ -13,8 +13,6 @@ import { setRequestLocale } from "next-intl/server";
 
 export const dynamic = "force-static";
 
-export const revalidate = 86400; // 1 day
-
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
