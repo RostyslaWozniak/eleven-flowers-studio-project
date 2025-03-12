@@ -53,6 +53,9 @@ export async function generateMetadata({
       description:
         collection.description ??
         `${t("metadata.title")} - ${t("metadata.description")}`,
+      openGraph: {
+        images: collection.imageUrl,
+      },
     };
   } catch {
     return {

@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { H1, H2, Text } from "@/components/ui/typography";
 import { Link } from "@/i18n/routing";
 import { validateLang } from "@/lib/utils";
+import { api } from "@/trpc/server";
 import { ArrowRight } from "lucide-react";
 import { type Metadata } from "next";
 import { useTranslations } from "next-intl";
@@ -24,6 +25,8 @@ export const generateMetadata = async ({
   const { locale } = await params;
   const lang = validateLang(locale);
 
+  const collections = await api.public.collections.getAll({});
+
   const t = await getTranslations({
     locale: lang,
     namespace: "collection_page",
@@ -31,6 +34,9 @@ export const generateMetadata = async ({
   return {
     title: t("metadata.title"),
     description: t("metadata.description"),
+    openGraph: {
+      images: collections.map((collection) => collection.imageUrl),
+    },
   };
 };
 
