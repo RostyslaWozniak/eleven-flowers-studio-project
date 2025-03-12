@@ -1,20 +1,12 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { H2, H3, Text } from "@/components/ui/typography";
+import { H2, Text } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
-import Image from "next/image";
 
-import { api } from "@/trpc/server";
+import { CollectionsPreview } from "@/components/collections-preview";
 
 export async function CollectionsPreviewSection() {
   const t = await getTranslations("home.collections");
-
-  const collections = await api.public.collections.getAll({
-    take: 4,
-    order: "desc",
-    orderBy: "updatedAt",
-  });
 
   return (
     <section className="w-full pt-12 lg:pt-20">
@@ -29,30 +21,8 @@ export async function CollectionsPreviewSection() {
             {t("subtitle")}
           </Text>
         </div>
-        <div className="scrollbar-hide flex w-full gap-4 overflow-x-scroll px-2.5 xl:grid xl:grid-cols-4 xl:gap-8">
-          {collections.map(({ slug, name, imageUrl }, i) => (
-            <Link
-              href={`/collections/${slug}`}
-              key={i}
-              className="group relative grid aspect-square min-w-[300px] place-items-center overflow-hidden"
-            >
-              <Image
-                fill
-                priority
-                sizes="(min-width: 1400px) 321px, 296px"
-                src={imageUrl}
-                alt="image of collection"
-                className="absolute object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
-              />
+        <CollectionsPreview take={4} />
 
-              <H3 className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-nowrap capitalize text-background lg:text-4xl">
-                {name}
-              </H3>
-
-              <div className="absolute inset-0 z-10 backdrop-brightness-90 duration-300 ease-in-out group-hover:backdrop-brightness-75"></div>
-            </Link>
-          ))}
-        </div>
         <div className="mx-auto max-w-[1400px] px-2.5">
           <Separator />
         </div>

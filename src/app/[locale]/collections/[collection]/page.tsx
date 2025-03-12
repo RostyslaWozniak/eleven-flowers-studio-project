@@ -11,7 +11,7 @@ const PRODUCTS_PER_PAGE = 12;
 
 export const dynamic = "force-static";
 
-export const revalidate = 86400; // 1 day
+export const revalidate = 604800; // 7 days
 
 export async function generateStaticParams() {
   const collections = await db.collection.findMany({

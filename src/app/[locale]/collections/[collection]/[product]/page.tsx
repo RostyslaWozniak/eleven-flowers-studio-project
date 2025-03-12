@@ -17,7 +17,7 @@ import { $Enums } from "@prisma/client";
 
 export const dynamic = "force-static";
 
-export const revalidate = 86400; // 1 day
+export const revalidate = 604800; // 7 days
 
 export async function generateStaticParams() {
   const products = await db.product

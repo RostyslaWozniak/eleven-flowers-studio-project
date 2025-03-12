@@ -27,9 +27,9 @@ export function ProductImageGallery({
       <div className="">
         <div className="relative aspect-square lg:h-full">
           <Image
-            fill
             priority
-            sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 500px"}
+            width={800}
+            height={800}
             src={
               images[activeImageIndex]?.url ?? "/images/bouquet-placeholder.jpg"
             }
@@ -51,13 +51,12 @@ export function ProductImageGallery({
               </div>
             )}
             <Image
-              fill
               priority
-              sizes={"(max-width: 768px) 200px, (max-width: 1200px) 100px"}
+              width={100}
+              height={100}
               src={image.url ?? "/images/bouquet-placeholder.svg"}
               alt={`${image.alt} - View ${index + 1}`}
               className="bg-slate-100 object-cover"
-              blurDataURL="/images/bouquet-placeholder.svg"
             />
           </div>
         ))}

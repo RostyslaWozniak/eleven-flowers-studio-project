@@ -11,6 +11,7 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: "https",
@@ -19,6 +20,17 @@ const config = {
       },
     ],
   },
+  headers: async () => [
+    {
+      source: "/_next/image",
+      headers: [
+        {
+          key: "Cache-Control",
+          value: "public, max-age=31536000, immutable", // Strong cache rules
+        },
+      ],
+    },
+  ],
 };
 
 export default withNextIntl(config);

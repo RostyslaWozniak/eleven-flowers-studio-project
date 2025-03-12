@@ -48,10 +48,10 @@ export function HomeHeroSection() {
         </div>
         <div className="relative h-[600px] min-w-[500px] overflow-hidden rounded-sm">
           <Image
-            fill
             priority
-            sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 500px"}
-            className="z-10 w-auto min-w-[500px] rounded-sm bg-slate-100 object-cover"
+            width={500}
+            height={600}
+            className="z-10 h-auto min-w-[500px] rounded-sm bg-slate-100 object-cover"
             src="/images/hero.png"
             alt="Eleven Flowers Studio"
           />
@@ -59,6 +59,7 @@ export function HomeHeroSection() {
       </MaxWidthWrapper>
       <div className="relative md:hidden">
         <Image
+          className="w-auto"
           priority
           src="/images/hero-mobile.jpg"
           alt="Eleven Flowers Studio"

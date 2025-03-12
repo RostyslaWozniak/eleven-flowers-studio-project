@@ -1,10 +1,11 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import { H3, Text } from "@/components/ui/typography";
 import { Badge } from "../ui/badge";
 import { capitalizeString, cn, formatPrice } from "@/lib/utils";
 import { type ProductDTO } from "@/types";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export function ProductCard({
   product,
@@ -41,12 +42,12 @@ export function ProductCard({
           <div className="relative flex h-full flex-col">
             <div className="relative aspect-[5/6] overflow-hidden">
               <Image
-                className="object-cover"
+                className="w-auto object-cover"
                 src={product.images[0] ?? "/images/bouquet-placeholder.jpg"}
                 alt={product.name}
-                sizes="(min-width: 1500px) 333px, (min-width: 1040px) calc(20.45vw + 30px), (min-width: 640px) calc(33.42vw - 18px), calc(50vw - 18px)"
+                width={300}
+                height={400}
                 priority
-                fill
               />
               <div className="absolute inset-0 -z-10 animate-pulse bg-secondary"></div>
             </div>

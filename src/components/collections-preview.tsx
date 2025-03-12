@@ -16,12 +16,12 @@ export async function CollectionsPreview({ take = 4 }: { take?: number }) {
           className="group relative grid aspect-square min-w-[300px] place-items-center overflow-hidden"
         >
           <Image
-            fill
             priority
-            sizes="(min-width: 1400px) 321px, 296px"
+            width={300}
+            height={400}
             src={imageUrl}
             alt={name}
-            className="absolute object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+            className="absolute w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
           />
 
           <H3 className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-nowrap capitalize text-background lg:text-4xl">
