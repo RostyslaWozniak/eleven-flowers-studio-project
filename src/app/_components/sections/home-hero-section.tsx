@@ -52,7 +52,7 @@ export function HomeHeroSection() {
             width={500}
             height={600}
             className="z-10 h-auto min-w-[500px] rounded-sm bg-slate-100 object-cover"
-            src="/images/hero.png"
+            src="/images/hero.jpg"
             alt="Eleven Flowers Studio"
           />
         </div>

@@ -65,6 +65,7 @@ export async function generateMetadata({
     openGraph: {
       url: "./",
       type: "website",
+      images: "./opengraph-image.jpg",
     },
   };
 }
@@ -98,7 +99,7 @@ export default async function RootLayout({
     "@type": "WebSite",
     url: "./",
     name: t("title"),
-    image: "./opengraph-image.png",
+    image: "./opengraph-image.jpg",
     description: t("description"),
   };
 

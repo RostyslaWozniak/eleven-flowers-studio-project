@@ -71,7 +71,7 @@ export function BenefitsSection() {
         ))}
       </div>
 
-      <div className="hidden items-start justify-center gap-4 py-4 md:flex">
+      <div className="hidden items-start justify-center gap-4 py-4 xl:flex">
         {benefits.slice(3, 7).map(({ title, description, icon: Icon }, i) => (
           <div
             key={i}
