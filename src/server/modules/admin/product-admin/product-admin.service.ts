@@ -3,15 +3,16 @@ import { ProductAdminRepository } from "./product-admin.repository";
 import type {
   ProductAdminDTO,
   ProductAdminFromDb,
+  ProductAdminGetAllSchema,
 } from "./product-admin.types";
 import { CollectionAdminService } from "../collection-admin/collection-admin.service";
 import { type $Enums } from "@prisma/client";
 
 export class ProductAdminService {
-  public static getAllWithCount = async () => {
+  public static getAllWithCount = async (input: ProductAdminGetAllSchema) => {
     const productsCount = await this.getCount();
 
-    const products = await this.getAll();
+    const products = await this.getAll(input);
 
     return { products, productsCount };
   };
@@ -77,8 +78,8 @@ export class ProductAdminService {
     return await ProductAdminRepository.delete(id);
   };
 
-  public static getAll = async () => {
-    const products = await ProductAdminRepository.findAll();
+  public static getAll = async (input: ProductAdminGetAllSchema) => {
+    const products = await ProductAdminRepository.findAll(input);
 
     return this.mapAllToDto(products);
   };

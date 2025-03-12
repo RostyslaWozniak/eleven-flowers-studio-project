@@ -5,12 +5,14 @@ import { createTRPCRouter } from "@/server/trpc";
 import { adminProcedure } from "@/server/trpc/procedures";
 
 export const productsRouter = createTRPCRouter({
-  getAll: adminProcedure.query(
-    async (): Promise<{
+  getAll: adminProcedure.input(ProductAdminSchema.getAll).query(
+    async ({
+      input,
+    }): Promise<{
       products: ProductAdminDTO[];
       productsCount: number;
     }> => {
-      return await ProductAdminService.getAllWithCount();
+      return await ProductAdminService.getAllWithCount(input);
     },
   ),
 

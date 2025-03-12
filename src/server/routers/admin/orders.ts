@@ -4,9 +4,11 @@ import { createTRPCRouter } from "@/server/trpc";
 import { adminProcedure } from "@/server/trpc/procedures";
 
 export const ordersRouter = createTRPCRouter({
-  getAll: adminProcedure.query(async ({}) => {
-    return await OrderAdminService.getAll();
-  }),
+  getAll: adminProcedure
+    .input(OrderAdminSchema.getAll)
+    .query(async ({ input }) => {
+      return await OrderAdminService.getAll(input);
+    }),
 
   delete: adminProcedure
     .input(OrderAdminSchema.delete)

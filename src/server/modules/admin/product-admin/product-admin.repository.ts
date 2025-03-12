@@ -2,6 +2,7 @@ import { db } from "@/server/db";
 import type {
   CreateProductRepository,
   ProductAdminFromDb,
+  ProductAdminGetAllSchema,
 } from "./product-admin.types";
 import { ProductAdminQueries } from "./product-admin.queries";
 import type { Prisma, Product } from "@prisma/client";
@@ -46,10 +47,15 @@ export class ProductAdminRepository {
     return await db.product.count();
   }
 
-  public static async findAll(): Promise<ProductAdminFromDb[]> {
+  public static async findAll({
+    take,
+    skip,
+  }: ProductAdminGetAllSchema): Promise<ProductAdminFromDb[]> {
     return db.product.findMany({
       select: ProductAdminQueries.selectFields({ locale: "en" }),
       orderBy: { createdAt: "desc" },
+      take,
+      skip,
     });
   }
 

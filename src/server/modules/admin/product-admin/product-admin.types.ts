@@ -1,5 +1,7 @@
 import type { $Enums, Prisma } from "@prisma/client";
 import type { ProductAdminQueries } from "./product-admin.queries";
+import type { z } from "zod";
+import type { ProductAdminSchema } from "./product-admin.schema";
 
 export type ProductAdminFromDb = Prisma.ProductGetPayload<{
   select: ReturnType<typeof ProductAdminQueries.selectFields>;
@@ -38,3 +40,7 @@ export type CreateProductRepository = {
     url: string;
   }[];
 };
+
+export type ProductAdminGetAllSchema = z.infer<
+  typeof ProductAdminSchema.getAll
+>;
