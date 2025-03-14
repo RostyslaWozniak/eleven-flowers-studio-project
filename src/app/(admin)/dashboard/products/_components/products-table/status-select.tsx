@@ -8,7 +8,7 @@ import {
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { type $Enums } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const statusConfig: Record<$Enums.ProductStatus, { color: string }> = {
   AVAILABLE: { color: "bg-green-500" },
@@ -35,10 +35,15 @@ export function StatusSelect({
     setActiveStatus(e as $Enums.ProductStatus);
     changeStatus({ id, status: e as $Enums.ProductStatus });
   };
+
+  useEffect(() => {
+    setActiveStatus(status);
+  }, [status]);
   return (
     <Select
       disabled={isChanging}
       defaultValue={activeStatus}
+      value={activeStatus}
       onValueChange={handleChange}
     >
       <SelectTrigger className="w-[170px] min-w-[170px]">
