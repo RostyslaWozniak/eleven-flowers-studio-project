@@ -1,4 +1,3 @@
-import { db } from "@/server/db";
 import { ProductsGrid } from "@/components/products-grid";
 import { CollectionsSection, ContactSection } from "@/app/_components/sections";
 import { api } from "@/trpc/server";
@@ -6,43 +5,44 @@ import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { getTranslations } from "next-intl/server";
 import { capitalizeString } from "@/lib/utils";
 import { PagePagination } from "@/components/page-pagination";
-import { $Enums } from "@prisma/client";
+// import { $Enums } from "@prisma/client";
+// import { db } from "@/server/db";
 
 const PRODUCTS_PER_PAGE = 12;
 
 export const dynamic = "force-static";
 
-export const revalidate = 604800; // 7 days
+// export const revalidate = 604800; // 7 days
 
-export async function generateStaticParams() {
-  const collections = await db.collection.findMany({
-    select: {
-      slug: true,
-    },
-    take: 10,
-  });
+// export async function generateStaticParams() {
+//   const collections = await db.collection.findMany({
+//     select: {
+//       slug: true,
+//     },
+//     take: 10,
+//   });
 
-  return (
-    await Promise.all(
-      collections.map(async ({ slug }) => {
-        const productsCount = await db.product.count({
-          where: {
-            collection: {
-              slug,
-            },
-            status: $Enums.ProductStatus.AVAILABLE,
-          },
-        });
-        const totalPages = Math.ceil(productsCount / PRODUCTS_PER_PAGE);
+//   return (
+//     await Promise.all(
+//       collections.map(async ({ slug }) => {
+//         const productsCount = await db.product.count({
+//           where: {
+//             collection: {
+//               slug,
+//             },
+//             status: $Enums.ProductStatus.AVAILABLE,
+//           },
+//         });
+//         const totalPages = Math.ceil(productsCount / PRODUCTS_PER_PAGE);
 
-        return Array.from({ length: totalPages }, (_, index) => ({
-          collection: slug,
-          page: (index + 1).toString(), // Convert page number to string
-        }));
-      }),
-    )
-  ).flat();
-}
+//         return Array.from({ length: totalPages }, (_, index) => ({
+//           collection: slug,
+//           page: (index + 1).toString(), // Convert page number to string
+//         }));
+//       }),
+//     )
+//   ).flat();
+// }
 
 export async function generateMetadata({
   params,

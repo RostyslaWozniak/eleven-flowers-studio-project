@@ -12,42 +12,42 @@ import { buttonVariants } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { api } from "@/trpc/server";
 import { useTranslations } from "next-intl";
-import { db } from "@/server/db";
-import { $Enums } from "@prisma/client";
+// import { db } from "@/server/db";
+// import { $Enums } from "@prisma/client";
 
 export const dynamic = "force-static";
 
-export const revalidate = 604800; // 7 days
+// export const revalidate = 604800; // 7 days
 
-export async function generateStaticParams() {
-  const products = await db.product
-    .findMany({
-      where: {
-        status: $Enums.ProductStatus.AVAILABLE,
-      },
-      select: {
-        slug: true,
-        collection: {
-          select: {
-            slug: true,
-          },
-        },
-      },
-      take: 10,
-      orderBy: {
-        orderItem: {
-          _count: "desc",
-        },
-      },
-    })
-    .then((res) =>
-      res.map(({ slug, collection }) => ({
-        product: slug,
-        collection: collection?.slug,
-      })),
-    );
-  return products;
-}
+// export async function generateStaticParams() {
+//   const products = await db.product
+//     .findMany({
+//       where: {
+//         status: $Enums.ProductStatus.AVAILABLE,
+//       },
+//       select: {
+//         slug: true,
+//         collection: {
+//           select: {
+//             slug: true,
+//           },
+//         },
+//       },
+//       take: 10,
+//       orderBy: {
+//         orderItem: {
+//           _count: "desc",
+//         },
+//       },
+//     })
+//     .then((res) =>
+//       res.map(({ slug, collection }) => ({
+//         product: slug,
+//         collection: collection?.slug,
+//       })),
+//     );
+//   return products;
+// }
 
 export async function generateMetadata({
   params,

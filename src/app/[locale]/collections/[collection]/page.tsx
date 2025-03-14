@@ -1,4 +1,3 @@
-import { db } from "@/server/db";
 import { ProductsGrid } from "@/components/products-grid";
 import { CollectionsSection, ContactSection } from "@/app/_components/sections";
 import { api } from "@/trpc/server";
@@ -6,25 +5,26 @@ import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { getTranslations } from "next-intl/server";
 import { capitalizeString, validateLang } from "@/lib/utils";
 import { PagePagination } from "@/components/page-pagination";
+// import { db } from "@/server/db";
 
 const PRODUCTS_PER_PAGE = 12;
 
 export const dynamic = "force-static";
 
-export const revalidate = 604800; // 7 days
+// export const revalidate = 604800; // 7 days
 
-export async function generateStaticParams() {
-  const collections = await db.collection.findMany({
-    select: {
-      slug: true,
-    },
-    take: 10,
-  });
+// export async function generateStaticParams() {
+//   const collections = await db.collection.findMany({
+//     select: {
+//       slug: true,
+//     },
+//     take: 10,
+//   });
 
-  return collections.map(({ slug }) => ({
-    collection: slug,
-  }));
-}
+//   return collections.map(({ slug }) => ({
+//     collection: slug,
+//   }));
+// }
 
 export async function generateMetadata({
   params,

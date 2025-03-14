@@ -33,7 +33,11 @@ export class ProductRepository {
           price: order,
         },
       },
-
+      where: {
+        product: {
+          status: "AVAILABLE",
+        },
+      },
       take,
       skip,
     });
@@ -112,7 +116,7 @@ export class ProductRepository {
     locale: Locale,
   ): Promise<ProductFromDb | null> {
     return await db.product.findUnique({
-      where: { id },
+      where: { id, status: "AVAILABLE" },
       select: ProductQueries.selectFields({ locale }),
     });
   }
@@ -135,7 +139,7 @@ export class ProductRepository {
     locale: Locale,
   ): Promise<ProductFromDb | null> {
     return db.product.findUnique({
-      where: { slug },
+      where: { slug, status: "AVAILABLE" },
       select: ProductQueries.selectFields({ locale }),
     });
   }

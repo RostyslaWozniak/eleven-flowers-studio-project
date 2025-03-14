@@ -8,18 +8,17 @@ import { setRequestLocale } from "next-intl/server";
 
 export const dynamic = "force-static";
 
-export const revalidate = 604800; // 7 days
-
 const PRODUCTS_PER_PAGE = 12;
+// export const revalidate = 604800; // 7 days
 
-export const generateStaticParams = async () => {
-  return [
-    { sort: "new" },
-    { sort: "popular" },
-    { sort: "price-desc" },
-    { sort: "price-asc" },
-  ];
-};
+// export const generateStaticParams = async () => {
+//   return [
+//     { sort: "new" },
+//     { sort: "popular" },
+//     { sort: "price-desc" },
+//     { sort: "price-asc" },
+//   ];
+// };
 
 export default async function Page({
   searchParams,

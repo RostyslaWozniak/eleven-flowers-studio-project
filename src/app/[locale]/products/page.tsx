@@ -6,7 +6,7 @@ import { setRequestLocale } from "next-intl/server";
 
 export const dynamic = "force-static";
 
-export const revalidate = 86400; // 1 day
+// export const revalidate = 86400; // 1 day
 
 const PRODUCTS_PER_PAGE = 12;
 

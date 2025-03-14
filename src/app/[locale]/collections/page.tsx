@@ -15,7 +15,7 @@ import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-static";
 
-export const revalidate = 604800; // 7 days
+// export const revalidate = 604800; // 7 days
 
 export const generateMetadata = async ({
   params,
