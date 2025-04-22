@@ -36,7 +36,7 @@ export type OrderingFormControl = Control<{
   date: Date;
   time: "10:00-13:00" | "13:00-17:00" | "17:00-20:00";
   name?: string | undefined;
-  phone?: string | undefined;
+  phone: string;
   description?: string | undefined;
 }>;
 
