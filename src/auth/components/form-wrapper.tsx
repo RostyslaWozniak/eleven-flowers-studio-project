@@ -1,3 +1,8 @@
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { HomeIcon } from "lucide-react";
+import Link from "next/link";
+
 type FormContainerProps = {
   children: React.ReactNode;
   title: string;
@@ -29,7 +34,26 @@ export const FormContainer = ({
             </p>
           )}
         </div>
-        <div>{children}</div>
+        <div>
+          {children}
+          <div className="my-6 flex items-center">
+            <span className="h-px flex-1 bg-muted-foreground" />
+            <span className="px-2 text-muted-foreground">or</span>
+            <span className="h-px flex-1 bg-muted-foreground" />
+          </div>
+          <div className="flex items-center justify-center">
+            <Link
+              href="/"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "w-full italic text-primary hover:underline",
+              )}
+            >
+              <HomeIcon className="mr-2 min-h-5 min-w-5" />
+              Go to home page
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
