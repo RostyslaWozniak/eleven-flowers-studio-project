@@ -1,12 +1,11 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { buttonVariants } from "@/components/ui/button";
-import { GoogleStars } from "@/components/ui/icons";
-import { GoogleLogo } from "@/components/ui/icons/google-logo";
 import { H1, Text } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { GoogleStars } from "../google-stars";
 
 export function HomeHeroSection() {
   const t = useTranslations("home.hero");
@@ -24,13 +23,7 @@ export function HomeHeroSection() {
               {t("subtitle")}
             </Text>
           </div>
-          <div className="flex items-center gap-3">
-            <GoogleStars className="opacity-8=90 hidden lg:flex" />
-            <Text size="lg" className="font-bold">
-              5 Stars on
-            </Text>
-            <GoogleLogo />
-          </div>
+          <GoogleStars />
           <div className="flex items-center gap-8">
             <Link
               href="/products/new"

@@ -7,25 +7,25 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { GoogleStars } from "@/components/ui/icons";
-import { GoogleLogo } from "@/components/ui/icons/google-logo";
+import { GoogleStars as GoogleStarsIcon } from "@/components/ui/icons";
 import { Separator } from "@/components/ui/separator";
 import { H2, Text } from "@/components/ui/typography";
-import { testemonials } from "@/data/testemonials";
-import { useTranslations } from "next-intl";
+import { GoogleStars } from "../google-stars";
+import { getTranslations } from "next-intl/server";
+import { api } from "@/trpc/server";
+import { Avatar } from "@/components/custom-ui/avatar";
 
-export function TestemonialsSection() {
-  const t = useTranslations("home.testimonials");
+export async function TestemonialsSection() {
+  const t = await getTranslations("home.testimonials");
+
+  const testemonialsData = await api.public.google.getTestmonials();
 
   return (
     <section className="relative w-full overflow-hidden pt-12 lg:pt-20">
       <MaxWidthWrapper>
         <div className="flex flex-col items-center">
-          <div className="flex items-center gap-3">
-            <GoogleStars className="hidden lg:flex" />
-            <Text size="lg">5 Stars on</Text>
-            <GoogleLogo />
-          </div>
+          <GoogleStars />
+
           <H2>{t("title")}</H2>
           <Text
             size="subtitle"
@@ -46,20 +46,24 @@ export function TestemonialsSection() {
             className="relative flex select-none items-start gap-10 py-16 pb-32"
           >
             <CarouselContent>
-              {testemonials.slice(0, 5).map(({ review, name }, i) => (
+              {testemonialsData.reviews.map(({ text, name, photo }, i) => (
                 <CarouselItem
                   key={i}
                   className="max-w-[450px] cursor-grab active:cursor-grabbing lg:basis-1/3"
                 >
                   <div className="space-y-2 rounded-sm border shadow-lg lg:px-8 lg:py-6">
-                    <GoogleStars />
-                    <Text>{review}</Text>
                     <div className="mt-6 flex items-center gap-x-4">
-                      <div className="rounded-full border-2 border-primary/70 p-2">
-                        <GoogleLogo />
+                      <Avatar photo={photo} name={name} />
+                      <div>
+                        <Text size="lg" className="pl-2">
+                          {name}
+                        </Text>
+                        <GoogleStarsIcon />
                       </div>
-                      <Text size="lg">{name}</Text>
                     </div>
+
+                    {/* <ExpandedText lines={4}>{text}</ExpandedText> */}
+                    <Text>{text}</Text>
                   </div>
                 </CarouselItem>
               ))}
@@ -73,18 +77,22 @@ export function TestemonialsSection() {
         {/* MOBILE */}
         <div className="py-14 lg:hidden">
           <MobileCarousel className="select-none">
-            {testemonials.slice(0, 5).map(({ review, name }, i) => (
+            {testemonialsData.reviews.map(({ text, name, photo }, i) => (
               <CarouselItem
                 key={i}
                 className="basis-[88%] cursor-grab active:cursor-grabbing sm:basis-1/2 md:basis-1/3"
               >
-                <div className="space-y-2 rounded-sm border px-4 py-3 shadow-lg">
-                  <GoogleStars />
-                  <Text>{review}</Text>
+                <div className="space-y-2 rounded-sm border px-4 pb-6 shadow-lg">
                   <div className="mt-6 flex items-center gap-x-4">
-                    <GoogleLogo />
-                    <Text size="lg">{name}</Text>
+                    <Avatar photo={photo} name={name} />
+                    <div>
+                      <Text size="lg" className="pl-2">
+                        {name}
+                      </Text>
+                      <GoogleStarsIcon />
+                    </div>
                   </div>
+                  <Text>{text}</Text>
                 </div>
               </CarouselItem>
             ))}

@@ -22,6 +22,8 @@ export const env = createEnv({
     RESEND_FROM_NAME: z.string().min(1),
     UPLOADTHING_SECRET: z.string().min(1),
     UPLOADTHING_TOKEN: z.string().min(1),
+    GOOGLE_API_KEY: z.string().min(1),
+    GOOGLE_PLACE_ID: z.string().min(1),
   },
 
   client: {
@@ -52,6 +54,8 @@ export const env = createEnv({
     RESEND_FROM_NAME: process.env.RESEND_FROM_NAME,
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
+    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+    GOOGLE_PLACE_ID: process.env.GOOGLE_PLACE_ID,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 
