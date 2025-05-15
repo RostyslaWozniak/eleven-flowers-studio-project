@@ -4,28 +4,28 @@ import { getTranslations } from "next-intl/server";
 import RightNavPanel from "./right-nav-panel";
 import { Link, type Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import {
-  EnvironmentBanner,
-  IS_LOCAL_PROJECT,
-  IS_TEST_PROJECT,
-} from "../environment-banner";
+// import {
+//   EnvironmentBanner,
+//   IS_LOCAL_PROJECT,
+//   IS_TEST_PROJECT,
+// } from "../environment-banner";
 
 export async function NavBar({ locale }: { locale: Locale }) {
   const t = await getTranslations({ namespace: "navigation", locale: locale });
 
   return (
     <>
-      <EnvironmentBanner />
+      {/* <EnvironmentBanner /> */}
       <header
         className={cn(
           "inset-x-0 top-0 z-50 w-screen bg-background/70 shadow-md shadow-foreground/20 backdrop-blur-sm md:sticky",
-          {
-            "top-10": IS_TEST_PROJECT || IS_LOCAL_PROJECT,
-          },
+          // {
+          //   "top-10": IS_TEST_PROJECT || IS_LOCAL_PROJECT,
+          // },
         )}
       >
         <div className="mx-auto max-w-[1400px]">
-          <div className="flex h-16 items-center justify-between px-2">
+          <div className="flex h-14 items-center justify-between px-2">
             <Link
               href="/"
               locale={locale}
@@ -36,13 +36,13 @@ export async function NavBar({ locale }: { locale: Locale }) {
 
             <nav className="itens-center hidden w-full md:flex">
               <div className="flex h-full flex-grow justify-center">
-                <ul className="flex h-16">
+                <ul className="flex h-14">
                   <li>
                     <NavItem href="/">
                       <Link
                         href="/"
                         locale={locale}
-                        className="flex h-full items-center px-4"
+                        className="flex h-full items-center px-6"
                       >
                         {t("home")}
                       </Link>

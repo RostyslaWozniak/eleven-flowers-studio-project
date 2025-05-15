@@ -30,7 +30,7 @@ export const CartSheetTrigger = ({
     >
       <Button
         aria-label="cart-button"
-        className="pointer-events-auto relative flex flex-col items-center rounded-full p-0 text-gray-600 transition-colors duration-200"
+        className="pointer-events-auto relative flex flex-col items-center rounded-full p-0 transition-colors duration-200 md:text-gray-600"
         size="icon"
         variant="ghost"
         onClick={() => setIsOpen(!isOpen)}
@@ -43,7 +43,7 @@ export const CartSheetTrigger = ({
             },
           )}
         >
-          <ShoppingBag className="min-h-6 min-w-6 stroke-[2px] lg:min-h-8 lg:min-w-8" />
+          <ShoppingBag className="min-h-6 min-w-6 stroke-[2px]" />
         </div>
 
         {cartItems.length > 0 && (
@@ -57,7 +57,7 @@ export const CartSheetTrigger = ({
           </div>
         )}
       </Button>
-      <span className="mt-1 text-center text-xs font-medium md:hidden">
+      <span className="mt-1 translate-y-0.5 text-center text-xs font-medium md:hidden">
         {tNav("cart")}
       </span>
     </motion.div>
