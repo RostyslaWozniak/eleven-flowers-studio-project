@@ -8,11 +8,6 @@ import { usePathname } from "next/navigation";
 import { SignOutButton } from "./sign-out-button";
 
 const sidebarItems = [
-  // {
-  //   href: "/dashboard",
-  //   label: "Overview",
-  //   icon: Home,
-  // },
   {
     href: "/dashboard/products",
     label: "Products",
@@ -38,7 +33,7 @@ const sidebarItems = [
 export const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <aside className="relative min-w-min">
+    <aside className="relative hidden min-w-min md:block">
       <nav className="sticky top-20 space-y-8 pr-4">
         <div>
           <h2 className="mb-2 text-xs uppercase">menu</h2>

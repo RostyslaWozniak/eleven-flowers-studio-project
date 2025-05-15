@@ -5,11 +5,20 @@ import { api } from "@/trpc/react";
 import { useState } from "react";
 import { ImagesGrid } from "./images-grid";
 import { DeleteImagesButton } from "./delete-images-button";
+import { parseAsInteger, useQueryState } from "nuqs";
+import Pagination from "@/components/pagination";
 
-export function ImageGallery() {
+const IMAGES_PER_PAGE = 12;
+
+export function ImageGallery({ pages }: { pages: number }) {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
-  const { data: images, isLoading } = api.admin.images.getAllImages.useQuery();
+  const [page] = useQueryState("page", parseAsInteger.withDefault(1));
+
+  const { data: images, isLoading } = api.admin.images.getAllImages.useQuery({
+    take: IMAGES_PER_PAGE,
+    skip: (page - 1) * IMAGES_PER_PAGE,
+  });
 
   if (!images && !isLoading) return <p>No images found</p>;
   return (
@@ -35,12 +44,15 @@ export function ImageGallery() {
           </div>
         )
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid gap-4 lg:grid-cols-4">
           {Array.from({ length: 8 }).map((_, index) => (
             <CardSkeleton key={index} className="aspect-[4/5]" />
           ))}
         </div>
       )}
+      <div className="my-8 flex justify-end">
+        <Pagination totalPages={pages} />
+      </div>
     </>
   );
 }

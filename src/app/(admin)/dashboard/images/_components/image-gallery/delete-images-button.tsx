@@ -3,6 +3,7 @@
 import { DialogWrapper } from "@/components/dialog-wrapper";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -19,6 +20,8 @@ export function DeleteImagesButton({
   const [isDeleteAvaliable, setIsDeleteAvaliable] = useState<boolean>(
     selectedImages.length > 0,
   );
+  const utils = api.useUtils();
+  const router = useRouter();
 
   const { mutate: deleteImages, isPending } =
     api.admin.images.removeImages.useMutation({
@@ -26,13 +29,13 @@ export function DeleteImagesButton({
         setSelectedImages([]);
         toast.success("Images deleted successfully");
         void utils.admin.images.getAllImages.invalidate();
+        router.refresh();
+        setIsDialogOpen(false);
       },
     });
 
-  const utils = api.useUtils();
   const handleDeleteImages = () => {
     deleteImages(selectedImages);
-    setIsDialogOpen(false);
   };
   useEffect(() => {
     setIsDeleteAvaliable(selectedImages.length > 0);

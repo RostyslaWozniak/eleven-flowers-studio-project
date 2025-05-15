@@ -14,7 +14,7 @@ export function ImagesGrid({
   setSelectedImages,
 }: ImagesGridProps) {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid gap-4 lg:grid-cols-4">
       {images.map(({ id, name, url }) => (
         <ImageItem
           key={id}

@@ -1,10 +1,13 @@
 import { db } from "@/server/db";
 import { Prisma } from "@prisma/client";
-import type { DeleteImageAdminSchema } from "./image-admin.type";
+import type {
+  DeleteImageAdminSchema,
+  GetAllImagesAdminSchema,
+} from "./image-admin.type";
 import { utapi } from "@/app/api/uploadthing/utapi";
 
 export class ImageAdminRepository {
-  public static findMany = async () => {
+  public static findMany = async (input: GetAllImagesAdminSchema) => {
     return await db.images.findMany({
       select: {
         id: true,
@@ -14,6 +17,8 @@ export class ImageAdminRepository {
       orderBy: {
         createdAt: Prisma.SortOrder.desc,
       },
+      take: input?.take,
+      skip: input?.skip,
     });
   };
 
