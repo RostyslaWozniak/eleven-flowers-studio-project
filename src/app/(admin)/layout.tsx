@@ -9,6 +9,8 @@ import { Providers } from "../providers";
 import { validateLang } from "@/lib/utils";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { EnvironmentBanner } from "@/components/environment-banner";
+import { getCurrentUser } from "@/auth/current-user";
+import { redirect } from "next/navigation";
 export const metadata: Metadata = {
   title: {
     template: "Admin | %s | Eleven Flowers Studio",
@@ -36,6 +38,9 @@ export default async function AdminLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
+  const user = await getCurrentUser();
+  if (!user) redirect("/sign-in");
+
   const paramsData = await params;
 
   const { locale } = paramsData;

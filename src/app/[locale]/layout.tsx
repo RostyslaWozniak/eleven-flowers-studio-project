@@ -45,9 +45,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const paramsData = await params;
-
-  const { locale } = paramsData;
+  const { locale } = await params;
 
   const t = await getTranslations({ locale, namespace: "home" });
 
@@ -79,9 +77,7 @@ export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
-  const paramsData = await params;
-
-  const { locale } = paramsData;
+  const { locale } = await params;
 
   const lang = validateLang(locale);
 

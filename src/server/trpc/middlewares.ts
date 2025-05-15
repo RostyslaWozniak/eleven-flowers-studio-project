@@ -1,8 +1,7 @@
-import { getCookieValue } from "@/lib/utils/cookies";
 import { t } from "./index";
-// import { validateAdmin } from "../api/routers/lib/validate-admin";
 import { TRPCError } from "@trpc/server";
-import { validateAdmin } from "../lib/auth/validate-admin";
+import { getCurrentUser } from "@/auth/current-user";
+import { env } from "@/env";
 
 export const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now();
@@ -21,23 +20,23 @@ export const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
-export const adminMiddleware = t.middleware(async ({ ctx, next }) => {
-  const cookiesValue = getCookieValue(ctx.req, "token");
-  const authorization =
-    ctx.resHeaders.get("Authorization")?.split(" ")[1] ??
-    ctx.resHeaders.get("authorization")?.split(" ")[1] ??
-    null;
-
-  const result = cookiesValue ?? authorization;
-
-  const isAuthnticated = await validateAdmin(result);
-
-  if (!isAuthnticated) {
+export const adminMiddleware = t.middleware(async ({ next }) => {
+  const user = await getCurrentUser();
+  if (!user)
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "Unauthorized",
     });
+
+  if (
+    user.username === env.ADMIN_HASHED_USERNAME &&
+    user.passwordHash === env.ADMIN_HASHED_PASSWORD
+  ) {
+    return next();
   }
 
-  return next();
+  throw new TRPCError({
+    code: "UNAUTHORIZED",
+    message: "Unauthorized",
+  });
 });

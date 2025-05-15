@@ -2,10 +2,16 @@
 import IconMenu from "@/components/ui/icon-menu";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Grid2x2Plus, Image, Package, ShoppingCart } from "lucide-react";
+import {
+  Grid2x2Plus,
+  Image,
+  LogOutIcon,
+  Package,
+  ShoppingCart,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignOutButton } from "./sign-out-button";
+import { LogOutButton } from "@/auth/components/log-out-button";
 
 const sidebarItems = [
   {
@@ -67,8 +73,12 @@ export const Sidebar = () => {
                 </Link>
               </li>
             ))}
+
             <li className="mt-2 w-full border-t pt-4 text-muted-foreground">
-              <SignOutButton />
+              <LogOutButton>
+                <LogOutIcon />
+                Logout
+              </LogOutButton>
             </li>
           </ul>
         </div>

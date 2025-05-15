@@ -39,7 +39,7 @@ export function ImageUploader({
     onClientUploadComplete: (res) => {
       if (res) {
         const files = res.map((file) => file);
-        console.log("Upload complete:", files);
+
         createImages({
           images: files.map((file) => ({
             id: file.key,
@@ -55,7 +55,6 @@ export function ImageUploader({
       setProgress(progress);
     },
     onUploadError: (error: Error) => {
-      console.error("Upload error:", error);
       alert("Upload failed: " + error.message);
       setProgress(0);
       setIsProcessing(false);
@@ -78,8 +77,7 @@ export function ImageUploader({
         );
 
         await startUpload(processedFiles);
-      } catch (error) {
-        console.error("Error processing images:", error);
+      } catch {
         alert("Error processing images. Please try again.");
         setIsProcessing(false);
         setProgress(0);
