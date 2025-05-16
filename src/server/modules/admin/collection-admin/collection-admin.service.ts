@@ -49,7 +49,11 @@ export class CollectionAdminService {
   };
   public static getBySlugOrThrow = async (slug: string | undefined) => {
     const collection = await this.getBySlug(slug);
-    if (!collection) throw new TRPCError({ code: "NOT_FOUND" });
+    if (!collection)
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Collection not found",
+      });
     return collection;
   };
 

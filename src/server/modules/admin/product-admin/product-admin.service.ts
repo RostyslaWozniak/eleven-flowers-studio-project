@@ -7,6 +7,7 @@ import type {
 } from "./product-admin.types";
 import { CollectionAdminService } from "../collection-admin/collection-admin.service";
 import { type $Enums } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 
 export class ProductAdminService {
   public static getAllWithCount = async (input: ProductAdminGetAllSchema) => {
@@ -24,6 +25,14 @@ export class ProductAdminService {
 
     const { translationsData, pricesData, imagesData } =
       this.mapInputData(input);
+
+    const existingProduct = await ProductAdminRepository.findBySlug(input.slug);
+    if (existingProduct) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Product with this slug already exists",
+      });
+    }
 
     const product = await ProductAdminRepository.create(
       {

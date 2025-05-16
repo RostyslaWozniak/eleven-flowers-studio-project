@@ -59,6 +59,10 @@ export class ProductAdminRepository {
     });
   }
 
+  public static async findBySlug(slug: string): Promise<Product | null> {
+    return await db.product.findUnique({ where: { slug } });
+  }
+
   public static async update(id: string, data: Prisma.ProductUpdateInput) {
     return await db.product.update({
       where: { id },

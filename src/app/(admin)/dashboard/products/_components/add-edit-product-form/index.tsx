@@ -91,8 +91,14 @@ export const ProductForm = ({
         toast.success("Product created");
         router.push("/dashboard/products");
       },
-      onError: () => {
-        toast.error("Product create failed");
+      onError: (error) => {
+        toast.error(error.message);
+        if (error.message === "Product with this slug already exists") {
+          form.setError("slug", {
+            message: error.message,
+          });
+          form.setFocus("slug");
+        }
       },
     });
   const { mutate: updateProduct, isPending: isUpdating } =
