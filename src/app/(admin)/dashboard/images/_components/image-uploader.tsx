@@ -63,6 +63,11 @@ export function ImageUploader({
 
   const onDrop = (acceptedFiles: File[]) => {
     void (async () => {
+      if (acceptedFiles.length > 12) {
+        alert("You can only upload up to 12 images at a time.");
+        return;
+      }
+
       try {
         setIsProcessing(true);
 
