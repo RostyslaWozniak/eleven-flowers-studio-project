@@ -14,7 +14,7 @@ type ImageUploaderProps = {
 };
 
 export function ImageUploader({
-  maxSizeMB = 1,
+  maxSizeMB = 0.3,
   maxWidthOrHeight = 1024,
 }: ImageUploaderProps) {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -36,10 +36,8 @@ export function ImageUploader({
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: (res) => {
       if (res) {
-        const files = res.map((file) => file);
-
         createImages({
-          images: files.map((file) => ({
+          images: res.map((file) => ({
             id: file.key,
             name: file.name,
             url: file.ufsUrl,

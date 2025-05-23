@@ -38,7 +38,7 @@ const convertToWebP = async (file: File): Promise<File> => {
           resolve(webpFile);
         },
         "image/webp",
-        0.9,
+        0,
       );
     };
 
@@ -61,14 +61,14 @@ export const processImage = async (
   };
 
   try {
-    if (!file.type.includes("webp")) {
-      return await imageCompression(
-        await convertToWebP(file),
-        compressionOptions,
-      );
+    const compressed = await imageCompression(file, compressionOptions);
+
+    // Jeśli chcesz WebP jako finalny format — konwertuj dopiero po kompresji:
+    if (!compressed.type.includes("webp")) {
+      return await convertToWebP(compressed);
     }
 
-    return await imageCompression(file, compressionOptions);
+    return compressed;
   } catch (error) {
     console.error("Error processing image:", error);
     throw error;

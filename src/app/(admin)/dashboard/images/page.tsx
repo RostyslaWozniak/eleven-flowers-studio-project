@@ -15,7 +15,7 @@ export default async function Images() {
   return (
     <div className="w-full">
       <H1>Images ({imagesCount})</H1>
-      <ImageUploader maxSizeMB={1} maxWidthOrHeight={1024} />
+      <ImageUploader maxSizeMB={0.3} maxWidthOrHeight={1024} />
       <ImageGallery pages={pages} />
     </div>
   );
