@@ -25,10 +25,10 @@ export async function ProductSection({ product }: { product: ProductDTO }) {
 
   return (
     <section className="bg-gradient-to-b from-card to-transparent">
-      <MaxWidthWrapper className="grid gap-x-12 px-0 md:grid-cols-2">
+      <MaxWidthWrapper className="grid gap-x-8 px-0 md:grid-cols-2 md:items-start">
         <ProductImageGallery images={images} />
 
-        <div className="flex flex-col gap-y-6 lg:pt-28">
+        <div className="flex flex-col gap-y-6 md:mt-8">
           <div className="px-2.5">
             <H1>{capitalizeString(product.name)}</H1>
             {product.collection && (
