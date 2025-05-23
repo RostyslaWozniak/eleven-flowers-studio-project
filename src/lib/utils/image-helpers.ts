@@ -41,7 +41,7 @@ export const convertToFormat = async (
           resolve(newFile);
         },
         format,
-        0.9,
+        0.2,
       );
     };
 
@@ -63,15 +63,13 @@ export const processImage = async (
   };
 
   try {
-    const processedFile = await imageCompression(file, compressionOptions);
+    let processedFile = await imageCompression(file, compressionOptions);
 
-    return await convertToFormat(processedFile, "image/jpeg");
+    if (!file.type.includes("webp")) {
+      processedFile = await convertToFormat(processedFile, "image/webp");
+    }
 
-    // if (!file.type.includes("webp")) {
-    //   processedFile = await convertTo(processedFile);
-    // }
-
-    // return processedFile;
+    return processedFile;
   } catch (error) {
     console.error("Error processing image:", error);
     throw error;
