@@ -1,12 +1,11 @@
 import imageCompression from "browser-image-compression";
 
-interface ImageProcessingOptions {
+type ImageProcessingOptions = {
   maxSizeMB: number;
   maxWidthOrHeight: number;
-  convertToWebP: boolean;
-}
+};
 
-export const convertToWebP = async (file: File): Promise<File> => {
+const convertToWebP = async (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     const img = new window.Image();
     img.onload = () => {
@@ -34,12 +33,12 @@ export const convertToWebP = async (file: File): Promise<File> => {
             file.name.replace(/\.[^/.]+$/, ".webp"),
             {
               type: "image/webp",
-            }
+            },
           );
           resolve(webpFile);
         },
         "image/webp",
-        0.9
+        0.9,
       );
     };
 
@@ -51,23 +50,25 @@ export const convertToWebP = async (file: File): Promise<File> => {
 export const processImage = async (
   file: File,
   options: ImageProcessingOptions,
-  onProgress?: (progress: number) => void
+  onProgress?: (progress: number) => void,
 ): Promise<File> => {
   const compressionOptions = {
     maxSizeMB: options.maxSizeMB,
     maxWidthOrHeight: options.maxWidthOrHeight,
     useWebWorker: true,
+    fileType: "image/webp",
     onProgress,
   };
 
   try {
-    let processedFile = await imageCompression(file, compressionOptions);
-
-    if (options.convertToWebP && !file.type.includes("webp")) {
-      processedFile = await convertToWebP(processedFile);
+    if (!file.type.includes("webp")) {
+      return await imageCompression(
+        await convertToWebP(file),
+        compressionOptions,
+      );
     }
 
-    return processedFile;
+    return await imageCompression(file, compressionOptions);
   } catch (error) {
     console.error("Error processing image:", error);
     throw error;

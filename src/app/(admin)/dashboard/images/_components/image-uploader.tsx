@@ -11,13 +11,11 @@ import { toast } from "sonner";
 type ImageUploaderProps = {
   maxSizeMB?: number;
   maxWidthOrHeight?: number;
-  convertToWebP?: boolean;
 };
 
 export function ImageUploader({
   maxSizeMB = 1,
   maxWidthOrHeight = 1024,
-  convertToWebP = true,
 }: ImageUploaderProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -73,11 +71,7 @@ export function ImageUploader({
 
         const processedFiles = await Promise.all(
           acceptedFiles.map((file) =>
-            processImage(
-              file,
-              { maxSizeMB, maxWidthOrHeight, convertToWebP },
-              setProgress,
-            ),
+            processImage(file, { maxSizeMB, maxWidthOrHeight }, setProgress),
           ),
         );
 
