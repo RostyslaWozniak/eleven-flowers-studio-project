@@ -69,7 +69,11 @@ export function ImageUploader({
 
         const processedFiles = await Promise.all(
           acceptedFiles.map((file) =>
-            processImage(file, { maxSizeMB, maxWidthOrHeight }, setProgress),
+            processImage(
+              file,
+              { maxSizeMB, maxWidthOrHeight, convertToWebP: true },
+              setProgress,
+            ),
           ),
         );
 
