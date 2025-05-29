@@ -52,10 +52,12 @@ export async function TestemonialsSection() {
                   className="max-w-[450px] cursor-grab active:cursor-grabbing lg:basis-1/3"
                 >
                   <div className="space-y-2 rounded-sm border shadow-lg lg:px-6 lg:py-6">
-                    <div className="flex w-full items-center">
+                    <div className="flex w-full items-center gap-x-3">
                       <Avatar photo={photo} name={name} />
                       <div>
-                        <Text size="lg">{name}</Text>
+                        <Text size="lg" className="pl-2">
+                          {name}
+                        </Text>
                         <GoogleStarsIcon />
                       </div>
                     </div>
