@@ -5,13 +5,12 @@ import { publicProcedure } from "@/server/trpc/procedures";
 import { getLocale } from "next-intl/server";
 
 const GOOGLE_PLACE_URL = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${env.GOOGLE_PLACE_ID}&key=${env.GOOGLE_API_KEY}`;
-const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
 
 export const googleRouter = createTRPCRouter({
   getRating: publicProcedure.query(async () => {
     const response = await fetch(`${GOOGLE_PLACE_URL}&fields=rating`, {
       next: {
-        revalidate: ONE_DAY_IN_SECONDS,
+        revalidate: 86400, // 1 day in seconds
       },
     });
 
@@ -26,7 +25,7 @@ export const googleRouter = createTRPCRouter({
       `${GOOGLE_PLACE_URL}&fields=reviews&language=${locale}`,
       {
         next: {
-          revalidate: ONE_DAY_IN_SECONDS,
+          revalidate: 86400, // 1 day in seconds
         },
       },
     );

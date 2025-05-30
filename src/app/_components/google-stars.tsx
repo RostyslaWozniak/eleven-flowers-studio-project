@@ -16,7 +16,7 @@ export function GoogleStars() {
         <div className="flex items-center gap-3">
           <GoogleStarsIcon className="opacity-8=90 hidden lg:flex" />
           <Text size="lg" className="font-bold">
-            {data.rating} Stars on
+            {data.rating} on
           </Text>
           <GoogleLogo />
         </div>
