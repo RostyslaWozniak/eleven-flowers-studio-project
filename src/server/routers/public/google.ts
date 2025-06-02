@@ -3,20 +3,24 @@ import { validateLang } from "@/lib/utils";
 import { createTRPCRouter } from "@/server/trpc";
 import { publicProcedure } from "@/server/trpc/procedures";
 import { getLocale } from "next-intl/server";
+import { unstable_cache } from "next/cache";
 
 const GOOGLE_PLACE_URL = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${env.GOOGLE_PLACE_ID}&key=${env.GOOGLE_API_KEY}`;
 
-export const googleRouter = createTRPCRouter({
-  getRating: publicProcedure.query(async () => {
-    const response = await fetch(`${GOOGLE_PLACE_URL}&fields=rating`, {
-      next: {
-        revalidate: 86400, // 1 day in seconds
-      },
-    });
-
+const getCachedRating = unstable_cache(
+  async () => {
+    const response = await fetch(`${GOOGLE_PLACE_URL}&fields=rating`);
     const data = (await response.json()) as { result: { rating: number } };
 
     return { rating: data.result.rating };
+  },
+  ["google-rating"],
+  { revalidate: 86400 }, // 1 day
+);
+
+export const googleRouter = createTRPCRouter({
+  getRating: publicProcedure.query(async () => {
+    return await getCachedRating();
   }),
 
   getTestmonials: publicProcedure.query(async () => {
