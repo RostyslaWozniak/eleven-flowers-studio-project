@@ -25,8 +25,9 @@ export const googleRouter = createTRPCRouter({
 
   getTestmonials: publicProcedure.query(async () => {
     const locale = await getLocale().then(validateLang);
+
     const response = await fetch(
-      `${GOOGLE_PLACE_URL}&fields=reviews&language=${locale}`,
+      `${GOOGLE_PLACE_URL}&fields=reviews&language=${locale}&length=10`,
       {
         next: {
           revalidate: 86400, // 1 day in seconds
@@ -50,12 +51,15 @@ export const googleRouter = createTRPCRouter({
     };
 
     return {
-      reviews: data.result.reviews.map((review) => ({
-        name: review.author_name,
-        photo: review.profile_photo_url,
-        text: review.text,
-        rating: review.rating,
-      })),
+      reviews: data.result.reviews
+        // Only show 5-star reviews
+        .filter((review) => review.rating === 5)
+        .map((review) => ({
+          name: review.author_name,
+          photo: review.profile_photo_url,
+          text: review.text,
+          rating: review.rating,
+        })),
     };
   }),
 });
