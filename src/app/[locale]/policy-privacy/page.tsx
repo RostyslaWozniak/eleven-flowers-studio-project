@@ -22,7 +22,7 @@ export default async function PrivacyPolicyPage({
       <MaxWidthWrapper className="max-w-[1000px] py-16">
         <Markdown className="prose-lg font-manrope prose-h1:font-philosopher prose-h1:text-primary prose-h2:font-philosopher prose-h2:text-primary prose-li:list-disc">
           {t("policies", {
-            date: "11.03.2023",
+            date: "11.03.2025",
             business_name: "Eleven Flowers Studio",
             business_email: "elevenflowerstudio@gmail.com",
             business_address:
