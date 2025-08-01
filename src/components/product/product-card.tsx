@@ -42,7 +42,7 @@ export function ProductCard({
           <div className="relative flex h-full flex-col">
             <div className="relative aspect-[5/6] overflow-hidden">
               <Image
-                className="w-auto object-cover"
+                className="w-full object-cover"
                 src={product.images[0] ?? "/images/bouquet-placeholder.jpg"}
                 alt={product.name}
                 width={300}

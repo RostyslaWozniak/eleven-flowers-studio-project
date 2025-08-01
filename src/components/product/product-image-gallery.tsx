@@ -1,8 +1,9 @@
 "use client";
+import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useEffect } from "react";
+import { useEffect, Fragment } from "react";
 
 export function ProductImageGallery({
   images,
@@ -23,19 +24,27 @@ export function ProductImageGallery({
   }, [activeImageIndex, images.length, setActiveImageIndex]);
 
   return (
-    <div className="flex flex-col space-y-4 pb-8 lg:p-8">
+    <div className="isolate flex flex-col space-y-4 pb-8 lg:p-8">
       <div className="">
-        <div className="relative aspect-square lg:h-full">
-          <Image
-            priority
-            width={800}
-            height={800}
-            src={
-              images[activeImageIndex]?.url ?? "/images/bouquet-placeholder.jpg"
-            }
-            alt={images[0]?.alt ?? "image of flowers"}
-            className="aspect-square w-full bg-slate-100 object-cover shadow-lg"
-          />
+        <div className="relative aspect-square overflow-hidden lg:h-full">
+          {images.map(({ url, alt }, i) => (
+            <Fragment key={url}>
+              <Image
+                priority={i === 0}
+                width={600}
+                height={600}
+                src={url ?? "/images/bouquet-placeholder.jpg"}
+                alt={alt ?? "image of flowers"}
+                className={cn(
+                  "absolute left-1/2 top-1/2 aspect-square w-full -translate-x-1/2 -translate-y-1/2 object-cover shadow-lg",
+                  {
+                    "z-50": i === activeImageIndex,
+                  },
+                )}
+              />
+              <div className="absolute inset-0 animate-pulse bg-slate-100" />
+            </Fragment>
+          ))}
         </div>
       </div>
       <div className="scrollbar-hide flex h-[100px] w-screen grid-cols-3 items-start justify-start gap-x-2 overflow-x-auto px-2.5 lg:px-0">

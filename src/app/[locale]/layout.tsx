@@ -16,7 +16,7 @@ import CartProvider from "@/context/cart-context";
 import { Footer } from "@/components/footer";
 import dynamic from "next/dynamic";
 import { Providers } from "../providers";
-import { CookieBanner } from "@/components/cookie-banner";
+import { CookieBanner } from "@/features/cookie-banner";
 
 const NavBar = dynamic(() =>
   import("@/components/nav-bar").then((mod) => mod.NavBar),
