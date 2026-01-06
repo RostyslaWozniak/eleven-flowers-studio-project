@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import { removeUserFromSession } from "../core/session";
-import { redirect } from "next/navigation";
 
 export async function logOut() {
   try {
@@ -11,6 +10,4 @@ export async function logOut() {
     console.log(err);
     return "Coś poszło nie tak. Sprobuj ponownie.";
   }
-
-  redirect("/sign-in");
 }
