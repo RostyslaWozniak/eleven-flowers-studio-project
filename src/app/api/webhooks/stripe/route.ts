@@ -87,15 +87,6 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
         locale,
       }),
     });
-    await sendEmail({
-      email: "rostyslav.vozniak.dev@gmail.com",
-      subject: "Thank you for your purchase!",
-      emailTemplate: PurchaseSucceedTemplate({
-        name: customer ? customer.name : null,
-        price: orderPrice,
-        locale,
-      }),
-    });
 
     // await sendSms({
     //   number: env.RECEIVE_SMS_NUMBER,
