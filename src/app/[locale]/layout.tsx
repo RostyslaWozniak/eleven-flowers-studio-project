@@ -14,16 +14,10 @@ import { Manrope, Philosopher } from "next/font/google";
 import type { WebSite, WithContext } from "schema-dts";
 import CartProvider from "@/context/cart-context";
 import { Footer } from "@/components/footer";
-import dynamic from "next/dynamic";
 import { Providers } from "../providers";
 import { CookieBanner } from "@/features/cookie-banner";
-
-const NavBar = dynamic(() =>
-  import("@/components/nav-bar").then((mod) => mod.NavBar),
-);
-const MobileNavbar = dynamic(() =>
-  import("@/components/nav-bar/mobile-nav-bar").then((mod) => mod.MobileNavbar),
-);
+import { NavBar } from "@/components/nav-bar";
+import { MobileNavbar } from "@/components/nav-bar/mobile-nav-bar";
 
 const philosopher = Philosopher({
   subsets: ["latin"],
@@ -111,14 +105,10 @@ export default async function RootLayout({
         />
         <Providers locale={lang} messages={messages}>
           <CartProvider>
-            <Suspense fallback={null}>
-              <NavBar locale={lang} />
-            </Suspense>
+            <NavBar locale={lang} />
             <main className="flex-grow">{children}</main>
             <Footer />
-            <Suspense fallback={null}>
-              <MobileNavbar />
-            </Suspense>
+            <MobileNavbar />
           </CartProvider>
           <Suspense fallback={null}>
             <Toaster
