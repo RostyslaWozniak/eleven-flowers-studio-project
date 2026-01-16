@@ -1,5 +1,5 @@
 import { H1 } from "@/components/ui/typography";
-import { CollectionForm } from "../_components/add-edit-collection-form";
+import { CollectionForm } from "../../../../../features/collections/components/add-edit-collection-form";
 
 export default function Page() {
   return (

@@ -2,7 +2,6 @@ import { routing } from "@/i18n/routing";
 import {
   BenefitsSection,
   HomeHeroSection,
-  CollectionsPreviewSection,
   FaqSection,
   ContactSection,
   TestemonialsSection,
@@ -10,6 +9,7 @@ import {
 import { MostPopularProductsSection } from "../_components/sections/most-popular-products-section";
 import { validateLang } from "@/lib/utils";
 import { setRequestLocale } from "next-intl/server";
+import { CollectionCardsPreviewSection } from "@/features/collections/components/sections/collection-cards-preview.section";
 
 export const dynamic = "force-static";
 
@@ -22,15 +22,14 @@ export default async function Home({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const locale = validateLang((await params).locale);
 
-  const lang = validateLang(locale);
-  setRequestLocale(lang);
+  setRequestLocale(locale);
   return (
     <>
       <HomeHeroSection />
       <BenefitsSection />
-      <CollectionsPreviewSection />
+      <CollectionCardsPreviewSection />
       <MostPopularProductsSection />
       <TestemonialsSection />
       <FaqSection />

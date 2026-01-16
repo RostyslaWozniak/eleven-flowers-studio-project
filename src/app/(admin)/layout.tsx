@@ -56,12 +56,12 @@ export default async function AdminLayout({
   return (
     <html
       lang={locale}
-      className={`${manrope.variable} ${philosopher.variable}`}
+      className={`${manrope.variable} ${philosopher.variable} `}
     >
       <body className="flex min-h-screen w-screen flex-col overflow-x-hidden font-manrope">
         <EnvironmentBanner />
         <Providers locale="en" messages={messages}>
-          <div className="relative mx-auto flex min-h-[calc(100vh-240px)] w-full max-w-[1400px] grow justify-between">
+          <div className="relative mx-auto flex min-h-[calc(100vh-240px)] w-full max-w-[1600px] grow justify-between 2xl:px-12">
             <Sidebar />
             <div className="relative grow px-10 py-12">{children}</div>
           </div>

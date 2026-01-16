@@ -1,8 +1,10 @@
+import { schemaSlug } from "@/lib/validation/schemas";
 import { ProductAdminSchema } from "@/server/modules/admin/product-admin/product-admin.schema";
 import { ProductAdminService } from "@/server/modules/admin/product-admin/product-admin.service";
 import type { ProductAdminDTO } from "@/server/modules/admin/product-admin/product-admin.types";
 import { createTRPCRouter } from "@/server/trpc";
 import { adminProcedure } from "@/server/trpc/procedures";
+import { z } from "zod";
 
 export const productsRouter = createTRPCRouter({
   getAll: adminProcedure.input(ProductAdminSchema.getAll).query(
@@ -15,6 +17,12 @@ export const productsRouter = createTRPCRouter({
       return await ProductAdminService.getAllWithCount(input);
     },
   ),
+
+  getOneBySlug: adminProcedure
+    .input(z.object({ slug: schemaSlug }))
+    .query(async ({ input }) => {
+      return ProductAdminService.getOneBySlug(input);
+    }),
 
   create: adminProcedure
     .input(ProductAdminSchema.create)

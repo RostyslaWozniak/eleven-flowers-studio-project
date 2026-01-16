@@ -8,117 +8,78 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  addProductSchema,
-  type AddProductSchema,
-} from "@/lib/validation/product";
-
-import { api } from "@/trpc/react";
-import { PriceSizeInput } from "./price-size-input";
 import { ImageSelect } from "./image-select";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import LoadingButton from "@/components/loading-button";
-import type { ProductAdminDTO } from "@/server/modules/admin/product-admin/product-admin.types";
+import { useTransition } from "react";
+import { createCollectionAction } from "@/features/collections/actions/create-collection.action";
+import type {
+  CollectionAdminDTO,
+  CreateCollectionSchema,
+} from "../../types/collection.types";
+import { createCollectionSchema } from "../../lib/schema";
+import { updateCollectionAction } from "../../actions/update-collection.action";
 
-export const ProductForm = ({
-  product,
+export const CollectionForm = ({
+  collection,
   setIsEditOpen,
 }: {
-  product?: ProductAdminDTO;
+  collection?: CollectionAdminDTO;
   setIsEditOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const [isCreating, startCreating] = useTransition();
+  const [isUpdating, startUpdating] = useTransition();
   const router = useRouter();
-
-  const form = useForm<AddProductSchema>({
-    resolver: zodResolver(addProductSchema),
+  const form = useForm<CreateCollectionSchema>({
+    resolver: zodResolver(createCollectionSchema),
     defaultValues: {
-      collectionSlug: product?.collection?.slug ?? "",
       translations: {
         pl: {
-          name: product?.name.find(({ lang }) => lang === "pl")?.name ?? "",
+          name: collection?.name.find(({ lang }) => lang === "pl")?.name ?? "",
           description:
-            product?.description.find(({ lang }) => lang === "pl")
+            collection?.description.find(({ lang }) => lang === "pl")
               ?.description ?? "",
         },
         en: {
-          name: product?.name.find(({ lang }) => lang === "en")?.name ?? "",
+          name: collection?.name.find(({ lang }) => lang === "en")?.name ?? "",
           description:
-            product?.description.find(({ lang }) => lang === "en")
+            collection?.description.find(({ lang }) => lang === "en")
               ?.description ?? "",
         },
         ru: {
-          name: product?.name.find(({ lang }) => lang === "ru")?.name ?? "",
+          name: collection?.name.find(({ lang }) => lang === "ru")?.name ?? "",
           description:
-            product?.description.find(({ lang }) => lang === "ru")
+            collection?.description.find(({ lang }) => lang === "ru")
               ?.description ?? "",
         },
       },
-      slug: product?.slug ?? "",
-      prices: product
-        ? product.prices.map(({ size, price }) => ({
-            size,
-            price: price / 100,
-          }))
-        : [
-            { size: "s", price: 0 },
-            { size: "m", price: 0 },
-            { size: "l", price: 0 },
-          ],
-      images: product?.images ?? [],
+      slug: collection?.slug ?? "",
+      imageUrl: collection?.imageUrl ?? "",
     },
   });
 
-  const { data: collections } = api.admin.collections.getAll.useQuery();
-
-  const { mutate: createProduct, isPending: isCreating } =
-    api.admin.products.create.useMutation({
-      onSuccess: () => {
-        toast.success("Product created");
-        router.push("/dashboard/products");
-      },
-      onError: (error) => {
-        toast.error(error.message);
-        if (error.message === "Product with this slug already exists") {
-          form.setError("slug", {
-            message: error.message,
-          });
-          form.setFocus("slug");
-        }
-      },
-    });
-  const { mutate: updateProduct, isPending: isUpdating } =
-    api.admin.products.update.useMutation({
-      onSuccess: () => {
-        toast.success("Product updated");
-        router.push("/dashboard/products");
-        if (setIsEditOpen) setIsEditOpen(false);
-      },
-      onError: () => {
-        toast.error("Product update failed");
-        if (setIsEditOpen) setIsEditOpen(false);
-      },
-    });
-
-  function onSubmit(values: AddProductSchema) {
-    if (!product) {
-      createProduct(values);
+  function onSubmit(values: CreateCollectionSchema) {
+    if (!collection) {
+      startCreating(async () => {
+        await createCollectionAction(values);
+        startCreating(() => {
+          toast.success("Collection created");
+          router.push("/dashboard/collections");
+        });
+      });
     } else {
-      updateProduct({ id: product.id, ...values });
+      startUpdating(async () => {
+        await updateCollectionAction({ id: collection.id, ...values });
+        startUpdating(() => {
+          toast.success("Collection updated");
+          if (setIsEditOpen) setIsEditOpen(false);
+          router.refresh();
+        });
+      });
     }
   }
 
@@ -138,7 +99,7 @@ export const ProductForm = ({
                 <FormItem>
                   <FormLabel>Nazwa*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Wpisz nazwę" {...field} />
+                    <Input autoFocus placeholder="Wpisz nazwę" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -227,8 +188,6 @@ export const ProductForm = ({
           </div>
 
           <div className="grid min-h-[150px] w-full grid-cols-2 gap-4">
-            {/* PRICES */}
-            <PriceSizeInput form={form} />
             <div>
               {/* SLUG */}
 
@@ -239,61 +198,26 @@ export const ProductForm = ({
                   <FormItem className="h-24">
                     <FormLabel>Slug*</FormLabel>
                     <FormControl>
-                      <Input autoFocus placeholder="Product slug" {...field} />
+                      <Input placeholder="Product slug" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              {/* Collection */}
-              {collections && (
-                <FormField
-                  control={form.control}
-                  name="collectionSlug"
-                  render={({ field }) => (
-                    <FormItem className="h-24">
-                      <FormLabel>Collection</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a collection" />
-                          </SelectTrigger>
-                          <SelectContent {...field}>
-                            <SelectGroup>
-                              <SelectLabel>Collection</SelectLabel>
-                              {collections.map(({ slug }) => (
-                                <SelectItem key={slug} value={slug}>
-                                  {slug}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
               <div className="grid grid-cols-3">
-                <div className="col-span-2">
-                  <ImageSelect form={form} />
-                </div>
-                <div>Selected {form.watch("images").length} images</div>
+                <ImageSelect form={form} />
               </div>
             </div>
           </div>
         </div>
+
         <LoadingButton
           type="submit"
           className="self-end"
           loading={isCreating || isUpdating}
         >
-          {product ? "Save" : "Create"}
+          {collection ? "Save" : "Create"}
         </LoadingButton>
       </form>
     </Form>

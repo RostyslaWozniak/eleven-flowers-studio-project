@@ -5,9 +5,11 @@ import type {
   ProductAdminFromDb,
   ProductAdminGetAllSchema,
 } from "./product-admin.types";
-import { CollectionAdminService } from "../collection-admin/collection-admin.service";
 import { type $Enums } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { CollectionService } from "@/features/collections/services/collection.service";
+import { db } from "@/server/db";
+import { ProductAdminQueries } from "./product-admin.queries";
 
 export class ProductAdminService {
   public static getAllWithCount = async (input: ProductAdminGetAllSchema) => {
@@ -19,7 +21,7 @@ export class ProductAdminService {
   };
 
   public static create = async (input: AddProductSchema) => {
-    const collection = await CollectionAdminService.getBySlugOrThrow(
+    const collection = await CollectionService.getBySlugOrThrow(
       input.collectionSlug,
     );
 
@@ -51,7 +53,7 @@ export class ProductAdminService {
   public static update = async (id: string, input: AddProductSchema) => {
     const { translationsData, pricesData, imagesData } =
       this.mapInputData(input);
-    const collection = await CollectionAdminService.getBySlugOrThrow(
+    const collection = await CollectionService.getBySlugOrThrow(
       input.collectionSlug,
     );
     const updatedProduct = await ProductAdminRepository.update(id, {
@@ -93,6 +95,16 @@ export class ProductAdminService {
     return this.mapAllToDto(products);
   };
 
+  public static getOneBySlug = async (input: { slug: string }) => {
+    const product = await db.product.findUnique({
+      where: { slug: input.slug },
+      select: ProductAdminQueries.selectFields({ locale: "en" }),
+    });
+    if (product == null)
+      throw new TRPCError({ message: "Product not found", code: "NOT_FOUND" });
+    return this.mapOneToDTO(product);
+  };
+
   public static getCount = async () => {
     return await ProductAdminRepository.getProductsCount();
   };
@@ -102,6 +114,33 @@ export class ProductAdminService {
     status: $Enums.ProductStatus,
   ) => {
     return await ProductAdminRepository.update(id, { status });
+  };
+
+  private static mapOneToDTO = (product: ProductAdminFromDb) => {
+    return {
+      id: product.id,
+      slug: product.slug,
+      status: product.status,
+      name: product.translations.map(({ name, language }) => ({
+        lang: language,
+        name,
+      })),
+      description: product.translations.map(({ description, language }) => ({
+        lang: language,
+        description,
+      })),
+      collection: product.collection
+        ? {
+            slug: product.collection.slug,
+            name: product.collection.translations[0]?.name ?? "Uncategorized",
+          }
+        : undefined,
+      images: product.images.map((img) => img.url),
+      prices: product.prices.map((price) => ({
+        size: price.size,
+        price: price.price,
+      })),
+    };
   };
 
   private static mapAllToDto = (

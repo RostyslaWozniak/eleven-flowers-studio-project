@@ -1,28 +1,33 @@
-import { CollectionAdminSchema } from "@/server/modules/admin/collection-admin/collection-admin.schema";
-import { CollectionAdminService } from "@/server/modules/admin/collection-admin/collection-admin.service";
+import {
+  createCollectionSchema,
+  deleteCollectionSchema,
+  updateCollectionSchema,
+} from "@/features/collections/lib/schema";
+import { AdminCollectionService } from "@/features/collections/services/admin-collection.service";
+import { CollectionService } from "@/features/collections/services/collection.service";
 import { createTRPCRouter } from "@/server/trpc";
 import { adminProcedure } from "@/server/trpc/procedures";
 
 export const collectionsRouter = createTRPCRouter({
   create: adminProcedure
-    .input(CollectionAdminSchema.create)
+    .input(createCollectionSchema)
     .mutation(async ({ input }) => {
-      return await CollectionAdminService.create(input);
+      return await CollectionService.create(input);
     }),
-
   getAll: adminProcedure.query(async () => {
-    return await CollectionAdminService.getAll();
+    return await AdminCollectionService.getAll({
+      orderBy: "updatedAt",
+      order: "desc",
+    });
   }),
-
   update: adminProcedure
-    .input(CollectionAdminSchema.update)
+    .input(updateCollectionSchema)
     .mutation(async ({ input }) => {
-      return await CollectionAdminService.update(input);
+      return await CollectionService.update(input);
     }),
-
   delete: adminProcedure
-    .input(CollectionAdminSchema.delete)
+    .input(deleteCollectionSchema)
     .mutation(async ({ input }) => {
-      await CollectionAdminService.delete(input);
+      await CollectionService.delete(input);
     }),
 });

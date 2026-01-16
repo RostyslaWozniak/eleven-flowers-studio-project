@@ -2,9 +2,9 @@ import { H1 } from "@/components/ui/typography";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CollectionTable } from "./_components/collection-table";
 import { api } from "@/trpc/server";
-import { columns } from "./_components/collection-table/columns";
+import { columns } from "@/features/collections/components/collection-table/columns";
+import { CollectionTable } from "@/features/collections/components/collection-table";
 
 export default async function CollectionsPage() {
   const data = await api.admin.collections.getAll();

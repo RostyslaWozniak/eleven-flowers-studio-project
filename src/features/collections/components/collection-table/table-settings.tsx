@@ -9,17 +9,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { ProductForm } from "../add-edit-product-form";
-import { DeleteProductButton } from "./delete-product-button";
-import type { ProductAdminDTO } from "@/server/modules/admin/product-admin/product-admin.types";
-import Link from "next/link";
+import { DeleteCollectionButton } from "./delete-collection-button";
+import { CollectionForm } from "../add-edit-collection-form";
+import type { CollectionAdminDTO } from "../../types/collection.types";
 
 type ProductTableSettingsProps = {
-  product: ProductAdminDTO;
+  collection: CollectionAdminDTO;
 };
 
-export const ProductTableSettings = ({
-  product,
+export const CollectionTableSettings = ({
+  collection,
 }: ProductTableSettingsProps) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -30,10 +29,9 @@ export const ProductTableSettings = ({
         description="Make changes to your product here. Do not forget to save changes."
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
-        className="scrollbar-hide flex max-h-[90vh] w-[1000px] justify-end gap-3"
-        overflowYScroll
+        className="flex max-h-[90vh] w-[1000px] justify-end gap-3"
       >
-        <ProductForm product={product} setIsEditOpen={setIsEditOpen} />
+        <CollectionForm collection={collection} setIsEditOpen={setIsEditOpen} />
       </DialogWrapper>
       <DialogWrapper
         title="Delete Product"
@@ -44,18 +42,14 @@ export const ProductTableSettings = ({
         closeButton="Cancel"
         closeButtonVariant={{ variant: "outline", size: "md" }}
       >
-        <DeleteProductButton
-          id={product.id}
+        <DeleteCollectionButton
+          id={collection.id}
           setIsDeleteOpen={setIsDeleteOpen}
         />
       </DialogWrapper>
 
       <DropdownWrapper>
-        <DropdownMenuItem className="relative">
-          <Link
-            href={`/dashboard/products/edit/${product.slug}`}
-            className="absolute inset-0"
-          />
+        <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
           <IconMenu icon={Edit} text="Edit" />
         </DropdownMenuItem>
         <DropdownMenuSeparator />

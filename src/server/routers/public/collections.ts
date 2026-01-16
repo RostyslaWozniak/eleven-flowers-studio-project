@@ -1,19 +1,22 @@
-import { CollectionSchema } from "@/server/modules/collection/collection.schema";
-import { CollectionSevice } from "@/server/modules/collection/collection.service";
+import {
+  getAllCollectionsSchema,
+  getCollectionBySlugSchema,
+} from "@/features/collections/lib/schema/get-collection.schema";
+import { PublicCollectionService } from "@/features/collections/services/public-collection.service";
+import type { CollectionDTO } from "@/features/collections/types/collection.types";
 import { createTRPCRouter } from "@/server/trpc";
 import { publicProcedure } from "@/server/trpc/procedures";
-import type { CollectionWithImageDto } from "@/types";
 
 export const collectionsRouter = createTRPCRouter({
   getAll: publicProcedure
-    .input(CollectionSchema.getAll)
-    .query(async ({ input }): Promise<CollectionWithImageDto[]> => {
-      return await CollectionSevice.getAll(input);
+    .input(getAllCollectionsSchema)
+    .query(async ({ input }): Promise<CollectionDTO[]> => {
+      return await PublicCollectionService.getAll(input);
     }),
 
   getBySlug: publicProcedure
-    .input(CollectionSchema.getBySlug)
-    .query(async ({ input }): Promise<CollectionWithImageDto> => {
-      return await CollectionSevice.getBySlugOrThrow(input.slug);
+    .input(getCollectionBySlugSchema)
+    .query(async ({ input }): Promise<CollectionDTO> => {
+      return await PublicCollectionService.getBySlugOrThrow(input.slug);
     }),
 });

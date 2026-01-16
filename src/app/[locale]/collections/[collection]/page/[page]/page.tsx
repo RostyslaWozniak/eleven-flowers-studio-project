@@ -1,48 +1,16 @@
 import { ProductsGrid } from "@/components/products-grid";
-import { CollectionsSection, ContactSection } from "@/app/_components/sections";
+import { ContactSection } from "@/app/_components/sections";
 import { api } from "@/trpc/server";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { getTranslations } from "next-intl/server";
-import { capitalizeString } from "@/lib/utils";
+import { capitalizeString, validateLang } from "@/lib/utils";
 import { PagePagination } from "@/components/page-pagination";
-// import { $Enums } from "@prisma/client";
-// import { db } from "@/server/db";
+import { CollectionLinksSection } from "@/features/collections/components/sections/collection-links.section";
+import { getCollections } from "@/features/collections/cache/get-collections";
 
 const PRODUCTS_PER_PAGE = 12;
 
 export const dynamic = "force-static";
-
-// export const revalidate = 604800; // 7 days
-
-// export async function generateStaticParams() {
-//   const collections = await db.collection.findMany({
-//     select: {
-//       slug: true,
-//     },
-//     take: 10,
-//   });
-
-//   return (
-//     await Promise.all(
-//       collections.map(async ({ slug }) => {
-//         const productsCount = await db.product.count({
-//           where: {
-//             collection: {
-//               slug,
-//             },
-//             status: $Enums.ProductStatus.AVAILABLE,
-//           },
-//         });
-//         const totalPages = Math.ceil(productsCount / PRODUCTS_PER_PAGE);
-
-//         return Array.from({ length: totalPages }, (_, index) => ({
-//           collection: slug,
-//           page: (index + 1).toString(), // Convert page number to string
-//         }));
-//       }),
-//     )
-//   ).flat();
-// }
 
 export async function generateMetadata({
   params,
@@ -83,11 +51,12 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ collection: string; page: string }>;
+  params: Promise<{ collection: string; page: string; locale: string }>;
 }) {
-  const { collection: collectionSlug, page } = await params;
+  const { collection: collectionSlug, page, locale } = await params;
+  const lang = validateLang(locale);
 
-  const collections = await api.public.collections.getAll({});
+  const collections = await getCollections({ locale: lang });
 
   const collection = collections.find((item) => item.slug === collectionSlug);
 
@@ -124,10 +93,7 @@ export default async function Page({
           />
         </div>
       )}
-      <CollectionsSection
-        currCollectionSlug={collectionSlug}
-        collections={collections}
-      />
+      <CollectionLinksSection currCollectionSlug={collectionSlug} />
       <ContactSection />
     </>
   );

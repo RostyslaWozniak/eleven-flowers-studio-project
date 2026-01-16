@@ -1,5 +1,5 @@
 import { ProductSection } from "@/app/_components/sections/product-section";
-import { CollectionsSection, ContactSection } from "@/app/_components/sections";
+import { ContactSection } from "@/app/_components/sections";
 import type { ProductDTO } from "@/types";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { capitalizeString, cn, validateLang } from "@/lib/utils";
@@ -12,42 +12,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { api } from "@/trpc/server";
 import { useTranslations } from "next-intl";
-// import { db } from "@/server/db";
-// import { $Enums } from "@prisma/client";
+import { CollectionLinksSection } from "@/features/collections/components/sections/collection-links.section";
 
 export const dynamic = "force-static";
-
-// export const revalidate = 604800; // 7 days
-
-// export async function generateStaticParams() {
-//   const products = await db.product
-//     .findMany({
-//       where: {
-//         status: $Enums.ProductStatus.AVAILABLE,
-//       },
-//       select: {
-//         slug: true,
-//         collection: {
-//           select: {
-//             slug: true,
-//           },
-//         },
-//       },
-//       take: 10,
-//       orderBy: {
-//         orderItem: {
-//           _count: "desc",
-//         },
-//       },
-//     })
-//     .then((res) =>
-//       res.map(({ slug, collection }) => ({
-//         product: slug,
-//         collection: collection?.slug,
-//       })),
-//     );
-//   return products;
-// }
 
 export async function generateMetadata({
   params,
@@ -97,8 +64,6 @@ export default async function Page({
     return <NotFoundSection />;
   }
 
-  const collections = await api.public.collections.getAll({});
-
   const relatedProducts = await api.public.products.getRelated({
     productId: product.id,
     collectionSlug: product.collection?.slug ?? null,
@@ -108,10 +73,7 @@ export default async function Page({
     <div>
       <ProductSection product={product} />
       <RelatedProductsSection relatedProducts={relatedProducts} />
-      <CollectionsSection
-        currCollectionSlug={product.collection?.slug}
-        collections={collections}
-      />
+      <CollectionLinksSection currCollectionSlug={product.collection?.slug} />
       <ContactSection />
     </div>
   );
