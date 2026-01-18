@@ -2,10 +2,10 @@
 import { H3, Text } from "@/components/ui/typography";
 import { Badge } from "../ui/badge";
 import { capitalizeString, cn, formatPrice } from "@/lib/utils";
-import { type ProductDTO } from "@/types";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import type { ProductDTO } from "@/features/products/types/product.types";
 
 export function ProductCard({
   product,

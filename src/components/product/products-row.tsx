@@ -1,7 +1,7 @@
-import { type ProductDTO } from "@/types";
 import { ProductCard } from "./product-card";
 import { H3 } from "../ui/typography";
 import { useTranslations } from "next-intl";
+import type { ProductDTO } from "@/features/products/types/product.types";
 
 export function ProductsRow({ products }: { products: ProductDTO[] }) {
   const t = useTranslations("product");

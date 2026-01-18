@@ -6,12 +6,16 @@ import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { GoogleStars } from "../google-stars";
+import { SectionWrapper } from "@/components/section-wrapper";
 
 export function HomeHeroSection() {
   const t = useTranslations("home.hero");
 
   return (
-    <section className="bg-gradient-to-b from-card to-transparent pb-4">
+    <SectionWrapper
+      className="bg-gradient-to-b from-card to-transparent py-0 md:pb-0"
+      paddingBlock="sm"
+    >
       <MaxWidthWrapper className="hidden items-center justify-between gap-16 md:flex lg:pt-12">
         <div className="flex flex-col items-start gap-8">
           <div className="space-y-4">
@@ -68,6 +72,6 @@ export function HomeHeroSection() {
           </Link>
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   );
 }

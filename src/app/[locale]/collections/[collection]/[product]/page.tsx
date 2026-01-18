@@ -1,18 +1,11 @@
-import { ProductSection } from "@/app/_components/sections/product-section";
 import { ContactSection } from "@/app/_components/sections";
-import type { ProductDTO } from "@/types";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
-import { capitalizeString, cn, validateLang } from "@/lib/utils";
-import { H2 } from "@/components/ui/typography";
+import { capitalizeString, validateLang } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
-import { ProductsRow } from "@/components/product/products-row";
-import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { Link } from "@/i18n/routing";
-import { buttonVariants } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { api } from "@/trpc/server";
-import { useTranslations } from "next-intl";
 import { CollectionLinksSection } from "@/features/collections/components/sections/collection-links.section";
+import { RelatedProductsSection } from "@/features/products/components/sections/related-products.section";
+import { ProductHero } from "@/features/products/components/product-hero";
 
 export const dynamic = "force-static";
 
@@ -25,8 +18,14 @@ export async function generateMetadata({
 
   const lang = validateLang(locale);
 
-  const notFoundTranslation = await getTranslations("not_found");
-  const product = await api.public.products.getBySlug({ slug: productSlug });
+  const [product, notFoundTranslation, t] = await Promise.all([
+    api.public.products.getBySlug({ slug: productSlug }),
+    getTranslations("not_found"),
+    getTranslations({
+      locale: lang,
+      namespace: "collection_page",
+    }),
+  ]);
 
   if (!product) {
     return {
@@ -34,11 +33,6 @@ export async function generateMetadata({
       description: notFoundTranslation("product_not_found"),
     };
   }
-
-  const t = await getTranslations({
-    locale: lang,
-    namespace: "collection_page",
-  });
 
   return {
     title: `${capitalizeString(product.name)} - ${t("metadata.title")}`,
@@ -54,9 +48,7 @@ export default async function Page({
 }: {
   params: Promise<{ product: string }>;
 }) {
-  const paramsData = await params;
-
-  const { product: productSlug } = paramsData;
+  const { product: productSlug } = await params;
 
   const product = await api.public.products.getBySlug({ slug: productSlug });
 
@@ -70,43 +62,13 @@ export default async function Page({
   });
 
   return (
-    <div>
-      <ProductSection product={product} />
-      <RelatedProductsSection relatedProducts={relatedProducts} />
-      <CollectionLinksSection currCollectionSlug={product.collection?.slug} />
+    <>
+      <ProductHero product={product} />
+      {relatedProducts.length > 0 && (
+        <RelatedProductsSection relatedProducts={relatedProducts} />
+      )}
+      <CollectionLinksSection />
       <ContactSection />
-    </div>
-  );
-}
-
-function RelatedProductsSection({
-  relatedProducts,
-}: {
-  relatedProducts: ProductDTO[];
-}) {
-  const t = useTranslations("product");
-  return (
-    <section className="pt-8 md:pt-0">
-      <MaxWidthWrapper>
-        <div className="space-y-4">
-          <H2 className="border-b pb-2 text-start md:text-start">
-            {t("related_products")}
-          </H2>
-
-          <ProductsRow products={relatedProducts} />
-        </div>
-        <div className="flex items-center">
-          <Link
-            href="/products/new"
-            className={cn(
-              buttonVariants({ size: "lg", variant: "link" }),
-              "mx-auto pt-4 md:pt-8",
-            )}
-          >
-            {t("see_more")} <ArrowRight className="min-h-6 min-w-6" />
-          </Link>
-        </div>
-      </MaxWidthWrapper>
-    </section>
+    </>
   );
 }

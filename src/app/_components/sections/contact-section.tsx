@@ -6,6 +6,7 @@ import { Link } from "@/i18n/routing";
 import { Fragment } from "react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { SectionWrapper } from "@/components/section-wrapper";
 
 export function ContactSection({ className }: { className?: string }) {
   const t = useTranslations("home.contact");
@@ -44,7 +45,7 @@ export function ContactSection({ className }: { className?: string }) {
     },
   ];
   return (
-    <section className={cn("w-full pt-12 lg:py-20", className)}>
+    <SectionWrapper className={cn("w-full pb-0", className)}>
       <MaxWidthWrapper className="px-0">
         <div className="flex flex-col items-center gap-y-8 md:gap-y-12">
           <div className="max-w-4xl space-y-4 px-2.5 md:space-y-6 md:px-0">
@@ -97,6 +98,6 @@ export function ContactSection({ className }: { className?: string }) {
           </div>
         </div>
       </MaxWidthWrapper>
-    </section>
+    </SectionWrapper>
   );
 }

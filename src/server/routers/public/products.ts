@@ -1,8 +1,8 @@
 import { ProductSchema } from "@/server/modules/product/product.schema";
 import { ProductService } from "@/server/modules/product/product.service";
+import type { ProductDTO } from "@/server/modules/product/product.types";
 import { createTRPCRouter } from "@/server/trpc";
 import { publicProcedure } from "@/server/trpc/procedures";
-import type { ProductDTO } from "@/types";
 
 export const productsRouter = createTRPCRouter({
   getAll: publicProcedure

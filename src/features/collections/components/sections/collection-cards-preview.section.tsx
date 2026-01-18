@@ -4,12 +4,13 @@ import { Separator } from "@/components/ui/separator";
 import { getTranslations } from "next-intl/server";
 
 import { CollectionCards } from "@/features/collections/components/collection-cards";
+import { SectionWrapper } from "@/components/section-wrapper";
 
 export async function CollectionCardsPreviewSection() {
   const t = await getTranslations("home.collections");
 
   return (
-    <section className="w-full pt-12 lg:pt-20">
+    <SectionWrapper>
       <MaxWidthWrapper className="space-y-8 px-0 lg:space-y-12">
         <div className="px-2.5 lg:space-y-2">
           <H2>{t("title")}</H2>
@@ -27,6 +28,6 @@ export async function CollectionCardsPreviewSection() {
           <Separator />
         </div>
       </MaxWidthWrapper>
-    </section>
+    </SectionWrapper>
   );
 }

@@ -1,7 +1,7 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { ProductCard } from "@/components/product";
 import { H1, H2 } from "@/components/ui/typography";
-import { type ProductDTO } from "@/types";
+import type { ProductDTO } from "@/features/products/types/product.types";
 import { useTranslations } from "next-intl";
 
 export function ProductsGrid({

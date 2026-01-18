@@ -1,8 +1,8 @@
 "use client";
 
-import type { ProductDTO } from "@/types";
 import { Button } from "../ui/button";
 import { useCart } from "@/context/cart-context";
+import type { ProductDTO } from "@/features/products/types/product.types";
 import { useQueryState } from "nuqs";
 import { useMemo } from "react";
 

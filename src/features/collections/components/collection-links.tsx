@@ -2,6 +2,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { type CollectionDTO } from "../types/collection.types";
+import { ScrollWrapper } from "@/components/scroll-wrapper";
 
 export function CollectionLinks({
   collections,
@@ -11,21 +12,25 @@ export function CollectionLinks({
   currCollectionSlug?: string;
 }) {
   return (
-    <div className="scrollbar-hide flex w-full space-x-4 overflow-x-scroll px-2.5">
+    <ScrollWrapper>
       {collections.map(({ name, slug }) => (
         <Link
           href={`/collections/${slug}`}
           key={name}
           className={cn(
             buttonVariants({
-              variant: currCollectionSlug === slug ? "outline" : "secondary",
+              variant: "outline",
             }),
+
             "px-4 text-sm lg:w-min",
+            {
+              "border-0 bg-slate-50": currCollectionSlug !== slug,
+            },
           )}
         >
           {name}
         </Link>
       ))}
-    </div>
+    </ScrollWrapper>
   );
 }

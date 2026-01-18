@@ -1,5 +1,7 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { ProductCard } from "@/components/product";
+import { ScrollWrapper } from "@/components/scroll-wrapper";
+import { SectionWrapper } from "@/components/section-wrapper";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { H2 } from "@/components/ui/typography";
@@ -21,10 +23,10 @@ export async function MostPopularProductsSection() {
   });
 
   return (
-    <section className="pace-y-8 w-full pt-12 lg:space-y-8 lg:pt-20">
-      <MaxWidthWrapper className="flex flex-col items-center gap-6 px-0 lg:gap-y-12">
+    <SectionWrapper>
+      <MaxWidthWrapper className="mb-6 flex flex-col items-center gap-6 lg:gap-y-12">
         <H2>{t("title")}</H2>
-        <div className="scrollbar-hide flex w-full gap-4 overflow-x-scroll px-2.5 xl:grid xl:grid-cols-4 xl:gap-8">
+        <ScrollWrapper className="w-screen xl:w-full">
           {products.map((product) => (
             <div key={product.id} className="min-h-full">
               <ProductCard
@@ -34,7 +36,7 @@ export async function MostPopularProductsSection() {
               />
             </div>
           ))}
-        </div>
+        </ScrollWrapper>
         <Link
           href="/products/popular"
           className={buttonVariants({ size: "lg", variant: "link" })}
@@ -43,9 +45,9 @@ export async function MostPopularProductsSection() {
         </Link>
       </MaxWidthWrapper>
       {/* SEPARATOR */}
-      <div className="mx-auto max-w-[1400px] px-2.5 pt-4 lg:px-0 lg:pt-0">
+      <div className="mx-auto max-w-[1400px] px-2.5 lg:px-0">
         <Separator />
       </div>
-    </section>
+    </SectionWrapper>
   );
 }

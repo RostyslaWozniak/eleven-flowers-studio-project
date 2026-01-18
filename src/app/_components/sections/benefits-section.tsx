@@ -1,3 +1,4 @@
+import { SectionWrapper } from "@/components/section-wrapper";
 import { Instagram } from "@/components/ui/icons";
 import { Text } from "@/components/ui/typography";
 import {
@@ -51,8 +52,8 @@ export function BenefitsSection() {
   ];
 
   return (
-    <section className="">
-      <div className="flex flex-wrap items-start justify-center gap-3 py-4 md:gap-16">
+    <SectionWrapper className="space-y-4">
+      <div className="flex flex-wrap items-start justify-center gap-4 md:gap-12">
         {benefits.slice(0, 3).map(({ title, description, icon: Icon }, i) => (
           <div
             key={i}
@@ -89,6 +90,6 @@ export function BenefitsSection() {
           </div>
         ))}
       </div>
-    </section>
+    </SectionWrapper>
   );
 }
