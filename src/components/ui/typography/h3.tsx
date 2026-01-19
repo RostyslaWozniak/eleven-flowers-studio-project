@@ -11,7 +11,7 @@ export function H3({
   return (
     <h3
       className={cn(
-        "font-philosopher text-3xl font-semibold text-primary",
+        "font-philosopher text-2xl font-semibold text-primary",
         className,
       )}
     >

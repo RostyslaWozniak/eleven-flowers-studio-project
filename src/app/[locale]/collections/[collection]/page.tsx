@@ -1,4 +1,3 @@
-import { ProductsGrid } from "@/components/products-grid";
 import { ContactSection } from "@/app/_components/sections";
 import { api } from "@/trpc/server";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
@@ -6,9 +5,12 @@ import { getTranslations } from "next-intl/server";
 import { capitalizeString, validateLang } from "@/lib/utils";
 import { PagePagination } from "@/components/page-pagination";
 import { CollectionLinksSection } from "@/features/collections/components/sections/collection-links.section";
-// import { db } from "@/server/db";
-
-const PRODUCTS_PER_PAGE = 12;
+import { SectionWrapper } from "@/components/section-wrapper";
+import { MaxWidthWrapper } from "@/components/max-width-wrapper";
+import { ProductsView } from "@/features/products/components/products-view";
+import { SectionHeading } from "@/components/section-heading";
+import { H1 } from "@/components/ui/typography";
+import { PRODUCTS_PER_PAGE } from "@/lib/constants/pagination";
 
 export const dynamic = "force-static";
 
@@ -53,15 +55,15 @@ export async function generateMetadata({
 
 export default async function Page({
   params,
-  searchParams,
 }: {
   params: Promise<{ collection: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const { page } = await searchParams;
-  const { collection: collectionSlug } = await params;
-
-  const collections = await api.public.collections.getAll({});
+  const [{ collection: collectionSlug }, collections, tCollections] =
+    await Promise.all([
+      params,
+      api.public.collections.getAll({}),
+      getTranslations("collection_page"),
+    ]);
 
   const collection = collections.find((item) => item.slug === collectionSlug);
 
@@ -69,20 +71,25 @@ export default async function Page({
     return <NotFoundSection />;
   }
 
-  const t = await getTranslations("collection_page");
-
   const { products, productsCount } =
     await api.public.products.getManyByColectionSlug({
       collectionSlug: collectionSlug,
       take: PRODUCTS_PER_PAGE,
-      skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
+      skip: 0,
     });
   return (
     <>
-      <ProductsGrid
-        products={products}
-        title={collection?.name ?? t("title")}
-      />
+      <SectionWrapper className="bg-gradient-to-b from-card to-transparent">
+        <MaxWidthWrapper>
+          <SectionHeading
+            heading={H1}
+            title={collection.name ?? tCollections("title")}
+            headingClassName="capitalize"
+            description={collection.description!}
+          />
+          <ProductsView products={products} />
+        </MaxWidthWrapper>
+      </SectionWrapper>
 
       {productsCount / PRODUCTS_PER_PAGE > 1 && (
         <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">

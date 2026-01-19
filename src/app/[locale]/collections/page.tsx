@@ -1,17 +1,17 @@
 import { ContactSection } from "@/app/_components/sections";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { ProductsPreview } from "@/components/product/products-preview";
-import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+// import { buttonVariants } from "@/components/ui/button";
 import { H2 } from "@/components/ui/typography";
-import { Link } from "@/i18n/routing";
+// import { Link } from "@/i18n/routing";
 import { validateLang } from "@/lib/utils";
 import { api } from "@/trpc/server";
-import { ArrowRight } from "lucide-react";
+// import { ArrowRight } from "lucide-react";
 import { type Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CollectionCardsSection } from "@/features/collections/components/sections/collection-cards.section";
+import { SectionHeading } from "@/components/section-heading";
 
 export const dynamic = "force-static";
 
@@ -59,19 +59,26 @@ function NewestProductsSection() {
   const t = useTranslations("collections_page");
   return (
     <section>
-      <MaxWidthWrapper className="flex flex-col items-center gap-y-6 px-0 pt-12 md:gap-y-12">
-        <H2>{t("our_newest_products")}</H2>
+      <MaxWidthWrapper className="flex flex-col items-center gap-y-6 pt-12 md:gap-y-12">
+        <div className="w-full">
+          <SectionHeading
+            heading={H2}
+            title={t("our_newest_products")}
+            showMoreHref="/products/new"
+          />
+        </div>
+        {/* <H2>{t("our_newest_products")}</H2> */}
         <ProductsPreview orderBy="new" />
-        <Link
+        {/* <Link
           href="/products/new"
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           {t("see_more")} <ArrowRight className="min-h-6 min-w-6" />
-        </Link>
+        </Link> */}
         {/* SEPARATOR */}
-        <div className="mx-auto w-full max-w-[1400px] px-2.5">
+        {/* <div className="mx-auto w-full max-w-[1400px] px-2.5">
           <Separator />
-        </div>
+        </div> */}
       </MaxWidthWrapper>
     </section>
   );

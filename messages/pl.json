@@ -46,7 +46,7 @@
       }
     ],
     "collections": {
-      "title": "Odkryj nasze wyjątkowe usługi florystyczne",
+      "title": "Odkryj nasze kolekcje",
       "subtitle": "W naszym studiu florystycznym spełniamy Twoje marzenia związane z kwiatami. Odkryj nasze wykwintne aranżacje, spersonalizowane pudełka prezentowe i profesjonalne usługi fotograficzne.",
       "types": {
         "bouquets": "Bukiety",
@@ -104,25 +104,25 @@
   },
   "collections_page": {
     "metadata": {
-      "title": "Zobacz nasze wyjątkowe kolekcje",
+      "title": "Zobacz nasze kolekcje",
       "description": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio."
     },
-    "title": "Zobacz nasze wyjątkowe kolekcje",
+    "title": "Zobacz nasze kolekcje",
     "subtitle": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio.",
     "our_newest_products": "Nasze najnowsze produkty",
     "see_more": "Zobacz więcej"
   },
   "collection_page": {
     "metadata": {
-      "title": "Zobacz nasze wyjątkowe kolekcje",
+      "title": "Zobacz nasze kolekcje",
       "description": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio."
     },
-    "title": "Zobacz nasze wyjątkowe kolekcje",
+    "title": "Zobacz nasze kolekcje",
     "subtitle": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio."
   },
   "product_page": {
     "metadata": {
-      "title": "Zobacz nasze wyjątkowe kolekcje",
+      "title": "Zobacz nasze kolekcje",
       "description": "Odkryj ekskluzywną kolekcje kwiatów, która definiuje nasz studio."
     }
   },
@@ -131,7 +131,7 @@
     "add_to_cart": "Dodaj do koszyka",
     "in_cart": "W koszyku",
     "collections": "Kolekcje",
-    "related_products": "Powiązane produkty",
+    "related_products": "Polecane",
     "our_newest_products": "Nasze najnowsze produkty",
     "no_products": "Nie znaleziono produktów.",
     "price_from": "Od",

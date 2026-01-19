@@ -1,4 +1,3 @@
-import { getTranslations } from "next-intl/server";
 import type { ProductDTO } from "../types/product.types";
 import { ProductImageGallery } from "./product-image-gallery";
 import { H1 } from "@/components/ui/typography";
@@ -8,9 +7,10 @@ import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { AddToCartButton, ProductSizesAndPrice } from "@/components/product";
 import { Markdown } from "@/components/markdown-renderer";
 import { SectionWrapper } from "@/components/section-wrapper";
+import { useTranslations } from "next-intl";
 
-export async function ProductHero({ product }: { product: ProductDTO }) {
-  const t = await getTranslations("product");
+export function ProductHero({ product }: { product: ProductDTO }) {
+  const t = useTranslations("product");
 
   const images = product.images.map((image) => ({
     url: image,

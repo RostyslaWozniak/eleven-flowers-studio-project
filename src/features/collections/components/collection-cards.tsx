@@ -11,12 +11,12 @@ export async function CollectionCards({ take }: { take?: number }) {
   const collections = await getCollections({ locale, take });
 
   return (
-    <div className="scrollbar-hide flex w-full gap-4 overflow-x-scroll px-2.5 xl:grid xl:grid-cols-4 xl:gap-8">
+    <div className="scrollbar-hide grid w-full grid-cols-2 gap-4 overflow-x-scroll xl:grid xl:grid-cols-4 xl:gap-8">
       {collections.slice(0, take).map(({ slug, name, imageUrl }, i) => (
         <Link
           href={`/collections/${slug}`}
           key={i}
-          className="group relative grid aspect-square min-w-[300px] place-items-center overflow-hidden"
+          className="_min-w-[300px] group relative grid aspect-square place-items-center overflow-hidden"
         >
           <Image
             priority

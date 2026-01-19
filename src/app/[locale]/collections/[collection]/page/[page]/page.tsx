@@ -1,4 +1,3 @@
-import { ProductsGrid } from "@/components/products-grid";
 import { ContactSection } from "@/app/_components/sections";
 import { api } from "@/trpc/server";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
@@ -7,8 +6,12 @@ import { capitalizeString, validateLang } from "@/lib/utils";
 import { PagePagination } from "@/components/page-pagination";
 import { CollectionLinksSection } from "@/features/collections/components/sections/collection-links.section";
 import { getCollections } from "@/features/collections/cache/get-collections";
-
-const PRODUCTS_PER_PAGE = 12;
+import { SectionWrapper } from "@/components/section-wrapper";
+import { MaxWidthWrapper } from "@/components/max-width-wrapper";
+import { SectionHeading } from "@/components/section-heading";
+import { H1 } from "@/components/ui/typography";
+import { ProductsView } from "@/features/products/components/products-view";
+import { PRODUCTS_PER_PAGE } from "@/lib/constants/pagination";
 
 export const dynamic = "force-static";
 
@@ -64,7 +67,7 @@ export default async function Page({
     return <NotFoundSection />;
   }
 
-  const t = await getTranslations("collection_page");
+  const tCollections = await getTranslations("collection_page");
 
   const { products, productsCount } =
     await api.public.products.getManyByColectionSlug({
@@ -79,12 +82,16 @@ export default async function Page({
 
   return (
     <>
-      {productsCount > PRODUCTS_PER_PAGE * (parseInt(page) - 1) && (
-        <ProductsGrid
-          products={products}
-          title={collection?.name ?? t("title")}
-        />
-      )}
+      <SectionWrapper className="bg-gradient-to-b from-card to-transparent">
+        <MaxWidthWrapper>
+          <SectionHeading
+            heading={H1}
+            title={collection?.name ?? tCollections("title")}
+            headingClassName="capitalize"
+          />
+          <ProductsView products={products} />
+        </MaxWidthWrapper>
+      </SectionWrapper>
 
       {productsCount / PRODUCTS_PER_PAGE > 1 && (
         <div className="mx-auto flex max-w-[1400px] justify-center pb-8 md:justify-end">

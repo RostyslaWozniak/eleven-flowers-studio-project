@@ -4,8 +4,11 @@ import { capitalizeString, validateLang } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
 import { api } from "@/trpc/server";
 import { CollectionLinksSection } from "@/features/collections/components/sections/collection-links.section";
-import { RelatedProductsSection } from "@/features/products/components/sections/related-products.section";
 import { ProductHero } from "@/features/products/components/product-hero";
+import { SectionWrapper } from "@/components/section-wrapper";
+import { MaxWidthWrapper } from "@/components/max-width-wrapper";
+import { SectionHeading } from "@/components/section-heading";
+import { ProductsView } from "@/features/products/components/products-view";
 
 export const dynamic = "force-static";
 
@@ -56,16 +59,27 @@ export default async function Page({
     return <NotFoundSection />;
   }
 
-  const relatedProducts = await api.public.products.getRelated({
-    productId: product.id,
-    collectionSlug: product.collection?.slug ?? null,
-  });
+  const [relatedProducts, tProduct] = await Promise.all([
+    api.public.products.getRelated({
+      productId: product.id,
+      collectionSlug: product.collection?.slug ?? null,
+    }),
+    getTranslations("product"),
+  ]);
 
   return (
     <>
       <ProductHero product={product} />
       {relatedProducts.length > 0 && (
-        <RelatedProductsSection relatedProducts={relatedProducts} />
+        <SectionWrapper>
+          <MaxWidthWrapper>
+            <SectionHeading
+              title={tProduct("related_products")}
+              showMoreHref="/products/new"
+            />
+            <ProductsView products={relatedProducts} />
+          </MaxWidthWrapper>
+        </SectionWrapper>
       )}
       <CollectionLinksSection />
       <ContactSection />

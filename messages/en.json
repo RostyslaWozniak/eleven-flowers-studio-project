@@ -46,7 +46,7 @@
       }
     ],
     "collections": {
-      "title": "Discover Our Unique Floral Services",
+      "title": "Discover Our Collections",
       "subtitle": "At our floral studio, we fulfill your flower dreams. Discover our exquisite arrangements, personalized gift boxes, and professional photography services.",
       "types": {
         "bouquets": "Bouquets",
@@ -104,25 +104,25 @@
   },
   "collections_page": {
     "metadata": {
-      "title": "Discover Our Unique Floral Collections",
+      "title": "Discover Our Floral Collections",
       "description": "Discover the exquisite floral compositions that define our collection."
     },
-    "title": "Discover Our Unique Floral Collections",
+    "title": "Discover Our Floral Collections",
     "subtitle": "Discover the exquisite floral compositions that define our collection.",
     "our_newest_products": "Our Newest Products",
     "see_more": "See More"
   },
   "collection_page": {
     "metadata": {
-      "title": "Discover Our Unique Floral Collections",
+      "title": "Discover Our Floral Collections",
       "description": "Discover the exquisite floral compositions that define our collection."
     },
-    "title": "Discover Our Unique Floral Collections",
+    "title": "Discover Our Floral Collections",
     "subtitle": "Discover the exquisite floral compositions that define our collection."
   },
   "product_page": {
     "metadata": {
-      "title": "Discover Our Unique Floral Collections",
+      "title": "Discover Our Floral Collections",
       "description": "Discover the exquisite floral compositions that define our collection."
     }
   },
@@ -131,7 +131,7 @@
     "add_to_cart": "Add to Cart",
     "in_cart": "In cart",
     "collections": "Collections",
-    "related_products": "Related Products",
+    "related_products": "Recommended",
     "our_newest_products": "Our Newest Products",
     "no_products": "No products found.",
     "price_from": "From",

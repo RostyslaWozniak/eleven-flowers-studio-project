@@ -13,8 +13,8 @@ export async function CollectionLinksSection({
 }: {
   currCollectionSlug?: string;
 }) {
-  const t = await getTranslations("product");
   const locale = await getLocale().then(validateLang);
+  const t = await getTranslations("product");
   const collections = await getCollections({ locale });
 
   return (
