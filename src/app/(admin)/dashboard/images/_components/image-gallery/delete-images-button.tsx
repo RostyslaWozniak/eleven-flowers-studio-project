@@ -1,6 +1,7 @@
 "use client";
 
 import { DialogWrapper } from "@/components/dialog-wrapper";
+import LoadingButton from "@/components/loading-button";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
@@ -43,44 +44,34 @@ export function DeleteImagesButton({
 
   return (
     <>
-      {isDeleteAvaliable ? (
-        <DialogWrapper
-          title="Delete Product"
-          description={`Are you sure you want to delete ${selectedImages.length === 1 ? "this image" : "these images"}(${selectedImages.length})? This action cannot be undone.`}
-          isOpen={isDialogOpen}
-          setIsOpen={setIsDialogOpen}
-          className="flex w-[500px] flex-row-reverse justify-start gap-3"
-          closeButton="Cancel"
-          closeButtonVariant={{ variant: "outline", size: "md" }}
-        >
-          <Button
-            size="md"
-            variant="destructive"
-            onClick={handleDeleteImages}
-            disabled={isPending}
-          >
-            {isPending ? "Deleting..." : "Delete"}
-          </Button>
-        </DialogWrapper>
-      ) : (
-        <DialogWrapper
-          title="Delete Images"
-          description={`Please select at least one image to delete.`}
-          isOpen={isDialogOpen}
-          setIsOpen={setIsDialogOpen}
-          className="flex w-[500px] flex-row-reverse justify-start gap-3"
-          closeButton="Ok"
-          closeButtonVariant={{ variant: "outline", size: "md" }}
-        ></DialogWrapper>
-      )}
-      <Button
-        className="my-4"
-        size="md"
-        variant="destructive"
-        onClick={() => setIsDialogOpen(true)}
+      <DialogWrapper
+        title="Delete Product"
+        description={`Are you sure you want to delete ${selectedImages.length === 1 ? "this image" : "these images"}(${selectedImages.length})? This action cannot be undone.`}
+        isOpen={isDialogOpen}
+        setIsOpen={setIsDialogOpen}
+        className="flex w-[500px] flex-row-reverse justify-start gap-3"
+        closeButton="Cancel"
+        closeButtonVariant={{ variant: "outline", size: "md" }}
       >
-        Delete Images ({selectedImages.length})
-      </Button>
+        <LoadingButton
+          size="md"
+          variant="destructive"
+          loading={isPending}
+          onClick={handleDeleteImages}
+        >
+          Delete
+        </LoadingButton>
+      </DialogWrapper>
+      {isDeleteAvaliable && (
+        <Button
+          className="my-4"
+          size="md"
+          variant="destructive"
+          onClick={() => setIsDialogOpen(true)}
+        >
+          Delete Images ({selectedImages.length})
+        </Button>
+      )}
     </>
   );
 }

@@ -66,7 +66,6 @@ export function ImageUploader({
 
       try {
         setIsProcessing(true);
-
         const processedFiles = await Promise.all(
           acceptedFiles.map((file) =>
             processImage(file, { maxSizeMB, maxWidthOrHeight }, setProgress),
@@ -126,7 +125,7 @@ export function ImageUploader({
             </p>
             <p className="text-xs text-gray-400">
               Images will be automatically resized to {maxWidthOrHeight}px,
-              compressed to max {maxSizeMB}MB, and converted to WebP format
+              compressed to max {maxSizeMB}MB
             </p>
           </div>
         )}
