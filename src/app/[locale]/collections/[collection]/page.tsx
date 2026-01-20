@@ -11,6 +11,7 @@ import { ProductsView } from "@/features/products/components/products-view";
 import { SectionHeading } from "@/components/section-heading";
 import { H1 } from "@/components/ui/typography";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants/pagination";
+import { getCollections } from "@/features/collections/cache/get-collections";
 
 export const dynamic = "force-static";
 
@@ -56,14 +57,16 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ collection: string }>;
+  params: Promise<{ collection: string; locale: string }>;
 }) {
-  const [{ collection: collectionSlug }, collections, tCollections] =
-    await Promise.all([
-      params,
-      api.public.collections.getAll({}),
-      getTranslations("collection_page"),
-    ]);
+  const { collection: collectionSlug, locale } = await params;
+
+  const lang = validateLang(locale);
+
+  const [collections, tCollections] = await Promise.all([
+    getCollections({ locale: lang }),
+    getTranslations("collection_page"),
+  ]);
 
   const collection = collections.find((item) => item.slug === collectionSlug);
 
