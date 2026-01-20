@@ -14,7 +14,7 @@ type ImageUploaderProps = {
 };
 
 export function ImageUploader({
-  maxSizeMB = 0.3,
+  maxSizeMB = 1,
   maxWidthOrHeight = 1024,
 }: ImageUploaderProps) {
   const [isProcessing, setIsProcessing] = useState(false);
