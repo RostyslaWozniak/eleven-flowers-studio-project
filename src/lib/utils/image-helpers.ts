@@ -63,11 +63,11 @@ export const processImage = async (
   };
 
   try {
-    let processedFile = await imageCompression(file, compressionOptions);
+    const processedFile = await imageCompression(file, compressionOptions);
 
-    if (!file.type.includes("webp")) {
-      processedFile = await convertToFormat(processedFile, "image/webp");
-    }
+    // if (!file.type.includes("webp")) {
+    //   processedFile = await convertToFormat(processedFile, "image/webp");
+    // }
 
     return processedFile;
   } catch (error) {
