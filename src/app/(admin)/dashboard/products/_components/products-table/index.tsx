@@ -1,37 +1,35 @@
-// "use client";
+"use client";
 
-// import {
-//   type ColumnDef,
-//   flexRender,
-//   getCoreRowModel,
-//   useReactTable,
-// } from "@tanstack/react-table";
+import { api } from "@/trpc/react";
+import { useQueryState } from "nuqs";
+import { DataTable } from "@/components/data-table";
+import { DataTableSkeleton } from "@/components/skeletons/table-skeleton";
+import { columns } from "./columns";
+import Pagination from "@/components/pagination";
 
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from "@/components/ui/table";
-// import { api } from "@/trpc/react";
-// import { useQueryState } from "nuqs";
-// import { DataTable } from "@/components/data-table";
+const PRODUCTS_PER_PAGE = 10;
 
-// const PRODUCTS_PER_PAGE = 10;
+export function ProductsTable() {
+  const [page] = useQueryState("page", { defaultValue: "1" });
+  const { data, isPending } = api.admin.products.getAll.useQuery({
+    take: PRODUCTS_PER_PAGE,
+    skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
+  });
 
-// export function ProductsTable() {
-
-// const [page] = useQueryState("page", {defaultValue: "1"})
-//     const { data } = api.admin.products.getAll.useQuery({
-//       take: PRODUCTS_PER_PAGE,
-//       skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
-//     });
-
-//   return (
-//     <div className="rounded-md border">
-//       <DataTable data={data?.products}
-//     </div>
-//   );
-// }
+  return (
+    <div className="py-10">
+      {data === undefined || isPending ? (
+        <DataTableSkeleton rows={12} showPagination />
+      ) : (
+        <>
+          <DataTable columns={columns} data={data.products} />
+          <div className="mt-4">
+            <Pagination
+              totalPages={Math.ceil(data.productsCount / PRODUCTS_PER_PAGE)}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}

@@ -1,80 +1,33 @@
 "use client";
 
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { DataTable } from "@/components/data-table";
+import { DataTableSkeleton } from "@/components/skeletons/table-skeleton";
+import { api } from "@/trpc/react";
+import { orderColumns } from "./columns";
+import { useQueryState } from "nuqs";
+import Pagination from "@/components/pagination";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+const ORDERS_PER_PAGE = 10;
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-export function OrderTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
+export function OrderTable() {
+  const [page] = useQueryState("page", { defaultValue: "1" });
+  const { data, isPending } = api.admin.orders.getAll.useQuery({
+    take: ORDERS_PER_PAGE,
+    skip: (Number(page ?? 1) - 1) * ORDERS_PER_PAGE,
   });
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+    <div className="py-10">
+      {data === undefined || isPending ? (
+        <DataTableSkeleton rows={ORDERS_PER_PAGE} showPagination />
+      ) : (
+        <>
+          <DataTable columns={orderColumns} data={data.orders} />
+          <div className="mt-4">
+            <Pagination totalPages={Math.ceil(data.count / ORDERS_PER_PAGE)} />
+          </div>
+        </>
+      )}
     </div>
   );
 }
