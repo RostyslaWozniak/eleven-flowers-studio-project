@@ -3,9 +3,9 @@ import { api } from "@/trpc/server";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { ProductsTable } from "./_components/products-table";
 import { columns } from "./_components/products-table/columns";
 import Pagination from "@/components/pagination";
+import { DataTable } from "@/components/data-table";
 
 const PRODUCTS_PER_PAGE = 10;
 
@@ -34,7 +34,7 @@ export default async function ProductsPage({
         </Link>
       </div>
       <div className="py-10">
-        <ProductsTable columns={columns} data={products} />
+        <DataTable columns={columns} data={products} />
       </div>
       <div>
         <Pagination totalPages={Math.ceil(productsCount / PRODUCTS_PER_PAGE)} />

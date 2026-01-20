@@ -1,13 +1,16 @@
+"use client";
+
 import { H1 } from "@/components/ui/typography";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { api } from "@/trpc/server";
 import { columns } from "@/features/collections/components/collection-table/columns";
 import { CollectionTable } from "@/features/collections/components/collection-table";
+import { api } from "@/trpc/react";
+import { DataTableSkeleton } from "@/components/skeletons/table-skeleton";
 
-export default async function CollectionsPage() {
-  const data = await api.admin.collections.getAll();
+export default function CollectionsPage() {
+  const { data, isPending } = api.admin.collections.getAll.useQuery();
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -20,7 +23,11 @@ export default async function CollectionsPage() {
         </Link>
       </div>
       <div className="py-10">
-        <CollectionTable columns={columns} data={data} />
+        {data === undefined || isPending ? (
+          <DataTableSkeleton rows={5} />
+        ) : (
+          <CollectionTable columns={columns} data={data} />
+        )}
       </div>
     </div>
   );
