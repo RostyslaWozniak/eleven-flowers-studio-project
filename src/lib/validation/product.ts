@@ -6,15 +6,15 @@ export const addProductSchema = z.object({
   collectionSlug: schemaSlug,
   translations: z.object({
     pl: z.object({
-      name: schemaRequiredString.toLowerCase(),
+      name: schemaRequiredString,
       description: schemaRequiredString,
     }),
     en: z.object({
-      name: schemaRequiredString.toLowerCase(),
+      name: schemaRequiredString,
       description: schemaRequiredString,
     }),
     ru: z.object({
-      name: schemaRequiredString.toLowerCase(),
+      name: schemaRequiredString,
       description: schemaRequiredString,
     }),
   }),
