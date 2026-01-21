@@ -16,48 +16,23 @@ export function FaqSection() {
   const questions = [
     {
       question: t("questions.0.question"),
-      answer: (
-        <Markdown>
-          {/* <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]"> */}
-          {t("questions.0.answer")}
-        </Markdown>
-      ),
+      answer: <Markdown>{t("questions.0.answer")}</Markdown>,
     },
     {
       question: t("questions.1.question"),
-      answer: (
-        <Markdown>
-          {/* <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]"> */}
-          {t("questions.1.answer")}
-        </Markdown>
-      ),
+      answer: <Markdown>{t("questions.1.answer")}</Markdown>,
     },
     {
       question: t("questions.2.question"),
-      answer: (
-        <Markdown>
-          {/* <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]"> */}
-          {t("questions.2.answer")}
-        </Markdown>
-      ),
+      answer: <Markdown>{t("questions.2.answer")}</Markdown>,
     },
     {
       question: t("questions.3.question"),
-      answer: (
-        <Markdown>
-          {/* <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]"> */}
-          {t("questions.3.answer")}
-        </Markdown>
-      ),
+      answer: <Markdown>{t("questions.3.answer")}</Markdown>,
     },
     {
       question: t("questions.4.question"),
-      answer: (
-        <Markdown>
-          {/* <Markdown className="prose lg:prose-lg prose-h3:text-xl prose-h3:leading-[1.1rem] prose-h3:text-foreground/80 lg:min-w-[900px]"> */}
-          {t("questions.4.answer")}
-        </Markdown>
-      ),
+      answer: <Markdown>{t("questions.4.answer")}</Markdown>,
     },
   ];
   return (
@@ -82,7 +57,9 @@ export function FaqSection() {
                   {question}
                 </Text>
               </AccordionTrigger>
-              <AccordionContent>{answer}</AccordionContent>
+              <AccordionContent className="text-base">
+                {answer}
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
