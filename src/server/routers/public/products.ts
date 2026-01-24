@@ -40,7 +40,11 @@ export const productsRouter = createTRPCRouter({
 
   getRelated: publicProcedure
     .input(ProductSchema.getRelated)
-    .query(async ({ input }): Promise<ProductDTO[]> => {
-      return await ProductService.getRelated(input);
-    }),
+    .query(
+      async ({
+        input,
+      }): Promise<{ products: ProductDTO[]; productsCount: number }> => {
+        return await ProductService.getRelated(input);
+      },
+    ),
 });

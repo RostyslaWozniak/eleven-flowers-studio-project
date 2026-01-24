@@ -12,7 +12,7 @@ export default async function Page({
 
   return (
     <div>
-      <H1>Add new product</H1>
+      <H1>Edit product</H1>
       <div className="w-full pt-12">
         <Suspense fallback={<div>Loading...</div>}>
           <SuspenseEditProductForm slug={slug} />

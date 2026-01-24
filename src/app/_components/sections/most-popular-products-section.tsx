@@ -3,21 +3,20 @@ import { ProductCard } from "@/components/product";
 import { ScrollWrapper } from "@/components/scroll-wrapper";
 import { SectionHeading } from "@/components/section-heading";
 import { SectionWrapper } from "@/components/section-wrapper";
-// import { buttonVariants } from "@/components/ui/button";
-// import { Separator } from "@/components/ui/separator";
 import { H2 } from "@/components/ui/typography";
-// import { Link } from "@/i18n/routing";
-import { api } from "@/trpc/server";
-// import { ArrowRight } from "lucide-react";
+import { getProducts } from "@/features/products/cache/get-products";
+import { validateLang } from "@/lib/utils";
 
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export async function MostPopularProductsSection() {
+  const locale = await getLocale().then(validateLang);
   const t = await getTranslations({
     namespace: "home.popular_products",
   });
 
-  const { products } = await api.public.products.getAll({
+  const { products } = await getProducts({
+    locale,
     take: 4,
     skip: 0,
     orderBy: "popular",

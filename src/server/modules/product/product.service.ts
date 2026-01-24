@@ -99,10 +99,15 @@ export class ProductService {
     return { products: this.mapManyProductsToDTO(products), productsCount };
   }
 
-  static async getRelated(input: GetRelatedSchema): Promise<ProductDTO[]> {
+  static async getRelated(
+    input: GetRelatedSchema,
+  ): Promise<{ products: ProductDTO[]; productsCount: number }> {
     const locale = await getLocale().then(validateLang);
     const relatedProducts = await ProductRepository.getRelated(input, locale);
-    return this.mapManyProductsToDTO(relatedProducts);
+    return {
+      products: this.mapManyProductsToDTO(relatedProducts),
+      productsCount: 0,
+    };
   }
 
   private static mapOneProductToDTO(

@@ -9,6 +9,7 @@ import { SectionWrapper } from "@/components/section-wrapper";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { SectionHeading } from "@/components/section-heading";
 import { ProductsView } from "@/features/products/components/products-view";
+import { getProducts } from "@/features/products/cache/get-products";
 
 export const dynamic = "force-static";
 
@@ -49,9 +50,11 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ product: string }>;
+  params: Promise<{ product: string; locale: string }>;
 }) {
-  const { product: productSlug } = await params;
+  const { product: productSlug, locale } = await params;
+
+  const lang = validateLang(locale);
 
   const product = await api.public.products.getBySlug({ slug: productSlug });
 
@@ -59,10 +62,11 @@ export default async function Page({
     return <NotFoundSection />;
   }
 
-  const [relatedProducts, tProduct] = await Promise.all([
-    api.public.products.getRelated({
+  const [{ products: relatedProducts }, tProduct] = await Promise.all([
+    getProducts({
+      locale: lang,
       productId: product.id,
-      collectionSlug: product.collection?.slug ?? null,
+      collectionSlug: product.collection?.slug ?? undefined,
     }),
     getTranslations("product"),
   ]);
@@ -77,6 +81,7 @@ export default async function Page({
               title={tProduct("related_products")}
               showMoreHref="/products/new"
             />
+
             <ProductsView products={relatedProducts} />
           </MaxWidthWrapper>
         </SectionWrapper>

@@ -5,7 +5,7 @@ import {
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
-import { routing } from "@/i18n/routing";
+// import { routing } from "@/i18n/routing";
 import { Suspense } from "react";
 import { env } from "@/env";
 import { validateLang } from "@/lib/utils";
@@ -30,9 +30,9 @@ const manrope = Manrope({
   variable: "--font-manrope",
 });
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// export function generateStaticParams() {
+//   return routing.locales.map((locale) => ({ locale }));
+// }
 
 export async function generateMetadata({
   params,

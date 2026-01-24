@@ -25,7 +25,7 @@ export function PagePagination({
   const currentPage = params.page ? Number(params.page) : 1;
 
   const createPageURL = (pageNumber: number | string) => {
-    return `/${locale}/${path ?? pathname.replace(`/${currentPage}`, ``)}/${pageNumber.toString()}`;
+    return `/${locale}${path ?? pathname.replace(`/${currentPage}`, ``)}/${pageNumber.toString()}`;
   };
 
   const allPages = generatePagination(currentPage, totalPages);

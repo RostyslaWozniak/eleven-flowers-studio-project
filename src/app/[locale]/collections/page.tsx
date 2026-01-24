@@ -67,18 +67,8 @@ function NewestProductsSection() {
             showMoreHref="/products/new"
           />
         </div>
-        {/* <H2>{t("our_newest_products")}</H2> */}
+
         <ProductsPreview orderBy="new" />
-        {/* <Link
-          href="/products/new"
-          className={buttonVariants({ size: "lg", variant: "link" })}
-        >
-          {t("see_more")} <ArrowRight className="min-h-6 min-w-6" />
-        </Link> */}
-        {/* SEPARATOR */}
-        {/* <div className="mx-auto w-full max-w-[1400px] px-2.5">
-          <Separator />
-        </div> */}
       </MaxWidthWrapper>
     </section>
   );

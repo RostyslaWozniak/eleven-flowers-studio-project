@@ -1,5 +1,4 @@
 import { ContactSection } from "@/app/_components/sections";
-import { api } from "@/trpc/server";
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { getTranslations } from "next-intl/server";
 import { capitalizeString, validateLang } from "@/lib/utils";
@@ -12,15 +11,18 @@ import { SectionHeading } from "@/components/section-heading";
 import { H1 } from "@/components/ui/typography";
 import { ProductsView } from "@/features/products/components/products-view";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants/pagination";
+import { getCollectionBySlug } from "@/features/collections/cache/get-collection-by-slug";
+import { getProducts } from "@/features/products/cache/get-products";
 
 export const dynamic = "force-static";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ collection: string }>;
+  params: Promise<{ collection: string; locale: string }>;
 }) {
-  const { collection: collectionSlug } = await params;
+  const { collection: collectionSlug, locale } = await params;
+  const lang = validateLang(locale);
 
   const t = await getTranslations({
     namespace: "collection_page",
@@ -29,9 +31,7 @@ export async function generateMetadata({
     namespace: "not_found",
   });
   try {
-    const collection = await api.public.collections.getBySlug({
-      slug: collectionSlug,
-    });
+    const collection = await getCollectionBySlug(lang, collectionSlug);
 
     const capitalizedCollectionName = capitalizeString(collection.name);
     return {
@@ -69,12 +69,12 @@ export default async function Page({
 
   const tCollections = await getTranslations("collection_page");
 
-  const { products, productsCount } =
-    await api.public.products.getManyByColectionSlug({
-      collectionSlug: collectionSlug,
-      take: PRODUCTS_PER_PAGE,
-      skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
-    });
+  const { products, productsCount } = await getProducts({
+    locale: lang,
+    collectionSlug: collectionSlug,
+    take: PRODUCTS_PER_PAGE,
+    skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
+  });
 
   if (!products.length) {
     return <NotFoundSection />;

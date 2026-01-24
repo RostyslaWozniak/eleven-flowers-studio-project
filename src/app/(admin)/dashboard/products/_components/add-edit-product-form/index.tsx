@@ -34,6 +34,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import LoadingButton from "@/components/loading-button";
 import type { ProductAdminDTO } from "@/server/modules/admin/product-admin/product-admin.types";
+import { createProductAction } from "@/features/products/actions/create-product.action";
+import { useTransition } from "react";
+import { updateProductAction } from "@/features/products/actions/update-product.action";
 
 export const ProductForm = ({
   product,
@@ -43,6 +46,8 @@ export const ProductForm = ({
   setIsEditOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<AddProductSchema>({
     resolver: zodResolver(addProductSchema),
@@ -85,41 +90,36 @@ export const ProductForm = ({
 
   const { data: collections } = api.admin.collections.getAll.useQuery();
 
-  const { mutate: createProduct, isPending: isCreating } =
-    api.admin.products.create.useMutation({
-      onSuccess: () => {
-        toast.success("Product created");
-        router.push("/dashboard/products");
-      },
-      onError: (error) => {
-        toast.error(error.message);
-        if (error.message === "Product with this slug already exists") {
-          form.setError("slug", {
-            message: error.message,
-          });
-          form.setFocus("slug");
-        }
-      },
-    });
-  const { mutate: updateProduct, isPending: isUpdating } =
-    api.admin.products.update.useMutation({
-      onSuccess: () => {
-        toast.success("Product updated");
-        router.push("/dashboard/products");
-        if (setIsEditOpen) setIsEditOpen(false);
-      },
-      onError: () => {
-        toast.error("Product update failed");
-        if (setIsEditOpen) setIsEditOpen(false);
-      },
-    });
-
   function onSubmit(values: AddProductSchema) {
-    if (!product) {
-      createProduct(values);
-    } else {
-      updateProduct({ id: product.id, ...values });
-    }
+    startTransition(async () => {
+      if (!product) {
+        const { error } = await createProductAction(values);
+
+        startTransition(() => {
+          if (error == null) {
+            toast.success("Product created");
+            router.push("/dashboard/products");
+            if (setIsEditOpen) setIsEditOpen(false);
+            return;
+          }
+          toast.error(error);
+          if (setIsEditOpen) setIsEditOpen(false);
+        });
+      } else {
+        const { error } = await updateProductAction({
+          id: product.id,
+          ...values,
+        });
+        if (error == null) {
+          toast.success("Product updated");
+          router.push("/dashboard/products");
+          if (setIsEditOpen) setIsEditOpen(false);
+          return;
+        }
+        toast.error(error);
+        if (setIsEditOpen) setIsEditOpen(false);
+      }
+    });
   }
 
   return (
@@ -288,11 +288,7 @@ export const ProductForm = ({
             </div>
           </div>
         </div>
-        <LoadingButton
-          type="submit"
-          className="self-end"
-          loading={isCreating || isUpdating}
-        >
+        <LoadingButton type="submit" className="self-end" loading={isPending}>
           {product ? "Save" : "Create"}
         </LoadingButton>
       </form>

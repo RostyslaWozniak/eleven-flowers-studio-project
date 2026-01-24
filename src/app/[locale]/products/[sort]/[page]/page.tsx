@@ -2,16 +2,13 @@ import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { PagePagination } from "@/components/page-pagination";
 
 import { ProductCard } from "@/components/product";
+import { getProducts } from "@/features/products/cache/get-products";
+import { PRODUCTS_PER_PAGE } from "@/lib/constants/pagination";
 import { validateLang } from "@/lib/utils";
 import type { ProductSort } from "@/server/modules/product/product.types";
-import { api } from "@/trpc/server";
 import { setRequestLocale } from "next-intl/server";
 
 export const dynamic = "force-static";
-
-// export const revalidate = 604800; // 7 days
-
-const PRODUCTS_PER_PAGE = 12;
 
 export default async function Page({
   params,
@@ -33,7 +30,8 @@ export default async function Page({
 
   setRequestLocale(lang);
 
-  const { products, productsCount } = await api.public.products.getAll({
+  const { products, productsCount } = await getProducts({
+    locale: lang,
     take: PRODUCTS_PER_PAGE,
     skip: (Number(page ?? 1) - 1) * PRODUCTS_PER_PAGE,
     orderBy: sort,

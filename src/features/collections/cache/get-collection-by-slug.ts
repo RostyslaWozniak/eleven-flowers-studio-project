@@ -1,10 +1,11 @@
+import { type Locale } from "@/i18n/routing";
 import { cacheData } from "@/lib/next-cache";
-import { db } from "@/server/db";
+import { api } from "@/trpc/server";
 
-export function getCollectionBySlug(slug: string) {
+export function getCollectionBySlug(locale: Locale, slug: string) {
   return cacheData(
-    async () => db.collection.findUnique({ where: { slug } }),
-    ["collections", "slug", slug],
-    ["collections", `collection:slug:${slug}`],
+    () => api.public.collections.getBySlug({ slug }),
+    ["collections", "slug", locale, slug],
+    ["collections", `collection-${locale}:slug:${slug}`],
   )();
 }
