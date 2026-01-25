@@ -22,7 +22,7 @@ export async function NavBar({ locale }: { locale: Locale }) {
       )}
     >
       <div className="mx-auto max-w-[1400px]">
-        <div className="flex h-14 items-center justify-between px-2">
+        <div className="flex h-14 items-center justify-between px-4">
           <Link
             href="/"
             locale={locale}
