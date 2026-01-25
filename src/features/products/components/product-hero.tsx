@@ -21,11 +21,11 @@ export function ProductHero({ product }: { product: ProductDTO }) {
   const buttonAddToCart = t("add_to_cart");
   return (
     <SectionWrapper className="bg-gradient-to-b from-card to-transparent pt-0">
-      <MaxWidthWrapper className="grid gap-y-8 px-0 md:grid-cols-2 md:items-start md:gap-x-4 lg:grid-cols-5 xl:gap-x-8">
-        <div className="top-14 w-screen md:sticky md:w-auto lg:col-span-2">
+      <MaxWidthWrapper className="grid gap-y-8 md:grid-cols-2 md:items-start md:gap-x-4 lg:grid-cols-5 xl:gap-x-8">
+        <div className="top-14 md:sticky lg:col-span-2">
           <ProductImageGallery images={images} />
         </div>
-        <div className="space-y-4 px-4 lg:col-span-3">
+        <div className="top-14 space-y-4 md:sticky lg:col-span-3">
           <div>
             <H1 className="mb-2">{product.name}</H1>
             {product.collection && (
