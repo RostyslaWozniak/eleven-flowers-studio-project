@@ -7,7 +7,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -63,7 +62,12 @@ export function SubscribeForm() {
                 </Text>
               </FormLabel>
               <FormDescription>{t("newsletter.description")}</FormDescription>
-              <FormMessage />
+              {/* <FormMessage /> */}
+              {form.formState.errors.email && (
+                <span className="text-xs text-destructive">
+                  {tError(form.formState.errors.email.message)}
+                </span>
+              )}
               <div className="flex flex-col items-center gap-3 sm:flex-row">
                 <FormControl>
                   <Input

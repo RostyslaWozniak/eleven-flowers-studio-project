@@ -1,11 +1,11 @@
 import { MaxWidthWrapper } from "../max-width-wrapper";
 import { Logo2 } from "../ui/logo";
 import { Text } from "../ui/typography";
-import Link from "next/link";
 import { Instagram } from "../ui/icons";
 import { Separator } from "../ui/separator";
 import { useTranslations } from "next-intl";
 import { SubscribeForm } from "./subscribe-form";
+import { Link } from "@/i18n/routing";
 
 export function Footer() {
   const t = useTranslations("footer");
