@@ -36,7 +36,7 @@ export function ProductImageGallery({
             src={url ?? "/images/bouquet-placeholder.jpg"}
             alt={alt ?? "image of flowers"}
             className={cn(
-              "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 object-cover opacity-0 transition-opacity duration-500",
+              "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 object-cover opacity-0 transition-opacity duration-500",
               {
                 "opacity-1 z-50": i === activeImageIndex,
               },
