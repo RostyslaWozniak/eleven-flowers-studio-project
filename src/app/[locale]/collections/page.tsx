@@ -1,12 +1,9 @@
 import { ContactSection } from "@/app/_components/sections";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { ProductsPreview } from "@/components/product/products-preview";
-// import { buttonVariants } from "@/components/ui/button";
 import { H2 } from "@/components/ui/typography";
-// import { Link } from "@/i18n/routing";
 import { validateLang } from "@/lib/utils";
 import { api } from "@/trpc/server";
-// import { ArrowRight } from "lucide-react";
 import { type Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";

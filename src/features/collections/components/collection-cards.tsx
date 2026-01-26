@@ -11,28 +11,31 @@ export async function CollectionCards({ take }: { take?: number }) {
   const collections = await getCollections({ locale, take });
 
   return (
-    <div className="scrollbar-hide grid w-full grid-cols-2 gap-4 overflow-x-scroll xl:grid xl:grid-cols-4 xl:gap-8">
+    <div className="grid grid-cols-2 place-items-center gap-4 lg:grid-cols-4">
       {collections.slice(0, take).map(({ slug, name, imageUrl }, i) => (
-        <Link
-          href={`/collections/${slug}`}
+        <div
           key={i}
-          className="_min-w-[300px] group relative grid aspect-square place-items-center overflow-hidden"
+          className="group relative isolate grid aspect-square max-w-[350px] overflow-hidden"
         >
           <Image
             priority
-            width={300}
+            width={400}
             height={400}
             src={imageUrl}
             alt={name}
-            className="absolute w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+            className="transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
 
-          <H3 className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-nowrap capitalize text-background lg:text-4xl">
+          <H3 className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 text-nowrap capitalize text-background xl:text-4xl">
             {name}
           </H3>
 
-          <div className="absolute inset-0 z-10 backdrop-brightness-90 duration-300 ease-in-out group-hover:backdrop-brightness-75"></div>
-        </Link>
+          <div className="absolute inset-0 z-10 backdrop-brightness-75 duration-300 ease-in-out md:backdrop-brightness-90 md:group-hover:backdrop-brightness-75" />
+          <Link
+            href={`/collections/${slug}`}
+            className="absolute inset-0 z-50"
+          />
+        </div>
       ))}
     </div>
   );

@@ -18,7 +18,7 @@ export function GoogleStars({
           size={size}
           strokeWidth={0}
           fill="FDD663"
-          className="fill-[#FDD663]"
+          className="h-6 w-6 fill-amber-400 text-amber-400"
         />
       ))}
     </div>

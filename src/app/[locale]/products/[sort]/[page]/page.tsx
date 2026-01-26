@@ -1,8 +1,8 @@
 import { NotFoundSection } from "@/app/_components/sections/not-found-section";
 import { PagePagination } from "@/components/page-pagination";
 
-import { ProductCard } from "@/components/product";
 import { getProducts } from "@/features/products/cache/get-products";
+import { ProductCard } from "@/features/products/components/product-card";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants/pagination";
 import { validateLang } from "@/lib/utils";
 import type { ProductSort } from "@/server/modules/product/product.types";
