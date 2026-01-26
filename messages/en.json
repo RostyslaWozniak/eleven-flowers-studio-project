@@ -136,6 +136,7 @@
     "no_products": "No products found.",
     "price_from": "From",
     "see_more": "See More",
+    "not_available": "No flowers in stock",
     "sidebar": {
       "sort": {
         "label": "Sort By",

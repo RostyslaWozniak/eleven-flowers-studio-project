@@ -7,18 +7,13 @@ import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { AddToCartButton, ProductSizesAndPrice } from "@/components/product";
 import { Markdown } from "@/components/markdown-renderer";
 import { SectionWrapper } from "@/components/section-wrapper";
-import { useTranslations } from "next-intl";
 
 export function ProductHero({ product }: { product: ProductDTO }) {
-  const t = useTranslations("product");
-
   const images = product.images.map((image) => ({
     url: image,
     alt: product.name,
   }));
 
-  const buttonInCart = t("in_cart");
-  const buttonAddToCart = t("add_to_cart");
   return (
     <SectionWrapper className="bg-gradient-to-b from-card to-transparent pt-0">
       <MaxWidthWrapper className="grid gap-y-8 md:grid-cols-2 md:items-start md:gap-x-4 lg:grid-cols-5 xl:gap-x-8">
@@ -39,11 +34,7 @@ export function ProductHero({ product }: { product: ProductDTO }) {
           </div>
 
           <div className="flex justify-start sm:justify-start">
-            <AddToCartButton
-              product={product}
-              buttonInCart={buttonInCart}
-              buttonAddToCart={buttonAddToCart}
-            />
+            <AddToCartButton product={product} />
           </div>
           <div className="h-full flex-grow">
             <Markdown>{product.description}</Markdown>

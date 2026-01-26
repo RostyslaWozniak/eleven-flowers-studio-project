@@ -113,7 +113,7 @@ export class ProductAdminService {
     id: string,
     status: $Enums.ProductStatus,
   ) => {
-    return await ProductAdminRepository.update(id, { status });
+    return await ProductAdminRepository.changeStatus(id, { status });
   };
 
   private static mapOneToDTO = (product: ProductAdminFromDb) => {

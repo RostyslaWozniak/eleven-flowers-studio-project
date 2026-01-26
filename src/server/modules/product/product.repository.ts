@@ -13,7 +13,9 @@ export class ProductRepository {
   static async getProductsCount(): Promise<number> {
     return db.product.count({
       where: {
-        status: "AVAILABLE",
+        status: {
+          not: "DISCONTINUED",
+        },
       },
     });
   }
@@ -35,7 +37,9 @@ export class ProductRepository {
       },
       where: {
         product: {
-          status: "AVAILABLE",
+          status: {
+            not: "DISCONTINUED",
+          },
         },
       },
       take,
@@ -52,7 +56,9 @@ export class ProductRepository {
         collection: {
           slug: collectionSlug,
         },
-        status: "AVAILABLE",
+        status: {
+          not: "DISCONTINUED",
+        },
       },
       select: ProductQueries.selectFields({ locale }),
       take,
@@ -66,7 +72,9 @@ export class ProductRepository {
         collection: {
           slug: collectionSlug,
         },
-        status: "AVAILABLE",
+        status: {
+          not: "DISCONTINUED",
+        },
       },
     });
   }
@@ -78,7 +86,9 @@ export class ProductRepository {
     return await db.product.findMany({
       where: {
         id: { not: productId },
-        status: "AVAILABLE",
+        status: {
+          not: "DISCONTINUED",
+        },
         ...(collectionSlug === null
           ? {}
           : { collection: { slug: collectionSlug } }),
@@ -102,7 +112,9 @@ export class ProductRepository {
   ): Promise<ProductFromDb[]> {
     return db.product.findMany({
       where: {
-        status: "AVAILABLE",
+        status: {
+          not: "DISCONTINUED",
+        },
       },
       select: ProductQueries.selectFields({ locale }),
       orderBy,
@@ -116,7 +128,12 @@ export class ProductRepository {
     locale: Locale,
   ): Promise<ProductFromDb | null> {
     return await db.product.findUnique({
-      where: { id, status: "AVAILABLE" },
+      where: {
+        id,
+        status: {
+          not: "DISCONTINUED",
+        },
+      },
       select: ProductQueries.selectFields({ locale }),
     });
   }
@@ -128,7 +145,9 @@ export class ProductRepository {
     return await db.product.findMany({
       where: {
         id: { in: productIdsInOrder },
-        status: "AVAILABLE",
+        status: {
+          not: "DISCONTINUED",
+        },
       },
       select: ProductQueries.selectFields({ locale }),
     });
@@ -139,7 +158,12 @@ export class ProductRepository {
     locale: Locale,
   ): Promise<ProductFromDb | null> {
     return db.product.findUnique({
-      where: { slug, status: "AVAILABLE" },
+      where: {
+        slug,
+        status: {
+          not: "DISCONTINUED",
+        },
+      },
       select: ProductQueries.selectFields({ locale }),
     });
   }

@@ -120,6 +120,7 @@ export class ProductService {
       id: product.id,
       slug: product.slug,
       name: translation.name,
+      status: product.status,
       description: translation.description,
       collection: product.collection
         ? {
@@ -143,6 +144,7 @@ export class ProductService {
         id: product.id,
         slug: product.slug,
         name: translation.name,
+        status: product.status,
         description: translation.description,
         collection: product.collection
           ? {

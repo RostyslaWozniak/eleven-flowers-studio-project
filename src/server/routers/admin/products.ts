@@ -45,6 +45,6 @@ export const productsRouter = createTRPCRouter({
   changeStatus: adminProcedure
     .input(ProductAdminSchema.changeStatus)
     .mutation(async ({ input }) => {
-      await ProductAdminService.changeStatus(input.id, input.status);
+      return await ProductAdminService.changeStatus(input.id, input.status);
     }),
 });

@@ -73,4 +73,20 @@ export class ProductAdminRepository {
   public static async delete(id: string) {
     return await db.product.delete({ where: { id } });
   }
+  public static async changeStatus(
+    id: string,
+    data: Prisma.ProductUpdateInput,
+  ) {
+    return await db.product.update({
+      where: { id },
+      data,
+      include: {
+        collection: {
+          select: {
+            slug: true,
+          },
+        },
+      },
+    });
+  }
 }

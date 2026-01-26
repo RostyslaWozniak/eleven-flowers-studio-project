@@ -6,6 +6,7 @@ export class ProductQueries {
     Prisma.validator<Prisma.ProductSelect>()({
       id: true,
       slug: true,
+      status: true,
       collection: {
         select: {
           slug: true,

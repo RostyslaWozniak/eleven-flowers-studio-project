@@ -3,19 +3,14 @@
 import { Button } from "../ui/button";
 import { useCart } from "@/context/cart-context";
 import type { ProductDTO } from "@/features/products/types/product.types";
+import { useTranslations } from "next-intl";
 import { useQueryState } from "nuqs";
 import { useMemo } from "react";
 
-export function AddToCartButton({
-  product,
-  buttonInCart,
-  buttonAddToCart,
-}: {
-  product: ProductDTO;
-  buttonInCart: string;
-  buttonAddToCart: string;
-}) {
+export function AddToCartButton({ product }: { product: ProductDTO }) {
   const { cartItems, addOneToCart, setIsCartOpen } = useCart();
+
+  const t = useTranslations("product");
 
   const [sizeQuery] = useQueryState("size", {
     defaultValue: product.prices[0]?.size ?? "",
@@ -44,10 +39,13 @@ export function AddToCartButton({
       ),
     [cartItems, product.id, sizeQuery],
   );
+  if (product.status !== "AVAILABLE") {
+    return <Button disabled>{t("not_available")}</Button>;
+  }
 
   return (
     <Button disabled={Boolean(existingCartItem)} onClick={addProductToCart}>
-      {Boolean(existingCartItem) ? buttonInCart : buttonAddToCart}
+      {Boolean(existingCartItem) ? t("in_cart") : t("add_to_cart")}
     </Button>
   );
 }

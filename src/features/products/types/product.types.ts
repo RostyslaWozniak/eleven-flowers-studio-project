@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { $Enums, Prisma } from "@prisma/client";
 
 export type ProductFromPrisma = Prisma.ProductGetPayload<{
   select: {
@@ -93,6 +93,7 @@ export type ProductDTO = {
   id: string;
   slug: string;
   name: string;
+  status: $Enums.ProductStatus;
   description: string;
   collection?: {
     slug: string;

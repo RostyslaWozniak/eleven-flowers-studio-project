@@ -5,10 +5,11 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import { changeProductStatusAction } from "@/features/products/actions/change-product-status.action";
 import { cn } from "@/lib/utils";
-import { api } from "@/trpc/react";
 import { type $Enums } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
 
 const statusConfig: Record<$Enums.ProductStatus, { color: string }> = {
   AVAILABLE: { color: "bg-green-500" },
@@ -28,12 +29,24 @@ export function StatusSelect({
   status: $Enums.ProductStatus;
 }) {
   const [activeStatus, setActiveStatus] = useState(status);
-  const { mutate: changeStatus, isPending: isChanging } =
-    api.admin.products.changeStatus.useMutation();
+  const [isPendig, startTransition] = useTransition();
 
   const handleChange = (e: string) => {
-    setActiveStatus(e as $Enums.ProductStatus);
-    changeStatus({ id, status: e as $Enums.ProductStatus });
+    startTransition(async () => {
+      const { error } = await changeProductStatusAction({
+        id,
+        status: e as $Enums.ProductStatus,
+      });
+
+      startTransition(() => {
+        if (error == null) {
+          toast.success("Status of product updated!");
+          setActiveStatus(e as $Enums.ProductStatus);
+          return;
+        }
+        toast.error(error);
+      });
+    });
   };
 
   useEffect(() => {
@@ -41,7 +54,7 @@ export function StatusSelect({
   }, [status]);
   return (
     <Select
-      disabled={isChanging}
+      disabled={isPendig}
       defaultValue={activeStatus}
       value={activeStatus}
       onValueChange={handleChange}
