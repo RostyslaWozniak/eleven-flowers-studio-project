@@ -1,18 +1,19 @@
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+// import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { GoogleStars } from "../google-stars";
 import { SectionWrapper } from "@/components/section-wrapper";
+import { VideoPlayer } from "@/components/video-player";
 
 export function HomeHeroSection() {
   const t = useTranslations("home.hero");
 
   return (
     <SectionWrapper
-      className="from-card to-transparent py-0 md:py-10 lg:bg-gradient-to-b lg:pb-0"
+      className="-translate-y-14 from-card to-transparent py-0 md:translate-y-0 md:py-10 lg:bg-gradient-to-b lg:pb-0"
       paddingBlock="sm"
     >
       <MaxWidthWrapper className="-mb-20 flex w-full flex-col-reverse items-center justify-between gap-x-12 lg:mb-0 lg:grid lg:grid-cols-2 xl:grid-cols-5">
@@ -44,15 +45,16 @@ export function HomeHeroSection() {
             </Link>
           </div>
         </div>
-        <div className="relative h-full min-h-[450px] w-screen max-w-[500px] overflow-hidden md:rounded-sm lg:h-[600px] xl:col-span-2">
-          <Image
+        <div className="relative min-h-[450px] w-screen max-w-[500px] overflow-hidden md:rounded-sm lg:h-[600px] xl:col-span-2">
+          {/* <Image
             priority
             fill
             className="z-10 -translate-y-14 bg-slate-100 object-cover lg:translate-y-0"
             src="/images/hero.jpg"
             alt="Eleven Flowers Studio"
-          />
-          <div className="absolute -bottom-1 z-10 flex h-40 w-full items-end justify-center bg-gradient-to-b from-transparent via-background to-background px-2.5 lg:hidden"></div>
+          /> */}
+          <VideoPlayer />
+          <div className="absolute -bottom-1 z-10 flex h-64 w-full items-end justify-center bg-gradient-to-b from-transparent via-background/50 to-background px-2.5 lg:hidden"></div>
         </div>
       </MaxWidthWrapper>
     </SectionWrapper>
