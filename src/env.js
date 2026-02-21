@@ -7,13 +7,10 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+
     STRIPE_SECRET_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
-    TWILIO_AUTH_TOKEN: z.string().min(1),
-    TWILIO_ACCOUNT_SID: z.string().min(1),
-    TWILIO_PHONE_NUMBER: z.string().min(1),
-    RECEIVE_SMS_NUMBER: z.string().min(1),
     ADMIN_HASHED_USERNAME: z.string().min(1),
     ADMIN_HASHED_PASSWORD: z.string().min(1),
     UPSTASH_REDIS_REST_URL: z.string().min(1),
@@ -24,6 +21,8 @@ export const env = createEnv({
     UPLOADTHING_TOKEN: z.string().min(1),
     GOOGLE_API_KEY: z.string().min(1),
     GOOGLE_PLACE_ID: z.string().min(1),
+    TELEGRAM_ACCESS_TOKEN: z.string().min(1),
+    TELEGRAM_CHAT_IDS: z.string().min(1),
   },
 
   client: {
@@ -38,10 +37,6 @@ export const env = createEnv({
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
-    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
-    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
-    TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER,
-    RECEIVE_SMS_NUMBER: process.env.RECEIVE_SMS_NUMBER,
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
@@ -56,6 +51,8 @@ export const env = createEnv({
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
     GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
     GOOGLE_PLACE_ID: process.env.GOOGLE_PLACE_ID,
+    TELEGRAM_ACCESS_TOKEN: process.env.TELEGRAM_ACCESS_TOKEN,
+    TELEGRAM_CHAT_IDS: process.env.TELEGRAM_CHAT_IDS,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 

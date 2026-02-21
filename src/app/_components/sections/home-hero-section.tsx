@@ -45,14 +45,7 @@ export function HomeHeroSection() {
             </Link>
           </div>
         </div>
-        <div className="relative min-h-[450px] w-screen max-w-[500px] overflow-hidden md:rounded-sm lg:h-[600px] xl:col-span-2">
-          {/* <Image
-            priority
-            fill
-            className="z-10 -translate-y-14 bg-slate-100 object-cover lg:translate-y-0"
-            src="/images/hero.jpg"
-            alt="Eleven Flowers Studio"
-          /> */}
+        <div className="relative min-h-[450px] w-screen max-w-[500px] overflow-hidden md:rounded-sm lg:w-[400px] lg:shadow-lg xl:col-span-2">
           <VideoPlayer />
           <div className="absolute -bottom-1 z-10 flex h-64 w-full items-end justify-center bg-gradient-to-b from-transparent via-background/50 to-background px-2.5 lg:hidden"></div>
         </div>
