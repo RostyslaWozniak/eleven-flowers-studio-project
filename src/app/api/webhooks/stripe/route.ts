@@ -1,7 +1,7 @@
 import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-template";
 import { env } from "@/env";
 import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
-import { redirect } from "@/i18n/routing";
+import { type Locale, redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { validateLang } from "@/lib/utils";
 import { db } from "@/server/db";
@@ -78,7 +78,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
 
   await sendEmail({
     email: customer ? customer.email : checkoutSession.customer_email,
-    subject: "Thank you for your purchase!",
+    subject: getEmailTitleByLang(locale),
     emailTemplate: PurchaseSucceedTemplate({
       name: customer ? customer.name : null,
       price: orderPrice,
@@ -86,7 +86,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     }),
   });
   await sendMessageAction(
-    `New order from ${customer?.name ?? "Customer"}.  ${orderPrice ?? `Price: ${orderPrice}  zł.`} \n ${JSON.stringify(checkoutSession)}`,
+    `New order from ${customer ? customer.name : "Customer"}.  ${orderPrice ? `Price: ${orderPrice}  zł.` : null}`,
   );
 
   return orderId;
@@ -120,4 +120,17 @@ async function updateOrder(orderId: string, paymantIntentId: string | null) {
       paymentIntentId: paymantIntentId,
     },
   });
+}
+
+function getEmailTitleByLang(locale: Locale) {
+  switch (locale) {
+    case "pl":
+      return "Dziękujemy za zakup!";
+    case "ru":
+      return "Спасибо за покупку!";
+    case "en":
+      return "Thank you for your purchase!";
+    default:
+      return "Thank you for your purchase!";
+  }
 }
