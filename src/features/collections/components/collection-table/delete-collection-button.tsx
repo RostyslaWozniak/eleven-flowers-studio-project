@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { deleteCollectionAction } from "@/features/collections/actions/delete-collection.action";
-import { useRouter } from "next/navigation";
+import { api } from "@/trpc/react";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -15,7 +15,7 @@ export function DeleteCollectionButton({
   id,
   setIsDeleteOpen,
 }: DeleteCollectionButtonProps) {
-  const router = useRouter();
+  const utils = api.useUtils();
   const [isPending, startTransition] = useTransition();
 
   const handleDeleteCollection = () => {
@@ -24,7 +24,7 @@ export function DeleteCollectionButton({
       startTransition(() => {
         setIsDeleteOpen(false);
         toast.success("Collection deleted successfully");
-        router.refresh();
+        void utils.admin.collections.getAll.invalidate();
       });
     });
   };

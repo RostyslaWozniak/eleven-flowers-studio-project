@@ -2,7 +2,7 @@
 
 import LoadingButton from "@/components/loading-button";
 import { deleteProductAction } from "@/features/products/actions/delete-product.action";
-import { useRouter } from "next/navigation";
+import { api } from "@/trpc/react";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -15,7 +15,7 @@ export function DeleteProductButton({
   id,
   setIsDeleteOpen,
 }: DeleteProductButtonProps) {
-  const router = useRouter();
+  const utils = api.useUtils();
   const [isPending, startTransiton] = useTransition();
 
   const handleDeleteProduct = () => {
@@ -24,7 +24,7 @@ export function DeleteProductButton({
       if (error == null) {
         setIsDeleteOpen(false);
         toast.success("Product deleted successfully");
-        router.refresh();
+        void utils.admin.products.getAll.invalidate();
         return;
       }
       setIsDeleteOpen(false);

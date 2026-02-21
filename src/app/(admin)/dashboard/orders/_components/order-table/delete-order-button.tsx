@@ -2,7 +2,6 @@
 
 import LoadingButton from "@/components/loading-button";
 import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 type DeleteOrderButtonProps = {
@@ -14,13 +13,14 @@ export function DeleteOrderButton({
   id,
   setIsDeleteOpen,
 }: DeleteOrderButtonProps) {
-  const router = useRouter();
+  const utils = api.useUtils();
+
   const { mutate: deleteOrder, isPending: isDeleting } =
     api.admin.orders.delete.useMutation({
       onSuccess: () => {
         setIsDeleteOpen(false);
         toast.success("Order deleted successfully");
-        router.refresh();
+        void utils.admin.orders.getAll.invalidate();
       },
       onError: () => {
         setIsDeleteOpen(false);
