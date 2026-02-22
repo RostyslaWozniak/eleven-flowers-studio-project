@@ -82,7 +82,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     emailTemplate: PurchaseSucceedTemplate({
       name: customer ? customer.name : null,
       price: orderPrice,
-      updatedOrder,
+      order: { ...updatedOrder, items: updatedOrder.orderItems },
       locale,
     }),
   });
@@ -121,12 +121,14 @@ async function updateOrder(orderId: string, paymantIntentId: string | null) {
       paymentIntentId: paymantIntentId,
     },
     select: {
+      deliveryPrice: true,
       createdAt: true,
       orderItems: {
         select: {
           productName: true,
           quantity: true,
           size: true,
+          price: true,
         },
       },
     },

@@ -290,7 +290,8 @@
         "message": "We're excited to confirm your order. Below are the details of your purchase:",
         "date": "Purchase Date:",
         "amount": "Total Amount: {price} zł",
-        "size": "Size"
+        "size": "Size",
+        "delivery": "Delivery"
       },
       "support": "If you have any questions or concerns about your order, feel free to contact our customer support team.",
       "appreciation": "We sincerely appreciate your business and thank you for choosing our store!",

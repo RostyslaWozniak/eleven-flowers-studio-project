@@ -17,13 +17,34 @@ export default function TestPage() {
             name={"Ivan"}
             locale="pl"
             price={1659}
-            updatedOrder={{
+            order={{
               createdAt: new Date(),
-              orderItems: [
-                { productName: "Gift from the Heart", quantity: 1, size: "l" },
-                { productName: "Cream box", quantity: 1, size: "s" },
-                { productName: "Lady rose", quantity: 1, size: "55" },
-                { productName: "Ranunculus", quantity: 1, size: "m" },
+              deliveryPrice: 0,
+              items: [
+                {
+                  productName: "Gift from the Heart",
+                  quantity: 1,
+                  size: "l",
+                  price: 30000,
+                },
+                {
+                  productName: "Cream box",
+                  quantity: 1,
+                  size: "s",
+                  price: 30000,
+                },
+                {
+                  productName: "Lady rose",
+                  quantity: 1,
+                  size: "55",
+                  price: 30000,
+                },
+                {
+                  productName: "Ranunculus",
+                  quantity: 1,
+                  size: "m",
+                  price: 30000,
+                },
               ],
             }}
           />

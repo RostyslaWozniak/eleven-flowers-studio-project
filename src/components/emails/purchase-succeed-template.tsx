@@ -1,16 +1,19 @@
 import { type Locale } from "@/i18n/routing";
+import { formatPrice } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
 import * as React from "react";
 interface PurchaseSucceedTemplateProps {
   name: string | null;
   price: number | null;
   locale: Locale;
-  updatedOrder: {
+  order: {
     createdAt: Date;
-    orderItems: {
+    deliveryPrice: number;
+    items: {
       productName: string;
       size: string;
       quantity: number;
+      price: number | null;
     }[];
   };
 }
@@ -19,7 +22,7 @@ export const PurchaseSucceedTemplate = async ({
   name,
   price,
   locale,
-  updatedOrder,
+  order,
 }: PurchaseSucceedTemplateProps) => {
   const t = await getTranslations({
     namespace: "emails.purchase_success",
@@ -99,66 +102,102 @@ export const PurchaseSucceedTemplate = async ({
               margin: 0,
             }}
           >
-            {updatedOrder.orderItems.map(
-              ({ productName, quantity, size }, i) => (
-                <li
-                  key={i}
-                  style={{
-                    position: "relative",
-                    backgroundColor: "#ffffff",
-                    padding: "14px 16px",
-                    borderRadius: "10px",
-                    marginBottom: "12px",
-                    border: "1px solid #eee",
-                  }}
-                >
-                  <div>
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        color: "#5a3d5c",
-                      }}
-                    >
-                      {productName}
-                    </p>
-
-                    <p
-                      style={{
-                        margin: "4px 0 0 0",
-                        fontSize: "14px",
-                        color: "#777",
-                      }}
-                    >
-                      {t("purchase_details.size")}{" "}
-                      <span
-                        style={{
-                          fontWeight: "bold",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        {size}
-                      </span>
-                    </p>
-                  </div>
-
-                  <div
+            {order.items.map(({ productName, quantity, size, price }, i) => (
+              <li
+                key={i}
+                style={{
+                  position: "relative",
+                  backgroundColor: "#ffffff",
+                  padding: "14px 16px",
+                  borderRadius: "10px",
+                  marginBottom: "12px",
+                  border: "1px solid #eee",
+                }}
+              >
+                <div>
+                  <p
                     style={{
+                      margin: 0,
                       fontSize: "16px",
-                      fontWeight: "bold",
-                      color: "#7d4c8b",
-                      position: "absolute",
-                      right: "16px",
-                      top: "50%",
-                      translate: "0 -50%",
+                      fontWeight: "600",
+                      color: "#222",
                     }}
                   >
-                    × {quantity}
-                  </div>
-                </li>
-              ),
-            )}
+                    {productName}
+                  </p>
+
+                  <p
+                    style={{
+                      margin: "4px 0 0 0",
+                      fontSize: "14px",
+                      color: "#777",
+                    }}
+                  >
+                    {t("purchase_details.size")}{" "}
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {size}
+                    </span>
+                  </p>
+                </div>
+
+                <div
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    color: "#555",
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    translate: "0 -50%",
+                  }}
+                >
+                  <p style={{ textAlign: "end" }}>× {quantity}</p>
+                  <p>{formatPrice(price)}</p>
+                </div>
+              </li>
+            ))}
+            <li
+              style={{
+                position: "relative",
+                backgroundColor: "#ffffff",
+                padding: "14px 16px",
+                borderRadius: "10px",
+                marginBottom: "12px",
+                border: "1px solid #eee",
+              }}
+            >
+              <div>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    color: "#222",
+                  }}
+                >
+                  {t("purchase_details.delivery")}{" "}
+                </p>
+              </div>
+
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  color: "#222",
+                  position: "absolute",
+                  right: "16px",
+                  top: "50%",
+                  translate: "0 -50%",
+                }}
+              >
+                <p> {order.deliveryPrice} zł</p>
+              </div>
+            </li>
           </ul>
           {/* ORDER INFO */}
           <div
@@ -173,7 +212,7 @@ export const PurchaseSucceedTemplate = async ({
           >
             <p style={{ margin: "5px 0", fontSize: "15px" }}>
               <strong>{t("purchase_details.date")}:</strong>{" "}
-              {updatedOrder.createdAt.toLocaleDateString()}
+              {order.createdAt.toLocaleDateString()}
             </p>
 
             {price && (
