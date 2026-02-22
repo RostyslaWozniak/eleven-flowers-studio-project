@@ -16,12 +16,14 @@ export default function TestPage() {
           <PurchaseSucceedTemplate
             name={"Ivan"}
             locale="pl"
-            price={400}
+            price={1659}
             updatedOrder={{
               createdAt: new Date(),
               orderItems: [
-                { productName: "Kwiaty", quantity: 3, size: "S" },
-                { productName: "Balony", quantity: 23, size: "Xl" },
+                { productName: "Gift from the Heart", quantity: 1, size: "l" },
+                { productName: "Cream box", quantity: 1, size: "s" },
+                { productName: "Lady rose", quantity: 1, size: "55" },
+                { productName: "Ranunculus", quantity: 1, size: "m" },
               ],
             }}
           />
