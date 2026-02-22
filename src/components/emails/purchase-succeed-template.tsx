@@ -1,8 +1,6 @@
 import { type Locale } from "@/i18n/routing";
-import { capitalizeString } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
 import * as React from "react";
-import { H3, Text } from "../ui/typography";
 interface PurchaseSucceedTemplateProps {
   name: string | null;
   price: number | null;
@@ -17,9 +15,12 @@ interface PurchaseSucceedTemplateProps {
   };
 }
 
-export const PurchaseSucceedTemplate: React.FC<
-  Readonly<PurchaseSucceedTemplateProps>
-> = async ({ name, price, updatedOrder, locale }) => {
+export const PurchaseSucceedTemplate = async ({
+  name,
+  price,
+  locale,
+  updatedOrder,
+}: PurchaseSucceedTemplateProps) => {
   const t = await getTranslations({
     namespace: "emails.purchase_success",
     locale,
@@ -27,95 +28,346 @@ export const PurchaseSucceedTemplate: React.FC<
   return (
     <div
       style={{
-        fontFamily: "Arial, sans-serif",
-        color: "#333",
-        backgroundColor: "#f8f8f8",
-        padding: "20px",
-        borderRadius: "10px",
-        maxWidth: "600px",
-        margin: "auto",
-        border: "1px solid #ddd",
+        fontFamily: "manrope, Arial, sans-serif",
+        backgroundColor: "#fff",
+        padding: "30px 15px",
       }}
     >
-      <p style={{ fontSize: "18px", fontStyle: "italic", color: "#7d4c8b" }}>
-        <em>{t("greeting", { name: name ?? null })}</em>
-      </p>
-
-      <p style={{ fontSize: "20px", fontWeight: "bold", color: "#5a3d5c" }}>
-        {t("purchase_details.title")}
-      </p>
-
-      <p style={{ fontSize: "16px", lineHeight: "1.5" }}>
-        {t("purchase_details.message")}
-      </p>
-      <ul>
-        {updatedOrder.orderItems.map(({ productName, quantity, size }) => (
-          <li key={productName} className="flex-grow">
-            <H3 className="font-semibold">{capitalizeString(productName)}</H3>
-            <div className="mt-3 flex justify-between">
-              <Text variant="muted">
-                {t("purchase_details.size")}:{" "}
-                <span className="text-base font-bold capitalize">{size}</span>
-              </Text>
-              <Text size="subtitle" variant="muted">
-                X {quantity}
-              </Text>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <ul style={{ listStyleType: "none", padding: 0 }}>
-        <li style={{ fontSize: "16px" }}>
-          <strong>{t("purchase_details.date")}</strong>{" "}
-          <u>{updatedOrder.createdAt.toLocaleDateString()}</u>
-        </li>
-        {price && (
-          <li style={{ fontSize: "16px" }}>
-            <strong>{t("purchase_details.amount", { price })}</strong>
-          </li>
-        )}
-      </ul>
-
-      <p style={{ fontSize: "16px" }}>{t("support")}</p>
-
-      <blockquote
+      <div
         style={{
-          fontSize: "16px",
-          fontStyle: "italic",
-          color: "#7d4c8b",
-          borderLeft: "4px solid #7d4c8b",
-          paddingLeft: "10px",
-          marginLeft: "0",
+          maxWidth: "620px",
+          margin: "0 auto",
+          backgroundColor: "#ffffff",
+          borderRadius: "14px",
+          border: "1px solid #e6e0eb",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+          overflow: "hidden",
         }}
       >
-        {t("appreciation")}
-      </blockquote>
-
-      <hr
-        style={{
-          border: "none",
-          borderTop: "1px solid #ddd",
-          margin: "20px 0",
-        }}
-      />
-
-      <footer style={{ textAlign: "center", fontSize: "14px", color: "#666" }}>
-        <p>
-          &copy; <small>2025 Eleven Flower Studio. {t("copyright")}</small>
-        </p>
-        <address>
-          ul. Nocznickiego 25 lokal u12, 01-948 Warszawa <br />
-          <a
-            href="mailto:elevenflowerstudio@gmail.com"
-            style={{ color: "#7d4c8b", textDecoration: "none" }}
+        {/* HEADER */}
+        <div
+          style={{
+            backgroundColor: "#1E5F85",
+            padding: "20px",
+            textAlign: "center",
+            color: "#ffffff",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontWeight: "600",
+              fontSize: "24px",
+              fontFamily: "philosopher, Arial, sans-serif",
+            }}
           >
-            elevenflowerstudio@gmail.com
-          </a>
-          <br />
-          <abbr title="Phone">📞</abbr> +48 571 944 969
-        </address>
-      </footer>
+            Eleven Flower Studio
+          </h2>
+          <p style={{ margin: "5px 0 0 0", fontSize: "14px", opacity: 0.9 }}>
+            {t("purchase_details.title")}
+          </p>
+        </div>
+
+        {/* CONTENT */}
+        <div style={{ padding: "25px" }}>
+          <p
+            style={{
+              fontSize: "18px",
+              color: "#1E5F85",
+              marginTop: 0,
+            }}
+          >
+            {t("greeting", { name: name ?? null })}
+          </p>
+
+          <p
+            style={{
+              fontSize: "16px",
+              lineHeight: "1.6",
+              color: "#444",
+              marginBottom: "8px",
+            }}
+          >
+            {t("purchase_details.message")}
+          </p>
+
+          {/* PRODUCT LIST */}
+          <ul
+            style={{
+              listStyle: "none",
+              padding: 0,
+              margin: 0,
+            }}
+          >
+            {updatedOrder.orderItems.map(
+              ({ productName, quantity, size }, i) => (
+                <li
+                  key={i}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    backgroundColor: "#ffffff",
+                    padding: "14px 16px",
+                    borderRadius: "10px",
+                    marginBottom: "12px",
+                    border: "1px solid #eee",
+                  }}
+                >
+                  <div>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        color: "#5a3d5c",
+                      }}
+                    >
+                      {productName}
+                    </p>
+
+                    <p
+                      style={{
+                        margin: "4px 0 0 0",
+                        fontSize: "14px",
+                        color: "#777",
+                      }}
+                    >
+                      {t("purchase_details.size")} {size}
+                    </p>
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      color: "#7d4c8b",
+                    }}
+                  >
+                    × {quantity}
+                  </div>
+                </li>
+              ),
+            )}
+          </ul>
+          {/* ORDER INFO */}
+          <div
+            style={{
+              backgroundColor: "#F0F7F5",
+              padding: "15px",
+              borderRadius: "8px",
+              marginTop: "20px",
+              marginBottom: "20px",
+              border: "1px solid #eee",
+            }}
+          >
+            <p style={{ margin: "5px 0", fontSize: "15px" }}>
+              <strong>{t("purchase_details.date")}:</strong>{" "}
+              {updatedOrder.createdAt.toLocaleDateString()}
+            </p>
+
+            {price && (
+              <p style={{ margin: "5px 0", fontSize: "15px" }}>
+                <strong>{t("purchase_details.amount", { price })}</strong>
+              </p>
+            )}
+          </div>
+
+          {/* SUPPORT TEXT */}
+          <p
+            style={{
+              fontSize: "15px",
+              marginTop: "25px",
+              color: "#555",
+            }}
+          >
+            {t("support")}
+          </p>
+
+          {/* APPRECIATION */}
+          <blockquote
+            style={{
+              fontSize: "16px",
+              fontStyle: "italic",
+              color: "#1E5F85",
+              borderLeft: "4px solid #1E5F85",
+              paddingLeft: "12px",
+              margin: "20px 0",
+            }}
+          >
+            {t("appreciation")}
+          </blockquote>
+        </div>
+
+        {/* FOOTER */}
+        <div
+          style={{
+            backgroundColor: "#F0F7F5",
+            padding: "20px",
+            textAlign: "center",
+            fontSize: "14px",
+            color: "#111",
+            borderTop: "1px solid #eee",
+          }}
+        >
+          <p style={{ margin: "0 0 10px 0" }}>
+            &copy; 2025 Eleven Flower Studio. {t("copyright")}
+          </p>
+
+          <div style={{ lineHeight: "1.6" }}>
+            ul. Nocznickiego 25 lokal u12, 01-948 Warszawa <br />
+            <a
+              href="mailto:elevenflowerstudio@gmail.com"
+              style={{
+                color: "#1E5F85",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              elevenflowerstudio@gmail.com
+            </a>
+            <br />
+            📞 +48 571 944 969
+          </div>
+        </div>
+      </div>
     </div>
   );
+  // return (
+  //   <div
+  //     style={{
+  //       fontFamily: "Arial, sans-serif",
+  //       color: "#333",
+  //       backgroundColor: "#f8f8f8",
+  //       padding: "20px",
+  //       borderRadius: "10px",
+  //       maxWidth: "600px",
+  //       margin: "auto",
+  //       border: "1px solid #ddd",
+  //     }}
+  //   >
+  //     <p style={{ fontSize: "18px", fontStyle: "italic", color: "#7d4c8b" }}>
+  //       <em>{t("greeting", { name: name ?? null })}</em>
+  //     </p>
+
+  //     <p style={{ fontSize: "20px", fontWeight: "bold", color: "#5a3d5c" }}>
+  //       {t("purchase_details.title")}
+  //     </p>
+
+  //     <p style={{ fontSize: "16px", lineHeight: "1.5" }}>
+  //       {t("purchase_details.message")}
+  //     </p>
+
+  //     <ul
+  //       style={{
+  //         listStyleType: "none",
+  //         padding: 0,
+  //         marginTop: "15px",
+  //       }}
+  //     >
+  //       {updatedOrder.orderItems.map(({ productName, quantity, size }, i) => (
+  //         <li
+  //           key={i}
+  //           style={{
+  //             display: "flex",
+  //             justifyContent: "space-between",
+  //             alignItems: "center",
+  //             backgroundColor: "#ffffff",
+  //             padding: "12px 15px",
+  //             borderRadius: "8px",
+  //             marginBottom: "10px",
+  //             border: "1px solid #eee",
+  //           }}
+  //         >
+  //           <div style={{ flex: 2 }}>
+  //             <p
+  //               style={{
+  //                 margin: 0,
+  //                 fontSize: "16px",
+  //                 fontWeight: "bold",
+  //                 color: "#5a3d5c",
+  //               }}
+  //             >
+  //               {productName}
+  //             </p>
+
+  //             <p
+  //               style={{
+  //                 margin: "4px 0 0 0",
+  //                 fontSize: "14px",
+  //                 color: "#777",
+  //               }}
+  //             >
+  //               {t("purchase_details.size")} {size}
+  //             </p>
+  //           </div>
+
+  //           <div
+  //             style={{
+  //               flex: 1,
+  //               textAlign: "right",
+  //               fontSize: "16px",
+  //               fontWeight: "bold",
+  //               color: "#7d4c8b",
+  //             }}
+  //           >
+  //             × {quantity}
+  //           </div>
+  //         </li>
+  //       ))}
+  //     </ul>
+
+  //     <ul style={{ listStyleType: "none", padding: 0 }}>
+  //       <li style={{ fontSize: "16px" }}>
+  //         <strong>{t("purchase_details.date")}</strong>{" "}
+  //         <u>{updatedOrder.createdAt.toLocaleDateString()}</u>
+  //       </li>
+  //       {price && (
+  //         <li style={{ fontSize: "16px" }}>
+  //           <strong>{t("purchase_details.amount", { price })}</strong>
+  //         </li>
+  //       )}
+  //     </ul>
+
+  //     <p style={{ fontSize: "16px" }}>{t("support")}</p>
+
+  //     <blockquote
+  //       style={{
+  //         fontSize: "16px",
+  //         fontStyle: "italic",
+  //         color: "#7d4c8b",
+  //         borderLeft: "4px solid #7d4c8b",
+  //         paddingLeft: "10px",
+  //         marginLeft: "0",
+  //       }}
+  //     >
+  //       {t("appreciation")}
+  //     </blockquote>
+
+  //     <hr
+  //       style={{
+  //         border: "none",
+  //         borderTop: "1px solid #ddd",
+  //         margin: "20px 0",
+  //       }}
+  //     />
+
+  //     <footer style={{ textAlign: "center", fontSize: "14px", color: "#666" }}>
+  //       <p>
+  //         &copy; <small>2025 Eleven Flower Studio. {t("copyright")}</small>
+  //       </p>
+  //       <address>
+  //         ul. Nocznickiego 25 lokal u12, 01-948 Warszawa <br />
+  //         <a
+  //           href="mailto:elevenflowerstudio@gmail.com"
+  //           style={{ color: "#7d4c8b", textDecoration: "none" }}
+  //         >
+  //           elevenflowerstudio@gmail.com
+  //         </a>
+  //         <br />
+  //         <abbr title="Phone">📞</abbr> +48 571 944 969
+  //       </address>
+  //     </footer>
+  //   </div>
+  // );
 };
