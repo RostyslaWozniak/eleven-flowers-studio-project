@@ -87,7 +87,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     }),
   });
   await sendMessageAction(
-    `New order from ${customer ? customer.name : "Customer"}.  ${orderPrice ? `Price: ${orderPrice}  zł.` : null}`,
+    `New order from ${customer ? customer.name : "Customer"}.  ${orderPrice ? `Price: ${orderPrice}zł.` : null}`,
   );
 
   return orderId;
