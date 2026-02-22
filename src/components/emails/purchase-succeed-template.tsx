@@ -5,11 +5,19 @@ interface PurchaseSucceedTemplateProps {
   name: string | null;
   price: number | null;
   locale: Locale;
+  updatedOrder: {
+    createdAt: Date;
+    orderItems: {
+      productName: string;
+      size: string;
+      quantity: number;
+    }[];
+  };
 }
 
 export const PurchaseSucceedTemplate: React.FC<
   Readonly<PurchaseSucceedTemplateProps>
-> = async ({ name, price, locale }) => {
+> = async ({ name, price, updatedOrder, locale }) => {
   const t = await getTranslations({
     namespace: "emails.purchase_success",
     locale,
@@ -38,11 +46,20 @@ export const PurchaseSucceedTemplate: React.FC<
       <p style={{ fontSize: "16px", lineHeight: "1.5" }}>
         {t("purchase_details.message")}
       </p>
+      <ul>
+        {updatedOrder.orderItems.map((product) => (
+          <li key={product.productName}>
+            <p>{product.productName}</p>
+            <p>X {product.quantity}</p>
+            <p>{product.size}</p>
+          </li>
+        ))}
+      </ul>
 
       <ul style={{ listStyleType: "none", padding: 0 }}>
         <li style={{ fontSize: "16px" }}>
           <strong>{t("purchase_details.date")}</strong>{" "}
-          <u>{new Date().toDateString()}</u>
+          <u>{updatedOrder.createdAt.toLocaleDateString()}</u>
         </li>
         {price && (
           <li style={{ fontSize: "16px" }}>

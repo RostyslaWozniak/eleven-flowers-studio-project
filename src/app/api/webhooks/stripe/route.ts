@@ -68,7 +68,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
       : checkoutSession.payment_intent.id
     : null;
 
-  await updateOrder(orderId, paymentIntentId);
+  const updatedOrder = await updateOrder(orderId, paymentIntentId);
 
   const customer = await getCustomerInfo(checkoutSession.customer_email);
 
@@ -82,6 +82,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     emailTemplate: PurchaseSucceedTemplate({
       name: customer ? customer.name : null,
       price: orderPrice,
+      updatedOrder,
       locale,
     }),
   });
@@ -111,13 +112,23 @@ async function getCustomerInfo(customerEmail: string | null) {
 }
 
 async function updateOrder(orderId: string, paymantIntentId: string | null) {
-  await db.order.updateMany({
+  return await db.order.update({
     where: {
       id: orderId,
     },
     data: {
       paymentStatus: "SUCCESS",
       paymentIntentId: paymantIntentId,
+    },
+    select: {
+      createdAt: true,
+      orderItems: {
+        select: {
+          productName: true,
+          quantity: true,
+          size: true,
+        },
+      },
     },
   });
 }
