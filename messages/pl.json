@@ -291,7 +291,8 @@
         "title": "Twoje zamówienie zostało pomyślnie przetworzone!",
         "message": "Z radością potwierdzamy Twoje zamówienie. Oto szczegóły zakupu:",
         "date": "Data zakupu:",
-        "amount": "Łączna kwota: {price} zł"
+        "amount": "Łączna kwota: {price} zł",
+        "size": "Rozmiar"
       },
       "support": "Jeśli masz jakiekolwiek pytania lub wątpliwości dotyczące zamówienia, skontaktuj się z naszym działem obsługi klienta.",
       "appreciation": "Dziękujemy za zaufanie i wybór naszego sklepu!",

@@ -1,6 +1,8 @@
 import { type Locale } from "@/i18n/routing";
+import { capitalizeString } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
 import * as React from "react";
+import { H3, Text } from "../ui/typography";
 interface PurchaseSucceedTemplateProps {
   name: string | null;
   price: number | null;
@@ -47,11 +49,18 @@ export const PurchaseSucceedTemplate: React.FC<
         {t("purchase_details.message")}
       </p>
       <ul>
-        {updatedOrder.orderItems.map((product) => (
-          <li key={product.productName}>
-            <p>{product.productName}</p>
-            <p>X {product.quantity}</p>
-            <p>{product.size}</p>
+        {updatedOrder.orderItems.map(({ productName, quantity, size }) => (
+          <li key={productName} className="flex-grow">
+            <H3 className="font-semibold">{capitalizeString(productName)}</H3>
+            <div className="mt-3 flex justify-between">
+              <Text variant="muted">
+                {t("purchase_details.size")}:{" "}
+                <span className="text-base font-bold capitalize">{size}</span>
+              </Text>
+              <Text size="subtitle" variant="muted">
+                X {quantity}
+              </Text>
+            </div>
           </li>
         ))}
       </ul>
