@@ -62,8 +62,6 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     throw new Error("Missing metadata");
   }
 
-  console.error({ metadata: checkoutSession.metadata });
-
   const paymentIntentId = checkoutSession.payment_intent
     ? typeof checkoutSession.payment_intent === "string"
       ? checkoutSession.payment_intent

@@ -2,12 +2,12 @@ import { type NextRequest } from "next/server";
 import { OrderService } from "../order/order.service";
 import { TRPCError } from "@trpc/server";
 import { type OrderDTO } from "../order/order.types";
-import { getLocale, getTranslations } from "next-intl/server";
-import { validateLang } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 import { type Locale } from "@/i18n/routing";
 import type Stripe from "stripe";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { ContactInfoService } from "../contact-info/contact-info.service";
+import { getLocaleFromCookie } from "@/lib/utils/cookies";
 
 export class StripeService {
   public static getClientSessionSecret = async (
@@ -21,7 +21,7 @@ export class StripeService {
         message: "already_paid",
       });
 
-    const locale = await getLocale().then(validateLang);
+    const locale = getLocaleFromCookie(req);
 
     const lineItems = await this.getStripeLineItems(order, locale);
 
