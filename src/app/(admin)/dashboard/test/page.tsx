@@ -1,4 +1,4 @@
-import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-template";
+// import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-template";
 import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { SendMessageButton } from "@/features/telegram/components/send-message-button";
@@ -11,7 +11,7 @@ export default function TestPage() {
           <SendMessageButton />
         </MaxWidthWrapper>
       </SectionWrapper>
-      <SectionWrapper>
+      {/* <SectionWrapper>
         <MaxWidthWrapper>
           <PurchaseSucceedTemplate
             name={"Ivan"}
@@ -49,7 +49,7 @@ export default function TestPage() {
             }}
           />
         </MaxWidthWrapper>
-      </SectionWrapper>
+      </SectionWrapper> */}
     </>
   );
 }
