@@ -106,7 +106,6 @@ export const PurchaseSucceedTemplate = async ({
               <li
                 key={i}
                 style={{
-                  position: "relative",
                   backgroundColor: "#ffffff",
                   padding: "14px 16px",
                   borderRadius: "10px",
@@ -150,10 +149,6 @@ export const PurchaseSucceedTemplate = async ({
                     fontSize: "16px",
                     fontWeight: "bold",
                     color: "#555",
-                    position: "absolute",
-                    right: "16px",
-                    top: "50%",
-                    translate: "0 -50%",
                   }}
                 >
                   <p style={{ textAlign: "end" }}>× {quantity}</p>
@@ -163,7 +158,6 @@ export const PurchaseSucceedTemplate = async ({
             ))}
             <li
               style={{
-                position: "relative",
                 backgroundColor: "#ffffff",
                 padding: "14px 16px",
                 borderRadius: "10px",
@@ -195,7 +189,7 @@ export const PurchaseSucceedTemplate = async ({
                   translate: "0 -50%",
                 }}
               >
-                <p> {order.deliveryPrice} zł</p>
+                <p> {formatPrice(order.deliveryPrice)}</p>
               </div>
             </li>
           </ul>
