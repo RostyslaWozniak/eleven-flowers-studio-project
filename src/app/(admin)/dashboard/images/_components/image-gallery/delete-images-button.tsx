@@ -25,13 +25,16 @@ export function DeleteImagesButton({
   const router = useRouter();
 
   const { mutate: deleteImages, isPending } =
-    api.admin.images.removeImages.useMutation({
+    api.admin.images.deleteMany.useMutation({
       onSuccess: () => {
         setSelectedImages([]);
         toast.success("Images deleted successfully");
         void utils.admin.images.getAllImages.invalidate();
         router.refresh();
         setIsDialogOpen(false);
+      },
+      onError: ({ message }) => {
+        toast.error(message);
       },
     });
 

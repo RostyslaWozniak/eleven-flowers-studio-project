@@ -25,9 +25,9 @@ export const imagesRouter = createTRPCRouter({
       });
     }),
 
-  removeImages: adminProcedure
+  deleteMany: adminProcedure
     .input(ImageAdminSchema.delete)
     .mutation(async ({ input }) => {
-      return await ImageAdminService.delete(input);
+      return await ImageAdminService.deleteMany(input);
     }),
 });

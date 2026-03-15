@@ -24,11 +24,11 @@ export function ImagesGrid({
           onChange={(e) =>
             setSelectedImages((prev) =>
               e.target.checked
-                ? [...prev, id]
-                : prev.filter((item) => item !== id),
+                ? [...prev, url]
+                : prev.filter((item) => item !== url),
             )
           }
-          isSelected={selectedImages.includes(id)}
+          isSelected={selectedImages.includes(url)}
         />
       ))}
     </div>

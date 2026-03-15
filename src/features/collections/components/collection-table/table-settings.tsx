@@ -25,8 +25,8 @@ export const CollectionTableSettings = ({
   return (
     <>
       <DialogWrapper
-        title="Edit Product"
-        description="Make changes to your product here. Do not forget to save changes."
+        title="Edit Collection"
+        description="Make changes to your collection here. Do not forget to save changes."
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         className="flex max-h-[90vh] w-[1000px] justify-end gap-3"
