@@ -8,6 +8,7 @@ import type Stripe from "stripe";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { ContactInfoService } from "../contact-info/contact-info.service";
 import { getLocaleFromCookie } from "@/lib/utils/cookies";
+import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
 
 export class StripeService {
   public static getClientSessionSecret = async (
@@ -34,6 +35,20 @@ export class StripeService {
       lineItems,
       locale,
       order.id,
+    );
+    const orderItemsRow = order.orderItems
+      .map(
+        (item) =>
+          `${item.productName} x ${item.quantity}, size: ${item.size.toUpperCase()}`,
+      )
+      .join(",\n ");
+    await sendMessageAction(
+      `
+    New order from ${contactInfo.name ?? "Customer"}. 
+    Phone: ${contactInfo.phone}.
+    Email: ${contactInfo.email}.
+    Price: ${(order.totalPrice + order.deliveryPrice) / 100}zł..
+    Order: ${orderItemsRow}`,
     );
 
     return {
