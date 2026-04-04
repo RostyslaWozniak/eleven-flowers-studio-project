@@ -90,9 +90,11 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
   //   `Payment for order from ${customer ? customer.name : "Customer"}.  ${orderPrice ? `Price: ${orderPrice}zł.` : ""} ACCEPTED`,
   // );
   await sendMessageAction(
-    `<b>✅ Payment Accepted</b><br>
-<b>Customer:</b> ${customer ? customer.name : "Customer"}<br>
-${orderPrice ? `<b>Amount:</b> ${orderPrice} zł<br>` : ""}`,
+    `
+<b>✅ Payment Accepted</b>
+<b>Customer:</b> ${customer ? customer.name : "Customer"}
+${orderPrice ? `<b>Amount:</b> ${orderPrice} zł` : ""}
+`,
   );
 
   return orderId;
