@@ -62,12 +62,12 @@ export default function OrderingForm({
     resolver: zodResolver(orderingFormSchema),
     defaultValues: IS_LOCAL_PROJECT
       ? {
-          name: "ordering_name",
-          phone: "ordering_phone",
-          email: "ordering@email.com",
+          name: "Rostyslav Vozniak",
+          phone: "798 582 849",
+          email: "rostyslav.vozniak.dev@gmail.com",
           date: new Date(),
           time: "10:00-13:00",
-          description: "",
+          description: "Proszę o kontakt 20 min przed",
         }
       : {
           name: "",

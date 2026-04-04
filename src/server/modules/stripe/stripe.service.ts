@@ -9,6 +9,7 @@ import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { ContactInfoService } from "../contact-info/contact-info.service";
 import { getLocaleFromCookie } from "@/lib/utils/cookies";
 import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
+import { format } from "date-fns";
 
 export class StripeService {
   public static getClientSessionSecret = async (
@@ -39,16 +40,25 @@ export class StripeService {
     const orderItemsRow = order.orderItems
       .map(
         (item) =>
-          `${item.productName} x ${item.quantity}, size: ${item.size.toUpperCase()}`,
+          `<i>- ${item.productName} x ${item.quantity}, size: ${item.size.toUpperCase()}</i>`,
       )
-      .join(",\n ");
+      .join(", \n");
     await sendMessageAction(
       `
     New order from ${contactInfo.name ?? "Customer"}. 
-    Phone: ${contactInfo.phone}.
-    Email: ${contactInfo.email}.
-    Price: ${(order.totalPrice + order.deliveryPrice) / 100}zł..
-    Order: ${orderItemsRow}`,
+    <b>Phone</b>: ${contactInfo.phone}.
+    <b>Email</b>: ${contactInfo.email}.
+    <b>Order Price</b>: ${order.totalPrice / 100}zł..
+    <b>Delivery Price</b>: ${order.deliveryPrice / 100}zł..
+    <b>Order</b>:\n<u>${orderItemsRow}</u>
+    ${order.deliveryDetails.flowerMessage ? `<b>Flower Message</b>: ${order.deliveryDetails.flowerMessage}` : ""}
+    <b>Address</b>: 
+    <u>${order.address.city} ${order.address.postCode}, ${order.address.street}</u>
+    <b>Date</b>: <u>${format(order.deliveryDetails.deliveryDate, "PPP")}</u>
+    <b>Time</b>: <u>${order.deliveryDetails.deliveryTime}</u>
+    ${order.deliveryDetails.description ? `<b>Instructions</b>: <u>${order.deliveryDetails.description}</u>` : ""}
+    <b>Recipient Name: ${order.deliveryDetails.name}</b>
+    <b>Recipient Phone: ${order.deliveryDetails.phone}</b>`,
     );
 
     return {

@@ -86,8 +86,13 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
       locale,
     }),
   });
+  // await sendMessageAction(
+  //   `Payment for order from ${customer ? customer.name : "Customer"}.  ${orderPrice ? `Price: ${orderPrice}zł.` : ""} ACCEPTED`,
+  // );
   await sendMessageAction(
-    `New order from ${customer ? customer.name : "Customer"}.  ${orderPrice ? `Price: ${orderPrice}zł.` : null}`,
+    `<b>✅ Payment Accepted</b><br>
+<b>Customer:</b> ${customer ? customer.name : "Customer"}<br>
+${orderPrice ? `<b>Amount:</b> ${orderPrice} zł<br>` : ""}`,
   );
 
   return orderId;

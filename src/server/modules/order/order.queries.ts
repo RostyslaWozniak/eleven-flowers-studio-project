@@ -20,5 +20,22 @@ export class OrderQueries {
           price: true,
         },
       },
+      address: {
+        select: {
+          city: true,
+          street: true,
+          postCode: true,
+        },
+      },
+      deliveryDetails: {
+        select: {
+          name: true,
+          phone: true,
+          flowerMessage: true,
+          description: true,
+          deliveryDate: true,
+          deliveryTime: true,
+        },
+      },
     });
 }

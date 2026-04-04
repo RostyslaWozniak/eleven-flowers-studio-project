@@ -107,6 +107,7 @@ export class OrderService {
       });
 
     const order = await this.getById(orderId);
+
     if (!order)
       throw new TRPCError({ code: "NOT_FOUND", message: "order_not_found" });
 
@@ -139,6 +140,12 @@ export class OrderService {
         size: item.size,
         quantity: item.quantity,
       })),
+      address: {
+        city: order.address.city,
+        postCode: order.address.postCode,
+        street: order.address.street,
+      },
+      deliveryDetails: { ...order.deliveryDetails! },
     };
   }
 

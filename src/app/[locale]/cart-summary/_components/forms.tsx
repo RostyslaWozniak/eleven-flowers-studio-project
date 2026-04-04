@@ -17,12 +17,12 @@ export default function Forms() {
     useState<RecipientFormSchema>(
       IS_LOCAL_PROJECT
         ? {
-            name: "recipient_name",
-            phone: "recipient_phone",
-            address: "recipient_address",
-            city: "recipient_city",
-            postalCode: "01-001",
-            flowerMessage: "",
+            name: "Ewelina Teklińska",
+            phone: "737 161 113",
+            address: "Antoniego Magiera 21/1",
+            city: "Warszawa",
+            postalCode: "01-758",
+            flowerMessage: "Kwiaty dla Ciebie",
           }
         : {
             name: "",

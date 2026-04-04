@@ -22,6 +22,19 @@ export type OrderDTO = {
     size: string;
     quantity: number;
   }[];
+  address: {
+    city: string;
+    street: string;
+    postCode: string;
+  };
+  deliveryDetails: {
+    name: string | null;
+    phone: string;
+    flowerMessage: string | null;
+    description: string | null;
+    deliveryDate: Date;
+    deliveryTime: string;
+  };
 };
 
 export type CreateOrderWithDetailsSchema = z.infer<

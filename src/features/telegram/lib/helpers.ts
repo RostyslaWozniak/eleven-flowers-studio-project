@@ -17,8 +17,8 @@ export async function sendTelegramMessage({
       },
       body: JSON.stringify({
         chat_id: chatId,
-
         text,
+        parse_mode: "HTML",
       }),
     },
   );
