@@ -4,7 +4,7 @@ import { CartItemSkeleton } from "@/components/skeletons/cart-item-skeleton";
 import { H2, H3, Text } from "@/components/ui/typography";
 import { useCart } from "@/context/cart-context";
 import { capitalizeString, cn, formatPrice } from "@/lib/utils";
-import { api } from "@/trpc/react";
+// import { api } from "@/trpc/react";
 import { Truck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -14,7 +14,7 @@ export default function CartSummary() {
     useCart();
   const t = useTranslations("cart.cart_page.summary");
 
-  api.public.order.removeOrderIfStatusPending.useQuery();
+  // api.public.order.removeOrderIfStatusPending.useQuery();
   return (
     <div className="lg:py-6">
       <H2 className="text-start text-2xl font-light md:text-start">

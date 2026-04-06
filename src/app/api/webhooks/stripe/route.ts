@@ -85,7 +85,9 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     emailTemplate: PurchaseSucceedTemplate({
       name: customer ? customer.name : null,
       price: orderPrice,
-      order: { ...updatedOrder, items: updatedOrder.orderItems },
+      order: updatedOrder
+        ? { ...updatedOrder, items: updatedOrder?.orderItems }
+        : undefined,
       locale,
     }),
   });
@@ -120,27 +122,32 @@ async function getCustomerInfo(customerEmail: string | null) {
 }
 
 async function updateOrder(orderId: string, paymantIntentId: string | null) {
-  return await db.order.update({
-    where: {
-      id: orderId,
-    },
-    data: {
-      paymentStatus: "SUCCESS",
-      paymentIntentId: paymantIntentId,
-    },
-    select: {
-      deliveryPrice: true,
-      createdAt: true,
-      orderItems: {
-        select: {
-          productName: true,
-          quantity: true,
-          size: true,
-          price: true,
+  try {
+    return await db.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        paymentStatus: "SUCCESS",
+        paymentIntentId: paymantIntentId,
+      },
+      select: {
+        deliveryPrice: true,
+        createdAt: true,
+        orderItems: {
+          select: {
+            productName: true,
+            quantity: true,
+            size: true,
+            price: true,
+          },
         },
       },
-    },
-  });
+    });
+  } catch {
+    console.error("No order with ID: ", orderId);
+    return null;
+  }
 }
 
 function getEmailTitleByLang(locale: Locale) {

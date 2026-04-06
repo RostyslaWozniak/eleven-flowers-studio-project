@@ -6,7 +6,7 @@ interface PurchaseSucceedTemplateProps {
   name: string | null;
   price: number | null;
   locale: Locale;
-  order: {
+  order?: {
     createdAt: Date;
     deliveryPrice: number;
     items: {
@@ -102,60 +102,62 @@ export const PurchaseSucceedTemplate = async ({
               margin: 0,
             }}
           >
-            {order.items.map(({ productName, quantity, size, price }, i) => (
-              <li
-                key={i}
-                style={{
-                  backgroundColor: "#ffffff",
-                  padding: "14px 16px",
-                  borderRadius: "10px",
-                  marginBottom: "12px",
-                  border: "1px solid #eee",
-                }}
-              >
-                <div>
-                  <p
+            {order
+              ? order.items.map(({ productName, quantity, size, price }, i) => (
+                  <li
+                    key={i}
                     style={{
-                      margin: 0,
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      color: "#222",
+                      backgroundColor: "#ffffff",
+                      padding: "14px 16px",
+                      borderRadius: "10px",
+                      marginBottom: "12px",
+                      border: "1px solid #eee",
                     }}
                   >
-                    {productName}
-                  </p>
+                    <div>
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          color: "#222",
+                        }}
+                      >
+                        {productName}
+                      </p>
 
-                  <p
-                    style={{
-                      margin: "4px 0 0 0",
-                      fontSize: "14px",
-                      color: "#777",
-                    }}
-                  >
-                    {t("purchase_details.size")}{" "}
-                    <span
+                      <p
+                        style={{
+                          margin: "4px 0 0 0",
+                          fontSize: "14px",
+                          color: "#777",
+                        }}
+                      >
+                        {t("purchase_details.size")}{" "}
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          {size}
+                        </span>
+                      </p>
+                    </div>
+
+                    <div
                       style={{
+                        fontSize: "16px",
                         fontWeight: "bold",
-                        textTransform: "capitalize",
+                        color: "#555",
                       }}
                     >
-                      {size}
-                    </span>
-                  </p>
-                </div>
-
-                <div
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    color: "#555",
-                  }}
-                >
-                  <p style={{ textAlign: "end" }}>× {quantity}</p>
-                  <p>{formatPrice(price)}</p>
-                </div>
-              </li>
-            ))}
+                      <p style={{ textAlign: "end" }}>× {quantity}</p>
+                      <p>{formatPrice(price)}</p>
+                    </div>
+                  </li>
+                ))
+              : null}
             <li
               style={{
                 backgroundColor: "#ffffff",
@@ -189,7 +191,7 @@ export const PurchaseSucceedTemplate = async ({
                   translate: "0 -50%",
                 }}
               >
-                <p> {formatPrice(order.deliveryPrice)}</p>
+                {order && <p> {formatPrice(order.deliveryPrice)}</p>}
               </div>
             </li>
           </ul>
@@ -204,10 +206,12 @@ export const PurchaseSucceedTemplate = async ({
               border: "1px solid #eee",
             }}
           >
-            <p style={{ margin: "5px 0", fontSize: "15px" }}>
-              <strong>{t("purchase_details.date")}:</strong>{" "}
-              {order.createdAt.toLocaleDateString()}
-            </p>
+            {order && (
+              <p style={{ margin: "5px 0", fontSize: "15px" }}>
+                <strong>{t("purchase_details.date")}:</strong>{" "}
+                {order.createdAt.toLocaleDateString()}
+              </p>
+            )}
 
             {price && (
               <p style={{ margin: "5px 0", fontSize: "15px" }}>
