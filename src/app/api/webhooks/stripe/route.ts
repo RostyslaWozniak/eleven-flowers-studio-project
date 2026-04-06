@@ -42,9 +42,12 @@ export async function POST(req: NextRequest) {
   );
 
   switch (event.type) {
-    case "checkout.session.completed":
+    case "checkout.session.completed": {
+      await sendMessageAction("checkout.session.completed");
+    }
     case "checkout.session.async_payment_succeeded": {
       try {
+        await sendMessageAction("checkout.session.async_payment_succeeded");
         await processStripeCheckout(event.data.object);
       } catch {
         return new Response(null, { status: 500 });
