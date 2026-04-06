@@ -9,5 +9,12 @@
         }
       ]
     }
+  ],
+
+  "crons": [
+    {
+      "path": "/api/cron/appointment-notification",
+      "schedule": "0 7 * * *"
+    }
   ]
 }
