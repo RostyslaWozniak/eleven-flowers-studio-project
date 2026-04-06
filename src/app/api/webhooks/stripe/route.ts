@@ -86,9 +86,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
       locale,
     }),
   });
-  // await sendMessageAction(
-  //   `Payment for order from ${customer ? customer.name : "Customer"}.  ${orderPrice ? `Price: ${orderPrice}zł.` : ""} ACCEPTED`,
-  // );
+
   await sendMessageAction(
     `
 <b>✅ Payment Accepted</b>

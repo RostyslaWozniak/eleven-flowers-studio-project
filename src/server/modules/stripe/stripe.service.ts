@@ -10,6 +10,7 @@ import { ContactInfoService } from "../contact-info/contact-info.service";
 import { getLocaleFromCookie } from "@/lib/utils/cookies";
 import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
 import { format } from "date-fns";
+import { IS_TEST_PROJECT } from "@/components/environment-banner";
 
 export class StripeService {
   public static getClientSessionSecret = async (
@@ -112,6 +113,7 @@ export class StripeService {
       locale,
       namespace: "payment",
     });
+
     const deliveryData = {
       quantity: 1,
       price_data: {
@@ -119,7 +121,7 @@ export class StripeService {
         product_data: {
           name: `${t("delivery")}`,
         },
-        unit_amount: order.deliveryPrice,
+        unit_amount: IS_TEST_PROJECT ? 0 : order.deliveryPrice,
       },
     };
 
