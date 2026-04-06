@@ -46,7 +46,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
             Payment ID:
             <Link
               className="hover:underline"
-              href={`https://dashboard.stripe.com/${isStripeTest ? "test" : ""}/payments/${order.paymentIntentId}`}
+              href={`https://dashboard.stripe.com/${isStripeTest ? "test/" : ""}payments/${order.paymentIntentId}`}
               target="_blank"
             >
               {order.paymentIntentId}
