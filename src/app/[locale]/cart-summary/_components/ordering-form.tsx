@@ -126,6 +126,7 @@ export default function OrderingForm({
                   <FormLabel>{tLabel("name")}</FormLabel>
                   <FormControl>
                     <Input
+                      autoComplete="name"
                       name="name"
                       placeholder={tPlaceholder("name")}
                       value={field.value}
@@ -150,6 +151,8 @@ export default function OrderingForm({
                   <FormControl>
                     <Input
                       name="phone"
+                      type="text"
+                      autoComplete="tel"
                       placeholder={tPlaceholder("phone")}
                       value={field.value}
                       onChange={field.onChange}
@@ -173,7 +176,8 @@ export default function OrderingForm({
 
                 <FormControl>
                   <Input
-                    type="text"
+                    autoComplete="email"
+                    type="email"
                     {...field}
                     placeholder={tPlaceholder("email")}
                   />

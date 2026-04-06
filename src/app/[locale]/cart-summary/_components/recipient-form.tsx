@@ -91,6 +91,7 @@ export function RecipientForm({
                   <FormControl>
                     <Input
                       name="name"
+                      type="text"
                       placeholder={tPlaceholder("name")}
                       value={field.value}
                       onChange={field.onChange}
@@ -115,6 +116,7 @@ export function RecipientForm({
                   <FormControl>
                     <Input
                       name="phone"
+                      type="text"
                       placeholder={tPlaceholder("phone")}
                       value={field.value}
                       onChange={field.onChange}
@@ -139,6 +141,7 @@ export function RecipientForm({
                 <FormControl>
                   <Input
                     name="address"
+                    type="text"
                     placeholder={tPlaceholder("address")}
                     value={field.value}
                     onChange={field.onChange}
@@ -163,6 +166,7 @@ export function RecipientForm({
                   <FormControl>
                     <Input
                       name="city"
+                      type="text"
                       placeholder={tPlaceholder("city")}
                       value={field.value}
                       onChange={field.onChange}
