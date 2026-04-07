@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
       status: 401,
     });
   }
+
   const today = new Date();
   const start = new Date(today.setUTCHours(0, 0, 0, 0));
   const end = new Date(today.setUTCHours(23, 59, 59, 999));
@@ -33,7 +34,9 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  console.log(orders);
+  const message = `CRON JOB. Orders: ${orders.length}`;
+
+  await sendTelegramMessage({ text: message, chatId: "6868922856" });
 
   if (orders.length === 0) {
     return NextResponse.json({ orders: 0, ok: true });
