@@ -13,7 +13,7 @@
 
   "crons": [
     {
-      "path": "/api/cron/appointment-notification",
+      "path": "/api/cron/order-notification",
       "schedule": "0 7 * * *"
     }
   ]
