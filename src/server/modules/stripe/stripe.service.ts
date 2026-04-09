@@ -8,8 +8,6 @@ import type Stripe from "stripe";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { ContactInfoService } from "../contact-info/contact-info.service";
 import { getLocaleFromCookie } from "@/lib/utils/cookies";
-// import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
-// import { format } from "date-fns";
 import { IS_TEST_PROJECT } from "@/components/environment-banner";
 
 export class StripeService {
@@ -38,29 +36,6 @@ export class StripeService {
       locale,
       order.id,
     );
-    // const orderItemsRow = order.orderItems
-    //   .map(
-    //     (item) =>
-    //       `<i>- ${item.productName} x ${item.quantity}, size: ${item.size.toUpperCase()}</i>`,
-    //   )
-    //   .join(", \n");
-    // await sendMessageAction(
-    //   `
-    // New order from ${contactInfo.name ?? "Customer"}.
-    // <b>Phone</b>: ${contactInfo.phone}.
-    // <b>Email</b>: ${contactInfo.email}.
-    // <b>Order Price</b>: ${order.totalPrice / 100}zł..
-    // <b>Delivery Price</b>: ${order.deliveryPrice / 100}zł..
-    // <b>Order</b>:\n<u>${orderItemsRow}</u>
-    // ${order.deliveryDetails.flowerMessage ? `<b>Flower Message</b>: ${order.deliveryDetails.flowerMessage}` : ""}
-    // <b>Address</b>:
-    // <u>${order.address.city} ${order.address.postCode}, ${order.address.street}</u>
-    // <b>Date</b>: <u>${format(order.deliveryDetails.deliveryDate, "PPP")}</u>
-    // <b>Time</b>: <u>${order.deliveryDetails.deliveryTime}</u>
-    // ${order.deliveryDetails.description ? `<b>Instructions</b>: <u>${order.deliveryDetails.description}</u>` : ""}
-    // <b>Recipient Name: ${order.deliveryDetails.name}</b>
-    // <b>Recipient Phone: ${order.deliveryDetails.phone}</b>`,
-    // );
 
     return {
       stripeSession: sessionClientSecret,

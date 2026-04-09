@@ -1,4 +1,6 @@
+import { IS_TEST_PROJECT } from "@/components/environment-banner";
 import { env } from "@/env";
+import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
 import { sendTelegramMessage } from "@/features/telegram/lib/helpers";
 import { db } from "@/server/db";
 import { type NextRequest, NextResponse } from "next/server";
@@ -34,7 +36,10 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  const message = `CRON JOB. Orders: ${orders.length}`;
+  const message = `
+  CRON JOB. ${IS_TEST_PROJECT ? "TEST" : "PRODUCTION"} \n
+  Orders: ${orders.length}.
+  `;
 
   await sendTelegramMessage({ text: message, chatId: "6868922856" });
 
@@ -42,25 +47,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ orders: 0, ok: true });
   }
 
-  const pendingOrders = orders.filter(
-    (order) => order.paymentStatus === "PENDING",
-  );
-
   const successOrders = orders.filter(
     (order) => order.paymentStatus === "SUCCESS",
   );
 
-  if (pendingOrders.length > 0) {
-    const message = `
-Today you have ${pendingOrders.length} orders in pending status.\n
-Check all orders here <u>${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders</u>`;
-    await sendTelegramMessage({ text: message, chatId: "6868922856" });
-  }
   if (successOrders.length > 0) {
     const message = `
 Today you have ${successOrders.length} deliveries.\n
 Check all orders here <u>${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders</u>`;
-    await sendTelegramMessage({ text: message, chatId: "6868922856" });
+
+    await sendMessageAction(message);
   }
 
   return NextResponse.json({ orders: orders.length, ok: true });

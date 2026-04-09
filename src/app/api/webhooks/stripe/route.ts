@@ -6,6 +6,7 @@ import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { validateLang } from "@/lib/utils";
 import { db } from "@/server/db";
 import { sendEmail } from "@/services/resend";
+import { format } from "date-fns";
 import { type NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -42,12 +43,8 @@ export async function POST(req: NextRequest) {
   );
 
   switch (event.type) {
-    // case "checkout.session.completed": {
-    //   await sendMessageAction("checkout.session.completed");
-    // }
     case "checkout.session.async_payment_succeeded": {
       try {
-        // await sendMessageAction("checkout.session.async_payment_succeeded");
         await processStripeCheckout(event.data.object);
       } catch {
         return new Response(null, { status: 500 });
@@ -92,13 +89,39 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     }),
   });
 
-  await sendMessageAction(
-    `
+  if (updatedOrder == null) {
+    await sendMessageAction(
+      `
 <b>✅ Payment Accepted</b>
 <b>Customer:</b> ${customer ? customer.name : "Customer"}
 ${orderPrice ? `<b>Amount:</b> ${orderPrice} zł` : ""}
 `,
-  );
+    );
+  } else {
+    const orderItemsRow = updatedOrder.orderItems
+      .map(
+        (item) =>
+          `<i>- ${item.productName} x ${item.quantity}, size: ${item.size.toUpperCase()}</i>`,
+      )
+      .join(", \n");
+    await sendMessageAction(
+      `
+  New order from ${customer?.name ?? "Customer"}.
+  <b>Phone</b>: ${customer?.phone}.
+  <b>Email</b>: ${customer?.email}.
+  <b>Order Price</b>: ${orderPrice}zł..
+  <b>Delivery Price</b>: ${updatedOrder.deliveryPrice}zł..
+  <b>Order</b>:\n<u>${orderItemsRow}</u>
+  ${updatedOrder.deliveryDetails?.flowerMessage ? `<b>Flower Message</b>: ${updatedOrder.deliveryDetails.flowerMessage}` : ""}
+  <b>Address</b>:
+  <u>${updatedOrder.address.city} ${updatedOrder.address.postCode}, ${updatedOrder.address.street}</u>
+  ${updatedOrder.deliveryDetails?.deliveryDate && `<b>Date</b>: <u>${format(updatedOrder.deliveryDetails.deliveryDate, "PPP")}</u>`}
+  <b>Time</b>: <u>${updatedOrder.deliveryDetails?.deliveryTime}</u>
+  ${updatedOrder.deliveryDetails?.description ? `<b>Instructions</b>: <u>${updatedOrder.deliveryDetails.description}</u>` : ""}
+  <b>Recipient Name: ${updatedOrder.deliveryDetails?.name}</b>
+  <b>Recipient Phone: ${updatedOrder.deliveryDetails?.phone}</b>`,
+    );
+  }
 
   return orderId;
 }
@@ -112,13 +135,11 @@ async function getCustomerInfo(customerEmail: string | null) {
     select: {
       email: true,
       name: true,
+      phone: true,
     },
   });
   if (!customer) return null;
-  return {
-    name: customer.name,
-    email: customer.email,
-  };
+  return customer;
 }
 
 async function updateOrder(orderId: string, paymantIntentId: string | null) {
@@ -140,6 +161,23 @@ async function updateOrder(orderId: string, paymantIntentId: string | null) {
             quantity: true,
             size: true,
             price: true,
+          },
+        },
+        deliveryDetails: {
+          select: {
+            deliveryDate: true,
+            deliveryTime: true,
+            flowerMessage: true,
+            description: true,
+            name: true,
+            phone: true,
+          },
+        },
+        address: {
+          select: {
+            city: true,
+            postCode: true,
+            street: true,
           },
         },
       },
