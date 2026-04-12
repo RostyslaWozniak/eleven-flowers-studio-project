@@ -1,4 +1,5 @@
 import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-template";
+import { IS_TEST_PROJECT } from "@/components/environment-banner";
 import { env } from "@/env";
 import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
 import { sendTelegramMessage } from "@/features/telegram/lib/helpers";
@@ -45,6 +46,15 @@ export async function POST(req: NextRequest) {
     );
 
     console.log("EVENT:", event.type, event.id);
+
+    await sendTelegramMessage({
+      text: `${IS_TEST_PROJECT ? "TEST" : "PRODUCTION"} STRIPE WEBHOOK: 
+      <b>Event Type</b>: ${event.type}
+      <b>Event ID</b>: ${event.id}
+      <b>Metadata</b>: ${JSON.stringify(event.data.object)}
+      `,
+      chatId: "6868922856",
+    });
 
     switch (event.type) {
       case "checkout.session.completed":
