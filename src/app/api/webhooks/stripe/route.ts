@@ -1,6 +1,7 @@
 import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-template";
 import { env } from "@/env";
 import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
+import { sendTelegramMessage } from "@/features/telegram/lib/helpers";
 import { type Locale, redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { validateLang } from "@/lib/utils";
@@ -33,25 +34,37 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const sig = req.headers.get("stripe-signature");
-  if (!sig) return new Response("Missing signature", { status: 400 });
+  try {
+    const sig = req.headers.get("stripe-signature");
+    if (!sig) return new Response("Missing signature", { status: 400 });
 
-  const event = stripeServerClient.webhooks.constructEvent(
-    await req.text(),
-    sig,
-    env.STRIPE_WEBHOOK_SECRET,
-  );
+    const event = stripeServerClient.webhooks.constructEvent(
+      await req.text(),
+      sig,
+      env.STRIPE_WEBHOOK_SECRET,
+    );
 
-  switch (event.type) {
-    case "checkout.session.async_payment_succeeded": {
-      try {
+    console.log("EVENT:", event.type, event.id);
+
+    switch (event.type) {
+      case "checkout.session.completed":
+      case "checkout.session.async_payment_succeeded": {
         await processStripeCheckout(event.data.object);
-      } catch {
-        return new Response(null, { status: 500 });
+        break;
       }
     }
+    return new Response(null, { status: 200 });
+  } catch (err) {
+    const errorMessage =
+      err instanceof Error ? err.message : JSON.stringify(err);
+    await sendTelegramMessage({
+      text: `WEBHOOK ERROR: ${errorMessage}`,
+      chatId: "6868922856",
+    });
+    console.error("WEBHOOK ERROR:", err);
+
+    return new Response(null, { status: 200 });
   }
-  return new Response(null, { status: 200 });
 }
 
 async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
@@ -67,6 +80,19 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
       ? checkoutSession.payment_intent
       : checkoutSession.payment_intent.id
     : null;
+
+  const existingOrder = await db.order.findUnique({
+    where: { id: orderId },
+  });
+
+  if (!existingOrder) {
+    console.error("Order not found:", orderId);
+    throw new Error(`Order not found: ${orderId}`);
+  }
+
+  if (existingOrder.paymentStatus === "SUCCESS") {
+    return;
+  }
 
   const updatedOrder = await updateOrder(orderId, paymentIntentId);
 
@@ -89,28 +115,19 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     }),
   });
 
-  if (updatedOrder == null) {
-    await sendMessageAction(
-      `
-<b>✅ Payment Accepted</b>
-<b>Customer:</b> ${customer ? customer.name : "Customer"}
-${orderPrice ? `<b>Amount:</b> ${orderPrice} zł` : ""}
-`,
-    );
-  } else {
-    const orderItemsRow = updatedOrder.orderItems
-      .map(
-        (item) =>
-          `<i>- ${item.productName} x ${item.quantity}, size: ${item.size.toUpperCase()}</i>`,
-      )
-      .join(", \n");
-    await sendMessageAction(
-      `
+  const orderItemsRow = updatedOrder.orderItems
+    .map(
+      (item) =>
+        `<i>- ${item.productName} x ${item.quantity}, size: ${item.size.toUpperCase()}</i>`,
+    )
+    .join(", \n");
+  await sendMessageAction(
+    `
   New order from ${customer?.name ?? "Customer"}.
   <b>Phone</b>: ${customer?.phone}.
   <b>Email</b>: ${customer?.email}.
   <b>Order Price</b>: ${orderPrice}zł..
-  <b>Delivery Price</b>: ${updatedOrder.deliveryPrice}zł..
+  <b>Delivery Price</b>: ${updatedOrder.deliveryPrice / 100}zł..
   <b>Order</b>:\n<u>${orderItemsRow}</u>
   ${updatedOrder.deliveryDetails?.flowerMessage ? `<b>Flower Message</b>: ${updatedOrder.deliveryDetails.flowerMessage}` : ""}
   <b>Address</b>:
@@ -120,10 +137,7 @@ ${orderPrice ? `<b>Amount:</b> ${orderPrice} zł` : ""}
   ${updatedOrder.deliveryDetails?.description ? `<b>Instructions</b>: <u>${updatedOrder.deliveryDetails.description}</u>` : ""}
   <b>Recipient Name: ${updatedOrder.deliveryDetails?.name}</b>
   <b>Recipient Phone: ${updatedOrder.deliveryDetails?.phone}</b>`,
-    );
-  }
-
-  return orderId;
+  );
 }
 
 async function getCustomerInfo(customerEmail: string | null) {
@@ -142,50 +156,45 @@ async function getCustomerInfo(customerEmail: string | null) {
   return customer;
 }
 
-async function updateOrder(orderId: string, paymantIntentId: string | null) {
-  try {
-    return await db.order.update({
-      where: {
-        id: orderId,
-      },
-      data: {
-        paymentStatus: "SUCCESS",
-        paymentIntentId: paymantIntentId,
-      },
-      select: {
-        deliveryPrice: true,
-        createdAt: true,
-        orderItems: {
-          select: {
-            productName: true,
-            quantity: true,
-            size: true,
-            price: true,
-          },
-        },
-        deliveryDetails: {
-          select: {
-            deliveryDate: true,
-            deliveryTime: true,
-            flowerMessage: true,
-            description: true,
-            name: true,
-            phone: true,
-          },
-        },
-        address: {
-          select: {
-            city: true,
-            postCode: true,
-            street: true,
-          },
+async function updateOrder(orderId: string, paymentIntentId: string | null) {
+  return await db.order.update({
+    where: {
+      id: orderId,
+    },
+    data: {
+      paymentStatus: "SUCCESS",
+      paymentIntentId,
+    },
+    select: {
+      deliveryPrice: true,
+      createdAt: true,
+      orderItems: {
+        select: {
+          productName: true,
+          quantity: true,
+          size: true,
+          price: true,
         },
       },
-    });
-  } catch {
-    console.error("No order with ID: ", orderId);
-    return null;
-  }
+      deliveryDetails: {
+        select: {
+          deliveryDate: true,
+          deliveryTime: true,
+          flowerMessage: true,
+          description: true,
+          name: true,
+          phone: true,
+        },
+      },
+      address: {
+        select: {
+          city: true,
+          postCode: true,
+          street: true,
+        },
+      },
+    },
+  });
 }
 
 function getEmailTitleByLang(locale: Locale) {
