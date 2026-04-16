@@ -24,10 +24,10 @@ export default async function OrderPage({
     <div className="max-w-5xl">
       <Link
         href="/dashboard/orders"
-        className={cn(buttonVariants({ variant: "outline" }), "mb-6")}
+        className={cn(buttonVariants({ variant: "link" }), "mb-6 w-min")}
       >
         <ArrowLeftIcon />
-        Go to orders
+        Back to orders
       </Link>
       <div className="relative">
         <OrderInfo order={order} />
