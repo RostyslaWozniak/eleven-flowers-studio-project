@@ -1,12 +1,23 @@
 import { db } from "@/server/db";
 import { OrderAdminQueries } from "./order-admin.query";
 import type { OrderAdminGetAllSchema } from "./order-admin.types";
+import { subDays } from "date-fns/subDays";
 
 export class OrderAdminRepository {
   public static findMany = async ({ take, skip }: OrderAdminGetAllSchema) => {
+    const today = new Date();
+    const yesterday = subDays(today, 1);
+
     return await db.order.findMany({
       select: OrderAdminQueries.selectFields(),
-      orderBy: { createdAt: "desc" },
+      where: {
+        deliveryDetails: {
+          deliveryDate: {
+            gte: yesterday,
+          },
+        },
+      },
+      orderBy: { deliveryDetails: { deliveryDate: "asc" } },
       take,
       skip,
     });

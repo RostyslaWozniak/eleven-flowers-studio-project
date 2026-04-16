@@ -61,7 +61,7 @@ export function DateSelect({
                           date.getFullYear(),
                           date.getMonth(),
                           date.getDate(),
-                          2,
+                          0,
                         ),
                       );
 

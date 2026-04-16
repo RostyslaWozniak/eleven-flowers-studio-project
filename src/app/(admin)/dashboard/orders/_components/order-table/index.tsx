@@ -23,9 +23,13 @@ export function OrderTable() {
       ) : (
         <>
           <DataTable columns={orderColumns} data={data.orders} />
-          <div className="mt-4">
-            <Pagination totalPages={Math.ceil(data.count / ORDERS_PER_PAGE)} />
-          </div>
+          {data.count > 1 && (
+            <div className="mt-4">
+              <Pagination
+                totalPages={Math.ceil(data.count / ORDERS_PER_PAGE)}
+              />
+            </div>
+          )}
         </>
       )}
     </div>
