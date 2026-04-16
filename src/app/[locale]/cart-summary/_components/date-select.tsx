@@ -56,7 +56,16 @@ export function DateSelect({
                       date &&
                       date.toDateString() !== field.value.toDateString()
                     ) {
-                      field.onChange(date);
+                      const utcDate = new Date(
+                        Date.UTC(
+                          date.getFullYear(),
+                          date.getMonth(),
+                          date.getDate(),
+                          2,
+                        ),
+                      );
+
+                      field.onChange(utcDate);
                     }
                   }}
                   initialFocus
