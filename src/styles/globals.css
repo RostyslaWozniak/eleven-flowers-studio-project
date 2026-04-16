@@ -65,11 +65,13 @@
   }
 }
 
+body {
+  pointer-events: auto !important;
+}
+
 .scrollbar-hide {
   scrollbar-width: none;
 }
-
-
 
 @layer base {
   * {

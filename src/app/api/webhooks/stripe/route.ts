@@ -133,6 +133,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     .join(", \n");
   await sendMessageAction(
     `
+    Check order here: ${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders/${orderId}
   New order from ${customer?.name ?? "Customer"}.
   <b>Phone</b>: ${customer?.phone}.
   <b>Email</b>: ${customer?.email}.

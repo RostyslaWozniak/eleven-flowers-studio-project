@@ -44,6 +44,7 @@ export const DialogWrapper = ({
   overflowYScroll = false,
 }: DialogProps) => {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+  // const isDesktop = true;
   return (
     <>
       {isDesktop ? (

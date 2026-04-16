@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ProductsTable } from "./_components/products-table";
+import { DeviceNotSuported } from "@/components/device-not-suported";
 
 export default async function ProductsPage() {
   return (
@@ -19,6 +20,7 @@ export default async function ProductsPage() {
       <div className="py-10">
         <ProductsTable />
       </div>
+      <DeviceNotSuported />
     </>
   );
 }

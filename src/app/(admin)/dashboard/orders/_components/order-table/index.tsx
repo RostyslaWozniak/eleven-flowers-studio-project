@@ -11,6 +11,7 @@ const ORDERS_PER_PAGE = 10;
 
 export function OrderTable() {
   const [page] = useQueryState("page", { defaultValue: "1" });
+
   const { data, isPending } = api.admin.orders.getAll.useQuery({
     take: ORDERS_PER_PAGE,
     skip: (Number(page ?? 1) - 1) * ORDERS_PER_PAGE,
@@ -23,7 +24,7 @@ export function OrderTable() {
       ) : (
         <>
           <DataTable columns={orderColumns} data={data.orders} />
-          {data.count > 1 && (
+          {data.count / ORDERS_PER_PAGE > 1 && (
             <div className="mt-4">
               <Pagination
                 totalPages={Math.ceil(data.count / ORDERS_PER_PAGE)}

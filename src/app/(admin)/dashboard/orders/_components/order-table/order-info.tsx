@@ -31,9 +31,9 @@ type OrderInfoProps = {
 export function OrderInfo({ order }: OrderInfoProps) {
   const isStripeTest = env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.includes("test");
   return (
-    <div className="mb-4 flex w-full flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <div className="grid gap-2">
+    <div className="mb-4 flex w-full flex-col gap-4 px-2">
+      <div className="flex flex-col-reverse items-start justify-between lg:flex-row lg:items-center">
+        <div className="grid gap-2 lg:px-0">
           <div className="flex items-center gap-2">
             <CalendarIcon className="h-4 w-4 text-muted-foreground" />
             <p className="text-sm font-medium">
@@ -55,6 +55,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
         </div>
         <div>
           <Badge
+            className="mb-2 lg:mb-0"
             variant={
               order.paymentStatus === "SUCCESS"
                 ? "success"
@@ -67,7 +68,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
           </Badge>
         </div>
       </div>
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4 lg:flex-row">
         <div className="space-y-1 rounded-sm bg-card/80 p-4">
           <div className="flex items-center gap-2">
             <Banknote className="h-4 w-4 text-muted-foreground" />
@@ -119,7 +120,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid gap-4 lg:grid-cols-2">
         <div className="space-y-2 rounded-sm bg-card/80 p-2">
           <div className="flex items-center gap-2">
             <div className="flex items-center">
@@ -170,7 +171,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
         )}
       </div>
 
-      <div className="grid grid-cols-3 gap-x-2 rounded-sm bg-card/80">
+      <div className="grid gap-x-2 rounded-sm bg-card/80 lg:grid-cols-3">
         <div className="space-y-2 p-2">
           <div className="flex items-center gap-2">
             <Package className="h-4 w-4 text-muted-foreground" />

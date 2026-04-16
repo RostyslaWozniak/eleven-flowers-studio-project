@@ -4,10 +4,11 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 import { CollectionTable } from "@/features/collections/components/collection-table";
+import { DeviceNotSuported } from "@/components/device-not-suported";
 
 export default function CollectionsPage() {
   return (
-    <div>
+    <>
       <div className="flex items-center justify-between">
         <H1>Collections</H1>
         <Link
@@ -18,6 +19,7 @@ export default function CollectionsPage() {
         </Link>
       </div>
       <CollectionTable />
-    </div>
+      <DeviceNotSuported />
+    </>
   );
 }

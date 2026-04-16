@@ -21,14 +21,19 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
   },
   {
     accessorKey: "email",
-    header: "Email",
-    cell: ({ row }) => <p>{row.original.contactInfo?.email ?? "-"}</p>,
+    header: () => <p className="hidden lg:block">Email</p>,
+    cell: ({ row }) => (
+      <p className="hidden lg:block">
+        {row.original.contactInfo?.email ?? "-"}
+      </p>
+    ),
   },
   {
     accessorKey: "paymentStatus",
-    header: "Payment Status",
+    header: () => <div className="hidden lg:block">Payment Status</div>,
     cell: ({ row }) => (
       <Badge
+        className="hidden lg:inline"
         variant={
           row.original.paymentStatus === "SUCCESS"
             ? "success"
@@ -56,16 +61,20 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
   },
   {
     accessorKey: "created",
-    header: "Crated",
+    header: () => <div className="hidden lg:block">Created</div>,
     cell: ({ row }) => (
-      <p>{new Date(row.original.createdAt).toLocaleDateString()}</p>
+      <p className="hidden lg:block">
+        {new Date(row.original.createdAt).toLocaleDateString()}
+      </p>
     ),
   },
   {
     accessorKey: "price",
-    header: "Price",
+    header: () => <div className="hidden lg:block">Price</div>,
     cell: ({ row }) => (
-      <p>{formatPrice(row.original.totalPrice + row.original.deliveryPrice)}</p>
+      <p className="hidden lg:block">
+        {formatPrice(row.original.totalPrice + row.original.deliveryPrice)}
+      </p>
     ),
   },
 
