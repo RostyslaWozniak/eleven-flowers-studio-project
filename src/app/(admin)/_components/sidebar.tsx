@@ -8,6 +8,7 @@ import {
   LogOutIcon,
   Package,
   ShoppingCart,
+  UsersIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -34,6 +35,11 @@ const sidebarItems = [
     label: "Images",
     icon: Image,
   },
+  {
+    href: "/dashboard/subscribers",
+    label: "Subscribers",
+    icon: UsersIcon,
+  },
 ];
 
 export const Sidebar = () => {
@@ -55,10 +61,11 @@ export const Sidebar = () => {
                 <Link
                   href={href}
                   className={cn(
+                    "border-2 border-transparent",
                     buttonVariants({
                       variant:
                         pathname.split("/")[2] === href.split("/")[2]
-                          ? "secondary"
+                          ? "outline"
                           : "ghost",
                       size: "lg",
                     }),
@@ -67,7 +74,7 @@ export const Sidebar = () => {
                   <IconMenu
                     icon={Icon}
                     text={label}
-                    className="text-base"
+                    className="text-sm"
                     iconSize={24}
                   />
                 </Link>
