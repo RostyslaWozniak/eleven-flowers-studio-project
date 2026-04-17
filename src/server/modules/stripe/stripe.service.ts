@@ -96,8 +96,7 @@ export class StripeService {
         product_data: {
           name: `${t("delivery")}`,
         },
-        // unit_amount: IS_TEST_PROJECT ? 0 : order.deliveryPrice,
-        unit_amount: 0,
+        unit_amount: IS_TEST_PROJECT ? 0 : order.deliveryPrice,
       },
     };
 
