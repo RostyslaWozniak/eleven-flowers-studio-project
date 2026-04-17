@@ -44,13 +44,13 @@ export function ImageGallery({ pages }: { pages: number }) {
           </div>
         )
       ) : (
-        <div className="grid gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {Array.from({ length: 8 }).map((_, index) => (
             <CardSkeleton key={index} className="aspect-[4/5]" />
           ))}
         </div>
       )}
-      <div className="my-8 flex justify-end">
+      <div className="my-8 flex justify-center lg:justify-end">
         <Pagination totalPages={pages} />
       </div>
     </>

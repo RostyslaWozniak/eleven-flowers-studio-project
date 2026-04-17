@@ -2,14 +2,14 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { CheckIcon, InfoIcon, Settings } from "lucide-react";
+import { CheckIcon, Settings } from "lucide-react";
 import { OrderTableSettings } from "./table-settings";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import type { OrderAdminDTO } from "@/server/modules/admin/order-admin/order-admin.types";
 import { isSameDay } from "date-fns";
 import Link from "next/link";
 import { env } from "@/env";
-import IconMenu from "@/components/ui/icon-menu";
+import { buttonVariants } from "@/components/ui/button";
 export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
   {
     accessorKey: "todays",
@@ -88,13 +88,12 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
       <div>
         <Link
           href={`${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders/${row.original.id}`}
-          className="lg:hidden"
+          className={cn(
+            buttonVariants({ size: "sm", variant: "link" }),
+            "lg:hidden",
+          )}
         >
-          <IconMenu
-            icon={InfoIcon}
-            text="Info"
-            className="text-muted-foreground"
-          />
+          See more
         </Link>
         <div className="hidden lg:block">
           <OrderTableSettings order={row.original} />

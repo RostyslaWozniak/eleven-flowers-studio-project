@@ -39,7 +39,7 @@ export function SignInForm() {
         setError(res.error);
         return;
       }
-      router.push("/dashboard/products");
+      router.push("/dashboard/orders");
     });
   }
 

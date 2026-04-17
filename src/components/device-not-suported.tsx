@@ -2,6 +2,8 @@ import { LogOutIcon, XIcon } from "lucide-react";
 import { MaxWidthWrapper } from "./max-width-wrapper";
 import { LogOutButton } from "@/auth/components/log-out-button";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "./ui/button";
 
 export function DeviceNotSuported() {
   return (
@@ -15,12 +17,17 @@ export function DeviceNotSuported() {
             <h1 className="text-bold mb-2 text-lg">Device not supported</h1>
             <p className="text-muted-foreground">
               {
-                "This app doesn't work on phones or tablets. To continue, please use a computer or laptop."
+                "This page doesn't work on phones or tablets. To continue, please use a computer or laptop."
               }
             </p>
           </div>
-          <Link href="/dashboard/orders">Go to orders</Link>
-          <LogOutButton className="mt-4 w-full">
+          <Link
+            href="/dashboard/orders"
+            className={cn(buttonVariants({ variant: "outline" }), "h-11")}
+          >
+            Go to orders
+          </Link>
+          <LogOutButton className="mt-2 w-full">
             <LogOutIcon />
             Logout
           </LogOutButton>

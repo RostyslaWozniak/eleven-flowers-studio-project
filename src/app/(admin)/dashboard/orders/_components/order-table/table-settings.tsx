@@ -31,9 +31,7 @@ export const OrderTableSettings = ({ order }: OrderTableSettingsProps) => {
         closeButtonVariant={{ variant: "outline", size: "md" }}
         overflowYScroll
       >
-        <div className="max-h-[60vh] overflow-y-auto">
-          <OrderInfo order={order} />
-        </div>
+        <OrderInfo order={order} />
       </DialogWrapper>
       <DialogWrapper
         title="Delete Order"

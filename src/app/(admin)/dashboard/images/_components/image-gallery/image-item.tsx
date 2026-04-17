@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-"use clietn";
-
+"use client";
 import { Input } from "@/components/ui/input";
 
 type ImageItemProps = {
@@ -20,7 +19,7 @@ export function ImageItem({
 }: ImageItemProps) {
   return (
     <div key={id} className="flex flex-col items-center">
-      <div className="min-h-[300px] w-full bg-slate-200">
+      <div className="aspect-[4/5] w-full bg-slate-200">
         <img
           src={url}
           alt="Cannot load image"

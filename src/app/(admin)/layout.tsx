@@ -10,6 +10,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { EnvironmentBanner } from "@/components/environment-banner";
 import { getCurrentUser } from "@/auth/current-user";
 import { redirect } from "next/navigation";
+import { MobileNavbar } from "./_components/admin-mobile-nav";
 export const metadata: Metadata = {
   title: {
     template: "Admin | %s | Eleven Flowers Studio",
@@ -62,6 +63,7 @@ export default async function AdminLayout({
             <Sidebar />
             <div className="relative grow px-4 py-12 lg:px-10">{children}</div>
           </div>
+          <MobileNavbar />
 
           <Toaster
             toastOptions={{

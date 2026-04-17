@@ -2,7 +2,6 @@ import { H1 } from "@/components/ui/typography";
 import { ImageGallery } from "./_components/image-gallery";
 import { db } from "@/server/db";
 import { ImageUploader } from "./_components/image-uploader";
-import { DeviceNotSuported } from "@/components/device-not-suported";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +17,6 @@ export default async function Images() {
       <H1>Images ({imagesCount})</H1>
       <ImageUploader maxSizeMB={2} maxWidthOrHeight={2048} />
       <ImageGallery pages={pages} />
-      <DeviceNotSuported />
     </div>
   );
 }
