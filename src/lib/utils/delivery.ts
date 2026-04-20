@@ -14,9 +14,9 @@ export type DeliveryTimeSlot = (typeof DELIVERY_TIME_SLOTS)[number];
 export const MIN_FREE_DELIVERY_PRICE_IN_CENTS = 500 * 100;
 
 // prices in cents
-const DELIVERY_PRICE_ZONE_1 = 25 * 100;
-const DELIVERY_PRICE_ZONE_2 = 55 * 100;
-const DELIVERY_PRICE_ZONE_3 = 100 * 100;
+const DELIVERY_PRICE_ZONE_1 = 35 * 100;
+const DELIVERY_PRICE_ZONE_2 = 65 * 100;
+const DELIVERY_PRICE_ZONE_3 = 110 * 100;
 const DELIVERY_AVAILABLE_MESSAGE = "delivery_available";
 
 // Delivery Zones Mapping
@@ -24,6 +24,7 @@ export const DELIVERY_ZONES: Record<
   number,
   { price: number; message: string }
 > = {
+  0: { price: DELIVERY_PRICE_ZONE_1, message: DELIVERY_AVAILABLE_MESSAGE },
   1: { price: DELIVERY_PRICE_ZONE_1, message: DELIVERY_AVAILABLE_MESSAGE },
   2: { price: DELIVERY_PRICE_ZONE_1, message: DELIVERY_AVAILABLE_MESSAGE },
   3: { price: DELIVERY_PRICE_ZONE_1, message: DELIVERY_AVAILABLE_MESSAGE },

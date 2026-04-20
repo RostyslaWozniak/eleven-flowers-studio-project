@@ -22,8 +22,8 @@ const buttonVariants = cva(
       },
       size: {
         default: "w-full py-2.5 md:px-8  max-w-sm text-base",
-        sm: "h-8  px-3 text-xs",
-        md: "h-10  px-5",
+        sm: "h-8 px-3 text-xs border",
+        md: "h-10  px-5 border text-sm",
         lg: "h-10  px-8",
         icon: "h-9 w-9",
       },

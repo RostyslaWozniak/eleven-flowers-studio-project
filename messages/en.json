@@ -6,6 +6,89 @@
     "contact": "Contact",
     "cart": "Cart"
   },
+  "pages": {
+    "cart_summary": {
+      "title": "Your Cart",
+      "order": {
+        "title": "Order Summary",
+        "size": "Size",
+        "total": "Total",
+        "delivery": "Delivery"
+      },
+      "forms": {
+        "buttons": {
+          "next": "Next",
+          "prev": "Previous",
+          "to_checkout": "Go to checkout"
+        },
+        "delivery": {
+          "step_indicator": ["Recipient", "Delivery", "Your details"],
+          "recipient_form": {
+            "title": "Who are the flowers for?",
+            "fields": {
+              "name": {
+                "label": "Recipient’s name",
+                "placeholder": "e.g. John Doe"
+              },
+              "phone": {
+                "label": "Phone number",
+                "placeholder": "e.g. +48 123 456 789"
+              },
+              "message": {
+                "label": "Your message for the bouquet",
+                "placeholder": "e.g. Wishing you all the best!"
+              }
+            }
+          },
+          "delivery_form": {
+            "title": "Where should we deliver?",
+            "fields": {
+              "date": {
+                "label": "Select delivery date"
+              },
+              "time": {
+                "label": "Select delivery time"
+              },
+              "address": {
+                "label": "Street and house/apartment number",
+                "placeholder": "e.g. Marszałkowska 10/5"
+              },
+              "city": {
+                "label": "Cit",
+                "placeholder": "e.g. Warsaw"
+              },
+              "postal_code": {
+                "label": "Postal code",
+                "placeholder": "e.g. 00-000",
+                "delivery_fee": "Delivery fee"
+              }
+            }
+          },
+          "ordering_form": {
+            "title": "Your details",
+            "fields": {
+              "name": {
+                "label": "Your name",
+                "placeholder": "e.g. John Doe"
+              },
+              "phone": {
+                "label": "Phone number",
+                "placeholder": "e.g. +48 123 456 789"
+              },
+              "email": {
+                "label": "Your email",
+                "placeholder": "e.g. john-doe@mail.com"
+              },
+              "description": {
+                "label": "Additional instructions for the courier (optional)",
+                "placeholder": "e.g. 'Please call before delivery'"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "home": {
     "title": "Eleven Flowers Studio - Perfect gifts for you",
     "description": "In our floral studio, we believe in creating stunning floral compositions that tell a story.",
@@ -268,6 +351,7 @@
       "invalid_coupon": "The coupon code entered is invalid or expired. Please check and try again.",
       "address_not_found": "We couldn't verify the address provided. Please check and enter a valid address.",
       "invalid_postal_code": "Invalid postal code format.",
+      "invalid_phone_number": "Invalid phone number",
       "postal_code_not_deliverable": "Delivery not available in this area.",
       "time_must_be_future": "Time must be in the future.",
       "date_must_be_future": "Date must be in the future.",

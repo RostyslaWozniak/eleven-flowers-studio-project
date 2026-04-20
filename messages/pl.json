@@ -6,6 +6,89 @@
     "contact": "Kontakt",
     "cart": "Koszyk"
   },
+  "pages": {
+    "cart_summary": {
+      "title": "Twój koszyk",
+      "order": {
+        "title": "Podsumowanie zamówienia",
+        "size": "Rozmiar",
+        "total": "Łącznie",
+        "delivery": "Dostawa"
+      },
+      "forms": {
+        "buttons": {
+          "next": "Dalej",
+          "prev": "Wstecz",
+          "to_checkout": "Przejdź do płatności"
+        },
+        "delivery": {
+          "step_indicator": ["Odbiorca", "Dostawa", "Twoje dane"],
+          "recipient_form": {
+            "title": "Dla kogo są kwiaty?",
+            "fields": {
+              "name": {
+                "label": "Imię",
+                "placeholder": "Jan Kowalski"
+              },
+              "phone": {
+                "label": "Numer telefonu",
+                "placeholder": "+48 123 456 789"
+              },
+              "message": {
+                "label": "Twoja wiadomość do bukietu (opcionalnie)",
+                "placeholder": "Wpisz wiadomość do kwiatów"
+              }
+            }
+          },
+          "delivery_form": {
+            "title": "Gdzie dostarczyć zamówienie?",
+            "fields": {
+              "date": {
+                "label": "Wybierz dzień dostawy"
+              },
+              "time": {
+                "label": "Wybierz godzinę dostawy"
+              },
+              "address": {
+                "label": "Ulica i numer domu/mieszkania",
+                "placeholder": "Wpisz adres"
+              },
+              "city": {
+                "label": "Miasto",
+                "placeholder": "Wpisz miasto"
+              },
+              "postal_code": {
+                "label": "Kod pocztowy",
+                "placeholder": "Wpisz kod pocztowy",
+                "delivery_fee": "Opłata za dostawę"
+              }
+            }
+          },
+          "ordering_form": {
+            "title": "Twoje dane",
+            "fields": {
+              "name": {
+                "label": "Twoje imię",
+                "placeholder": "Jan Kowalski"
+              },
+              "phone": {
+                "label": "Numer telefonu",
+                "placeholder": "+48 123 456 789"
+              },
+              "email": {
+                "label": "Twój adres e-mail",
+                "placeholder": "jan-kowalski@mail.com"
+              },
+              "description": {
+                "label": "Dodatkowe instrukcje dla kuriera (opcjonalnie)",
+                "placeholder": "np. 'Proszę zadzwonić przed dostawą'"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "home": {
     "title": "Eleven Flowers Studio - Idealne prezenty dla Ciebie",
     "description": "W naszym studiu florystycznym wierzymy w tworzenie zachwycających kompozycji kwiatowych, które opowiadają historię. ",
@@ -270,6 +353,7 @@
       "invalid_coupon": "Kupon jest nieprawidłowy lub wygasł. Sprawdz i sprobuj ponownie.",
       "address_not_found": "Nie udało się zweryfikować podanego adresu. Sprawdz i wprowadz poprawny adres.",
       "invalid_postal_code": "Kod pocztowy jest niepoprawny.",
+      "invalid_phone_number": "Nieprawidłowy numer telefonu",
       "postal_code_not_deliverable": "Dostawa w danym regionie niedostępna.",
       "time_must_be_future": "Czas musi być w przyszłości.",
       "date_must_be_future": "Data musi być w przyszłości.",
