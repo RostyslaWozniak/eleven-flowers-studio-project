@@ -8,7 +8,6 @@ import type Stripe from "stripe";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { ContactInfoService } from "../contact-info/contact-info.service";
 import { getLocaleFromCookie } from "@/lib/utils/cookies";
-import { IS_TEST_PROJECT } from "@/components/environment-banner";
 
 export class StripeService {
   public static getClientSessionSecret = async (
@@ -96,7 +95,8 @@ export class StripeService {
         product_data: {
           name: `${t("delivery")}`,
         },
-        unit_amount: IS_TEST_PROJECT ? 0 : order.deliveryPrice,
+        // unit_amount: IS_TEST_PROJECT ? 0 : order.deliveryPrice,
+        unit_amount: order.deliveryPrice,
       },
     };
 

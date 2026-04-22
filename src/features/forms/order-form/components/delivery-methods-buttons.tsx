@@ -13,7 +13,7 @@ export function DeliveryMethodsButtons({
   onClick,
 }: DeliveryMethodButtonsProps) {
   return (
-    <div className="hidden grid-cols-2 gap-4 px-2 pb-8">
+    <div className="grid grid-cols-2 gap-4 px-2 pb-8">
       <button
         className={cn(
           "flex w-full flex-col items-center rounded-md border border-slate-200 p-2",
@@ -34,9 +34,8 @@ export function DeliveryMethodsButtons({
         <p className="text-sm">Dostawa</p>
       </button>
       <button
-        disabled={false}
         className={cn(
-          "flex w-full flex-col items-center rounded-md border border-slate-200 p-2 disabled:cursor-not-allowed disabled:opacity-50",
+          "flex w-full flex-col items-center rounded-md border border-slate-200 p-2",
           {
             "bg-card": deliveryMethod === "pickup",
           },
