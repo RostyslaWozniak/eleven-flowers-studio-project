@@ -16,7 +16,7 @@ export function ToggleAnimation({
   secondCompClassName?: string;
 }) {
   return (
-    <div className={cn("", className)}>
+    <div className={cn("relative", className)}>
       <div
         className={cn(
           "absolute flex h-full w-full items-center justify-center transition-transform duration-500",

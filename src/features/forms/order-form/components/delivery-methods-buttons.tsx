@@ -23,11 +23,11 @@ export function DeliveryMethodsButtons({
         )}
         onClick={() => onClick("delivery")}
       >
-        <div className="relative aspect-square">
+        <div>
           <ToggleAnimation
-            className="h-8 text-primary"
-            firstComp={<CarIcon className="size-full" />}
-            secondComp={<CheckIcon className="size-full" />}
+            className="h-8 w-8 text-primary"
+            firstComp={<CarIcon className="size-8" />}
+            secondComp={<CheckIcon className="size-12" />}
             isActive={deliveryMethod === "delivery"}
           />
         </div>
@@ -42,9 +42,9 @@ export function DeliveryMethodsButtons({
         )}
         onClick={() => onClick("pickup")}
       >
-        <div className="relative aspect-square">
+        <div>
           <ToggleAnimation
-            className="h-8 text-primary"
+            className="h-8 w-8 text-primary"
             firstComp={<ShoppingBagIcon className="size-7" />}
             secondComp={<CheckIcon className="size-full" />}
             isActive={deliveryMethod === "pickup"}
