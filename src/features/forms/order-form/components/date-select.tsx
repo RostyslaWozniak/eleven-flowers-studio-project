@@ -20,6 +20,7 @@ import {
   labelClassName,
 } from "../lib/constants/form-class-names";
 import { hasNoAvailableSlots } from "../lib/helpers/date";
+import { getCalendarLocale } from "../lib/helpers/locale";
 
 export function DateSelect({
   control,
@@ -57,7 +58,7 @@ export function DateSelect({
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="center">
                 <Calendar
-                  lang="pl"
+                  locale={getCalendarLocale(locale)}
                   mode="single"
                   selected={field.value}
                   disabled={hasNoAvailableSlots}

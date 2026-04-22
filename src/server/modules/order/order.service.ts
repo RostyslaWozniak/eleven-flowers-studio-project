@@ -21,6 +21,11 @@ import type {
   OrderDTO,
   OrderFromDb,
 } from "./order.types";
+import {
+  type OrdererFormSchema,
+  type PickupDatAndTimeFormSchema,
+} from "@/features/forms/order-form/lib/schema";
+import { db } from "@/server/db";
 
 export class OrderService {
   public static createWithDetails = async (
@@ -124,6 +129,76 @@ export class OrderService {
     return await OrderRepository.remove(orderId);
   }
 
+  public static async createPickupOrder(
+    req: NextRequest,
+    resHeaders: Headers,
+    input: {
+      pickupDatAndTimeFormData: PickupDatAndTimeFormSchema;
+      orderingFormData: OrdererFormSchema;
+    },
+  ) {
+    //1. get cart items and check if cart is empty
+    const cartId = getCookieValue(req, CART_COOKIE_NAME);
+    const locale = getLocaleFromCookie(req);
+
+    if (!cartId)
+      throw new TRPCError({ code: "BAD_REQUEST", message: "missing_cart_id" });
+
+    const cartItems = await CartItemService.getAllByCartId(cartId, locale);
+
+    if (cartItems.length === 0)
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "cart_is_empty",
+      });
+
+    // 2. check if contact info exists, if not create
+    const contactInfo = await ContactInfoService.getByEmailOrCreate(
+      input.orderingFormData.email,
+      {
+        name: input.orderingFormData.name,
+        email: input.orderingFormData.email,
+        phone: input.orderingFormData.phone,
+      },
+    );
+
+    const address = await AddressService.getOrCreate({
+      city: "Warsaw",
+      street: "Nocznickiego 25",
+      postCode: "01-948",
+    });
+
+    // 3. calculate total price and delivery price
+    const totalPrice = this.calculateTotalPrice(cartItems);
+
+    const deliveryDetails = {
+      deliveryDate: input.pickupDatAndTimeFormData.date,
+      deliveryTime: input.pickupDatAndTimeFormData.time,
+      description: input.orderingFormData.description,
+      flowerMessage: input.pickupDatAndTimeFormData.flowerMessage,
+      method: z.enum(ORDER_METHODS).Enum.pickup,
+    };
+
+    const order = await db.order.create({
+      data: {
+        locale,
+        contactInfoId: contactInfo.id,
+        totalPrice,
+        addressId: address.id,
+        orderItems: {
+          create: cartItems,
+        },
+        deliveryDetails: {
+          create: deliveryDetails,
+        },
+      },
+    });
+
+    await CartItemService.removeAllByCartId(cartId);
+
+    setCookieValue(resHeaders, ORDER_COOKIE_NAME, order.id);
+    return { orderId: order.id, message: "order_created" };
+  }
   private static async mapToDTO(order: OrderFromDb): Promise<OrderDTO> {
     return {
       id: order.id,

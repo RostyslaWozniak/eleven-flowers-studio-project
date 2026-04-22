@@ -31,6 +31,7 @@ export class OrderAdminQueries {
           deliveryDate: true,
           deliveryTime: true,
           description: true,
+          method: true,
         },
       },
       contactInfo: {

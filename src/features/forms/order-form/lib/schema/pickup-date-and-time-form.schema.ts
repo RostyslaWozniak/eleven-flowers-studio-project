@@ -6,6 +6,7 @@ export const pickupDatAndTimeFormSchema = z.object({
   time: z.enum(DELIVERY_TIME_SLOTS, {
     errorMap: () => ({ message: "required" }),
   }),
+  flowerMessage: z.string().max(1000).optional(),
 });
 
 export type PickupDatAndTimeFormSchema = z.infer<

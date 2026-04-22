@@ -2,6 +2,8 @@
   "navigation": {
     "home": "Home",
     "bouquets": "Bouquets",
+    "flowers": "Flowers",
+    "collections": "Collections",
     "gifts": "Gifts",
     "contact": "Contact",
     "cart": "Cart"
@@ -39,7 +41,9 @@
         "buttons": {
           "next": "Next",
           "prev": "Previous",
-          "to_checkout": "Go to checkout"
+          "to_checkout": "Go to checkout",
+          "delivery": "Delivery",
+          "pickup": "Pickup"
         },
         "delivery": {
           "step_indicator": ["Recipient", "Delivery", "Your details"],
@@ -55,7 +59,7 @@
                 "placeholder": "e.g. +48 123 456 789"
               },
               "message": {
-                "label": "Your message for the bouquet",
+                "label": "Your message for the bouquet (optional)",
                 "placeholder": "e.g. Wishing you all the best!"
               }
             }
@@ -102,6 +106,45 @@
               "description": {
                 "label": "Additional instructions for the courier (optional)",
                 "placeholder": "e.g. 'Please call before delivery'"
+              }
+            }
+          }
+        },
+        "pickup": {
+          "step_indicator": ["Day and Time", "Your Details"],
+          "date_form": {
+            "title": "When would you like to pick up the flowers?",
+            "fields": {
+              "date": {
+                "label": "Select pickup date"
+              },
+              "time": {
+                "label": "Select pickup time"
+              },
+              "message": {
+                "label": "Your message for the bouquet (optional)",
+                "placeholder": "e.g. Wishing you all the best!"
+              }
+            }
+          },
+          "ordering_form": {
+            "title": "Your details",
+            "fields": {
+              "name": {
+                "label": "Your name",
+                "placeholder": "e.g. John Doe"
+              },
+              "phone": {
+                "label": "Phone number",
+                "placeholder": "e.g. +48 123 456 789"
+              },
+              "email": {
+                "label": "Your email",
+                "placeholder": "e.g. john-doe@mail.com"
+              },
+              "description": {
+                "label": "Additional notes (optional)",
+                "placeholder": "e.g. I'll pick up after 3pm"
               }
             }
           }

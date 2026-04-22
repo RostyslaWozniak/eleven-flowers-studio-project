@@ -127,7 +127,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
               <User className="h-4 w-4 text-muted-foreground" />
               <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
             </div>
-            <p className="text-sm font-medium">Ordering Party Details</p>
+            <p className="text-sm font-medium">Orderer Details</p>
           </div>
           <p className="text-sm">
             Name: <b>{order.contactInfo.name}</b>
@@ -142,7 +142,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
           )}
         </div>
 
-        {order.contactInfo && (
+        {order.contactInfo && order.deliveryDetails?.method === "delivery" && (
           <div className="space-y-1 rounded-sm bg-card/80 p-2">
             <div className="flex items-center gap-2">
               <div className="flex items-center">
@@ -171,37 +171,63 @@ export function OrderInfo({ order }: OrderInfoProps) {
         )}
       </div>
 
-      <div className="grid gap-x-2 rounded-sm bg-card/80 lg:grid-cols-3">
-        <div className="space-y-2 p-2">
-          <div className="flex items-center gap-2">
-            <Package className="h-4 w-4 text-muted-foreground" />
-            <p className="text-sm font-medium">Delivery Details</p>
-          </div>
-          <p className="text-sm">
-            Street: <b>{order.address?.street}</b>
-          </p>
-          <p className="text-sm">
-            City:{" "}
-            <b>
-              {order.address?.city}, {order.address?.postCode}
-            </b>
-          </p>
-          {order.deliveryDetails && (
+      {order.deliveryDetails?.method === "delivery" ? (
+        <div className="grid gap-x-2 rounded-sm bg-card/80 lg:grid-cols-3">
+          <div className="space-y-2 p-2">
+            <div className="flex items-center gap-2">
+              <Package className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-medium">Delivery Details</p>
+            </div>
             <p className="text-sm">
-              Date: <b>{format(order.deliveryDetails.deliveryDate, "PPP")}</b>
+              Street: <b>{order.address?.street}</b>
             </p>
-          )}
-          <p className="text-sm">
-            Time: <b>{order.deliveryDetails?.deliveryTime}</b>
-          </p>
-        </div>
-        {order.deliveryDetails?.description && (
-          <div className="col-span-2 p-2">
-            <p className="text-sm font-medium">Delivery Instructions:</p>
-            <p className="text-sm">{order.deliveryDetails.description}</p>
+            <p className="text-sm">
+              City:{" "}
+              <b>
+                {order.address?.city}, {order.address?.postCode}
+              </b>
+            </p>
+            {order.deliveryDetails && (
+              <p className="text-sm">
+                Date: <b>{format(order.deliveryDetails.deliveryDate, "PPP")}</b>
+              </p>
+            )}
+            <p className="text-sm">
+              Time: <b>{order.deliveryDetails?.deliveryTime}</b>
+            </p>
           </div>
-        )}
-      </div>
+          {order.deliveryDetails?.description && (
+            <div className="col-span-2 p-2">
+              <p className="text-sm font-medium">Delivery Instructions:</p>
+              <p className="text-sm">{order.deliveryDetails.description}</p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="grid gap-x-2 rounded-sm bg-card/80 lg:grid-cols-3">
+          <div className="space-y-2 p-2">
+            <div className="flex items-center gap-2">
+              <Package className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-medium">Pickup Details</p>
+            </div>
+
+            {order.deliveryDetails && (
+              <p className="text-sm">
+                Date: <b>{format(order.deliveryDetails.deliveryDate, "PPP")}</b>
+              </p>
+            )}
+            <p className="text-sm">
+              Time: <b>{order.deliveryDetails?.deliveryTime}</b>
+            </p>
+          </div>
+          {order.deliveryDetails?.description && (
+            <div className="col-span-2 p-2">
+              <p className="text-sm font-medium">Delivery Instructions:</p>
+              <p className="text-sm">{order.deliveryDetails.description}</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

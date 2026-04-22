@@ -16,17 +16,11 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
     header: "Nº",
     cell: ({ row }) => row.index + 1,
   },
-  // {
-  //   accessorKey: "todays",
-  //   header: "Is Today",
-  //   cell: ({ row }) => {
-  //     const today = new Date();
-  //     return row.original.deliveryDetails &&
-  //       isSameDay(row.original.deliveryDetails?.deliveryDate, today) ? (
-  //       <CheckIcon className="stroke-emerald-500 stroke-[3px]" />
-  //     ) : null;
-  //   },
-  // },
+  {
+    accessorKey: "method",
+    header: "Method",
+    cell: ({ row }) => row.original.deliveryDetails?.method,
+  },
   {
     accessorKey: "email",
     header: () => <p className="hidden sm:block">Email</p>,

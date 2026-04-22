@@ -2,6 +2,8 @@
   "navigation": {
     "home": "Home",
     "bouquets": "Bukiety",
+    "collections": "Kolekcje",
+    "flowers": "Kwiaty",
     "gifts": "Prezenty",
     "contact": "Kontakt",
     "cart": "Koszyk"
@@ -39,7 +41,9 @@
         "buttons": {
           "next": "Dalej",
           "prev": "Wstecz",
-          "to_checkout": "Przejdź do płatności"
+          "to_checkout": "Przejdź do płatności",
+          "delivery": "Dostawa",
+          "pickup": "Odbiór osobisty"
         },
         "delivery": {
           "step_indicator": ["Odbiorca", "Dostawa", "Twoje dane"],
@@ -102,6 +106,45 @@
               "description": {
                 "label": "Dodatkowe instrukcje dla kuriera (opcjonalnie)",
                 "placeholder": "np. Proszę zadzwonić przed dostawą"
+              }
+            }
+          }
+        },
+        "pickup": {
+          "step_indicator": ["Dzień i godzina", "Twoje dane"],
+          "date_form": {
+            "title": "Kiedy chcesz odebrać kwiaty?",
+            "fields": {
+              "date": {
+                "label": "Wybierz datę odbioru"
+              },
+              "time": {
+                "label": "Wybierz godzinę odbioru"
+              },
+              "message": {
+                "label": "Twoja wiadomość do bukietu (opcjonalnie)",
+                "placeholder": "np. Życzę Ci wszystkiego najlepszego!"
+              }
+            }
+          },
+          "ordering_form": {
+            "title": "Twoje dane",
+            "fields": {
+              "name": {
+                "label": "Twoje imię",
+                "placeholder": "np. Jan Kowalski"
+              },
+              "phone": {
+                "label": "Numer telefonu",
+                "placeholder": "np. +48 123 456 789"
+              },
+              "email": {
+                "label": "Twój adres e-mail",
+                "placeholder": "np. jan-kowalski@mail.com"
+              },
+              "description": {
+                "label": "Dodatkowe uwagi (opcjonalnie)",
+                "placeholder": "np. Odbiorę po godzinie 15:00"
               }
             }
           }

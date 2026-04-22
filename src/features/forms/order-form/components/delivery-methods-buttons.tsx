@@ -2,6 +2,8 @@ import { ToggleAnimation } from "@/components/animations/toogle-comp-animation";
 import { cn } from "@/lib/utils";
 import { CarIcon, CheckIcon, ShoppingBagIcon } from "lucide-react";
 import { type DeliveryMethod } from "../types/delivery-methods.type";
+import { useCart } from "@/context/cart-context";
+import { useTranslations } from "next-intl";
 
 type DeliveryMethodButtonsProps = {
   deliveryMethod: DeliveryMethod;
@@ -12,6 +14,9 @@ export function DeliveryMethodsButtons({
   deliveryMethod,
   onClick,
 }: DeliveryMethodButtonsProps) {
+  const { setDeliveryPrice } = useCart();
+
+  const tButtons = useTranslations("pages.cart_summary.forms.buttons");
   return (
     <div className="grid grid-cols-2 gap-4 px-2 pb-8">
       <button
@@ -31,7 +36,7 @@ export function DeliveryMethodsButtons({
             isActive={deliveryMethod === "delivery"}
           />
         </div>
-        <p className="text-sm">Dostawa</p>
+        <p className="text-sm">{tButtons("delivery")}</p>
       </button>
       <button
         className={cn(
@@ -40,7 +45,10 @@ export function DeliveryMethodsButtons({
             "bg-card": deliveryMethod === "pickup",
           },
         )}
-        onClick={() => onClick("pickup")}
+        onClick={() => {
+          onClick("pickup");
+          setDeliveryPrice(null);
+        }}
       >
         <div>
           <ToggleAnimation
@@ -50,7 +58,7 @@ export function DeliveryMethodsButtons({
             isActive={deliveryMethod === "pickup"}
           />
         </div>
-        <p className="text-sm">Odbóir osobisty</p>
+        <p className="text-sm">{tButtons("pickup")}</p>
       </button>
     </div>
   );

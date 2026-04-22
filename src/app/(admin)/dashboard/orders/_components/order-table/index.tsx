@@ -12,15 +12,15 @@ import { Button } from "@/components/ui/button";
 const ORDERS_PER_PAGE = 10;
 
 const FILTERS = [
-  { label: "Comming", value: "comming" },
+  { label: "Coming", value: "coming" },
   { label: "Today", value: "today" },
   { label: "All", value: undefined },
 ] as const;
 
 export function OrderTable() {
   const [page, setPage] = useQueryState("page", { defaultValue: "1" });
-  const [filter, setFilter] = useState<"comming" | "today" | undefined>(
-    "comming",
+  const [filter, setFilter] = useState<"coming" | "today" | undefined>(
+    "coming",
   );
 
   const { data, isPending } = api.admin.orders.getAll.useQuery({

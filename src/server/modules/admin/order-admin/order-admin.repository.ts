@@ -11,7 +11,7 @@ export class OrderAdminRepository {
     filter,
   }: OrderAdminGetAllSchema) => {
     switch (filter) {
-      case "comming": {
+      case "coming": {
         const today = new Date();
         const yesterday = subDays(today, 1);
 

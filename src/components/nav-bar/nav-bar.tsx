@@ -4,13 +4,7 @@ import { getTranslations } from "next-intl/server";
 import RightNavPanel from "./right-nav-panel";
 import { Link, type Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-
-const navigation = [
-  { id: 1, href: "/", label: "home" },
-  { id: 2, href: "/collections/bouquets", label: "bouquets" },
-  { id: 3, href: "/collections/gifts", label: "gifts" },
-  { id: 4, href: "/contact", label: "contact" },
-];
+import { NAVIGATION } from "./nav-constants";
 
 export async function NavBar({ locale }: { locale: Locale }) {
   const t = await getTranslations({ namespace: "navigation", locale: locale });
@@ -34,7 +28,7 @@ export async function NavBar({ locale }: { locale: Locale }) {
           <nav className="itens-center hidden w-full md:flex">
             <div className="flex h-full flex-grow justify-center">
               <ul className="flex h-14">
-                {navigation.map(({ id, href, label }) => (
+                {NAVIGATION.map(({ id, href, label }) => (
                   <li key={id}>
                     <NavItem href={href}>
                       <Link
