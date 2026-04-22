@@ -19,6 +19,12 @@ const DELIVERY_PRICE_ZONE_2 = 65 * 100;
 const DELIVERY_PRICE_ZONE_3 = 110 * 100;
 const DELIVERY_AVAILABLE_MESSAGE = "delivery_available";
 
+export const DELIVERY_PRICES = [
+  DELIVERY_PRICE_ZONE_1,
+  DELIVERY_PRICE_ZONE_2,
+  DELIVERY_PRICE_ZONE_3,
+];
+
 // Delivery Zones Mapping
 export const DELIVERY_ZONES: Record<
   number,

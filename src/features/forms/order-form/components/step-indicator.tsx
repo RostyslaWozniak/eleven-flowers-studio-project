@@ -38,7 +38,7 @@ export function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
                   isActive={index < currentStep}
                 />
               </div>
-              <p className="mt-2 text-center text-xs font-medium text-muted-foreground">
+              <p className="mt-2 text-nowrap text-center text-xs font-medium text-muted-foreground">
                 {step}
               </p>
             </div>

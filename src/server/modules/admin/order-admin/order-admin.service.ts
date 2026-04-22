@@ -3,9 +3,7 @@ import type { OrderAdminGetAllSchema } from "./order-admin.types";
 
 export class OrderAdminService {
   public static getAll = async (input: OrderAdminGetAllSchema) => {
-    const orders = await OrderAdminRepository.findMany(input);
-    const count = await OrderAdminRepository.getCount();
-    return { orders, count };
+    return await OrderAdminRepository.findMany(input);
   };
 
   public static delete = async (id: string) => {

@@ -2,10 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import {
-  recipientFormSchema,
-  type RecipientFormSchema,
-} from "../lib/schema/recipient-form.schema";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -19,17 +16,27 @@ import { H2 } from "@/components/ui/typography";
 import { Textarea } from "@/components/ui/textarea";
 import LoadingButton from "@/components/loading-button";
 import { ChevronRightIcon } from "lucide-react";
+import {
+  recipientFormSchema,
+  type RecipientFormSchema,
+} from "../../lib/schema";
+import { cn } from "@/lib/utils";
+import {
+  formErrorClassName,
+  formItemClassName,
+  labelClassName,
+} from "../../lib/constants/form-class-names";
 
-type RecipientDataFormProps = {
+type RecipientInfoFormProps = {
   values: RecipientFormSchema;
   setValues: React.Dispatch<React.SetStateAction<RecipientFormSchema>>;
   onNext: () => void;
 };
-export function RecipientDataForm({
+export function RecipientInfoForm({
   values,
   setValues,
   onNext,
-}: RecipientDataFormProps) {
+}: RecipientInfoFormProps) {
   const form = useForm<RecipientFormSchema>({
     resolver: zodResolver(recipientFormSchema),
     defaultValues: values,
@@ -60,8 +67,10 @@ export function RecipientDataForm({
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{tField("name.label")}</FormLabel>
+                <FormItem className={cn(formItemClassName)}>
+                  <FormLabel className={cn(labelClassName)}>
+                    {tField("name.label")}
+                  </FormLabel>
 
                   <FormControl>
                     <Input
@@ -75,7 +84,7 @@ export function RecipientDataForm({
                   </FormControl>
 
                   {form.formState.errors.name && (
-                    <span className="absolute text-xs text-destructive">
+                    <span className={cn(formErrorClassName)}>
                       ({tError(form.formState.errors.name.message)})
                     </span>
                   )}
@@ -86,8 +95,10 @@ export function RecipientDataForm({
               control={form.control}
               name="phone"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{tField("phone.label")}</FormLabel>
+                <FormItem className={cn(formItemClassName)}>
+                  <FormLabel className={cn(labelClassName)}>
+                    {tField("phone.label")}
+                  </FormLabel>
 
                   <FormControl>
                     <Input
@@ -101,7 +112,7 @@ export function RecipientDataForm({
                   </FormControl>
 
                   {form.formState.errors.phone && (
-                    <span className="absolute text-xs text-destructive">
+                    <span className={cn(formErrorClassName)}>
                       ({tError(form.formState.errors.phone.message)})
                     </span>
                   )}
@@ -113,8 +124,10 @@ export function RecipientDataForm({
             control={form.control}
             name="flowerMessage"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>{tField("message.label")}</FormLabel>
+              <FormItem className={cn(formItemClassName)}>
+                <FormLabel className={cn(labelClassName)}>
+                  {tField("message.label")}
+                </FormLabel>
 
                 <FormControl>
                   <Textarea
@@ -133,7 +146,7 @@ export function RecipientDataForm({
               </FormItem>
             )}
           />
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-3">
             <LoadingButton
               loading={false}
               type="submit"

@@ -13,7 +13,27 @@
         "title": "Order Summary",
         "size": "Size",
         "total": "Total",
-        "delivery": "Delivery"
+        "delivery": {
+          "title": "Delivery",
+          "pricing_card": {
+            "title": "How much does delivery cost?",
+            "list": [
+              {
+                "title": "Warsaw",
+                "description": "- postal codes starting with 00, 01, 02, 03"
+              },
+              {
+                "title": "Warsaw area",
+                "description": "- postal codes starting with 04"
+              },
+              {
+                "title": "Outer zone",
+                "description": "- postal codes starting with 05"
+              }
+            ],
+            "free_delivery_message": "Free delivery on orders over"
+          }
+        }
       },
       "forms": {
         "buttons": {
@@ -59,7 +79,7 @@
               },
               "postal_code": {
                 "label": "Postal code",
-                "placeholder": "e.g. 00-000",
+                "placeholder": "e.g. 00-001",
                 "delivery_fee": "Delivery fee"
               }
             }

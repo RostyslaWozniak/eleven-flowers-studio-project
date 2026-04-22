@@ -11,30 +11,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { FieldError } from "react-hook-form";
+import type { Control, FieldError } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { type OrderingFormControl } from "./ordering-form";
 import { DELIVERY_TIME_SLOTS } from "@/lib/utils/delivery";
+import { type DeliveryFormSchema } from "../lib/schema/delivery-form.schema";
+import { cn } from "@/lib/utils";
+import {
+  formItemClassName,
+  labelClassName,
+} from "../lib/constants/form-class-names";
+import { isSlotDisabled } from "../lib/helpers/date";
 
 export function TimeSelect({
   control,
   errors,
+  selectedDate,
 }: {
-  control: OrderingFormControl;
+  control: Control<DeliveryFormSchema>;
   errors?: FieldError | undefined;
+  selectedDate: Date;
 }) {
-  const tLabel = useTranslations("cart.cart_page.forms.ordering.labels");
-  const tPlaceholder = useTranslations(
-    "cart.cart_page.forms.ordering.placeholders",
+  const tField = useTranslations(
+    "pages.cart_summary.forms.delivery.delivery_form.fields",
   );
+
   const tError = useTranslations("messages.error");
+
   return (
     <FormField
       control={control}
       name="time"
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>{tLabel("time")}</FormLabel>
+        <FormItem className={cn(formItemClassName)}>
+          <FormLabel className={cn(labelClassName)}>
+            {tField("time.label")}
+          </FormLabel>
 
           <FormControl>
             <Select
@@ -43,14 +54,20 @@ export function TimeSelect({
               onValueChange={field.onChange}
             >
               <SelectTrigger className="h-9 rounded-full border border-primary text-base text-primary md:text-lg">
-                <SelectValue placeholder={tPlaceholder("time")} />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent className="rounded-sm">
-                {DELIVERY_TIME_SLOTS.map((slot) => (
-                  <SelectItem key={slot} value={slot}>
-                    {slot}
-                  </SelectItem>
-                ))}
+                {DELIVERY_TIME_SLOTS.map((slot) => {
+                  return (
+                    <SelectItem
+                      key={slot}
+                      value={slot}
+                      disabled={isSlotDisabled(slot, selectedDate)}
+                    >
+                      {slot}
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
           </FormControl>

@@ -2,41 +2,46 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { CheckIcon, Settings } from "lucide-react";
 import { OrderTableSettings } from "./table-settings";
 import { cn, formatPrice } from "@/lib/utils";
 import type { OrderAdminDTO } from "@/server/modules/admin/order-admin/order-admin.types";
-import { isSameDay } from "date-fns";
 import Link from "next/link";
 import { env } from "@/env";
 import { buttonVariants } from "@/components/ui/button";
+import { SettingsIcon } from "lucide-react";
+
 export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
   {
-    accessorKey: "todays",
-    header: "Is Today",
-    cell: ({ row }) => {
-      const today = new Date();
-      return row.original.deliveryDetails &&
-        isSameDay(row.original.deliveryDetails?.deliveryDate, today) ? (
-        <CheckIcon className="stroke-emerald-500 stroke-[3px]" />
-      ) : null;
-    },
+    accessorKey: "number",
+    header: "Nº",
+    cell: ({ row }) => row.index + 1,
   },
+  // {
+  //   accessorKey: "todays",
+  //   header: "Is Today",
+  //   cell: ({ row }) => {
+  //     const today = new Date();
+  //     return row.original.deliveryDetails &&
+  //       isSameDay(row.original.deliveryDetails?.deliveryDate, today) ? (
+  //       <CheckIcon className="stroke-emerald-500 stroke-[3px]" />
+  //     ) : null;
+  //   },
+  // },
   {
     accessorKey: "email",
-    header: () => <p className="hidden lg:block">Email</p>,
+    header: () => <p className="hidden sm:block">Email</p>,
     cell: ({ row }) => (
-      <p className="hidden lg:block">
+      <p className="hidden sm:block">
         {row.original.contactInfo?.email ?? "-"}
       </p>
     ),
   },
   {
     accessorKey: "paymentStatus",
-    header: () => <div className="hidden lg:block">Payment Status</div>,
+    header: () => <div className="">Payment Status</div>,
     cell: ({ row }) => (
       <Badge
-        className="hidden lg:inline"
+        className="min-h-3"
         variant={
           row.original.paymentStatus === "SUCCESS"
             ? "success"
@@ -45,7 +50,7 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
               : "destructive"
         }
       >
-        {row.original.paymentStatus}
+        <p className="hidden lg:block">{row.original.paymentStatus}</p>
       </Badge>
     ),
   },
@@ -73,9 +78,9 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
   },
   {
     accessorKey: "price",
-    header: () => <div className="hidden lg:block">Price</div>,
+    header: () => <div className="hidden md:block">Price</div>,
     cell: ({ row }) => (
-      <p className="hidden lg:block">
+      <p className="hidden md:block">
         {formatPrice(row.original.totalPrice + row.original.deliveryPrice)}
       </p>
     ),
@@ -83,14 +88,14 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
 
   {
     accessorKey: "settings",
-    header: () => <Settings />,
+    header: () => <SettingsIcon />,
     cell: ({ row }) => (
       <div>
         <Link
           href={`${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders/${row.original.id}`}
           className={cn(
             buttonVariants({ size: "sm", variant: "link" }),
-            "lg:hidden",
+            "border-none px-0 lg:hidden",
           )}
         >
           See more

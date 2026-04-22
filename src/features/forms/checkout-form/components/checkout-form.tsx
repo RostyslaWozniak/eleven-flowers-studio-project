@@ -14,6 +14,9 @@ import { type OrderingFormSchema } from "../lib/schema/ordering-form.schema";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { ArrowsUpFromLineIcon, CarIcon, CheckIcon } from "lucide-react";
+import { ToggleAnimation } from "@/components/animations/toogle-comp-animation";
+import { cn } from "@/lib/utils";
 
 const stepAnimationVariants = {
   initial: { opacity: 0, y: 20 },
@@ -43,6 +46,9 @@ const orderingFormDefaultValues = {
 };
 
 export function CheckoutForm() {
+  const [deliveryMethod, setDeliveryMethod] = useState<"delivery" | "pickup">(
+    "delivery",
+  );
   const [currentStep, setCurrentStep] = useState(0);
 
   const formRef = useRef<HTMLDivElement>(null);
@@ -155,23 +161,70 @@ export function CheckoutForm() {
   ];
 
   return (
-    <div
-      ref={formRef}
-      className="min-h-[700px] scroll-m-5 px-2 md:min-h-[660px]"
-    >
-      <StepIndicator currentStep={currentStep} steps={tStepsList} />
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentStep}
-          variants={stepAnimationVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={stepAnimationTransition}
+    <>
+      <div className="grid grid-cols-2 gap-4 px-2 pb-8">
+        <button
+          className={cn(
+            "flex w-full flex-col items-center rounded-md border border-slate-200 p-2",
+            {
+              "bg-card": deliveryMethod === "delivery",
+            },
+          )}
+          onClick={() => setDeliveryMethod("delivery")}
         >
-          {steps[currentStep]}
-        </motion.div>
-      </AnimatePresence>
-    </div>
+          <div className="relative aspect-square">
+            <ToggleAnimation
+              className="h-8 text-primary"
+              firstComp={<CarIcon className="size-full" />}
+              secondComp={<CheckIcon className="size-full" />}
+              isActive={deliveryMethod === "delivery"}
+            />
+          </div>
+          <p className="text-sm">Dostawa</p>
+        </button>
+        <button
+          className={cn(
+            "flex w-full flex-col items-center rounded-md border border-slate-200 p-2",
+            {
+              "bg-card": deliveryMethod === "pickup",
+            },
+          )}
+          onClick={() => setDeliveryMethod("pickup")}
+        >
+          <div className="relative aspect-square">
+            <ToggleAnimation
+              className="h-8 text-primary"
+              firstComp={<ArrowsUpFromLineIcon className="size-full" />}
+              secondComp={<CheckIcon className="size-full" />}
+              isActive={deliveryMethod === "pickup"}
+            />
+          </div>
+          <p className="text-sm">Odbóir osobisty</p>
+        </button>
+      </div>
+      {deliveryMethod === "delivery" && (
+        <div
+          ref={formRef}
+          className="min-h-[700px] scroll-m-5 px-2 md:min-h-[660px]"
+        >
+          <StepIndicator currentStep={currentStep} steps={tStepsList} />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              variants={stepAnimationVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={stepAnimationTransition}
+            >
+              {steps[currentStep]}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      )}
+      {deliveryMethod === "pickup" && (
+        <div className="min-h-[660px]">Pickup</div>
+      )}
+    </>
   );
 }

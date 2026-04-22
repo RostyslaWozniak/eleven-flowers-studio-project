@@ -12,19 +12,27 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import type { FieldError } from "react-hook-form";
-import { type OrderingFormControl } from "./ordering-form";
+import type { Control, FieldError } from "react-hook-form";
+import { type DeliveryFormSchema } from "../lib/schema/delivery-form.schema";
+import { cn } from "@/lib/utils";
+import {
+  formItemClassName,
+  labelClassName,
+} from "../lib/constants/form-class-names";
+import { hasNoAvailableSlots } from "../lib/helpers/date";
 
 export function DateSelect({
   control,
   errors,
 }: {
-  control: OrderingFormControl;
+  control: Control<DeliveryFormSchema>;
   errors?: FieldError | undefined;
 }) {
   const locale = useLocale();
 
-  const tLabel = useTranslations("cart.cart_page.forms.ordering.labels");
+  const tField = useTranslations(
+    "pages.cart_summary.forms.delivery.delivery_form.fields",
+  );
 
   const tError = useTranslations("messages.error");
 
@@ -34,8 +42,10 @@ export function DateSelect({
       control={control}
       name="date"
       render={({ field }) => (
-        <FormItem className="">
-          <FormLabel>{tLabel("date")}</FormLabel>
+        <FormItem className={cn(formItemClassName)}>
+          <FormLabel className={cn(labelClassName)}>
+            {tField("date.label")}
+          </FormLabel>
 
           <FormControl>
             <Popover>
@@ -50,11 +60,12 @@ export function DateSelect({
                   lang="pl"
                   mode="single"
                   selected={field.value}
+                  disabled={hasNoAvailableSlots}
                   onSelect={(date) => {
                     // Only update the date if a new date is selected
                     if (
                       date &&
-                      date.toDateString() !== field.value.toDateString()
+                      date?.toDateString() !== field.value?.toDateString()
                     ) {
                       const utcDate = new Date(
                         Date.UTC(
@@ -68,7 +79,6 @@ export function DateSelect({
                       field.onChange(utcDate);
                     }
                   }}
-                  initialFocus
                   fromDate={new Date()}
                 />
               </PopoverContent>

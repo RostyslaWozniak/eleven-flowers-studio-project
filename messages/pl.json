@@ -13,7 +13,27 @@
         "title": "Podsumowanie zamówienia",
         "size": "Rozmiar",
         "total": "Łącznie",
-        "delivery": "Dostawa"
+        "delivery": {
+          "title": "Dostawa",
+          "pricing_card": {
+            "title": "Ile kosztuje dostawa?",
+            "list": [
+              {
+                "title": "Warszawa",
+                "description": "- kody pocztowe zaczynające się od 00, 01, 02, 03"
+              },
+              {
+                "title": "Okolice Warszawy",
+                "description": "- kody pocztowe zaczynające się od 04"
+              },
+              {
+                "title": "Dalsze okolice",
+                "description": "- kody pocztowe zaczynające się od 05"
+              }
+            ],
+            "free_delivery_message": "Darmowa dostawa przy zamówieniach powyżej"
+          }
+        }
       },
       "forms": {
         "buttons": {
@@ -28,15 +48,15 @@
             "fields": {
               "name": {
                 "label": "Imię",
-                "placeholder": "Jan Kowalski"
+                "placeholder": "np. Jan Kowalski"
               },
               "phone": {
                 "label": "Numer telefonu",
-                "placeholder": "+48 123 456 789"
+                "placeholder": "np. +48 123 456 789"
               },
               "message": {
                 "label": "Twoja wiadomość do bukietu (opcionalnie)",
-                "placeholder": "Wpisz wiadomość do kwiatów"
+                "placeholder": "np. Życzę Ci wszystkiego najlepszego!"
               }
             }
           },
@@ -51,7 +71,7 @@
               },
               "address": {
                 "label": "Ulica i numer domu/mieszkania",
-                "placeholder": "Wpisz adres"
+                "placeholder": "np. ul. Marszałkowska 10/5"
               },
               "city": {
                 "label": "Miasto",
@@ -59,7 +79,7 @@
               },
               "postal_code": {
                 "label": "Kod pocztowy",
-                "placeholder": "Wpisz kod pocztowy",
+                "placeholder": "np. 00-001",
                 "delivery_fee": "Opłata za dostawę"
               }
             }
@@ -69,19 +89,19 @@
             "fields": {
               "name": {
                 "label": "Twoje imię",
-                "placeholder": "Jan Kowalski"
+                "placeholder": "np. Jan Kowalski"
               },
               "phone": {
                 "label": "Numer telefonu",
-                "placeholder": "+48 123 456 789"
+                "placeholder": "np. +48 123 456 789"
               },
               "email": {
                 "label": "Twój adres e-mail",
-                "placeholder": "jan-kowalski@mail.com"
+                "placeholder": "np. jan-kowalski@mail.com"
               },
               "description": {
                 "label": "Dodatkowe instrukcje dla kuriera (opcjonalnie)",
-                "placeholder": "np. 'Proszę zadzwonić przed dostawą'"
+                "placeholder": "np. Proszę zadzwonić przed dostawą"
               }
             }
           }
