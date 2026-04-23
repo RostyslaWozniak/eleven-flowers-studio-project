@@ -418,7 +418,9 @@
       "time_must_be_future": "Time must be in the future.",
       "date_must_be_future": "Date must be in the future.",
       "INTERNAL_SERVER_ERROR": "An internal server error occurred. Please try again.",
-      "already_subscribed": "You are already subscribed."
+      "already_subscribed": "You are already subscribed.",
+      "not_available_date": "No available time slots for this day.",
+      "not_available_time": "Please select a later time slot."
     },
     "success": {
       "title": "Action completed successfully",

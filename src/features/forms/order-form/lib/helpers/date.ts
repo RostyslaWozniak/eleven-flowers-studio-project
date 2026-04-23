@@ -13,6 +13,7 @@ function isSameDay(a: Date, b: Date): boolean {
 const SLOT_BUFFER_HOURS = 2;
 
 export function isSlotDisabled(slot: string, selectedDate: Date): boolean {
+  // const today = new Date(new Date().setHours(17));
   const today = new Date();
 
   if (!isSameDay(selectedDate, today)) return false;

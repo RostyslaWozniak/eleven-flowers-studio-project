@@ -45,7 +45,7 @@ export default function CartSummary() {
                   />
                 </div>
                 <div className="flex-grow">
-                  <H3 className="font-semibold">
+                  <H3 className="text-xl font-semibold">
                     {capitalizeString(item.productName)}
                   </H3>
                   <div className="mt-3 flex justify-between">
@@ -75,11 +75,11 @@ export default function CartSummary() {
             )}
           </div>
           <div className="mt-3 flex w-full items-center justify-between">
-            <H3 className="font-semibold">
+            <Text variant="muted">
               {capitalizeString(
                 tButtons(deliveryMethod === "delivery" ? "delivery" : "pickup"),
               )}
-            </H3>
+            </Text>
 
             {deliveryMethod === "delivery" ? (
               deliveryPrice !== null && (
