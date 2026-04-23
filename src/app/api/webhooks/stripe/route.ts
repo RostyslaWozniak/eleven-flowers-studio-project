@@ -8,7 +8,6 @@ import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { validateLang } from "@/lib/utils";
 import { db } from "@/server/db";
 import { sendEmail } from "@/services/resend";
-import { format } from "date-fns";
 import { type NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -125,29 +124,8 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
     }),
   });
 
-  const orderItemsRow = updatedOrder.orderItems
-    .map(
-      (item) =>
-        `<i>- ${item.productName} x ${item.quantity}, size: ${item.size.toUpperCase()}</i>`,
-    )
-    .join(", \n");
   await sendMessageAction(
-    `
-    Check order here: ${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders/${orderId}
-  New order from ${customer?.name ?? "Customer"}.
-  <b>Phone</b>: ${customer?.phone}.
-  <b>Email</b>: ${customer?.email}.
-  <b>Order Price</b>: ${orderPrice}zł..
-  <b>Delivery Price</b>: ${updatedOrder.deliveryPrice / 100}zł..
-  <b>Order</b>:\n<u>${orderItemsRow}</u>
-  ${updatedOrder.deliveryDetails?.flowerMessage ? `<b>Flower Message</b>: ${updatedOrder.deliveryDetails.flowerMessage}` : ""}
-  <b>Address</b>:
-  <u>${updatedOrder.address.city} ${updatedOrder.address.postCode}, ${updatedOrder.address.street}</u>
-  ${updatedOrder.deliveryDetails?.deliveryDate && `<b>Date</b>: <u>${format(updatedOrder.deliveryDetails.deliveryDate, "PPP")}</u>`}
-  <b>Time</b>: <u>${updatedOrder.deliveryDetails?.deliveryTime}</u>
-  ${updatedOrder.deliveryDetails?.description ? `<b>Instructions</b>: <u>${updatedOrder.deliveryDetails.description}</u>` : ""}
-  <b>Recipient Name: ${updatedOrder.deliveryDetails?.name}</b>
-  <b>Recipient Phone: ${updatedOrder.deliveryDetails?.phone}</b>`,
+    `Check order here: ${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders/${orderId}`,
   );
 }
 
