@@ -1,5 +1,6 @@
 "use client";
 
+import { type DeliveryMethod } from "@/features/forms/order-form/types/delivery-methods.type";
 import { useDebounceCallback } from "@/hooks/use-debounce-callback";
 import { api } from "@/trpc/react";
 import type { CartItem } from "@/types";
@@ -21,12 +22,14 @@ type CartContextTypes = {
   isCartOpen: boolean;
   totalItems: number;
   totalPrice: number;
+  deliveryMethod: DeliveryMethod;
   setDeliveryPrice: Dispatch<SetStateAction<number | null>>;
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
   addOneToCart: (product: AddProductType) => void;
   removeCartItem: (id: string) => void;
   removeOneFromCart: (productId: string, size: string) => void;
   setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeliveryMethod: Dispatch<SetStateAction<DeliveryMethod>>;
 };
 
 const CartContext = createContext<CartContextTypes | null>(null);
@@ -48,6 +51,8 @@ export default function CartProvider({
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [deliveryPrice, setDeliveryPrice] = useState<number | null>(null);
+  const [deliveryMethod, setDeliveryMethod] =
+    useState<DeliveryMethod>("delivery");
 
   // Fetch cart items from API
   const { data: serverCartItems, isLoading: serverCartItemsLoading } =
@@ -181,6 +186,7 @@ export default function CartProvider({
       totalPrice,
       serverCartItemsLoading,
       deliveryPrice,
+      deliveryMethod,
     }),
     [
       cartItems,
@@ -189,6 +195,7 @@ export default function CartProvider({
       totalPrice,
       serverCartItemsLoading,
       deliveryPrice,
+      deliveryMethod,
     ],
   );
 
@@ -201,6 +208,7 @@ export default function CartProvider({
         setCartItems,
         addOneToCart,
         setDeliveryPrice,
+        setDeliveryMethod,
         ...contextValue,
       }}
     >

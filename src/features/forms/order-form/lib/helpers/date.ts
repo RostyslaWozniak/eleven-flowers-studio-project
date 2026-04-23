@@ -35,9 +35,13 @@ export function hasNoAvailableSlots(date: Date): boolean {
 }
 
 export function getFirstAvailableSlot(date: Date): DeliveryTimeSlot {
+  const today = new Date();
+  const slots = isSameDay(date, today)
+    ? DELIVERY_TIME_SLOTS.slice(1)
+    : DELIVERY_TIME_SLOTS;
+
   return (
-    DELIVERY_TIME_SLOTS.find((slot) => !isSlotDisabled(slot, date)) ??
-    DELIVERY_TIME_SLOTS[0]
+    slots.find((slot) => !isSlotDisabled(slot, date)) ?? DELIVERY_TIME_SLOTS[1]
   );
 }
 export function getFirstAvailableDate(): Date {

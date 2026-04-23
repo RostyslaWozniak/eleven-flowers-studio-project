@@ -1,6 +1,6 @@
 import { ToggleAnimation } from "@/components/animations/toogle-comp-animation";
 import { cn } from "@/lib/utils";
-import { CarIcon, CheckIcon, ShoppingBagIcon } from "lucide-react";
+import { CheckIcon, ShoppingBagIcon, TruckIcon } from "lucide-react";
 import { type DeliveryMethod } from "../types/delivery-methods.type";
 import { useCart } from "@/context/cart-context";
 import { useTranslations } from "next-intl";
@@ -14,7 +14,7 @@ export function DeliveryMethodsButtons({
   deliveryMethod,
   onClick,
 }: DeliveryMethodButtonsProps) {
-  const { setDeliveryPrice } = useCart();
+  const { setDeliveryPrice, setDeliveryMethod } = useCart();
 
   const tButtons = useTranslations("pages.cart_summary.forms.buttons");
   return (
@@ -26,12 +26,15 @@ export function DeliveryMethodsButtons({
             "bg-card": deliveryMethod === "delivery",
           },
         )}
-        onClick={() => onClick("delivery")}
+        onClick={() => {
+          onClick("delivery");
+          setDeliveryMethod("delivery");
+        }}
       >
         <div>
           <ToggleAnimation
             className="h-8 w-8 text-primary"
-            firstComp={<CarIcon className="size-8" />}
+            firstComp={<TruckIcon className="size-8" />}
             secondComp={<CheckIcon className="size-12" />}
             isActive={deliveryMethod === "delivery"}
           />
@@ -47,6 +50,7 @@ export function DeliveryMethodsButtons({
         )}
         onClick={() => {
           onClick("pickup");
+          setDeliveryMethod("pickup");
           setDeliveryPrice(null);
         }}
       >
