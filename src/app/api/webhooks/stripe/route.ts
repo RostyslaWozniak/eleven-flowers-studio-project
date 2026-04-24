@@ -125,7 +125,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
   });
 
   await sendMessageAction(
-    `Check order here: ${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders/${orderId}`,
+    `New order! You can check it here: ${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders/${orderId}`,
   );
 }
 
