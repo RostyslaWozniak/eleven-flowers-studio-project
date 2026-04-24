@@ -6,7 +6,8 @@
     "flowers": "Цветы",
     "gifts": "Подарки",
     "contact": "Контакт",
-    "cart": "Корзина"
+    "cart": "Корзина",
+    "lang_select": "Выберите язык"
   },
   "pages": {
     "cart_summary": {

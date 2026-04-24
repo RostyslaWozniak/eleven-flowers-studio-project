@@ -6,8 +6,10 @@
     "collections": "Collections",
     "gifts": "Gifts",
     "contact": "Contact",
-    "cart": "Cart"
+    "cart": "Cart",
+    "lang_select": "Select language"
   },
+
   "pages": {
     "cart_summary": {
       "title": "Your Cart",

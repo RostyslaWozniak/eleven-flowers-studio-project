@@ -25,7 +25,7 @@ type DialogProps = {
   closeButton?: string;
   closeButtonVariant?: VariantProps<typeof buttonVariants>;
   className?: string;
-  description: string;
+  description?: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
@@ -44,7 +44,6 @@ export const DialogWrapper = ({
   overflowYScroll = false,
 }: DialogProps) => {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  // const isDesktop = true;
   return (
     <>
       {isDesktop ? (
@@ -56,7 +55,9 @@ export const DialogWrapper = ({
           >
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
-              <DialogDescription>{description}</DialogDescription>
+              {description && (
+                <DialogDescription>{description}</DialogDescription>
+              )}
             </DialogHeader>
             <div className={cn("grow", className)}>
               {children}
@@ -75,7 +76,7 @@ export const DialogWrapper = ({
         </Dialog>
       ) : (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent>
+          <DrawerContent className="z-[99999] px-4 pb-4">
             <DrawerHeader className="text-left">
               <DrawerTitle>{title}</DrawerTitle>
               <DrawerDescription>{description}</DrawerDescription>
