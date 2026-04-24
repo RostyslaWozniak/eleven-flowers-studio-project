@@ -6,6 +6,10 @@ import { DataTable } from "@/components/data-table";
 import { DataTableSkeleton } from "@/components/skeletons/table-skeleton";
 import { columns } from "./columns";
 import Pagination from "@/components/pagination";
+import { H1 } from "@/components/ui/typography";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 const PRODUCTS_PER_PAGE = 10;
 
@@ -17,19 +21,33 @@ export function ProductsTable() {
   });
 
   return (
-    <div className="py-10">
-      {data === undefined || isPending ? (
-        <DataTableSkeleton rows={12} showPagination />
-      ) : (
-        <>
-          <DataTable columns={columns} data={data.products} />
-          <div className="mt-4">
-            <Pagination
-              totalPages={Math.ceil(data.productsCount / PRODUCTS_PER_PAGE)}
-            />
-          </div>
-        </>
-      )}
-    </div>
+    <>
+      <div className="flex items-center justify-between">
+        <H1>
+          Products{" "}
+          {data && <span className="font-manrope">({data.productsCount})</span>}
+        </H1>
+        <Link
+          href="/dashboard/products/new"
+          className={cn(buttonVariants({ variant: "default", size: "md" }))}
+        >
+          + Add New Product
+        </Link>
+      </div>
+      <div className="py-10">
+        {data === undefined || isPending ? (
+          <DataTableSkeleton rows={12} showPagination />
+        ) : (
+          <>
+            <DataTable columns={columns} data={data.products} />
+            <div className="mt-4">
+              <Pagination
+                totalPages={Math.ceil(data.productsCount / PRODUCTS_PER_PAGE)}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }

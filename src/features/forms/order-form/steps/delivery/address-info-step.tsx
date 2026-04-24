@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { H2 } from "@/components/ui/typography";
-import { DateSelect } from "../../components/date-select";
-import { TimeSelect } from "../../components/time-select";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { getDeliveryPriceInCents } from "@/lib/utils/delivery";
@@ -24,6 +22,8 @@ import {
   formItemClassName,
   labelClassName,
 } from "../../lib/constants/form-class-names";
+import { DateFormItem } from "../../components/date-form-item";
+import { TimeFormItem } from "../../components/time-form-item";
 
 type DeliveryInfoFormProps = {
   values: DeliveryFormSchema;
@@ -42,7 +42,7 @@ export function DeliveryInfoForm({
   const form = useForm<DeliveryFormSchema>({
     resolver: zodResolver(deliveryFormSchema),
     defaultValues: {
-      date: new Date(values.date),
+      date: values.date ? new Date(values.date) : undefined,
       time: values.time,
       address: values.address,
       city: values.city,
@@ -90,14 +90,28 @@ export function DeliveryInfoForm({
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="min-h-64 space-y-4">
             <div className="grid gap-x-4 gap-y-5 lg:grid-cols-2">
-              <DateSelect
+              <FormField
                 control={form.control}
-                errors={form.formState.errors.date}
+                name="date"
+                render={({ field }) => (
+                  <DateFormItem
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={form.formState.errors.date?.message}
+                  />
+                )}
               />
-              <TimeSelect
+              <FormField
                 control={form.control}
-                errors={form.formState.errors.time}
-                selectedDate={selectedDate}
+                name="time"
+                render={({ field }) => (
+                  <TimeFormItem
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={form.formState.errors.time?.message}
+                    selectedDate={selectedDate}
+                  />
+                )}
               />
             </div>
             <FormField

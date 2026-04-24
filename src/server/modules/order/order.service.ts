@@ -171,6 +171,16 @@ export class OrderService {
     // 3. calculate total price and delivery price
     const totalPrice = this.calculateTotalPrice(cartItems);
 
+    if (
+      input.pickupDatAndTimeFormData.date == null ||
+      input.pickupDatAndTimeFormData.time == null
+    ) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "not_available_date",
+      });
+    }
+
     const deliveryDetails = {
       deliveryDate: input.pickupDatAndTimeFormData.date,
       deliveryTime: input.pickupDatAndTimeFormData.time,

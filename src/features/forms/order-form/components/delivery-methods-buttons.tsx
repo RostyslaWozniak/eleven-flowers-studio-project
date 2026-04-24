@@ -1,20 +1,11 @@
 import { ToggleAnimation } from "@/components/animations/toogle-comp-animation";
 import { cn } from "@/lib/utils";
 import { CheckIcon, ShoppingBagIcon, TruckIcon } from "lucide-react";
-import { type DeliveryMethod } from "../types/delivery-methods.type";
 import { useCart } from "@/context/cart-context";
 import { useTranslations } from "next-intl";
 
-type DeliveryMethodButtonsProps = {
-  deliveryMethod: DeliveryMethod;
-  onClick: (method: DeliveryMethod) => void;
-};
-
-export function DeliveryMethodsButtons({
-  deliveryMethod,
-  onClick,
-}: DeliveryMethodButtonsProps) {
-  const { setDeliveryPrice, setDeliveryMethod } = useCart();
+export function DeliveryMethodsButtons() {
+  const { deliveryMethod, setDeliveryPrice, setDeliveryMethod } = useCart();
 
   const tButtons = useTranslations("pages.cart_summary.forms.buttons");
   return (
@@ -27,7 +18,6 @@ export function DeliveryMethodsButtons({
           },
         )}
         onClick={() => {
-          onClick("delivery");
           setDeliveryMethod("delivery");
         }}
       >
@@ -49,7 +39,6 @@ export function DeliveryMethodsButtons({
           },
         )}
         onClick={() => {
-          onClick("pickup");
           setDeliveryMethod("pickup");
           setDeliveryPrice(null);
         }}

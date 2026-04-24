@@ -45,6 +45,18 @@
           "delivery": "Dostawa",
           "pickup": "Odbiór osobisty"
         },
+        "shared": {
+          "fields": {
+            "date": {
+              "label": "Data",
+              "placeholder": "Wybierz datę"
+            },
+            "time": {
+              "label": "Godzina",
+              "placeholder": "Wybierz godzinę"
+            }
+          }
+        },
         "delivery": {
           "step_indicator": ["Odbiorca", "Dostawa", "Twoje dane"],
           "recipient_form": {
@@ -67,12 +79,6 @@
           "delivery_form": {
             "title": "Gdzie dostarczyć zamówienie?",
             "fields": {
-              "date": {
-                "label": "Wybierz dzień dostawy"
-              },
-              "time": {
-                "label": "Wybierz godzinę dostawy"
-              },
               "address": {
                 "label": "Ulica i numer domu/mieszkania",
                 "placeholder": "np. ul. Marszałkowska 10/5"
@@ -115,12 +121,6 @@
           "date_form": {
             "title": "Kiedy chcesz odebrać kwiaty?",
             "fields": {
-              "date": {
-                "label": "Wybierz datę odbioru"
-              },
-              "time": {
-                "label": "Wybierz godzinę odbioru"
-              },
               "message": {
                 "label": "Twoja wiadomość do bukietu (opcjonalnie)",
                 "placeholder": "np. Życzę Ci wszystkiego najlepszego!"

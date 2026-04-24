@@ -44,6 +44,18 @@
           "delivery": "Delivery",
           "pickup": "Pickup"
         },
+        "shared": {
+          "fields": {
+            "date": {
+              "label": "Date",
+              "placeholder": "Select date"
+            },
+            "time": {
+              "label": "Time",
+              "placeholder": "Select time range"
+            }
+          }
+        },
         "delivery": {
           "step_indicator": ["Recipient", "Delivery", "Your details"],
           "recipient_form": {
@@ -66,12 +78,6 @@
           "delivery_form": {
             "title": "Where should we deliver?",
             "fields": {
-              "date": {
-                "label": "Select delivery date"
-              },
-              "time": {
-                "label": "Select delivery time"
-              },
               "address": {
                 "label": "Street and house/apartment number",
                 "placeholder": "e.g. Marszałkowska 10/5"
@@ -114,12 +120,6 @@
           "date_form": {
             "title": "When would you like to pick up the flowers?",
             "fields": {
-              "date": {
-                "label": "Select pickup date"
-              },
-              "time": {
-                "label": "Select pickup time"
-              },
               "message": {
                 "label": "Your message for the bouquet (optional)",
                 "placeholder": "e.g. Wishing you all the best!"

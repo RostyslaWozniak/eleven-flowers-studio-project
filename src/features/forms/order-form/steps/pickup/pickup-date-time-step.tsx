@@ -13,32 +13,18 @@ import {
   formItemClassName,
   labelClassName,
 } from "../../lib/constants/form-class-names";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon, ChevronRightIcon } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
-import { Calendar } from "@/components/ui/calendar";
+import { ChevronRightIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   pickupDatAndTimeFormSchema,
   type PickupDatAndTimeFormSchema,
 } from "../../lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { hasNoAvailableSlots, isSlotDisabled } from "../../lib/helpers/date";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { DELIVERY_TIME_SLOTS } from "@/lib/utils/delivery";
 import LoadingButton from "@/components/loading-button";
 import { Textarea } from "@/components/ui/textarea";
-import { getCalendarLocale } from "../../lib/helpers/locale";
 import { H2 } from "@/components/ui/typography";
+import { DateFormItem } from "../../components/date-form-item";
+import { TimeFormItem } from "../../components/time-form-item";
 
 type PickupDateAndTimeStepProps = {
   values: PickupDatAndTimeFormSchema;
@@ -53,9 +39,11 @@ export function PickupDateAndTimeStep({
 }: PickupDateAndTimeStepProps) {
   const form = useForm<PickupDatAndTimeFormSchema>({
     resolver: zodResolver(pickupDatAndTimeFormSchema),
-    defaultValues: { date: new Date(values.date), time: values.time },
+    defaultValues: {
+      date: values.date ? new Date(values?.date) : undefined,
+      time: values.time,
+    },
   });
-  const locale = useLocale();
 
   const t = useTranslations("pages.cart_summary.forms.pickup.date_form");
   const tField = useTranslations(
@@ -64,8 +52,6 @@ export function PickupDateAndTimeStep({
   const tButtons = useTranslations("pages.cart_summary.forms.buttons");
 
   const tError = useTranslations("messages.error");
-
-  const formatter = new Intl.DateTimeFormat(locale);
 
   function onSubmit(values: PickupDatAndTimeFormSchema) {
     setValues(values);
@@ -86,97 +72,23 @@ export function PickupDateAndTimeStep({
                 control={form.control}
                 name="date"
                 render={({ field }) => (
-                  <FormItem className={cn(formItemClassName)}>
-                    <FormLabel className={cn(labelClassName)}>
-                      {tField("date.label")}
-                    </FormLabel>
-
-                    <FormControl>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <div className="flex h-9 w-full cursor-pointer items-center justify-start rounded-full border px-3 text-base text-primary md:text-lg">
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {formatter.format(field.value)}
-                          </div>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="center">
-                          <Calendar
-                            lang="pl"
-                            locale={getCalendarLocale(locale)}
-                            mode="single"
-                            selected={field.value}
-                            disabled={hasNoAvailableSlots}
-                            onSelect={(date) => {
-                              // Only update the date if a new date is selected
-                              if (
-                                date &&
-                                date?.toDateString() !==
-                                  field.value?.toDateString()
-                              ) {
-                                const utcDate = new Date(
-                                  Date.UTC(
-                                    date.getFullYear(),
-                                    date.getMonth(),
-                                    date.getDate(),
-                                    0,
-                                  ),
-                                );
-
-                                field.onChange(utcDate);
-                              }
-                            }}
-                            fromDate={new Date()}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </FormControl>
-                    {form.formState.errors.date && (
-                      <span className="absolute text-xs text-destructive">
-                        ({tError(form.formState.errors.date.message)})
-                      </span>
-                    )}
-                  </FormItem>
+                  <DateFormItem
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={form.formState.errors.date?.message}
+                  />
                 )}
               />
               <FormField
                 control={form.control}
                 name="time"
                 render={({ field }) => (
-                  <FormItem className={cn(formItemClassName)}>
-                    <FormLabel className={cn(labelClassName)}>
-                      {tField("time.label")}
-                    </FormLabel>
-
-                    <FormControl>
-                      <Select
-                        name="time"
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger className="h-9 rounded-full border border-primary text-base text-primary md:text-lg">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-sm">
-                          {DELIVERY_TIME_SLOTS.map((slot) => {
-                            return (
-                              <SelectItem
-                                key={slot}
-                                value={slot}
-                                disabled={isSlotDisabled(slot, selectedDate)}
-                              >
-                                {slot}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    {form.formState.errors.time && (
-                      <span className="absolute text-xs text-destructive">
-                        ({tError(form.formState.errors.time.message)})
-                      </span>
-                    )}
-                  </FormItem>
+                  <TimeFormItem
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={form.formState.errors.time?.message}
+                    selectedDate={selectedDate}
+                  />
                 )}
               />
             </div>

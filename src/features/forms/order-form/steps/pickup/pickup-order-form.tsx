@@ -74,7 +74,10 @@ export function PickupOrderForm() {
     });
 
   function onSubmitForm(ordererVal: OrdererFormSchema) {
-    console.log({ dateAndTimeValues, ordererVal });
+    if (dateAndTimeValues.date == null || dateAndTimeValues.time == null) {
+      toast.warning(tError("form_validation_error"));
+      return;
+    }
     createPickupOrder({
       orderingFormData: ordererVal,
       pickupDatAndTimeFormData: {

@@ -5,7 +5,6 @@ import {
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
-// import { routing } from "@/i18n/routing";
 import { Suspense } from "react";
 import { env } from "@/env";
 import { validateLang } from "@/lib/utils";
@@ -111,17 +110,7 @@ export default async function RootLayout({
             <MobileNavbar />
           </CartProvider>
           <Suspense fallback={null}>
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                classNames: {
-                  error: "bg-destructive text-destructive-foreground",
-                  success: "bg-emerald-500 text-white",
-                  warning: "text-yellow-400",
-                  info: "bg-blue-400 text-white",
-                },
-              }}
-            />
+            <Toaster position="top-right" richColors />
           </Suspense>
           <CookieBanner />
         </Providers>

@@ -56,12 +56,16 @@ export function DeliveryOrderForm() {
     () => ORDERER_FORM_DEFAULT_VALUES,
   );
 
+  function resetLocalStorageValues() {
+    setRecipientValues(RECIPIENT_FORM_DEFAULT_VALUES);
+    setDeliveryValues(DELIVERY_FORM_DEFAULT_VALUES);
+    setOrdererValues(ORDERER_FORM_DEFAULT_VALUES);
+  }
+
   const { mutate: createOrderWithDelivery, isPending } =
     api.public.order.createWithDetails.useMutation({
       onSuccess: () => {
-        setRecipientValues(RECIPIENT_FORM_DEFAULT_VALUES);
-        setDeliveryValues(DELIVERY_FORM_DEFAULT_VALUES);
-        setOrdererValues(ORDERER_FORM_DEFAULT_VALUES);
+        resetLocalStorageValues();
         router.push("/payment");
         setCartItems([]);
       },
@@ -74,6 +78,10 @@ export function DeliveryOrderForm() {
     });
 
   function onSubmitForm(orderingVal: OrdererFormSchema) {
+    if (deliveryValues.date == null || deliveryValues.time == null) {
+      toast.warning(tError("form_validation_error"));
+      return;
+    }
     const values = {
       recipientFormData: {
         address: deliveryValues.address,
@@ -131,6 +139,7 @@ export function DeliveryOrderForm() {
       onSubmitForm={onSubmitForm}
     />,
   ];
+
   return (
     <div
       ref={formRef}
