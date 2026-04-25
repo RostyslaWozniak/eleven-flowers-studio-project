@@ -157,7 +157,7 @@ export function PickupOrdererInfoStep({
 
                 <FormControl>
                   <Textarea
-                    name="flowerMessage"
+                    name="description"
                     className="min-h-[120px]"
                     placeholder={tField("description.placeholder")}
                     value={field.value}

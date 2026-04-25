@@ -76,6 +76,7 @@ export function OrderingInfoForm({
                   <FormControl>
                     <Input
                       name="name"
+                      autoComplete="name"
                       type="text"
                       placeholder={tField("name.placeholder")}
                       value={field.value}
@@ -103,6 +104,7 @@ export function OrderingInfoForm({
                   <FormControl>
                     <Input
                       name="phone"
+                      autoComplete="tel"
                       type="text"
                       placeholder={tField("phone.placeholder")}
                       value={field.value}
@@ -130,6 +132,7 @@ export function OrderingInfoForm({
 
                 <FormControl>
                   <Input
+                    autoComplete="email"
                     name="email"
                     type="text"
                     placeholder={tField("email.placeholder")}
