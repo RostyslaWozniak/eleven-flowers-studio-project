@@ -13,8 +13,9 @@ function isSameDay(a: Date, b: Date): boolean {
 const SLOT_BUFFER_HOURS = 2;
 
 export function isSlotDisabled(slot: string, selectedDate: Date): boolean {
-  // const today = new Date(new Date().setHours(17));
   const today = new Date();
+
+  if (today > selectedDate) return true;
 
   if (!isSameDay(selectedDate, today)) return false;
 
@@ -37,6 +38,7 @@ export function hasNoAvailableSlots(date: Date): boolean {
 
 export function getFirstAvailableSlot(date: Date): DeliveryTimeSlot {
   const today = new Date();
+
   const slots = isSameDay(date, today)
     ? DELIVERY_TIME_SLOTS.slice(1)
     : DELIVERY_TIME_SLOTS;
