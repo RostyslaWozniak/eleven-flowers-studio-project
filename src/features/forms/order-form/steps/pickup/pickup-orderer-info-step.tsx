@@ -102,7 +102,7 @@ export function PickupOrdererInfoStep({
                     <Input
                       autoComplete="tel"
                       name="phone"
-                      type="text"
+                      type="tel"
                       placeholder={tField("phone.placeholder")}
                       value={field.value}
                       onChange={field.onChange}
@@ -131,7 +131,7 @@ export function PickupOrdererInfoStep({
                   <Input
                     name="email"
                     autoComplete="email"
-                    type="text"
+                    type="email"
                     placeholder={tField("email.placeholder")}
                     value={field.value}
                     onChange={field.onChange}

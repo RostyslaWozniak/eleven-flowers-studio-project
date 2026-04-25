@@ -105,7 +105,7 @@ export function OrderingInfoForm({
                     <Input
                       name="phone"
                       autoComplete="tel"
-                      type="text"
+                      type="tel"
                       placeholder={tField("phone.placeholder")}
                       value={field.value}
                       onChange={field.onChange}
@@ -134,7 +134,7 @@ export function OrderingInfoForm({
                   <Input
                     autoComplete="email"
                     name="email"
-                    type="text"
+                    type="email"
                     placeholder={tField("email.placeholder")}
                     value={field.value}
                     onChange={field.onChange}

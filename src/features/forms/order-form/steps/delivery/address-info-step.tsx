@@ -181,6 +181,7 @@ export function DeliveryInfoForm({
                     <FormControl>
                       <Input
                         name="postalCode"
+                        type="text"
                         autoComplete="postal-code"
                         placeholder={tField("postal_code.placeholder")}
                         value={field.value}
