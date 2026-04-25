@@ -64,7 +64,7 @@ export function LangSwitcher() {
                   isCurrentLang ? setIsOpen(false) : changeLanguage(lang)
                 }
                 disabled={isPending}
-                variant={isCurrentLang ? "default" : "outline"}
+                variant={isCurrentLang ? "outline" : "secondary"}
                 className={cn(
                   "shadow-none hover:shadow-none disabled:cursor-not-allowed disabled:opacity-100",
                 )}
