@@ -7,7 +7,11 @@ import { Manrope, Philosopher } from "next/font/google";
 import { Providers } from "../providers";
 import { validateLang } from "@/lib/utils";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { EnvironmentBanner } from "@/components/environment-banner";
+import {
+  EnvironmentBanner,
+  IS_LOCAL_PROJECT,
+  IS_TEST_PROJECT,
+} from "@/components/environment-banner";
 import { getCurrentUser } from "@/auth/current-user";
 import { redirect } from "next/navigation";
 import { MobileNavbar } from "./_components/admin-mobile-nav";
@@ -54,7 +58,7 @@ export default async function AdminLayout({
   return (
     <html
       lang={locale}
-      className={`${manrope.variable} ${philosopher.variable} `}
+      className={`${manrope.variable} ${philosopher.variable} ${(IS_LOCAL_PROJECT || IS_TEST_PROJECT) && "dark"}`}
     >
       <body className="flex min-h-screen w-screen flex-col overflow-x-hidden font-manrope">
         <EnvironmentBanner />
