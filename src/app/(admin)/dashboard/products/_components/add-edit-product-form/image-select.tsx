@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { DialogWrapper } from "@/components/dialog-wrapper";
@@ -15,6 +16,8 @@ import { useState } from "react";
 import { type UseFormReturn } from "react-hook-form";
 import { SelectImagesDialog } from "./select-image-dialog";
 
+const MAX_IMAGES_TO_SHOW = 4;
+
 type ImageSelectProps = {
   form: UseFormReturn<AddProductSchema>;
 };
@@ -22,8 +25,11 @@ type ImageSelectProps = {
 export function ImageSelect({ form }: ImageSelectProps) {
   const [isUploadImagesDialogOpen, setIsUploadImagesDialogOpen] =
     useState(false);
+
+  const selectedImages = form.watch("images");
+  const selectedImagesLength = selectedImages.length;
   return (
-    <div className="w-min">
+    <div className="w-min space-y-3">
       <FormField
         control={form.control}
         name={`images`}
@@ -37,7 +43,7 @@ export function ImageSelect({ form }: ImageSelectProps) {
             >
               <div
                 className={cn(
-                  "flex items-center justify-center text-nowrap text-xl text-secondary-foreground",
+                  "flex items-center justify-center text-nowrap text-xl",
                   {},
                 )}
               >
@@ -65,6 +71,20 @@ export function ImageSelect({ form }: ImageSelectProps) {
           </FormItem>
         )}
       />
+      <div>Selected {selectedImagesLength} images</div>
+      <div className="flex h-20 items-center gap-x-2">
+        {selectedImages.slice(0, MAX_IMAGES_TO_SHOW).map((img) => (
+          <img
+            src={img}
+            key={img}
+            alt="selected image"
+            className="aspect-square h-20 w-20 object-cover"
+          />
+        ))}
+        {selectedImagesLength > MAX_IMAGES_TO_SHOW && (
+          <p className="self-end text-nowrap"> And more...</p>
+        )}
+      </div>
     </div>
   );
 }

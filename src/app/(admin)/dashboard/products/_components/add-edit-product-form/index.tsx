@@ -283,7 +283,6 @@ export const ProductForm = ({
                 <div className="col-span-2">
                   <ImageSelect form={form} />
                 </div>
-                <div>Selected {form.watch("images").length} images</div>
               </div>
             </div>
           </div>

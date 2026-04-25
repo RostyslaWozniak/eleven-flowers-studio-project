@@ -51,6 +51,7 @@ export function LangSwitcher() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         title={t("lang_select")}
+        className="w-80"
       >
         <div className="flex flex-col gap-2">
           {routing.locales.map((lang) => {

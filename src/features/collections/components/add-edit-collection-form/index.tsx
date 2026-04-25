@@ -188,27 +188,25 @@ export const CollectionForm = ({
           </div>
 
           <div className="grid min-h-[150px] w-full grid-cols-2 gap-4">
-            <div>
-              {/* SLUG */}
-
-              <FormField
-                control={form.control}
-                name="slug"
-                render={({ field }) => (
-                  <FormItem className="h-24">
-                    <FormLabel>Slug*</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Product slug" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-3">
-                <ImageSelect form={form} />
-              </div>
+            <div className="grid grid-cols-3">
+              <ImageSelect form={form} />
             </div>
+
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem className="h-24">
+                  <FormLabel>Slug*</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Product slug" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* </div> */}
           </div>
         </div>
 

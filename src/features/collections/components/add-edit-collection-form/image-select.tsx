@@ -1,7 +1,6 @@
 "use client";
 
 import { DialogWrapper } from "@/components/dialog-wrapper";
-import { Button } from "@/components/ui/button";
 import {
   FormControl,
   FormField,
@@ -22,6 +21,7 @@ type ImageSelectProps = {
 export function ImageSelect({ form }: ImageSelectProps) {
   const [isUploadImagesDialogOpen, setIsUploadImagesDialogOpen] =
     useState(false);
+  const selectedImageUrl = form.getValues("imageUrl");
   return (
     <div className="w-min">
       <FormField
@@ -29,22 +29,28 @@ export function ImageSelect({ form }: ImageSelectProps) {
         name={`imageUrl`}
         render={({ field }) => (
           <FormItem>
-            <Button
-              className="relative overflow-hidden rounded-md bg-transparent"
+            <button
+              className={cn(
+                "relative flex items-end overflow-hidden rounded-md border p-4",
+                {
+                  "aspect-square": selectedImageUrl,
+                },
+              )}
+              style={{
+                backgroundImage: `url(${selectedImageUrl})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
               type="button"
               onClick={() => setIsUploadImagesDialogOpen(true)}
-              variant="outline"
             >
-              <div
-                className={cn(
-                  "flex items-center justify-center text-nowrap text-xl text-secondary-foreground",
-                  {},
-                )}
-              >
+              <div className="absolute inset-0 duration-300 hover:bg-black/30" />
+              <div className="z-10 flex items-center justify-center text-nowrap text-xl text-white">
                 {field.value.length > 0 ? "Change image" : "Select image"}
                 <ImageIcon className="ml-3 h-8 w-8" />
               </div>
-            </Button>
+            </button>
             <FormControl className="">
               <DialogWrapper
                 title="Uploaded images"
