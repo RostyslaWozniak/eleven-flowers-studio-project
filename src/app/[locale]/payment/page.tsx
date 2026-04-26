@@ -3,7 +3,7 @@ import { StripeCheckoutForm } from "./_components/stripe-checkout-form";
 
 export default function Page() {
   return (
-    <section className="py-12 md:py-20">
+    <section className="min-h-screen py-12 md:py-20">
       <MaxWidthWrapper>
         <StripeCheckoutForm />
       </MaxWidthWrapper>

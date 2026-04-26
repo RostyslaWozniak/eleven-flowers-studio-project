@@ -12,7 +12,7 @@ export function Footer() {
 
   const tNav = useTranslations("navigation");
   return (
-    <footer className="bg-card">
+    <footer className="relative bg-card">
       <MaxWidthWrapper>
         <div className="grid grid-cols-2 items-center gap-12 pb-10 pt-20 md:grid-cols-4 lg:grid-cols-5">
           <div className="hidden lg:block">
