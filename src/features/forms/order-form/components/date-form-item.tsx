@@ -60,6 +60,10 @@ export function DateFormItem({ value, onChange, error }: DateFormItemProps) {
                 defaultMonth={value}
                 selected={value}
                 disabled={hasNoAvailableSlots}
+                // disabled={(date) => {
+                //   console.log(date);
+                //   return false;
+                // }}
                 onSelect={(date) => {
                   // Only update the date if a new date is selected
                   if (date && date?.toDateString() !== value?.toDateString()) {

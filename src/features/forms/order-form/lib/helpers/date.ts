@@ -10,12 +10,23 @@ function isSameDay(a: Date, b: Date): boolean {
     a.getDate() === b.getDate()
   );
 }
+function isPastDay(date: Date, today: Date): boolean {
+  return (
+    date.getFullYear() < today.getFullYear() ||
+    (date.getFullYear() === today.getFullYear() &&
+      date.getMonth() < today.getMonth()) ||
+    (date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() < today.getDate())
+  );
+}
+
 const SLOT_BUFFER_HOURS = 2;
 
 export function isSlotDisabled(slot: string, selectedDate: Date): boolean {
   const today = new Date();
 
-  if (today > selectedDate) return true;
+  if (isPastDay(selectedDate, today)) return true;
 
   if (!isSameDay(selectedDate, today)) return false;
 
