@@ -15,6 +15,10 @@
     {
       "path": "/api/cron/order-notification",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/order-notification",
+      "schedule": "0 7 * * *"
     }
   ]
 }

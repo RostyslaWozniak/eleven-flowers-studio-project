@@ -3,16 +3,10 @@ import { env } from "@/env";
 import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
 import { sendTelegramMessage } from "@/features/telegram/lib/helpers";
 import { api } from "@/trpc/server";
+import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  // const authHeader = request.headers.get("authorization");
-  // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-  //   return new Response("Unauthorized", {
-  //     status: 401,
-  //   });
-  // }
-
   try {
     const orders = await api.cron.order.getOrders();
     const message = `
@@ -37,10 +31,36 @@ export async function GET() {
 
       await sendMessageAction(message);
     }
+    return NextResponse.json({ orders: 0, ok: true });
   } catch (err) {
-    console.log(err as Error);
-    return new Response("Unauthorized", {
-      status: 401,
-    });
+    console.error("CRON ERROR:", err);
+
+    let message = "";
+
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      message = `❌ Prisma error (known): ${err.code}`;
+    } else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
+      message = `❌ Prisma error (unknown)`;
+    } else if (err instanceof Prisma.PrismaClientInitializationError) {
+      message = `❌ Prisma init error (DB down?)`;
+    } else if (err instanceof Prisma.PrismaClientRustPanicError) {
+      message = `❌ Prisma panic (serious issue)`;
+    } else if (err instanceof Error) {
+      message = `❌ General error: ${err.message}`;
+    } else {
+      message = `❌ Unknown error`;
+    }
+
+    // Telegram (zabezpiecz)
+    try {
+      await sendTelegramMessage({
+        text: `CRON ERROR:\n${message}`,
+        chatId: "6868922856",
+      });
+    } catch (e) {
+      console.error("Telegram failed:", e);
+    }
+
+    return new Response("Error", { status: 200 });
   }
 }
