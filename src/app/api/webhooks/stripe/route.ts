@@ -6,6 +6,7 @@ import { sendTelegramMessage } from "@/features/telegram/lib/helpers";
 import { type Locale, redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { validateLang } from "@/lib/utils";
+import { withRetry } from "@/lib/utils/with-retry";
 import { db } from "@/server/db";
 import { sendEmail } from "@/services/resend";
 import { type NextRequest, NextResponse } from "next/server";
@@ -90,8 +91,10 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
       : checkoutSession.payment_intent.id
     : null;
 
-  const existingOrder = await db.order.findUnique({
-    where: { id: orderId },
+  const existingOrder = await withRetry(() => {
+    return db.order.findUnique({
+      where: { id: orderId },
+    });
   });
 
   if (!existingOrder) {
@@ -131,59 +134,65 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
 
 async function getCustomerInfo(customerEmail: string | null) {
   if (!customerEmail) return null;
-  const customer = await db.contactInfo.findUnique({
-    where: {
-      email: customerEmail,
-    },
-    select: {
-      email: true,
-      name: true,
-      phone: true,
-    },
+
+  const customer = await withRetry(() => {
+    return db.contactInfo.findUnique({
+      where: {
+        email: customerEmail,
+      },
+      select: {
+        email: true,
+        name: true,
+        phone: true,
+      },
+    });
   });
+
   if (!customer) return null;
   return customer;
 }
 
 async function updateOrder(orderId: string, paymentIntentId: string | null) {
-  return await db.order.update({
-    where: {
-      id: orderId,
-    },
-    data: {
-      paymentStatus: "SUCCESS",
-      paymentIntentId,
-    },
-    select: {
-      deliveryPrice: true,
-      createdAt: true,
-      orderItems: {
-        select: {
-          productName: true,
-          quantity: true,
-          size: true,
-          price: true,
+  return await withRetry(() =>
+    db.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        paymentStatus: "SUCCESS",
+        paymentIntentId,
+      },
+      select: {
+        deliveryPrice: true,
+        createdAt: true,
+        orderItems: {
+          select: {
+            productName: true,
+            quantity: true,
+            size: true,
+            price: true,
+          },
+        },
+        deliveryDetails: {
+          select: {
+            deliveryDate: true,
+            deliveryTime: true,
+            flowerMessage: true,
+            description: true,
+            name: true,
+            phone: true,
+          },
+        },
+        address: {
+          select: {
+            city: true,
+            postCode: true,
+            street: true,
+          },
         },
       },
-      deliveryDetails: {
-        select: {
-          deliveryDate: true,
-          deliveryTime: true,
-          flowerMessage: true,
-          description: true,
-          name: true,
-          phone: true,
-        },
-      },
-      address: {
-        select: {
-          city: true,
-          postCode: true,
-          street: true,
-        },
-      },
-    },
-  });
+    }),
+  );
 }
 
 function getEmailTitleByLang(locale: Locale) {
