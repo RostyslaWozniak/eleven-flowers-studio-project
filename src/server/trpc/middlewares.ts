@@ -40,3 +40,14 @@ export const adminMiddleware = t.middleware(async ({ next }) => {
     message: "Unauthorized",
   });
 });
+
+export const cronJobMiddleware = t.middleware(async ({ next, ctx }) => {
+  const authHeader = ctx.resHeaders.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Unauthorized",
+    });
+  }
+  return next();
+});
