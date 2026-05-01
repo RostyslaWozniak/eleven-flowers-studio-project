@@ -42,6 +42,7 @@ export function PickupDateAndTimeStep({
     defaultValues: {
       date: values.date ? new Date(values?.date) : undefined,
       time: values.time,
+      flowerMessage: values.flowerMessage,
     },
   });
 

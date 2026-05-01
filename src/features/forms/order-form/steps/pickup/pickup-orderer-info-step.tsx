@@ -34,6 +34,7 @@ export function PickupOrdererInfoStep({
   values,
   setValues,
   onSubmitForm,
+  isPending,
 }: PickupOrdererInfoStepProps) {
   const form = useForm<OrdererFormSchema>({
     resolver: zodResolver(ordererFormSchema),
@@ -184,7 +185,7 @@ export function PickupOrdererInfoStep({
               {tButtons("prev")}
             </LoadingButton>
             <LoadingButton
-              loading={false}
+              loading={isPending}
               type="submit"
               size="md"
               variant="outline"
