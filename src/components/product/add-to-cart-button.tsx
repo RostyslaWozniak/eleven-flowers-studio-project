@@ -6,6 +6,7 @@ import type { ProductDTO } from "@/features/products/types/product.types";
 import { useTranslations } from "next-intl";
 import { useQueryState } from "nuqs";
 import { useMemo } from "react";
+import { CheckCircleIcon } from "lucide-react";
 
 export function AddToCartButton({ product }: { product: ProductDTO }) {
   const { cartItems, addOneToCart, setIsCartOpen } = useCart();
@@ -44,8 +45,20 @@ export function AddToCartButton({ product }: { product: ProductDTO }) {
   }
 
   return (
-    <Button disabled={Boolean(existingCartItem)} onClick={addProductToCart}>
-      {Boolean(existingCartItem) ? t("in_cart") : t("add_to_cart")}
+    <Button
+      onClick={addProductToCart}
+      className="relative"
+      disabled={Boolean(existingCartItem)}
+    >
+      {Boolean(existingCartItem) ? (
+        <>
+          <CheckCircleIcon className="min-h-5 min-w-5" />
+
+          {t("in_cart")}
+        </>
+      ) : (
+        t("add_to_cart")
+      )}
     </Button>
   );
 }

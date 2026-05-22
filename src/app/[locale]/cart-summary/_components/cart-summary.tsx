@@ -3,7 +3,7 @@
 import { CartItemSkeleton } from "@/components/skeletons/cart-item-skeleton";
 import { H2, H3, Text } from "@/components/ui/typography";
 import { useCart } from "@/context/cart-context";
-import { DeliveryPriceInfoCard } from "@/features/forms/order-form/components/delivery-price-info-card";
+import { DeliveryPriceInfoCard } from "@/components/delivery-price-info-card";
 import { capitalizeString, cn, formatPrice } from "@/lib/utils";
 import { ShoppingBagIcon, TruckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";

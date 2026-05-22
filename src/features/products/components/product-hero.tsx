@@ -7,6 +7,7 @@ import { MaxWidthWrapper } from "@/components/max-width-wrapper";
 import { AddToCartButton, ProductSizesAndPrice } from "@/components/product";
 import { Markdown } from "@/components/markdown-renderer";
 import { SectionWrapper } from "@/components/section-wrapper";
+import { DeliveryPriceInfoCard } from "@/components/delivery-price-info-card";
 
 export function ProductHero({ product }: { product: ProductDTO }) {
   const images = product.images.map((image) => ({
@@ -38,6 +39,9 @@ export function ProductHero({ product }: { product: ProductDTO }) {
           </div>
           <div className="h-full flex-grow">
             <Markdown>{product.description}</Markdown>
+            <div className="relative pt-4 md:pt-8">
+              <DeliveryPriceInfoCard />
+            </div>
           </div>
         </div>
       </MaxWidthWrapper>

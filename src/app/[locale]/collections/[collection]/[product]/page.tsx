@@ -74,6 +74,7 @@ export default async function Page({
   return (
     <>
       <ProductHero product={product} />
+
       {relatedProducts.length > 0 && (
         <SectionWrapper>
           <MaxWidthWrapper>

@@ -40,7 +40,7 @@ export function DeliveryPriceInfoCard() {
             ))}
         </div>
       </div>
-      <div className="flex w-full items-start bg-primary px-4 py-2 pt-3 text-white md:px-6">
+      <div className="flex w-full items-start bg-primary px-4 py-3 text-white md:px-6">
         <CheckCircleIcon className="h-5 min-h-5 w-5 min-w-5" />
         <p className="ml-2 text-sm">
           {t("free_delivery_message")}{" "}
