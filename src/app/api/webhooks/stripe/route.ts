@@ -6,6 +6,7 @@ import { sendTelegramMessage } from "@/features/telegram/lib/helpers";
 import { type Locale, redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { validateLang } from "@/lib/utils";
+import { getEmailTitleByLang } from "@/lib/utils/email";
 import { withRetry } from "@/lib/utils/with-retry";
 import { db } from "@/server/db";
 import { sendEmail } from "@/services/resend";
@@ -124,6 +125,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
         ? { ...updatedOrder, items: updatedOrder?.orderItems }
         : undefined,
       locale,
+      emailName: "purchase_success",
     }),
   });
 
@@ -193,17 +195,4 @@ async function updateOrder(orderId: string, paymentIntentId: string | null) {
       },
     }),
   );
-}
-
-function getEmailTitleByLang(locale: Locale) {
-  switch (locale) {
-    case "pl":
-      return "Dziękujemy za zakup!";
-    case "ru":
-      return "Спасибо за покупку!";
-    case "en":
-      return "Thank you for your purchase!";
-    default:
-      return "Thank you for your purchase!";
-  }
 }

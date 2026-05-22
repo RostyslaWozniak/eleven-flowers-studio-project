@@ -1,7 +1,5 @@
-import {
-  ordererFormSchema,
-  pickupDatAndTimeFormSchema,
-} from "@/features/forms/order-form/lib/schema";
+import { pickupDetailsFormSchema } from "@/features/forms/order-form/lib/schema/pickup-details-form.schema";
+import { pickupOrdererFormSchema } from "@/features/forms/order-form/lib/schema/pickup-orderer-form.schema";
 
 import { OrderSchema } from "@/server/modules/order/order.schema";
 import { OrderService } from "@/server/modules/order/order.service";
@@ -24,12 +22,11 @@ export const orderRouter = createTRPCRouter({
   createPickupOrder: publicProcedure
     .input(
       z.object({
-        pickupDatAndTimeFormData: pickupDatAndTimeFormSchema,
-        orderingFormData: ordererFormSchema,
+        pickupDetailsFormSchema,
+        pickupOrdererFormSchema,
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      console.log(input);
       return await OrderService.createPickupOrder(
         ctx.req,
         ctx.resHeaders,

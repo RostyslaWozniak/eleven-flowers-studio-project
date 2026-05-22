@@ -61,10 +61,14 @@ export function OrderInfo({ order }: OrderInfoProps) {
                 ? "success"
                 : order.paymentStatus === "PENDING"
                   ? "warning"
-                  : "destructive"
+                  : order.paymentStatus === "PAID_ON_DELIVERY"
+                    ? "info"
+                    : "destructive"
             }
           >
-            {order.paymentStatus}
+            {order.paymentStatus === "PAID_ON_DELIVERY"
+              ? "PAID ON PICKUP"
+              : order.paymentStatus}
           </Badge>
         </div>
       </div>

@@ -12,9 +12,9 @@ import { H1 } from "@/components/ui/typography";
 const ORDERS_PER_PAGE = 10;
 
 const FILTERS = [
+  { label: "All", value: "all" },
   { label: "Coming", value: "coming" },
   { label: "Today", value: "today" },
-  { label: "All", value: "all" },
 ] as const;
 
 export function OrderTable() {
@@ -22,7 +22,7 @@ export function OrderTable() {
   const [filter, setFilter] = useQueryState<"coming" | "today" | "all">(
     "filter",
     {
-      defaultValue: "coming",
+      defaultValue: "all",
 
       parse: (value) => {
         if (value === "coming" || value === "today") return value;

@@ -76,7 +76,7 @@ export class OrderAdminRepository {
         const orders = await db.order.findMany({
           select: OrderAdminQueries.selectFields(),
 
-          orderBy: { deliveryDetails: { deliveryDate: "asc" } },
+          orderBy: { deliveryDetails: { deliveryDate: "desc" } },
           take,
           skip,
         });

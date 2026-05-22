@@ -21,11 +21,16 @@ import type {
   OrderDTO,
   OrderFromDb,
 } from "./order.types";
-import {
-  type OrdererFormSchema,
-  type PickupDatAndTimeFormSchema,
-} from "@/features/forms/order-form/lib/schema";
+
 import { db } from "@/server/db";
+import { type PickupOrdererFormSchema } from "@/features/forms/order-form/lib/schema/pickup-orderer-form.schema";
+import { type PickupDetailsFormSchema } from "@/features/forms/order-form/lib/schema/pickup-details-form.schema";
+import { sendEmail } from "@/services/resend";
+import { getEmailTitleByLang } from "@/lib/utils/email";
+import { PurchaseSucceedTemplate } from "@/components/emails/purchase-succeed-template";
+import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
+import { env } from "@/env";
+import { sendTelegramMessage } from "@/features/telegram/lib/helpers";
 
 export class OrderService {
   public static createWithDetails = async (
@@ -133,8 +138,8 @@ export class OrderService {
     req: NextRequest,
     resHeaders: Headers,
     input: {
-      pickupDatAndTimeFormData: PickupDatAndTimeFormSchema;
-      orderingFormData: OrdererFormSchema;
+      pickupDetailsFormSchema: PickupDetailsFormSchema;
+      pickupOrdererFormSchema: PickupOrdererFormSchema;
     },
   ) {
     //1. get cart items and check if cart is empty
@@ -154,11 +159,11 @@ export class OrderService {
 
     // 2. check if contact info exists, if not create
     const contactInfo = await ContactInfoService.getByEmailOrCreate(
-      input.orderingFormData.email,
+      input.pickupOrdererFormSchema.email,
       {
-        name: input.orderingFormData.name,
-        email: input.orderingFormData.email,
-        phone: input.orderingFormData.phone,
+        name: input.pickupOrdererFormSchema.name,
+        email: input.pickupOrdererFormSchema.email,
+        phone: input.pickupOrdererFormSchema.phone,
       },
     );
 
@@ -172,8 +177,8 @@ export class OrderService {
     const totalPrice = this.calculateTotalPrice(cartItems);
 
     if (
-      input.pickupDatAndTimeFormData.date == null ||
-      input.pickupDatAndTimeFormData.time == null
+      input.pickupDetailsFormSchema.date == null ||
+      input.pickupDetailsFormSchema.time == null
     ) {
       throw new TRPCError({
         code: "BAD_REQUEST",
@@ -182,10 +187,10 @@ export class OrderService {
     }
 
     const deliveryDetails = {
-      deliveryDate: input.pickupDatAndTimeFormData.date,
-      deliveryTime: input.pickupDatAndTimeFormData.time,
-      description: input.orderingFormData.description,
-      flowerMessage: input.pickupDatAndTimeFormData.flowerMessage,
+      deliveryDate: input.pickupDetailsFormSchema.date,
+      deliveryTime: input.pickupDetailsFormSchema.time,
+      description: input.pickupDetailsFormSchema.description,
+      flowerMessage: input.pickupDetailsFormSchema.flowerMessage,
       method: z.enum(ORDER_METHODS).Enum.pickup,
     };
 
@@ -201,8 +206,37 @@ export class OrderService {
         deliveryDetails: {
           create: deliveryDetails,
         },
+        paymentStatus: input.pickupOrdererFormSchema.paymentStatus,
       },
     });
+
+    if (input.pickupOrdererFormSchema.paymentStatus === "PAID_ON_DELIVERY") {
+      try {
+        await sendEmail({
+          email: contactInfo.email,
+          subject: getEmailTitleByLang(locale),
+          emailTemplate: PurchaseSucceedTemplate({
+            name: contactInfo.name,
+            price: order.totalPrice / 100,
+            order: {
+              createdAt: order.createdAt,
+              deliveryPrice: null,
+              items: cartItems,
+            },
+            locale,
+            emailName: "order_placed",
+          }),
+        });
+        await sendMessageAction(
+          `New order! You can check it here: ${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders/${order.id}`,
+        );
+      } catch {
+        await sendTelegramMessage({
+          text: `Create order without payment ERROR`,
+          chatId: "6868922856",
+        });
+      }
+    }
 
     await CartItemService.removeAllByCartId(cartId);
 

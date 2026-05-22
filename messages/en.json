@@ -43,6 +43,7 @@
           "next": "Next",
           "prev": "Previous",
           "to_checkout": "Go to checkout",
+          "place_order": "Place order",
           "delivery": "Delivery",
           "pickup": "Pickup"
         },
@@ -128,6 +129,19 @@
               }
             }
           },
+          "pickup_details_form": {
+            "title": "When would you like to pick up your flowers?",
+            "fields": {
+              "message": {
+                "label": "Message for the bouquet (optional)",
+                "placeholder": "e.g. Wishing you all the best!"
+              },
+              "description": {
+                "label": "Additional notes (optional)",
+                "placeholder": "e.g. I'll pick up after 3:00 PM"
+              }
+            }
+          },
           "ordering_form": {
             "title": "Your details",
             "fields": {
@@ -146,11 +160,21 @@
               "description": {
                 "label": "Additional notes (optional)",
                 "placeholder": "e.g. I'll pick up after 3pm"
+              },
+              "payment_option": {
+                "label": "Select payment option",
+                "online": "Online",
+                "on_pickup": "Pay on pickup"
               }
             }
           }
         }
       }
+    },
+    "purchase_success": {
+      "title": "Thank you for your order!",
+      "subtitle": "We've sent a confirmation to your email address.",
+      "button": "Back to shop"
     }
   },
   "home": {
@@ -445,6 +469,22 @@
       },
       "support": "If you have any questions or concerns about your order, feel free to contact our customer support team.",
       "appreciation": "We sincerely appreciate your business and thank you for choosing our store!",
+      "copyright": "All rights reserved."
+    },
+    "order_placed": {
+      "title": "Order received!",
+      "greeting": "Hi {name},",
+      "purchase_details": {
+        "title": "Your order has been successfully placed!",
+        "message": "We're pleased to confirm your order. Here are the details:",
+        "payment_notice": "Payment will be collected upon pickup.",
+        "date": "Order date:",
+        "amount": "Total amount: {price} zł",
+        "size": "Size",
+        "delivery": "Delivery"
+      },
+      "support": "If you have any questions or concerns about your order, feel free to contact our customer support team.",
+      "appreciation": "Thank you for your trust and for choosing our store!",
       "copyright": "All rights reserved."
     }
   },

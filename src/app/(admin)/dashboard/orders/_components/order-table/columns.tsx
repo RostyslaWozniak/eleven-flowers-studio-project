@@ -41,10 +41,16 @@ export const orderColumns: ColumnDef<OrderAdminDTO>[] = [
             ? "success"
             : row.original.paymentStatus === "PENDING"
               ? "warning"
-              : "destructive"
+              : row.original.paymentStatus === "PAID_ON_DELIVERY"
+                ? "info"
+                : "destructive"
         }
       >
-        <p className="hidden lg:block">{row.original.paymentStatus}</p>
+        <p className="hidden lg:block">
+          {row.original.paymentStatus === "PAID_ON_DELIVERY"
+            ? "PAID ON PICKUP"
+            : row.original.paymentStatus}
+        </p>
       </Badge>
     ),
   },

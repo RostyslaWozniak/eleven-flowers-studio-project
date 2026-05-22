@@ -2,11 +2,11 @@
 
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { StepIndicator } from "../../components/step-indicator";
-import { PICKUP_DATE_AND_TIME_DEFAULT_VALUES } from "../../lib/constants/pickup-form.constants";
 import {
-  type OrdererFormSchema,
-  type PickupDatAndTimeFormSchema,
-} from "../../lib/schema";
+  PICKUP_DATE_AND_TIME_DEFAULT_VALUES,
+  PICKUP_ORDERER_FORM_DEFAULT_VALUES,
+} from "../../lib/constants/pickup-form.constants";
+import { type PickupDatAndTimeFormSchema } from "../../lib/schema";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -14,14 +14,15 @@ import {
   STEP_ANIMATION_TRANSITION,
   STEP_ANIMATION_VARIANTS,
 } from "../../lib/constants/animation-variants";
-import { PickupDateAndTimeStep } from "./pickup-date-time-step";
 import { PickupOrdererInfoStep } from "./pickup-orderer-info-step";
-import { ORDERER_FORM_DEFAULT_VALUES } from "../../lib/constants/delivery-form.constants";
 import { handleScroll } from "../../lib/helpers";
 import { useTranslations } from "next-intl";
 import { api } from "@/trpc/react";
 import { useCart } from "@/context/cart-context";
 import { toast } from "sonner";
+import { PickupDetailsStep } from "./pickup-details-step";
+import { type PickupOrdererFormSchema } from "../../lib/schema/pickup-orderer-form.schema";
+import { type $Enums } from "@prisma/client";
 
 export function PickupOrderForm() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -39,10 +40,11 @@ export function PickupOrderForm() {
       () => PICKUP_DATE_AND_TIME_DEFAULT_VALUES,
     );
 
-  const [ordererValues, setOrdererValues] = useLocalStorage<OrdererFormSchema>(
-    "pickup-form.orderer-info",
-    () => ORDERER_FORM_DEFAULT_VALUES,
-  );
+  const [ordererValues, setOrdererValues] =
+    useLocalStorage<PickupOrdererFormSchema>(
+      "pickup-form.orderer-info",
+      () => PICKUP_ORDERER_FORM_DEFAULT_VALUES,
+    );
 
   function handleNextStep() {
     const nextStep =
@@ -61,7 +63,7 @@ export function PickupOrderForm() {
     api.public.order.createPickupOrder.useMutation({
       onSuccess: () => {
         setDateAndTimeValues(PICKUP_DATE_AND_TIME_DEFAULT_VALUES);
-        setOrdererValues(ORDERER_FORM_DEFAULT_VALUES);
+        setOrdererValues(PICKUP_ORDERER_FORM_DEFAULT_VALUES);
         router.push("/payment");
         setCartItems([]);
       },
@@ -72,23 +74,53 @@ export function PickupOrderForm() {
         });
       },
     });
+  const {
+    mutate: createPickupOrderWithoutPayment,
+    isPending: isPendingWithoutPayment,
+  } = api.public.order.createPickupOrder.useMutation({
+    onSuccess: () => {
+      setDateAndTimeValues(PICKUP_DATE_AND_TIME_DEFAULT_VALUES);
+      setOrdererValues(PICKUP_ORDERER_FORM_DEFAULT_VALUES);
+      router.push("/purchase-success");
+      setCartItems([]);
+    },
+    onError: () => {
+      toast.error(tError("title"), {
+        className: "bg-destructive text-destructive-foreground",
+        position: "top-right",
+      });
+    },
+  });
 
-  function onSubmitForm(ordererVal: OrdererFormSchema) {
+  function onSubmitForm(
+    ordererVal: PickupOrdererFormSchema,
+    paymentStatus: $Enums.PaymentStatus,
+  ) {
     if (dateAndTimeValues.date == null || dateAndTimeValues.time == null) {
       toast.warning(tError("form_validation_error"));
       return;
     }
-    createPickupOrder({
-      orderingFormData: ordererVal,
-      pickupDatAndTimeFormData: {
-        ...dateAndTimeValues,
-        date: new Date(dateAndTimeValues.date),
-      },
-    });
+    if (paymentStatus === "PENDING") {
+      createPickupOrder({
+        pickupOrdererFormSchema: ordererVal,
+        pickupDetailsFormSchema: {
+          ...dateAndTimeValues,
+          date: new Date(dateAndTimeValues.date),
+        },
+      });
+    } else if (paymentStatus === "PAID_ON_DELIVERY") {
+      createPickupOrderWithoutPayment({
+        pickupOrdererFormSchema: ordererVal,
+        pickupDetailsFormSchema: {
+          ...dateAndTimeValues,
+          date: new Date(dateAndTimeValues.date),
+        },
+      });
+    }
   }
 
   const steps = [
-    <PickupDateAndTimeStep
+    <PickupDetailsStep
       key="step-0"
       values={dateAndTimeValues}
       setValues={setDateAndTimeValues}
@@ -96,7 +128,7 @@ export function PickupOrderForm() {
     />,
     <PickupOrdererInfoStep
       key="step-1"
-      isPending={isPending}
+      isPending={isPending || isPendingWithoutPayment}
       values={ordererValues}
       setValues={setOrdererValues}
       onSubmitForm={onSubmitForm}

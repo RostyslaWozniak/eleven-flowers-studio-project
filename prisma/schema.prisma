@@ -206,6 +206,7 @@ enum PaymentStatus {
     SUCCESS // Payment confirmed by Stripe
     FAILED // Payment failed or was rejected
     REFUNDED // Payment refunded
+    PAID_ON_DELIVERY // Payment to be collected upon pickup
 
     @@map("payment_status")
 }

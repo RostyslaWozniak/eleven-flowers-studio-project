@@ -43,6 +43,7 @@
           "next": "Dalej",
           "prev": "Wstecz",
           "to_checkout": "Przejdź do płatności",
+          "place_order": "Złóż zamówienie",
           "delivery": "Dostawa",
           "pickup": "Odbiór osobisty"
         },
@@ -118,13 +119,26 @@
           }
         },
         "pickup": {
-          "step_indicator": ["Dzień i godzina", "Twoje dane"],
+          "step_indicator": ["Szczegóły odbioru", "Twoje dane"],
           "date_form": {
             "title": "Kiedy chcesz odebrać kwiaty?",
             "fields": {
               "message": {
                 "label": "Twoja wiadomość do bukietu (opcjonalnie)",
                 "placeholder": "np. Życzę Ci wszystkiego najlepszego!"
+              }
+            }
+          },
+          "pickup_details_form": {
+            "title": "Kiedy chcesz odebrać kwiaty?",
+            "fields": {
+              "message": {
+                "label": "Wiadomość do bukietu (opcjonalnie)",
+                "placeholder": "np. Życzę Ci wszystkiego najlepszego!"
+              },
+              "description": {
+                "label": "Dodatkowe uwagi (opcjonalnie)",
+                "placeholder": "np. Odbiorę po godzinie 15:00"
               }
             }
           },
@@ -146,11 +160,21 @@
               "description": {
                 "label": "Dodatkowe uwagi (opcjonalnie)",
                 "placeholder": "np. Odbiorę po godzinie 15:00"
+              },
+              "payment_option": {
+                "label": "Wybierz opcję opłaty",
+                "online": "Online",
+                "on_pickup": "Przy odbiorze"
               }
             }
           }
         }
       }
+    },
+    "purchase_success": {
+      "title": "Dziękujemy za zamówienie!",
+      "subtitle": "Potwierdzenie wysłaliśmy na Twój adres e-mail.",
+      "button": "Wróć do sklepu"
     }
   },
   "home": {
@@ -441,6 +465,22 @@
         "title": "Twoje zamówienie zostało pomyślnie przetworzone!",
         "message": "Z radością potwierdzamy Twoje zamówienie. Oto szczegóły zakupu:",
         "date": "Data zakupu:",
+        "amount": "Łączna kwota: {price} zł",
+        "size": "Rozmiar",
+        "delivery": "Dostawa"
+      },
+      "support": "Jeśli masz jakiekolwiek pytania lub wątpliwości dotyczące zamówienia, skontaktuj się z naszym działem obsługi klienta.",
+      "appreciation": "Dziękujemy za zaufanie i wybór naszego sklepu!",
+      "copyright": "Wszelkie prawa zastrzeżone."
+    },
+    "order_placed": {
+      "title": "Zamówienie przyjęte!",
+      "greeting": "Cześć {name},",
+      "purchase_details": {
+        "title": "Twoje zamówienie zostało przyjęte!",
+        "message": "Z radością potwierdzamy Twoje zamówienie. Oto szczegóły:",
+        "payment_notice": "Płatność zostanie pobrana przy odbiorze.",
+        "date": "Data zamówienia:",
         "amount": "Łączna kwota: {price} zł",
         "size": "Rozmiar",
         "delivery": "Dostawa"

@@ -26,8 +26,8 @@ export async function GET() {
 
     if (successOrders.length > 0) {
       const message = `
-  Today you have ${successOrders.length} deliveries.\n
-  Check all orders here <u>${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders</u>`;
+  Today you have ${successOrders.length} ${successOrders.length === 1 ? "delivery" : "deliveries"}.\n
+  Check all orders here <u>${env.NEXT_PUBLIC_SERVER_URL}/dashboard/orders?filter=today</u>`;
 
       await sendMessageAction(message);
     }

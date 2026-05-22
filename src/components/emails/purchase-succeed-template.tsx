@@ -8,7 +8,7 @@ interface PurchaseSucceedTemplateProps {
   locale: Locale;
   order?: {
     createdAt: Date;
-    deliveryPrice: number;
+    deliveryPrice: number | null;
     items: {
       productName: string;
       size: string;
@@ -16,6 +16,7 @@ interface PurchaseSucceedTemplateProps {
       price: number | null;
     }[];
   };
+  emailName: "purchase_success" | "order_placed";
 }
 
 export const PurchaseSucceedTemplate = async ({
@@ -23,9 +24,10 @@ export const PurchaseSucceedTemplate = async ({
   price,
   locale,
   order,
+  emailName,
 }: PurchaseSucceedTemplateProps) => {
   const t = await getTranslations({
-    namespace: "emails.purchase_success",
+    namespace: `emails.${emailName}`,
     locale,
   });
   return (
@@ -158,42 +160,44 @@ export const PurchaseSucceedTemplate = async ({
                   </li>
                 ))
               : null}
-            <li
-              style={{
-                backgroundColor: "#ffffff",
-                padding: "14px 16px",
-                borderRadius: "10px",
-                marginBottom: "12px",
-                border: "1px solid #eee",
-              }}
-            >
-              <div>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    color: "#222",
-                  }}
-                >
-                  {t("purchase_details.delivery")}{" "}
-                </p>
-              </div>
-
-              <div
+            {order?.deliveryPrice && (
+              <li
                 style={{
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  color: "#222",
-                  position: "absolute",
-                  right: "16px",
-                  top: "50%",
-                  translate: "0 -50%",
+                  backgroundColor: "#ffffff",
+                  padding: "14px 16px",
+                  borderRadius: "10px",
+                  marginBottom: "12px",
+                  border: "1px solid #eee",
                 }}
               >
-                {order && <p> {formatPrice(order.deliveryPrice)}</p>}
-              </div>
-            </li>
+                <div>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#222",
+                    }}
+                  >
+                    {t("purchase_details.delivery")}{" "}
+                  </p>
+                </div>
+
+                <div
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    color: "#222",
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    translate: "0 -50%",
+                  }}
+                >
+                  <p> {formatPrice(order.deliveryPrice)}</p>
+                </div>
+              </li>
+            )}
           </ul>
           {/* ORDER INFO */}
           <div
@@ -208,7 +212,7 @@ export const PurchaseSucceedTemplate = async ({
           >
             {order && (
               <p style={{ margin: "5px 0", fontSize: "15px" }}>
-                <strong>{t("purchase_details.date")}:</strong>{" "}
+                <strong>{t("purchase_details.date")}</strong>{" "}
                 {order.createdAt.toLocaleDateString()}
               </p>
             )}

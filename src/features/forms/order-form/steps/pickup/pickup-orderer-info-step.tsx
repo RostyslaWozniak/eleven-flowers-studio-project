@@ -9,7 +9,6 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
-import { ordererFormSchema, type OrdererFormSchema } from "../../lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import {
@@ -18,15 +17,30 @@ import {
   labelClassName,
 } from "../../lib/constants/form-class-names";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { H2 } from "@/components/ui/typography";
+import {
+  pickupOrdererFormSchema,
+  type PickupOrdererFormSchema,
+} from "../../lib/schema/pickup-orderer-form.schema";
+import { type $Enums } from "@prisma/client";
+
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+  FieldTitle,
+} from "@/components/ui/field";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 type PickupOrdererInfoStepProps = {
-  values: OrdererFormSchema;
+  values: PickupOrdererFormSchema;
   isPending: boolean;
-  setValues: React.Dispatch<React.SetStateAction<OrdererFormSchema>>;
+  setValues: React.Dispatch<React.SetStateAction<PickupOrdererFormSchema>>;
   onPrev: () => void;
-  onSubmitForm: (orderingVal: OrdererFormSchema) => void;
+  onSubmitForm: (
+    orderingVal: PickupOrdererFormSchema,
+    paymentStatus: $Enums.PaymentStatus,
+  ) => void;
 };
 
 export function PickupOrdererInfoStep({
@@ -36,8 +50,8 @@ export function PickupOrdererInfoStep({
   onSubmitForm,
   isPending,
 }: PickupOrdererInfoStepProps) {
-  const form = useForm<OrdererFormSchema>({
-    resolver: zodResolver(ordererFormSchema),
+  const form = useForm<PickupOrdererFormSchema>({
+    resolver: zodResolver(pickupOrdererFormSchema),
     defaultValues: values,
   });
 
@@ -48,9 +62,10 @@ export function PickupOrdererInfoStep({
   const tButtons = useTranslations("pages.cart_summary.forms.buttons");
   const tError = useTranslations("messages.error");
 
-  function onSubmit(values: OrdererFormSchema) {
+  const watchPaymentStatus = form.watch("paymentStatus");
+  function onSubmit(values: PickupOrdererFormSchema) {
     setValues(values);
-    onSubmitForm(values);
+    onSubmitForm(values, watchPaymentStatus);
   }
 
   return (
@@ -149,25 +164,19 @@ export function PickupOrdererInfoStep({
           />
           <FormField
             control={form.control}
-            name="description"
+            name="paymentStatus"
             render={({ field }) => (
               <FormItem className={cn(formItemClassName)}>
                 <FormLabel className={cn(labelClassName)}>
-                  {tField("description.label")}
+                  {tField("payment_option.label")}
                 </FormLabel>
 
                 <FormControl>
-                  <Textarea
-                    name="description"
-                    className="min-h-[120px]"
-                    placeholder={tField("description.placeholder")}
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
+                  <PaymentOptionSelect onChange={field.onChange} />
                 </FormControl>
-                {form.formState.errors.description && (
+                {form.formState.errors.paymentStatus && (
                   <span className={cn(formErrorClassName)}>
-                    ({tError(form.formState.errors.description.message)})
+                    ({tError(form.formState.errors.paymentStatus.message)})
                   </span>
                 )}
               </FormItem>
@@ -190,11 +199,56 @@ export function PickupOrdererInfoStep({
               size="md"
               variant="outline"
             >
-              {tButtons("to_checkout")} <ChevronRightIcon />
+              {watchPaymentStatus === "PENDING"
+                ? tButtons("to_checkout")
+                : tButtons("place_order")}
+              <ChevronRightIcon />
             </LoadingButton>
           </div>
         </form>
       </Form>
     </>
+  );
+}
+
+function PaymentOptionSelect({
+  onChange,
+}: {
+  onChange: (paymentStatus: "PENDING" | "PAID_ON_DELIVERY") => void;
+}) {
+  const tField = useTranslations(
+    "pages.cart_summary.forms.pickup.ordering_form.fields",
+  );
+  return (
+    <RadioGroup defaultValue="PENDING" className="flex">
+      <FieldLabel htmlFor="PENDING">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>{tField("payment_option.online")}</FieldTitle>
+            {/* <FieldDescription>
+              For individuals and small teams.
+            </FieldDescription> */}
+          </FieldContent>
+          <RadioGroupItem
+            value="PENDING"
+            id="PENDING"
+            onClick={() => onChange("PENDING")}
+          />
+        </Field>
+      </FieldLabel>
+      <FieldLabel htmlFor="PAID_ON_DELIVERY">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>{tField("payment_option.on_pickup")}</FieldTitle>
+            {/* <FieldDescription>For growing businesses.</FieldDescription> */}
+          </FieldContent>
+          <RadioGroupItem
+            onClick={() => onChange("PAID_ON_DELIVERY")}
+            value="PAID_ON_DELIVERY"
+            id="PAID_ON_DELIVERY"
+          />
+        </Field>
+      </FieldLabel>
+    </RadioGroup>
   );
 }
