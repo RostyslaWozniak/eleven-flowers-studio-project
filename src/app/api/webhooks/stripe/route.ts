@@ -3,7 +3,7 @@ import { IS_TEST_PROJECT } from "@/components/environment-banner";
 import { env } from "@/env";
 import { sendMessageAction } from "@/features/telegram/actions/send-message.action";
 import { sendTelegramMessage } from "@/features/telegram/lib/helpers";
-import { type Locale, redirect } from "@/i18n/routing";
+import { redirect } from "@/i18n/routing";
 import { stripeServerClient } from "@/lib/stripe/stripe-server";
 import { validateLang } from "@/lib/utils";
 import { getEmailTitleByLang } from "@/lib/utils/email";
