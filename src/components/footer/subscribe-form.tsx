@@ -16,10 +16,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
-import { Text } from "../ui/typography";
 import LoadingButton from "../loading-button";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
+import { ChevronRightIcon } from "lucide-react";
 
 export function SubscribeForm() {
   const t = useTranslations("footer");
@@ -57,22 +57,19 @@ export function SubscribeForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                <Text size="lg" variant="muted" className="">
+                <h4 className="mb-2 text-lg font-bold text-primary/80">
                   {t("newsletter.label")}
-                </Text>
+                </h4>
+                <FormDescription className="leading-5">
+                  {t("newsletter.description")}
+                </FormDescription>
               </FormLabel>
-              <FormDescription>{t("newsletter.description")}</FormDescription>
-              {/* <FormMessage /> */}
-              {form.formState.errors.email && (
-                <span className="text-xs text-destructive">
-                  {tError(form.formState.errors.email.message)}
-                </span>
-              )}
-              <div className="flex flex-col items-center gap-3 sm:flex-row">
+
+              <div className="relative flex flex-col items-center gap-3 sm:flex-row">
                 <FormControl>
                   <Input
                     placeholder={t("newsletter.placeholder")}
-                    className="h-12 w-full rounded-full pl-4 sm:h-10"
+                    className="h-10 w-full rounded-full pl-4 pr-20"
                     {...field}
                   />
                 </FormControl>
@@ -81,11 +78,18 @@ export function SubscribeForm() {
                   loading={isPending}
                   size="md"
                   variant="default"
-                  className="h-12 w-full sm:h-10 sm:w-min"
+                  className="absolute bottom-0.5 right-0.5 top-0.5 h-auto"
                 >
-                  {t("newsletter.button")}
+                  {/* {t("newsletter.button")} */}
+                  <ChevronRightIcon className="!h-6 !w-6" />
                 </LoadingButton>
               </div>
+              {/* <FormMessage /> */}
+              {form.formState.errors.email && (
+                <span className="text-xs text-destructive">
+                  {tError(form.formState.errors.email.message)}
+                </span>
+              )}
             </FormItem>
           )}
         />

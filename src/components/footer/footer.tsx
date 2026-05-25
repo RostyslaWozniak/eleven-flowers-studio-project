@@ -14,16 +14,18 @@ export function Footer() {
   return (
     <footer className="relative bg-card">
       <MaxWidthWrapper>
-        <div className="grid grid-cols-2 items-center gap-12 pb-10 pt-20 md:grid-cols-4 lg:grid-cols-5">
-          <div className="hidden lg:block">
+        <div className="grid grid-cols-2 gap-12 pb-10 pt-20 md:grid-cols-4 lg:grid-cols-5">
+          <div className="hidden w-40 lg:block">
             <Logo2 />
           </div>
-          <div className="col-span-2 h-full place-items-center md:grid">
+          <div className="col-span-2 h-full pr-12 md:grid">
             <SubscribeForm />
           </div>
           <div>
-            <Text> {t("links")}</Text>
-            <ul className="mt-2">
+            <h4 className="mb-2 text-lg font-bold text-primary/80">
+              {t("links")}
+            </h4>
+            <ul>
               <li>
                 <Link href="/" className="hover:text-primary hover:underline">
                   {tNav("home")}
@@ -56,8 +58,10 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <Text> {t("socials")}</Text>
-            <ul className="mt-2 flex items-start gap-2 text-primary">
+            <h4 className="mb-2 text-lg font-bold text-primary/80">
+              {t("socials")}
+            </h4>
+            <ul className="flex items-start gap-2 text-primary">
               <li>
                 <Link
                   target="_blank"
