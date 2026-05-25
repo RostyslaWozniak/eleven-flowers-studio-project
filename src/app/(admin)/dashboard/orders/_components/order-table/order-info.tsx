@@ -31,7 +31,7 @@ type OrderInfoProps = {
 export function OrderInfo({ order }: OrderInfoProps) {
   const isStripeTest = env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.includes("test");
   return (
-    <div className="mb-4 flex w-full flex-col gap-4 px-2">
+    <div className="mb-4 flex w-full flex-col gap-2 px-2">
       <div className="flex flex-col-reverse items-start justify-between lg:flex-row lg:items-center">
         <div className="grid gap-2 lg:px-0">
           <div className="flex items-center gap-2">
@@ -72,8 +72,8 @@ export function OrderInfo({ order }: OrderInfoProps) {
           </Badge>
         </div>
       </div>
-      <div className="flex flex-col gap-4 lg:flex-row">
-        <div className="space-y-1 rounded-sm bg-card/80 p-4">
+      <div className="flex flex-col gap-2 lg:flex-row">
+        <div className="space-y-1 rounded-sm bg-card/80 p-3">
           <div className="flex items-center gap-2">
             <Banknote className="h-4 w-4 text-muted-foreground" />
             <p className="text-sm font-medium">Price</p>
@@ -97,7 +97,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
         </div>
 
         <div className="grid w-full gap-2 rounded-sm bg-card/80">
-          <ScrollArea className="max-h-[250px] p-4">
+          <ScrollArea className="max-h-[250px] p-3">
             <div className="flex items-center gap-2">
               <ShoppingBag className="h-4 w-4 text-muted-foreground" />
               <p className="text-sm font-medium">Order Items</p>
@@ -124,8 +124,8 @@ export function OrderInfo({ order }: OrderInfoProps) {
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="space-y-2 rounded-sm bg-card/80 p-2">
+      <div className="grid gap-2 lg:grid-cols-2">
+        <div className="space-y-2 rounded-sm bg-card/80 p-3">
           <div className="flex items-center gap-2">
             <div className="flex items-center">
               <User className="h-4 w-4 text-muted-foreground" />
@@ -146,8 +146,8 @@ export function OrderInfo({ order }: OrderInfoProps) {
           )}
         </div>
 
-        {order.contactInfo && order.deliveryDetails?.method === "delivery" && (
-          <div className="space-y-1 rounded-sm bg-card/80 p-2">
+        {order.contactInfo && order.deliveryDetails?.method === "delivery" ? (
+          <div className="space-y-1 rounded-sm bg-card/80 p-3">
             <div className="flex items-center gap-2">
               <div className="flex items-center">
                 <ArrowDownRight className="h-4 w-4 text-muted-foreground" />
@@ -172,6 +172,13 @@ export function OrderInfo({ order }: OrderInfoProps) {
               </div>
             )}
           </div>
+        ) : (
+          order.deliveryDetails?.flowerMessage && (
+            <div className="space-y-1 rounded-sm bg-card/80 p-3">
+              <p className="text-sm font-medium">Flower message:</p>
+              <p className="text-sm">{order.deliveryDetails.flowerMessage}</p>
+            </div>
+          )
         )}
       </div>
 
@@ -209,7 +216,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
         </div>
       ) : (
         <div className="grid gap-x-2 rounded-sm bg-card/80 lg:grid-cols-3">
-          <div className="space-y-2 p-2">
+          <div className="space-y-2 p-3">
             <div className="flex items-center gap-2">
               <Package className="h-4 w-4 text-muted-foreground" />
               <p className="text-sm font-medium">Pickup Details</p>
@@ -225,7 +232,7 @@ export function OrderInfo({ order }: OrderInfoProps) {
             </p>
           </div>
           {order.deliveryDetails?.description && (
-            <div className="col-span-2 p-2">
+            <div className="col-span-2 p-3">
               <p className="text-sm font-medium">Delivery Instructions:</p>
               <p className="text-sm">{order.deliveryDetails.description}</p>
             </div>
