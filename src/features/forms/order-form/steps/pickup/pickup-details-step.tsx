@@ -81,7 +81,7 @@ export function PickupDetailsStep({
       </H2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="min-h-64 space-y-4">
+          <div className="min-h-64 space-y-5">
             <div className="grid gap-x-4 gap-y-5 lg:grid-cols-2">
               <FormField
                 control={form.control}
