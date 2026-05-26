@@ -13,9 +13,8 @@ import {
 } from "@/components/ui/form";
 import { useTranslations } from "next-intl";
 import { H2 } from "@/components/ui/typography";
-import { Textarea } from "@/components/ui/textarea";
 import LoadingButton from "@/components/loading-button";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, PenIcon } from "lucide-react";
 import {
   recipientFormSchema,
   type RecipientFormSchema,
@@ -26,6 +25,7 @@ import {
   formItemClassName,
   labelClassName,
 } from "../../lib/constants/form-class-names";
+import { HiddenTextarea } from "@/components/hidden-textarea";
 
 type RecipientInfoFormProps = {
   values: RecipientFormSchema;
@@ -130,9 +130,10 @@ export function RecipientInfoForm({
                 </FormLabel>
 
                 <FormControl>
-                  <Textarea
+                  <HiddenTextarea
+                    btnLabel={tField("message.add")}
+                    icon={PenIcon}
                     name="flowerMessage"
-                    className="min-h-[150px]"
                     placeholder={tField("message.placeholder")}
                     value={field.value}
                     onChange={field.onChange}

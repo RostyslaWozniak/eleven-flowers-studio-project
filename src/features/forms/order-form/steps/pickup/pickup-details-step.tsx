@@ -13,17 +13,11 @@ import {
   formItemClassName,
   labelClassName,
 } from "../../lib/constants/form-class-names";
-import {
-  ChevronDownIcon,
-  ChevronRightIcon,
-  ChevronUpIcon,
-  FlowerIcon,
-  PenIcon,
-} from "lucide-react";
+import { ChevronRightIcon, FlowerIcon, PenIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@/components/loading-button";
-import { Textarea } from "@/components/ui/textarea";
+
 import { H2 } from "@/components/ui/typography";
 import { DateFormItem } from "../../components/date-form-item";
 import { TimeFormItem } from "../../components/time-form-item";
@@ -31,11 +25,7 @@ import {
   pickupDetailsFormSchema,
   type PickupDetailsFormSchema,
 } from "../../lib/schema/pickup-details-form.schema";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { ToggleAnimation } from "@/components/animations/toogle-comp-animation";
-import { useMediaQuery } from "@/hooks/use-media-query";
+import { HiddenTextarea } from "@/components/hidden-textarea";
 
 type PickupDetailsStepProps = {
   values: PickupDetailsFormSchema;
@@ -112,9 +102,12 @@ export function PickupDetailsStep({
               name="description"
               render={({ field }) => (
                 <FormItem className={cn(formItemClassName)}>
+                  <FormLabel className={cn("", labelClassName)}>
+                    {tField("description.label")}
+                  </FormLabel>
                   <FormControl>
                     <HiddenTextarea
-                      label={tField("description.label")}
+                      btnLabel={tField("description.add")}
                       icon={PenIcon}
                       name="description"
                       className=""
@@ -136,9 +129,12 @@ export function PickupDetailsStep({
               name="flowerMessage"
               render={({ field }) => (
                 <FormItem className={cn(formItemClassName)}>
+                  <FormLabel className={cn("", labelClassName)}>
+                    {tField("message.label")}
+                  </FormLabel>
                   <FormControl>
                     <HiddenTextarea
-                      label={tField("message.label")}
+                      btnLabel={tField("message.add")}
                       icon={FlowerIcon}
                       name="flowerMessage"
                       className=""
@@ -170,82 +166,5 @@ export function PickupDetailsStep({
         </form>
       </Form>
     </>
-  );
-}
-export type HiddenTextareaProps =
-  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-    label: string;
-    icon: React.ElementType;
-    value: string | undefined;
-  };
-
-function HiddenTextarea({
-  label,
-  className,
-  placeholder,
-  value,
-  onChange,
-  icon: Icon,
-
-  ...props
-}: HiddenTextareaProps) {
-  const isValue = !!value && value?.length > 0;
-  const [isOpen, setIsOpen] = useState(false);
-  const isDesctop = useMediaQuery();
-  return (
-    <div className="space-y-1">
-      {!isOpen ? (
-        <>
-          <Button
-            variant="outline"
-            type="button"
-            size="md"
-            className="w-full max-w-full"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            <div className="flex flex-grow items-center gap-x-2">
-              <Icon />{" "}
-              {isOpen
-                ? label
-                : (isValue ? "Edytuj " : "Dodaj ") + label.toLocaleLowerCase()}
-            </div>
-            <ToggleAnimation
-              firstComp={<ChevronDownIcon />}
-              secondComp={<ChevronUpIcon />}
-              isActive={isOpen}
-            />
-          </Button>
-          {value && value.length > 0 && (
-            <div>
-              <p className="px-4">{value}</p>
-            </div>
-          )}
-        </>
-      ) : (
-        <motion.div className="flex flex-col">
-          <FormLabel className={cn("mb-2", labelClassName)}>{label}</FormLabel>
-          <div className="flex flex-col gap-1">
-            <Textarea
-              autoFocus
-              name="flowerMessage"
-              className={cn("h-min min-h-20", className)}
-              placeholder={placeholder}
-              value={value}
-              onChange={onChange}
-              {...props}
-            />
-
-            <Button
-              variant="default"
-              size={isDesctop ? "sm" : "md"}
-              className="md:self-end"
-              onClick={() => setIsOpen(false)}
-            >
-              Ok
-            </Button>
-          </div>
-        </motion.div>
-      )}
-    </div>
   );
 }

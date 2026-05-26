@@ -38,7 +38,7 @@ export function ProductSizesAndPrice({
               await setSizeQuery(size);
             }}
             className={cn(
-              "flex max-h-12 w-min min-w-20 items-center space-x-2 capitalize",
+              "flex max-h-12 w-min min-w-20 items-center space-x-2 uppercase",
               {
                 "border-transparent text-muted-foreground": size !== sizeQuery,
               },

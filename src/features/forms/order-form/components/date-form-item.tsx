@@ -3,7 +3,7 @@
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 
 import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, ChevronDownIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   formItemClassName,
@@ -14,6 +14,7 @@ import { getCalendarLocale } from "../lib/helpers/locale";
 import { hasNoAvailableSlots } from "../lib/helpers/date";
 import { DialogWrapper } from "@/components/dialog-wrapper";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 type DateFormItemProps = {
   value: Date | undefined;
@@ -34,19 +35,24 @@ export function DateFormItem({ value, onChange, error }: DateFormItemProps) {
 
       <FormControl>
         <div>
-          <button
+          <Button
+            variant="outline"
             type="button"
+            size="md"
             className={cn(
-              "flex h-9 w-full cursor-pointer items-center justify-start rounded-full border px-3 text-sm text-muted-foreground",
+              "flex w-full cursor-pointer items-center justify-start rounded-full border px-3 text-sm text-muted-foreground",
               {
-                "text-base text-primary": value,
+                "text-sm text-primary": value,
               },
             )}
             onClick={() => setIsOpen(true)}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {value ? formatter.format(value) : tField("placeholder")}
-          </button>
+            <div className="flex flex-grow items-center gap-x-2">
+              <CalendarIcon />
+              {value ? formatter.format(value) : tField("placeholder")}
+            </div>
+            <ChevronDownIcon />
+          </Button>
           <DialogWrapper
             isOpen={isOpen}
             setIsOpen={setIsOpen}

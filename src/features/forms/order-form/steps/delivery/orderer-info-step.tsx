@@ -8,14 +8,13 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import { H2 } from "@/components/ui/typography";
 import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, PenIcon } from "lucide-react";
 import { ordererFormSchema, type OrdererFormSchema } from "../../lib/schema";
 import { cn } from "@/lib/utils";
 import {
@@ -23,6 +22,7 @@ import {
   formItemClassName,
   labelClassName,
 } from "../../lib/constants/form-class-names";
+import { HiddenTextarea } from "@/components/hidden-textarea";
 
 type OrderingInfoFormProps = {
   values: OrdererFormSchema;
@@ -159,9 +159,11 @@ export function OrderingInfoForm({
                 </FormLabel>
 
                 <FormControl>
-                  <Textarea
-                    name="flowerMessage"
-                    className="min-h-[120px]"
+                  <HiddenTextarea
+                    btnLabel={tField("description.add")}
+                    icon={PenIcon}
+                    name="description"
+                    className=""
                     placeholder={tField("description.placeholder")}
                     value={field.value}
                     onChange={field.onChange}

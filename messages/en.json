@@ -73,8 +73,9 @@
                 "placeholder": "e.g. +48 123 456 789"
               },
               "message": {
-                "label": "Your message for the bouquet (optional)",
-                "placeholder": "e.g. Wishing you all the best!"
+                "label": "Message for the bouquet (optional)",
+                "placeholder": "e.g. Wishing you all the best!",
+                "add": "Add message"
               }
             }
           },
@@ -113,32 +114,26 @@
               },
               "description": {
                 "label": "Additional instructions for the courier (optional)",
-                "placeholder": "e.g. 'Please call before delivery'"
+                "placeholder": "e.g. 'Please call before delivery'",
+                "add": "Add notes"
               }
             }
           }
         },
         "pickup": {
           "step_indicator": ["Day and Time", "Your Details"],
-          "date_form": {
-            "title": "When would you like to pick up the flowers?",
-            "fields": {
-              "message": {
-                "label": "Your message for the bouquet (optional)",
-                "placeholder": "e.g. Wishing you all the best!"
-              }
-            }
-          },
           "pickup_details_form": {
             "title": "When would you like to pick up your flowers?",
             "fields": {
               "message": {
                 "label": "Message for the bouquet (optional)",
-                "placeholder": "e.g. Wishing you all the best!"
+                "placeholder": "e.g. Wishing you all the best!",
+                "add": "Add message"
               },
               "description": {
                 "label": "Additional notes (optional)",
-                "placeholder": "e.g. I'll pick up after 3:00 PM"
+                "placeholder": "e.g. Please wrap as a gift",
+                "add": "Add notes"
               }
             }
           },

@@ -11,7 +11,7 @@ import { isSlotDisabled } from "../lib/helpers/date";
 import { Button } from "@/components/ui/button";
 import { DialogWrapper } from "@/components/dialog-wrapper";
 import { useState } from "react";
-import { ClockIcon } from "lucide-react";
+import { ChevronDownIcon, ClockIcon } from "lucide-react";
 
 type TimeFormItemProps = {
   value: string | undefined;
@@ -33,19 +33,25 @@ export function TimeFormItem({
   return (
     <FormItem className={cn(formItemClassName)}>
       <FormLabel className={cn(labelClassName)}>{tField("label")}</FormLabel>
-      <button
+
+      <Button
+        variant="outline"
         type="button"
-        onClick={() => setIsOpen(true)}
+        size="md"
         className={cn(
-          "flex h-9 w-full cursor-pointer items-center justify-start rounded-full border px-3 text-sm text-muted-foreground",
+          "flex w-full cursor-pointer items-center justify-start rounded-full border px-3 text-sm text-muted-foreground",
           {
-            "text-base text-primary": value,
+            "text-sm text-primary": value,
           },
         )}
+        onClick={() => setIsOpen(true)}
       >
-        <ClockIcon className="mr-2 h-4 w-4" />
-        {value ?? tField("placeholder")}
-      </button>
+        <div className="flex flex-grow items-center gap-x-2">
+          <ClockIcon />
+          {value ?? tField("placeholder")}
+        </div>
+        <ChevronDownIcon />
+      </Button>
 
       <FormControl>
         <DialogWrapper

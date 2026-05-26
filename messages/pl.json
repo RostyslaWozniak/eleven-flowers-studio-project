@@ -73,8 +73,9 @@
                 "placeholder": "np. +48 123 456 789"
               },
               "message": {
-                "label": "Twoja wiadomość do bukietu (opcionalnie)",
-                "placeholder": "np. Życzę Ci wszystkiego najlepszego!"
+                "label": "Wiadomość do bukietu (opcjonalnie)",
+                "placeholder": "np. Życzę Ci wszystkiego najlepszego!",
+                "add": "Dodaj wiadomość"
               }
             }
           },
@@ -113,32 +114,26 @@
               },
               "description": {
                 "label": "Dodatkowe instrukcje dla kuriera (opcjonalnie)",
-                "placeholder": "np. Proszę zadzwonić przed dostawą"
+                "placeholder": "np. Proszę zadzwonić przed dostawą",
+                "add": "Dodaj uwagi"
               }
             }
           }
         },
         "pickup": {
           "step_indicator": ["Szczegóły odbioru", "Twoje dane"],
-          "date_form": {
-            "title": "Kiedy chcesz odebrać kwiaty?",
-            "fields": {
-              "message": {
-                "label": "Twoja wiadomość do bukietu (opcjonalnie)",
-                "placeholder": "np. Życzę Ci wszystkiego najlepszego!"
-              }
-            }
-          },
           "pickup_details_form": {
             "title": "Kiedy chcesz odebrać kwiaty?",
             "fields": {
               "message": {
                 "label": "Wiadomość do bukietu (opcjonalnie)",
-                "placeholder": "np. Życzę Ci wszystkiego najlepszego!"
+                "placeholder": "np. Życzę Ci wszystkiego najlepszego!",
+                "add": "Dodaj wiadomość"
               },
               "description": {
                 "label": "Dodatkowe uwagi (opcjonalnie)",
-                "placeholder": "np. Odbiorę po godzinie 15:00"
+                "placeholder": "np. Proszę zapakować na prezent",
+                "add": "Dodaj uwagi"
               }
             }
           },
